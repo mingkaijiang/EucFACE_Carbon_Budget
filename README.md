@@ -46,7 +46,7 @@ Each module function should produce a dataframe with the following **mandatory**
 
 - Date (YYYY-MM-DD) (Date or character, **not** POSIXct)
 - Ring (1 - 6) (numeric)
-- <<module>> (e.g. leaf_pool). Units: mgC m^-2^ day^-1^ for fluxes, mgC m^-2^ for pools
+- <<module>> (e.g. leaf_pool). Units: mgC m^-2^ day^-1^ for fluxes, gC m^-2^ for pools
 
 And the following **optional** columns:
 
