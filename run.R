@@ -8,4 +8,4 @@ sla_variable <- make_sla_variable()
 
 leaf_pool <- make_leaf_pool(lai_variable, sla_variable)
 
-
+soil_respiration_flux <- make_soil_respiration_flux()
