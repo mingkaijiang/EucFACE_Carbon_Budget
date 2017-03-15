@@ -82,6 +82,7 @@ make_soil_carbon_pool <- function(){
   
   #- average across plots within each ring
   dat.s.m <- summaryBy(soil_carbon_pool~Date+Ring,data=dat.s,FUN=mean,keep.names=T)
+  dat.s.m$Ring <- as.numeric(dat.s.m$Ring)
   return(dat.s.m)
   #------
   
