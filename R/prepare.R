@@ -9,7 +9,7 @@ setToken(tokenfile="tokenfile.txt", quiet=TRUE)
 setToPath("download")
 
 if(!require(pacman))install.packages("pacman")
-pacman::p_load(dplyr, doBy) # add other packages needed to this list
+pacman::p_load(dplyr, doBy, readxl) # add other packages needed to this list
 
 
 # Loading constants
