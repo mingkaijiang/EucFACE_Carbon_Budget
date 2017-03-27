@@ -1,8 +1,10 @@
 make_soil_carbon_pool <- function(){
   
+  download_soil_carbon_data()
+  
   #------
   #- read in the soil C content data
-  files <- list.files(path="download/",pattern="BasicSoilProperties",full.names=T)
+  files <- list.files(path=getToPath(),pattern="BasicSoilProperties",full.names=T)
   dat1 <- list()
   for (i in 1:length(files)){
     dat1[[i]] <- read.csv(files[i])
