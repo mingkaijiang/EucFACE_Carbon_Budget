@@ -1,25 +1,47 @@
 #- Make the frass C pool
-make_frass_pool <- function(){
-    
-    # unit conversion factor
-    conv <- 0.001   # not sure, check back
+make_frass_production_flux <- function(){
     
     #- download the data. 
     download_frass_data()
     
-    #- read in the data.
-    inDF <- read.csv("download/FACE_P0017_RA_FRASSCHEMISTRY_L2_20121112-20141016.csv")
-    inDF$DATE <- as.Date(inDF$DATE)
-
-    #- average across rings and dates
-    outDF <- summaryBy(CARBON~DATE+RING,data=inDF,FUN=mean,keep.names=T)
+    #- read in the data - frassfall data (in unit of g/0.1979 m2)
+    inDF1 <- read.csv("download/FACE_P0017_RA_FRASSFALL_L2_20120914-20150209.csv")
+    inDF1$DATE <- as.Date(inDF1$DATE)
     
-    #- convert to g C m-2
-    outDF$frass_pool <- outDF$CARBON * conv
+    #- read in the data - frass chemistry data (for C, in unit of %)
+    inDF2 <- read.csv("download/FACE_P0017_RA_FRASSCHEMISTRY_L2_20121112-20141016.csv")
+    inDF2$DATE <- as.Date(inDF2$DATE)
+    
+    #- average across rings and dates - frassfall data
+    outDF1 <- summaryBy(FRASSFALL~DATE+RING,data=inDF1,FUN=mean,keep.names=T)
+    
+    #- average across rings and dates
+    outDF2 <- summaryBy(CARBON~DATE+RING,data=inDF2,FUN=mean,keep.names=T)
+    
+    #- merge by dates
+    outDF <- merge(outDF1, outDF2, by=c("DATE","RING"), all.x=TRUE, all.y=FALSE)
+    
+    #- convert to g C m-2 (area of the basket = 0.1979 m2)
+    outDF$frass_production <- outDF$CARBON /100.0 * outDF$FRASSFALL / 0.1979
+    
+    #- count number of days between two dates  -- this could be a function itself
+    d <- unique(outDF$DATE)
+    first <- c()
+    for (i in seq_along(d))
+        first[i] <- d[i] - d[1]
+    
+    between <- c(0, diff(d))
+    
+    #- convert into mg m-2 d-1
+    outDF$ndays <- rep(between, each = 6)
+    outDF$frass_production_flux <- outDF$frass_production/outDF$ndays * g_to_mg
+    
+    #- drop NA rows
+    outDF <- outDF[complete.cases(outDF),]
     
     #- format dataframe to return
-    out <- outDF[,c("DATE","RING","frass_pool")]
-    colnames(out) <- c("Date", "Ring", "frass_pool")
-    
+    out <- outDF[,c("DATE","RING","frass_production_flux")]
+    colnames(out) <- c("Date", "Ring", "frass_production_flux")
+
     return(out)
 }
