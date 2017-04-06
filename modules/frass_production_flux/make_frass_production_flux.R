@@ -24,7 +24,7 @@ make_frass_production_flux <- function(){
     outDF <- merge(outDF1, outDF2, by=c("DATE","RING"), all.x=TRUE, all.y=FALSE)
     
     #- convert to g C m-2 (area of the basket = 0.1979 m2)
-    outDF$frass_production <- outDF$CARBON /100.0 * outDF$FRASSFALL / 0.1979
+    outDF$frass_production <- outDF$CARBON /100.0 * outDF$FRASSFALL / litter_basket_area
     
     #- count number of days between two dates  -- this could be a function itself
     d <- unique(outDF$DATE)
