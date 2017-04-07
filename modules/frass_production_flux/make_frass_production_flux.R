@@ -1,4 +1,4 @@
-#- Make the frass C pool
+#- Make the frass C flux
 make_frass_production_flux <- function(){
     
     #- download the data. 

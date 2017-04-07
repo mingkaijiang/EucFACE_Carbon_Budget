@@ -16,3 +16,5 @@ fineroot_pool <- make_fineroot_pool(c_fraction)
 fineroot_production_flux <- make_fineroot_production_flux(c_fraction)
 
 frass_production_flux <- make_frass_production_flux()
+
+lerp_production_flux <- make_lerp_production_flux()

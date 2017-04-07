@@ -1,0 +1,53 @@
+#- Make the lerp C prodution flux
+make_lerp_production_flux <- function(){
+    
+    ### Information to know: the life cycle of lerp is ~ 1 month,
+    ### and the frass baskets were emptied every 1 month,
+    ### So this flux calculated from frass basket is the biomass as well.
+    ### Except for July, the life cycle is a bit longer. 
+    ### Data were collected on a monthly basis, but the samplings were conducted quarterly.
+    ###
+    
+    #- download the data. 
+    download_lerp_data()
+    
+    #- read in the data - abundance data (in unit of individual/0.1979 m2)
+    abDF <- read.csv(file.path(getToPath(), 
+                                "FACE_P0017_RA_psyllid_abundance_L3_20121101-20141219.csv"))
+
+    #- read in the data - flerp weight data (in unit of mg/individual)
+    wtDF <- read.csv(file.path(getToPath(), 
+                                "FACE_P0017_RA_psyllid_lerp_weight_L3_20121201-20141219.csv"))
+    names(wtDF) <- c("species", "tube", "trap", "date", "co2", "ring", "weight")
+    
+
+    #- average across rings, traps, species and dates - abundance data
+    outDF1 <- summaryBy(counts~ring+trap+species+date,data=abDF,FUN=mean,keep.names=T)
+    
+    #- average across rings, traps, species and dates - weight data
+    outDF2 <- summaryBy(weight~~ring+trap+species+date,data=wtDF,FUN=mean,keep.names=T)
+
+    #- merge by dates
+    outDF3 <- merge(outDF1, outDF2, by=c("date","ring", "species", "trap"), all.x=TRUE, all.y=FALSE)
+    
+    #- multiply by carbon content 
+    #- 0.78 as suggested by Andrew
+    #- need a literature value in the future
+    #- unit: mg C m-2 d-1
+    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * 0.78 / frass_basket_area / 30.0
+    
+    #- drop NA rows
+    outDF3 <- outDF3[complete.cases(outDF3),]
+    
+    #- sum all species for each trap
+    outDF4 <- summaryBy(lerp_production_flux~ring+trap+date,data=outDF3,FUN=sum,keep.names=T)
+    
+    #- average across all traps for each ring and date
+    outDF5 <- summaryBy(lerp_production_flux~ring+date,data=outDF4,FUN=mean,keep.names=T)
+    
+    #- format dataframe to return
+    out <- outDF5[,c("date","ring","lerp_production_flux")]
+    colnames(out) <- c("Date", "Ring", "lerp_production_flux")
+
+    return(out)
+}
