@@ -1,4 +1,4 @@
-make_soil_carbon_pool <- function(){
+make_soil_carbon_pool <- function(return="all_depths"){
   
   download_soil_carbon_data()
   
@@ -78,9 +78,19 @@ make_soil_carbon_pool <- function(){
   
   
   #------
-  #- sum across layers on each date
-  dat.s <- summaryBy(totCgm2~Plot+Ring+Date,data=dat,FUN=sum,keep.names=T)
-  names(dat.s)[4] <- "soil_carbon_pool"
+  #- sum across layers on each date, if "return" is "all_depths"
+  if(return=="all_depths"){
+    dat.s <- summaryBy(totCgm2~Plot+Ring+Date,data=dat,FUN=sum,keep.names=T)
+    names(dat.s)[4] <- "soil_carbon_pool"
+    
+  }
+  
+  #- return only the shallow layer on each date, if "return" is "shallow"
+  if(return=="shallow"){
+    dat.s <- summaryBy(totCgm2~Plot+Ring+Date,data=subset(dat,Depth=="0-10cm"),FUN=sum,keep.names=T)
+    names(dat.s)[4] <- "soil_carbon_pool"
+    
+  }
   
   #- average across plots within each ring
   dat.s.m <- summaryBy(soil_carbon_pool~Date+Ring,data=dat.s,FUN=mean,keep.names=T)
