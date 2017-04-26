@@ -9,3 +9,9 @@ g_to_mg <- 1000.0
 
 # litter basket area m-2
 frass_basket_area <- 0.1979
+
+# ring diameter m
+ring_diameter <- 25
+
+# ring ground area m2
+ring_area <- pi * (ring_diameter/2)^2

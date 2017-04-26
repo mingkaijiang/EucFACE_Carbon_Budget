@@ -54,7 +54,13 @@ Examples:
 
 Each module function should produce a dataframe with the following **mandatory** columns:
 
+For **pool** modules:
 - Date (YYYY-MM-DD) (Date or character, **not** POSIXct)
+For **flux** modules: 
+- Start_date (YYYY-MM-DD) (Date or character, **not** POSIXct)
+- End_date (YYYY-MM-DD) (Date or character, **not** POSIXct)
+
+For **both**: 
 - Ring (1 - 6) (numeric)
 - <<module>> (e.g. leaf_pool). Units: mgC m^-2^ day^-1^ for fluxes, gC m^-2^ for pools
 
