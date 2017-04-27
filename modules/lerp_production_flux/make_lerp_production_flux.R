@@ -15,17 +15,17 @@ make_lerp_production_flux <- function(){
     abDF <- read.csv(file.path(getToPath(), 
                                 "FACE_P0017_RA_psyllid_abundance_L3_20121101-20141219.csv"))
 
-    #- read in the data - flerp weight data (in unit of mg/individual)
+    #- read in the data - lerp weight data (in unit of mg/individual)
     wtDF <- read.csv(file.path(getToPath(), 
                                 "FACE_P0017_RA_psyllid_lerp_weight_L3_20121201-20141219.csv"))
     names(wtDF) <- c("species", "tube", "trap", "date", "co2", "ring", "weight")
     
 
     #- average across rings, traps, species and dates - abundance data
-    outDF1 <- summaryBy(counts~ring+trap+species+date,data=abDF,FUN=mean,keep.names=T)
+    outDF1 <- summaryBy(counts ~ ring+trap+species+date,data=abDF,FUN=mean,keep.names=TRUE)
     
     #- average across rings, traps, species and dates - weight data
-    outDF2 <- summaryBy(weight~~ring+trap+species+date,data=wtDF,FUN=mean,keep.names=T)
+    outDF2 <- summaryBy(weight ~ ring+trap+species+date,data=wtDF,FUN=mean,keep.names=TRUE)
 
     #- merge by dates
     outDF3 <- merge(outDF1, outDF2, by=c("date","ring", "species", "trap"), all.x=TRUE, all.y=FALSE)
@@ -40,14 +40,19 @@ make_lerp_production_flux <- function(){
     outDF3 <- outDF3[complete.cases(outDF3),]
     
     #- sum all species for each trap
-    outDF4 <- summaryBy(lerp_production_flux~ring+trap+date,data=outDF3,FUN=sum,keep.names=T)
+    outDF4 <- summaryBy(lerp_production_flux ~ ring+trap+date,data=outDF3,FUN=sum,keep.names=T)
     
     #- average across all traps for each ring and date
-    outDF5 <- summaryBy(lerp_production_flux~ring+date,data=outDF4,FUN=mean,keep.names=T)
+    outDF5 <- summaryBy(lerp_production_flux ~ ring+date,data=outDF4,FUN=mean,keep.names=T)
     
     #- format dataframe to return
     out <- outDF5[,c("date","ring","lerp_production_flux")]
     colnames(out) <- c("Date", "Ring", "lerp_production_flux")
+    
+    # Fix Date format:
+    # Assume that e.g. 'Jan-13' means the last day of that month (2013-01-31).
+    out$Date <- as.Date(paste0("1-", out$Date), format = "%d-%b-%y") + months(1) - days(1)
 
     return(out)
 }
+
