@@ -21,3 +21,7 @@ lerp_production_flux <- make_lerp_production_flux()
 
 # incomplete  - needs a unit conversion term
 # doc_leaching_flux <- make_doc_leaching_flux()
+
+
+# Litter fluxes. This dataframe includes all of twig, bark, seed, leaf. 
+leaflitter_flux <- make_leaflitter_flux()
