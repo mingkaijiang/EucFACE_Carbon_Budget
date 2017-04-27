@@ -1,7 +1,10 @@
 make_leaf_pool <- function(lai_variable, sla_variable){
   
-  dfr <- merge(lai_variable, sla_variable, by=c("Date","Ring"), all.x=TRUE, all.y=FALSE)
-  dfr$leaf_pool <- 1000 * dfr$lai_variable / dfr$sla_variable # units may be wrong
+  # Use average SLA over campaigns
+  SLA <- mean(sla_variable$sla_variable, na.rm=TRUE)
+  
+  dfr <- lai_variable[,c("Date","Ring")]
+  dfr$leaf_pool <- c_fraction * lai_variable$lai_variable / (10^-4 * SLA)
   
 return(dfr[,c("Date","Ring","leaf_pool")])
 

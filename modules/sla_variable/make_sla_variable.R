@@ -1,8 +1,22 @@
+download_lma_data <- function(){
+  downloadCSV("FACE_P0020_RA_LMA_20150129-20150416_L2.csv")
+}
+
 make_sla_variable <- function(){
   
   
-  expand.grid(Date=seq(as.Date("2013-1-1"), as.Date("2017-1-1"), by="1 day"),
-              Ring=1:6,
-              sla_variable=55)
+  lma_raw <- download_lma_data()
+  lma_raw$Date <- as.Date(lma_raw$Date, format="%d/%m/%Y")
+  lma <- subset(lma_raw, !is.na(Date)) # file has issues - KC asked to fix
+  lma <- mutate(lma, 
+                Ring = as.numeric(substr(TREE,1,1)),
+                LMA = as.numeric(LMA),
+                SLA = 10000 / LMA)  # cm2 g-1
+  lma <- subset(lma, !is.na(Ring), select =c(Date,Ring, SLA))  # missing ring is for tree 'outs R6' - ignore
   
+  lma_a <- summaryBy(SLA ~ Ring + Date, FUN=mean, na.rm=TRUE, data=lma, keep.names=TRUE)
+  
+  lma <- rename(lma, sla_variable = SLA)
+  
+return(lma)
 }
