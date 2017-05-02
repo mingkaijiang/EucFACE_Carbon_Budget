@@ -12,7 +12,7 @@ make_leaflitter_flux <- function(){
   conv <- 1000 / frass_basket_area
   
   litter <- mutate(litter_raw, 
-                   Date = as.Date(litter$Date, format = "%d/%m/%Y"),
+                   Date = as.Date(litter_raw$Date, format = "%d/%m/%Y"),
                    Start_date = Date - days.past,
                    End_date = Date,
                    Twig = Twig * conv / days.past,
