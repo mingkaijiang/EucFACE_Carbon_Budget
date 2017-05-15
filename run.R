@@ -17,9 +17,12 @@ fineroot_production_flux <- make_fineroot_production_flux(c_fraction)
 
 frass_production_flux <- make_frass_production_flux()
 
+# incomplete   - frass production record does not match lai record
+lai_variable_after_frass_damage <- make_lai_variable_after_frass_damage(lai_variable, frass_production_flux)
+
 lerp_production_flux <- make_lerp_production_flux()
 
-# incomplete  - needs a unit conversion term
+# incomplete  - needs a water flux, possibly simulated
 # doc_leaching_flux <- make_doc_leaching_flux()
 
 
