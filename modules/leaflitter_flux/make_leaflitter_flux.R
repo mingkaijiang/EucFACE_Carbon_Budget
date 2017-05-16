@@ -25,7 +25,7 @@ make_leaflitter_flux <- function(){
   litter_a <- summaryBy(Twig + Bark + Seed + Leaf ~ Date + Ring, FUN=mean, na.rm=TRUE,
                         data=litter, id = ~Start_date + End_date, keep.names=TRUE)
   
-  litter_a <- as.data.frame(rename(litter_a, 
+  litter_a <- as.data.frame(dplyr::rename(litter_a, 
                                    twig_flux = Twig,
                                    bark_flux = Bark,
                                    seed_flux = Seed,
