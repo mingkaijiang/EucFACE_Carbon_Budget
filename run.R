@@ -27,6 +27,9 @@ lerp_production_flux <- make_lerp_production_flux()
 
 
 # Litter fluxes. This dataframe includes all of twig, bark, seed, leaf. 
+
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
+wood_pool <- make_wood_pool(ring_area,c_fraction)
+wood_production_flux <- make_wood_production_flux(wood_pool)
 
