@@ -10,7 +10,7 @@ make_doc_leaching_flux <- function(){
     #- download the data. 
     download_doc_data()
     
-    #- read in the data - abundance data (in unit of individual/0.1979 m2)
+    #- read in the data 
     inDF <- read.csv(file.path(getToPath(), 
                                 "FACE_RA_P0023_SOILLYSIMETERNUTRIENTS_L3_20120710-20140402.csv"))
     
@@ -24,18 +24,22 @@ make_doc_leaching_flux <- function(){
     outDF <- subset(outDF, depth == "deep")
     
     #- count number of days between two dates  -- this could be a function itself
-    d <- unique(outDF$date)
-    first <- c()
-    for (i in seq_along(d))
-        first[i] <- d[i] - d[1]
+    #d <- unique(outDF$date)
+    #first <- c()
+    #for (i in seq_along(d))
+    #    first[i] <- d[i] - d[1]
     
-    between <- c(0, diff(d))
+    #between <- c(0, diff(d))
     
     #- convert into ml l-1 d-1
-    outDF$ndays <- rep(between, each = 6)  # the length is unequal for rings
-    outDF$doc_leaching_flux <- outDF$organic_carbon/outDF$ndays # a unit conversion term is needed here  
+    #outDF$ndays <- rep(between, each = 6)  # the length is unequal for rings
+    #outDF$doc_leaching_flux <- outDF$organic_carbon/outDF$ndays # a unit conversion term is needed here  
     
+    # doc leaching term as per day
+    outDF$doc_leaching_flux <- outDF$organic_carbon   # Shun's paper suggests DOC at deep layer is constant over time
   
+    # need to add soil water data from Neutron Probe datasets and soil bulk density
+    
     #- drop NA rows
     outDF <- outDF[complete.cases(outDF),]
     
