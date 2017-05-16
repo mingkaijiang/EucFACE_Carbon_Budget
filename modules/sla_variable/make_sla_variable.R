@@ -16,7 +16,7 @@ make_sla_variable <- function(){
   
   lma_a <- summaryBy(SLA ~ Ring + Date, FUN=mean, na.rm=TRUE, data=lma, keep.names=TRUE)
   
-  lma <- rename(lma, sla_variable = SLA)
+  lma <- dplyr::rename(lma, sla_variable = SLA)
   
 return(lma)
 }
