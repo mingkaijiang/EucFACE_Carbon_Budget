@@ -16,7 +16,7 @@ inout$value <- rep(NA, length(inout$term))
 maespa <- read.csv("data/2013_maespa_gpp_respiration.csv")
 inout$value[inout$term == "GPP overstorey"] <- mean(maespa$GPP.mg.m2.d) * conv
 inout$value[inout$term == "Ra leaf"] <- mean(maespa$Respiration.mg.m2.d) * conv
-inout$value[inout$term == "Rsoil"] <- mean(soil_respiration_flux$soil_respiration_flux) * conv * 24 # John to fix 24 hours
+inout$value[inout$term == "Rsoil"] <- mean(soil_respiration_flux$soil_respiration_flux) * conv
 
 # NPP fluxes
 term <- c("Leaf NPP", "Stem NPP", "Understorey NPP",
@@ -29,7 +29,7 @@ npp$value <- rep(NA, length(npp$term))
 leaflitter_flux$twig_flux[leaflitter_flux$twig_flux > 5000] <- 0   # surely these values are in error, correct
 leaflitter_flux$total <- with(leaflitter_flux, twig_flux + bark_flux + seed_flux + leaf_flux)
 leaflitter_flux$days <- as.numeric(with(leaflitter_flux,End_date - Start_date))
-litter_prod <- with(leaflitter_flux,sum(total*days)/sum(days)) * c_fraction * conv # Remko to fix gC
+litter_prod <- with(leaflitter_flux,sum(total*days)/sum(days)) * conv 
 npp$value[npp$term == "Leaf NPP"] <- litter_prod
 stem_prod <- mean(wood_production_flux$wood_production_flux) * conv
 npp$value[npp$term == "Stem NPP"] <- stem_prod
@@ -53,4 +53,7 @@ pool$value[pool$term == "Overstorey wood"] <- mean(wood_pool$wood_pool)
 pool$value[pool$term == "Fine Root"] <- mean(fineroot_pool$fineroot_pool)
 pool$value[pool$term == "Soil C"] <- mean(soil_carbon_pool$soil_carbon_pool)
 
+# output tables
+inout
+npp
 pool

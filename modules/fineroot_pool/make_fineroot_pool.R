@@ -2,6 +2,7 @@
 make_fineroot_pool <- function(c_fraction){
   
   #- download the data. Note that the data consist of an out-of date, poorly named excel file. (Sigh).
+  #  Fix to use Gerry's csv files.
   download_fineroot_data()
   
   #- read in the first sheet, entitled "Fine root biomass". Do some tidying.
@@ -15,7 +16,7 @@ make_fineroot_pool <- function(c_fraction){
   #- average across rings and dates
   frb.m <- summaryBy(frb_tot~Date+Ring,data=frb1,FUN=mean,keep.names=T)
   
-  #- convert to g C m-2
+  #- convert to g C m-2. Use fine-root specific c_fraction from Juan.
   frb.m$fineroot_pool <- frb.m$frb_tot*c_fraction
   
   #- format dataframe to return

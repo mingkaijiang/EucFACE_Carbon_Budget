@@ -47,8 +47,8 @@ make_soil_respiration_flux <- function(){
   #-----
   
   
-  #- convert to mg C m-2 day-1
-  RE.m.collar.all$soil_respiration_flux <- RE.m.collar.all$DAMM*60*60*1e-6*12.01*1000
+  #- convert from umol CO2 m-2 s-1 to mg C m-2 day-1
+  RE.m.collar.all$soil_respiration_flux <- RE.m.collar.all$DAMM*60*60*24*1e-6*12.01*1000
     
   #- average across dates and plots
   Rsoil.out <- summaryBy(soil_respiration_flux~Date+ring,data=RE.m.collar.all,FUN=c(mean),keep.names=T)
