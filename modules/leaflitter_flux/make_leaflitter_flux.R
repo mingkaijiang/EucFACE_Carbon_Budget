@@ -1,4 +1,4 @@
-make_leaflitter_flux <- function(){
+make_leaflitter_flux <- function(c_fraction){
   
   litter_raw <- download_leaflitter()  
   
@@ -9,7 +9,7 @@ make_leaflitter_flux <- function(){
   litter_raw$TRAP[is.na(litter_raw$Ring)] <- litter_raw$RING[is.na(litter_raw$Ring)]
   
   # Conversion factor from g basket-1 to mg m-2
-  conv <- 1000 / frass_basket_area
+  conv <- c_fraction * 1000 / frass_basket_area
   
   litter <- dplyr::mutate(litter_raw, 
                    Date = as.Date(litter_raw$Date, format = "%d/%m/%Y"),

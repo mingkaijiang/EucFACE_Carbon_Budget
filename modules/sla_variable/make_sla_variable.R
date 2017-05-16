@@ -7,7 +7,7 @@ make_sla_variable <- function(){
   
   lma_raw <- download_lma_data()
   lma_raw$Date <- as.Date(lma_raw$Date, format="%d/%m/%Y")
-  lma <- subset(lma_raw, !is.na(Date)) # file has issues - KC asked to fix
+  lma <- droplevels(subset(lma_raw, TREE != "outs R6"))  # outside ring trees
   lma <- mutate(lma, 
                 Ring = as.numeric(substr(TREE,1,1)),
                 LMA = as.numeric(LMA),
