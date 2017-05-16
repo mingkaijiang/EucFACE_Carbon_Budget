@@ -34,7 +34,7 @@ make_lerp_production_flux <- function(){
     #- 0.78 as suggested by Andrew
     #- need a literature value in the future
     #- unit: mg C m-2 d-1
-    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * 0.78 / frass_basket_area / 30.0
+    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * 0.35 / frass_basket_area / 30.0
     
     #- drop NA rows
     outDF3 <- outDF3[complete.cases(outDF3),]
