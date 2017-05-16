@@ -11,7 +11,7 @@ make_leaflitter_flux <- function(){
   # Conversion factor from g basket-1 to mg m-2
   conv <- 1000 / frass_basket_area
   
-  litter <- mutate(litter_raw, 
+  litter <- dplyr::mutate(litter_raw, 
                    Date = as.Date(litter_raw$Date, format = "%d/%m/%Y"),
                    Start_date = Date - days.past,
                    End_date = Date,
