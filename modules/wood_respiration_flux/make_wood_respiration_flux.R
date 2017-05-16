@@ -1,10 +1,10 @@
-#- "main" module function for wood respiration. Needs stem and branch wood masses as inputs
-make_wood_respiration_flux <- function(){
+#- "main" module function for wood respiration. Needs temperature, sapwood mass, and branch wood mass as inputs
+make_wood_respiration_flux <- function(Tair,Sapwood,Branchwood){
   
   #- download the data
   download_wood_respiration()
   
-  #- read in the stem respiration data, calculate mean rate of ambient data. THESE NUMBERS ARE TOO HIGH. SHOULD BE ~0.7
+  #- read in the stem respiration data, calculate mean rate of ambient data. 
   Rstem.dat <- read.csv("download/WTC_TEMP_CM_WTCFLUX-STEM_20140528_L1_v1.csv")
   Rstem <- mean(Rstem.dat[which(Rstem.dat$T_treatment=="ambient"),"R_stem_nmol"]) # units are nmol CO2 g-1 s-1 at 15 deg C
   
@@ -16,5 +16,7 @@ make_wood_respiration_flux <- function(){
   
   #- So, Rstem and Rbranch are tissue-specific rates of R (nmol CO2 g-1 s-1) at 15 deg C.
   #   These need to be scaled to the correct temperature and multiplied by mass.
+  
+  
 
 }
