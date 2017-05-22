@@ -38,11 +38,17 @@ make_frass_production_flux <- function(){
     outDF$ndays <- rep(between, each = 6)
     outDF$frass_production_flux <- outDF$frass_production/outDF$ndays * g_to_mg
     
+    # add start and end date
+    outDF$End_date <- rep(d[1:length(d)], each=6)
+    
+    outDF$Start_date[1:6] <- NA
+    outDF$Start_date[7:180] <- rep(d[1:(length(d)-1)], each=6)
+    
     #- drop NA rows
     outDF <- outDF[complete.cases(outDF),]
     
     #- format dataframe to return
-    out <- outDF[,c("DATE", "DATE", "RING","frass_production_flux")]
+    out <- outDF[,c("Start_date", "End_date", "RING","frass_production_flux")]
     colnames(out) <- c("Start_date", "End_date", "Ring", "frass_production_flux")
 
     return(out)
