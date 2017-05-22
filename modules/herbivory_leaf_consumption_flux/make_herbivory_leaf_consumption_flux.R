@@ -34,12 +34,6 @@ make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     
     out$frass_production_flux <- NULL
     
-    # add start and end date
-    out$Start_date <- out$Date
-    out$End_date <- out$Date
-    
-    out$Date <- NULL
-    
     outDF <- out[,c("Start_date", "End_date", "Ring", "herbivory_leaf_consumption_flux")]
     
     return(outDF)
