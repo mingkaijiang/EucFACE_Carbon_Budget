@@ -5,3 +5,4 @@
 tokenfile.txt
 *.Rproj
 download/
+*.DS_Store
