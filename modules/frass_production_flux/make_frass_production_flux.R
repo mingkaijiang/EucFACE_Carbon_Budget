@@ -26,6 +26,8 @@ make_frass_production_flux <- function(){
     #- convert to g C m-2 (area of the basket = 0.1979 m2)
     outDF$frass_production <- outDF$CARBON /100.0 * outDF$FRASSFALL / frass_basket_area
     
+    #- drop the last 6 entries as they are NA
+    outDF <- outDF[1:174,]
     #- count number of days between two dates  -- this could be a function itself
     d <- unique(outDF$DATE)
     first <- c()
@@ -40,9 +42,10 @@ make_frass_production_flux <- function(){
     
     # add start and end date
     outDF$End_date <- rep(d[1:length(d)], each=6)
-    
+    end <- length(d)-1
+    outDF$Start_date <- rep(d[1:end], each=6)
+    outDF[7:174, "Start_date"] <- as.Date(rep(d[1:end], each=6))
     outDF$Start_date[1:6] <- NA
-    outDF$Start_date[7:180] <- rep(d[1:(length(d)-1)], each=6)
     
     #- drop NA rows
     outDF <- outDF[complete.cases(outDF),]
