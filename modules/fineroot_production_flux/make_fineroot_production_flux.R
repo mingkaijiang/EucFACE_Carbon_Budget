@@ -10,7 +10,7 @@ make_fineroot_production_flux <- function(c_fraction){
   frp1 <- data.frame(read_excel("download/EucFACE Fine root HIEv.xlsx",sheet=focalsheet))
   frp1$Date <- as.Date(frp1$Date)
   names(frp1)[2] <- "Ring"
-  names(frp1)[7] <- "frp_tot"
+  names(frp1)[8] <- "frp_tot"
   
   #- average across rings and dates
   frp.m <- summaryBy(frp_tot~Date+Ring,data=frp1,FUN=mean,keep.names=T,na.rm=T)
