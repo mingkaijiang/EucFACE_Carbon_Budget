@@ -15,10 +15,10 @@ fineroot_pool <- make_fineroot_pool(c_fraction)
 
 fineroot_production_flux <- make_fineroot_production_flux(c_fraction)
 
-frass_production_flux <- make_frass_production_flux()
+#frass_production_flux <- make_frass_production_flux()
 
 # incomplete   - frass production record does not match lai record
-herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla_variable, frass_production_flux)
+#herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla_variable, frass_production_flux)
 
 lerp_production_flux <- make_lerp_production_flux()
 
@@ -32,4 +32,9 @@ leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
 wood_pool <- make_wood_pool(ring_area,c_fraction)
 wood_production_flux <- make_wood_production_flux(wood_pool)
+
+# Second method for the wood pool.
+# See R_other/compare_wood_pool_methods.R !
+wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
+
 

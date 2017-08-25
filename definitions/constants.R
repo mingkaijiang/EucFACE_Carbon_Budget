@@ -18,3 +18,7 @@ ring_diameter <- 25
 
 # ring ground area m2
 ring_area <- pi * (ring_diameter/2)^2
+
+# Wood density (g cm-3), average of 10 entries in global wood density 
+# database of Zanne et al. (SD = 0.1)
+wood_density <- 0.827

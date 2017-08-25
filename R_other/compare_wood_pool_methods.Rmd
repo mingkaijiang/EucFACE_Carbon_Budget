@@ -1,0 +1,107 @@
+---
+title: "Compare wood pool methods"
+author: "Remko Duursma"
+date: "25 August 2017"
+output: 
+  html_document:
+    theme: flatly
+---
+
+```{r setup, include=FALSE}
+pacman::p_load(ggjoy, ggplot2)
+source("run.R")
+
+# knit this doc into html: first copy it into the root (yes, the only way I got this to work :(,
+# then knit.
+```
+
+The objective here is to compare wood biomass estimates from a) dendrometer DBH readings scaled up with an allometric equation (giving total aboveground biomass), b) Lidar-based total trunk volume (excluding branches, leaves) multiplied with a literature value for wood density. Since b) excludes branches, we'd expect those numbers to be lower at the Ring level. 
+
+After executing `run.R`, we find:
+
+```{r}
+# Totals are much different:
+knitr::kable(subset(wood_pool, Date == "2015-12-14"), caption="Dendrometer / allometry")
+knitr::kable(wood_pool_2, caption="Lidar / wood density")
+```
+
+They're not. Why?
+
+First read and prepare the tree-level data.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+# Curve as defined in make_wood_pool.R
+allom_agb <- function(diamcm) {
+  exp(-2.15 + 2.34*log(diamcm))
+}
+
+# Stem volumes as downloaded for make_wood_pool_2.R
+stemvols <- read.csv(file.path(getToPath(), "FACE_RA_P0037_STEMVOL-LIDAR_20150526_L2.csv")) %>%
+  mutate(stemmass = wood_density * trunk_volume)
+
+# Individual level stem mass from dendrometer
+tree_data <- make_wood_pool(ring_area, c_fraction, return_tree_level=TRUE) %>%
+  filter(Date == "2015-12-14")
+
+```
+
+## Stem mass vs. DBH
+
+The figure below shows the Lidar-based and allometry based stem mass at a given DBH. At first sight this seems like quite a good correspondence.
+
+```{r}
+# Lidar based stem mass vs. DBH
+with(stemvols, plot(dbh_qsm, stemmass))
+
+# Allometry as used in make_wood_pool
+curve(allom_agb(x), add=TRUE)
+
+# Fitted to data
+fitn <- lm(log(stemmass) ~ log(dbh_qsm), data=stemvols)
+p <- coef(fitn)
+curve(exp(p[[1]])*x^p[[2]], add=TRUE, lty=3)
+```
+
+But actually this sort of plot, including a wide range in tree size, hides the fact that the Lidar-based data give higher estimates, as can be seen by plotting the ratio of the curves:
+
+```{r}
+curve( 100 * (exp(p[[1]])*x^p[[2]]) / allom_agb(x), from=5, to=60,
+       ylab="Lidar / Allometry estimate (%)", 
+       xlab="DBH (cm)")
+```
+
+
+## DBH estimates
+
+Stem mass at a given DBH is thus quite different, but what about DBH measurements? We cannot link the individual trees directly (Kashif tried very hard), but we can look at the distribution of DBHs.
+
+```{r}
+treedat1 <- stemvols %>% dplyr::select(Ring, dbh_qsm) %>%
+  rename(DBH = dbh_qsm) %>% mutate(Ring = as.numeric(Ring), Method = "Lidar")
+treedat2 <- tree_data %>% dplyr::select(Ring, diam) %>%
+  rename(DBH =diam) %>% mutate(Method = "Dendrometer")
+treedat <- rbind(treedat1, treedat2)
+
+ggplot(treedat, aes(x=DBH, y=interaction(Ring,Method), fill=Method)) + 
+  geom_joy(stat="binline", bins=20) + 
+  labs(y="Frequency")
+```
+
+Since sample sizes are different we cannot sort and compare DBHs, but we can compare empirical quantiles.
+
+```{r}
+qp <- qqplot(treedat1$DBH, treedat2$DBH, pch=19, col="cornflowerblue",
+       xlab="Lidar DBH (quantiles)",
+       ylab="Dendro. DBH (quantiles)",
+       xlim=c(0,65), ylim=c(0,65))
+abline(0,1)
+```
+
+This shows that the Lidar data includes more small trees (as can be seen in the above plot as well), and has larger DBH for the largest trees (>10 trees with much larger DBH when DBH > 40cm)
+
+
+
+
+
+
+
