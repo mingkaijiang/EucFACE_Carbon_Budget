@@ -7,20 +7,32 @@ make_understory_lai_variable <- function(){
     myDF2 <- read.csv("download/EucFACE_GrassStrip_Harvest_20170523.csv")
     
     # prepare output df
-    out <- matrix(ncol = 8, nrow=length(unique(myDF1$ring)) * length(unique(myDF1$date)))
+    out <- matrix(ncol = 7, nrow=length(unique(myDF1$ring)) * length(unique(myDF1$date)))
     out <- as.data.frame(out)
-    colnames(out) <- c("Ring", "Date", "AGB", "SLA", "LAI", "RWC", "AGB_DW", "Date_fac")
+    colnames(out) <- c("Ring", "Date", "AGB", "SLA", "LAI", "RWC", "Date_fac")
     out$Ring <- rep(1:6, each=length(unique(myDF1$date)))
     out$Date <- rep(unique(myDF1$date))
     out$Date_fac <- as.numeric(out$Date)    
     
     myDF1$Date_fac <- as.numeric(myDF1$date)
     
+    # prepare SLA
+    myDF2$LAI <- myDF2$LiveSubsampleSLA * (myDF2$LiveBiomassDW - 7.2) * 0.0001 / 0.1
+    
+    # plot per ring LAI based on harvest data
+    #test <- rep(1:6)
+    #test <- data.frame(test, NA)
+    #colnames(test) <- c("Ring", "LAI")
+    #for (i in 1:6){
+    #    test[test$Ring == i, "LAI"] <- mean(myDF2[myDF2$Ring == i, "LAI"])
+    #}
+    #plot(test)
+    
     # allocate AGB onto each data point
     for (i in unique(out$Ring)) {
         # ring specific SLA
-        out[out$Ring == i, "SLA"] <- mean(myDF2[myDF2$Ring == i, "LiveSubsampleSLA"])
-        
+        out[out$Ring == i, "SLA"] <- mean(myDF2[myDF2$Ring == i, "LiveSubsampleSLA"]) 
+
         # ring specific RWC
         out[out$Ring == i, "RWC"] <- mean(myDF2[myDF2$Ring == i, "LiveSubSampleRWC"])
         
@@ -32,18 +44,19 @@ make_understory_lai_variable <- function(){
     }
     
     # dry weight
-    out$AGB_DW <- out$AGB / (1 + out$RWC) 
+    #out$AGB_DW <- out$AGB / (1 + out$RWC) 
+    #out$LAI <- out$AGB_DW * out$SLA * 0.0001
     
     # lai
-    out$LAI <- out$AGB_DW * out$SLA * 0.0001
+    out$LAI <- out$AGB * out$SLA * 0.0001
     
-    #test <- rep(1:6)
-    #test <- data.frame(test, NA)
-    #colnames(test) <- c("Ring", "LAI")
-    #for (i in 1:6){
-    #    test[test$Ring == i, "LAI"] <- mean(out[out$Ring == i, "LAI"])
-    #}
-    #lot(test)
+    test <- rep(1:6)
+    test <- data.frame(test, NA)
+    colnames(test) <- c("Ring", "LAI")
+    for (i in 1:6){
+        test[test$Ring == i, "LAI"] <- mean(out[out$Ring == i, "LAI"])
+    }
+    plot(test)
     
     # clear dataframe
     out$Date_fac <- NULL

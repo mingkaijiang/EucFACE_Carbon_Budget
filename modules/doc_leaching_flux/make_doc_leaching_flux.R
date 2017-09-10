@@ -6,6 +6,7 @@ make_doc_leaching_flux <- function(){
     ### immediately above the impermeable layer (~ 35 - 75 cm)
     ### Assumes all DOC reaching this depth are all lost from the system
     ### May add a modeling component later, because the data were collected when soils were wet!
+    ### Needs a drainage number to plug in!!!!
     
     #- download the data. 
     download_doc_data()

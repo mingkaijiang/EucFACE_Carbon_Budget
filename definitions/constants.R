@@ -4,6 +4,10 @@
 # Biomass is 50% carbon
 c_fraction <- 0.5
 
+# need to add root specific c fraction (from Juan)
+# for now, use c_fraction value!!!
+c_fraction_fr <- 0.5
+
 # g to mg
 g_to_mg <- 1000.0
 
