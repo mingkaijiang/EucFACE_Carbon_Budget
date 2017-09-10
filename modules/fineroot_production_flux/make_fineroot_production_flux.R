@@ -1,5 +1,5 @@
 #- Make the fine production flux
-make_fineroot_production_flux <- function(c_fraction){
+make_fineroot_production_flux <- function(){
   
     #- download the data
     download_fineroot_data()
