@@ -1,13 +1,11 @@
 #- Make the lerp C prodution flux
 make_lerp_production_flux <- function(){
     
-    ### Information to know: the life cycle of lerp is ~ 1 month,
-    ### and the frass baskets were emptied every 1 month,
-    ### So this flux calculated from frass basket is the biomass as well.
-    ### Except for July, the life cycle is a bit longer. 
-    ### Data were collected on a monthly basis, but the samplings were conducted quarterly.
-    ###
-    
+    ### The life cycle of lerp is ~ 1 month, and the frass baskets were emptied every 1 month,
+    ### So this flux calculated from frass basket measurements is the lerp biomass as well,
+    ### Exception: the life cycle of lerp is a bit longer in July. 
+    ### Data were collected on a monthly basis, but the sample processings were conducted quarterly.
+
     #- download the data. 
     download_lerp_data()
     
@@ -30,12 +28,11 @@ make_lerp_production_flux <- function(){
     #- merge by dates
     outDF3 <- merge(outDF1, outDF2, by=c("date","ring", "species", "trap"), all.x=TRUE, all.y=FALSE)
     
-    #- multiply by carbon content 
-    #- 0.78 as suggested by Andrew
-    #- need a literature value in the future
+    #- multiply by carbon content (0.78 estimated by Andrew)
     #- unit: mg C m-2 d-1
-    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * 0.35 / frass_basket_area / 30.0
-    
+    #- question: area of the trap needed or not?
+    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * c_fraction_lp / frass_basket_area / ndays_in_month
+        
     #- drop NA rows
     outDF3 <- outDF3[complete.cases(outDF3),]
     
@@ -45,14 +42,17 @@ make_lerp_production_flux <- function(){
     #- average across all traps for each ring and date
     outDF5 <- summaryBy(lerp_production_flux ~ ring+date,data=outDF4,FUN=mean,keep.names=T)
     
-    #- format dataframe to return
-    out <- outDF5[,c("date","ring","lerp_production_flux")]
-    colnames(out) <- c("Date", "Ring", "lerp_production_flux")
+    out <- outDF5
     
     # Fix Date format:
     # Assume that e.g. 'Jan-13' means the last day of that month (2013-01-31).
-    out$Date <- as.Date(paste0("1-", out$Date), format = "%d-%b-%y") + months(1) - days(1)
-
+    out$End_date <- as.Date(paste0("1-", out$date), format = "%d-%b-%y") + months(1) - days(1)
+    out$Start_date <- as.Date(paste0("1-", out$date), format = "%d-%b-%y") 
+    
+    #- format dataframe to return
+    out <- out[,c("Start_date", "End_date","ring","lerp_production_flux")]
+    colnames(out) <- c("Start_date", "End_date", "Ring", "lerp_production_flux")
+    
     return(out)
 }
 

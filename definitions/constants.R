@@ -1,12 +1,15 @@
-# Definitions of constants
+### Definitions of global constants
 
 
 # Biomass is 50% carbon
 c_fraction <- 0.5
 
-# need to add root specific c fraction (from Juan)
+# need to add fine root specific c fraction (from Juan)
 # for now, use c_fraction value!!!
 c_fraction_fr <- 0.5
+
+# lerp C content (from Andrew)
+c_fraction_lp <- 0.78
 
 # g to mg
 g_to_mg <- 1000.0
@@ -26,3 +29,6 @@ ring_area <- pi * (ring_diameter/2)^2
 # Wood density (g cm-3), average of 10 entries in global wood density 
 # database of Zanne et al. (SD = 0.1)
 wood_density <- 0.827
+
+# number of days in a month
+ndays_in_month <- 30.0
