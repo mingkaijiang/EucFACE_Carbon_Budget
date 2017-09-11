@@ -19,7 +19,17 @@ make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     
     # derive herbivory consumption of leaf mass based on leaf area lost and sla
     inDF1$leaf_mass_consumed_mg <- inDF1$leaf_area_consumed_cm2 / sla_avg * g_to_mg
-
+    
+    # visually assess co2-based relationships
+    # with(inDF1[inDF1$co2== 400, ], plot(leaf_mass_consumed_mg~weight_of_frass_mg, col="red"))
+    # with(inDF1[inDF1$co2== 640, ], points(leaf_mass_consumed_mg~weight_of_frass_mg, col="blue"))
+    
+    # visually examine tree species based relationships 
+    # require(ggplot2)
+    # ggplot(inDF1, aes(weight_of_frass_mg, leaf_mass_consumed_mg, colour=tree_species)) + 
+    #    geom_point()
+    
+    
     # obtain leaf consumption ~ frass weight relationship
     # currently assuming one relationship for all tree species, all insect species and all co2 levels
     lrtn <- lm(inDF1$leaf_mass_consumed_mg~inDF1$weight_of_frass_mg)
@@ -35,6 +45,8 @@ make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     out$frass_production_flux <- NULL
     
     outDF <- out[,c("Start_date", "End_date", "Ring", "herbivory_leaf_consumption_flux")]
+    
+    # question: would this consumed leaf C be added on top of the leaf pool?
     
     return(outDF)
     

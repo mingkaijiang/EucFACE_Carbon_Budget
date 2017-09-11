@@ -1,5 +1,9 @@
 #- Make the fine production flux
 make_fineroot_production_flux <- function(){
+    
+    # returns fine root production flux (mg m-2 d-1)
+    # 5 time points, possibly measured at quarterly timesteps
+    # start and end dates not included yet
   
     #- download the data
     download_fineroot_data()
