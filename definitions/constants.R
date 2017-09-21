@@ -14,8 +14,14 @@ c_fraction_lp <- 0.78
 # g to mg
 g_to_mg <- 1000.0
 
+# g to kg
+g_to_kg <- 0.001
+
 # cm2 to m2
 cm2_to_m2 <- 0.0001
+
+# cm3 to m3
+cm3_to_m3 <- 1e-6
 
 # litter basket area m-2
 frass_basket_area <- 0.1979

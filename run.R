@@ -40,3 +40,4 @@ understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_poo
 #understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
 #                                                          understorey_sla_variable)
 
+soil_bulk_density_variable <- make_soil_bulk_density()
