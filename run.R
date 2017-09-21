@@ -34,4 +34,9 @@ wood_production_flux <- make_wood_production_flux(wood_pool)
 # See R_other/compare_wood_pool_methods.R !
 wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
 
+## understorey stuffs
+understorey_sla_variable <- make_understorey_sla_variable()
+understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_pool()
+#understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
+#                                                          understorey_sla_variable)
 

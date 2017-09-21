@@ -32,3 +32,6 @@ wood_density <- 0.827
 
 # number of days in a month
 ndays_in_month <- 30.0
+
+# understorey biomass harvest strip area
+strip_area <- 0.1

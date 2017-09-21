@@ -25,7 +25,7 @@ make_doc_leaching_flux <- function(){
     outDF <- subset(outDF, depth == "deep")
     
     # doc leaching term converted from mg/l to mg m-2 d-1
-    outDF$doc_leaching_flux <- outDF$organic_carbon * 0.02 # leaching estimate: 20 ml m-2 d-1
+    outDF$doc_leaching_flux <- outDF$organic_carbon * 0.02 # leaching estimate is simplified! 20 ml m-2 d-1
     
     #- drop NA rows
     outDF <- outDF[complete.cases(outDF),]
