@@ -70,7 +70,7 @@ make_EucFACE_table <- function() {
     
     # Rherbivore
     inout$value[inout$term == "Rherbivore"] <- mean(herbivory_leaf_consumption_flux$herbivory_leaf_consumption_flux) - 
-                                               mean(frass_production_flux$frass_production_flux)
+                                               mean(frass_production_flux$frass_production_flux) * conv
     inout$notes[inout$term == "Rherbivore"] <- "Leaf consumption minus frass production"
     
     # Rgrowth
@@ -78,11 +78,11 @@ make_EucFACE_table <- function() {
     inout$notes[inout$term == "Rgrowth"] <- "Calculated by multiplying NPP by 0.3"
     
     # DOC
-    inout$value[inout$term == "DOC loss"] <- mean(doc_leaching_flux$doc_leaching_flux)
+    inout$value[inout$term == "DOC loss"] <- mean(doc_leaching_flux$doc_leaching_flux) * conv
     inout$notes[inout$term == "DOC loss"] <- "Deep soil layer depth"
     
     #CH4
-    inout$value[inout$term == "CH4 uptake"] <- mean(methane_flux$methane_flux)
+    inout$value[inout$term == "CH4 uptake"] <- mean(methane_flux$methane_flux) * conv
     
     ##############################################
     #### Method 2
