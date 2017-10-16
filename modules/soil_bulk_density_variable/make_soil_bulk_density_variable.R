@@ -25,6 +25,13 @@ make_soil_bulk_density <- function() {
     # change factor names to match with soil factor names
     df.out$Depth <- plyr::revalue(df.out$Depth, c("0-10"="0-10cm", " 10-20"="10-20cm", "20-30"="20-30cm"))
     
+    # obtain ring averaged soil bulk density (0 - 30 cm only)
+    df.out <- subset(df.out, Depth != "30-42")
+    df.out <- subset(df.out, Depth != "30-44")
+    df.out <- subset(df.out, Depth != "30-55")
+    df.out <- subset(df.out, Depth != "30-60")
+    df.out <- subset(df.out, Depth != "60-88")
+    
     return(df.out)
     
 }

@@ -89,15 +89,21 @@ make_EucFACE_table <- function() {
     
     ### Understorey aboveground
     pool$value[pool$term == "Understorey above-ground"] <- mean(understorey_aboveground_biomass_pool$Total_g_C_m2)
-    pool$value[pool$term == "Understorey above-ground"] <- "Based on harvesting data"
+    pool$notes[pool$term == "Understorey above-ground"] <- "Based on harvesting data"
     
     ### Fine root
     pool$value[pool$term == "Fine Root"] <- mean(fineroot_pool$fineroot_pool)
     
     ### Soil C
     pool$value[pool$term == "Soil C"] <- mean(soil_carbon_pool$soil_carbon_pool)
+    pool$notes[pool$term == "Soil C"] <- "For all depths"
     
-    
+    ### microbial pool
+    pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_pool$Cmic_g_m2)
+    pool$notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
+        
+        
+        
     ##### output tables
     return(list(inout = data.table(inout), 
                 npp = data.table(npp), 

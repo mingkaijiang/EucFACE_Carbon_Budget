@@ -51,6 +51,8 @@ understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_poo
 
 soil_bulk_density_variable <- make_soil_bulk_density()
 
+microbial_pool <- make_microbial_pool(soil_bulk_density_variable)
+
 
 ###### ----------Make summary tables-------------- ######
 #### read in functions
