@@ -53,6 +53,9 @@ soil_bulk_density_variable <- make_soil_bulk_density()
 
 microbial_pool <- make_microbial_pool(soil_bulk_density_variable)
 
+# still need to correct for unit (currently in ng of CH4-C per cm3)
+methane_flux <- make_methane_flux()
+
 
 ###### ----------Make summary tables-------------- ######
 #### read in functions
@@ -60,3 +63,12 @@ source("R/make_table.R")
 
 ### Generate overall summary table (ignoring rings and time)
 overall_tables <- make_EucFACE_table()
+
+
+### Generate ring-specific table (ignoring time variable)
+
+
+
+
+
+###### ---------------- End -------------------- ######

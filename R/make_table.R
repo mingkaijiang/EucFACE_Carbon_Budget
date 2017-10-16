@@ -68,6 +68,9 @@ make_EucFACE_table <- function() {
     inout$value[inout$term == "DOC loss"] <- mean(doc_leaching_flux$doc_leaching_flux)
     inout$notes[inout$term == "DOC loss"] <- "Deep soil layer depth"
     
+    #CH4
+    inout$value[inout$term == "CH4 uptake"] <- mean(methane_flux$methane_flux)
+    
     ##############################################
     #### Method 2
     #### Standing C pools
