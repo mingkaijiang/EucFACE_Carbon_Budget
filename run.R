@@ -56,6 +56,10 @@ microbial_pool <- make_microbial_pool(soil_bulk_density_variable)
 # still need to correct for unit (currently in ng of CH4-C per cm3)
 methane_flux <- make_methane_flux()
 
+root_respiration_flux <- make_root_respiration_flux(fineroot_pool)
+
+heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
+                                                                      root_respiration_flux)
 
 ###### ----------Make summary tables-------------- ######
 #### read in functions

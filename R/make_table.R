@@ -16,20 +16,33 @@ make_EucFACE_table <- function() {
     npp$value <- rep(NA, length(npp$term))
     npp$notes <- rep("", length(npp$term))
     
+    ### leaf NPP
     # leaflitter_flux$twig_flux[leaflitter_flux$twig_flux > 5000] <- 0   # v high twig fluxes - maybe leave in? 
     leaflitter_flux$total <- with(leaflitter_flux, twig_flux + bark_flux + seed_flux + leaf_flux)
     leaflitter_flux$days <- as.numeric(with(leaflitter_flux,End_date - Start_date))
     litter_prod <- with(leaflitter_flux,sum(total*days)/sum(days)) * conv 
     npp$value[npp$term == "Leaf NPP"] <- litter_prod
     npp$notes[npp$term == "Leaf NPP"] <- "Calculated from leaf, twig, bark and seed litterfall"
+    
+    ### stem NPP
     stem_prod <- mean(wood_production_flux$wood_production_flux) * conv
     npp$value[npp$term == "Stem NPP"] <- stem_prod
     npp$notes[npp$term == "Stem NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
+    
+    ### root NPP
     froot_prod <- mean(fineroot_production_flux$fineroot_production_flux) * conv
     npp$value[npp$term == "Fine Root NPP"] <- froot_prod
     npp$notes[npp$term == "Fine Root NPP"] <- "One year's data only"
+    
+    ### frass production
     npp$value[npp$term == "Frass production"] <- mean(frass_production_flux$frass_production_flux) * conv
     
+    ### Rh
+    npp$value[npp$term == "R hetero"] <- mean(heterotrophic_respiration_flux$heterotrophic_respiration_flux) * conv
+    npp$notes[npp$term == "R hetero"] <- "Temperature-dependent function derived from WTC3"
+        
+        
+        
     ##############################################
     #### Method 1
     #### In / out fluxes (Method 1 of getting NEP)
