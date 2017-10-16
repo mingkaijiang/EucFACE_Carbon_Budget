@@ -1,6 +1,15 @@
+#### Main script to compute EucFACE C balance fluxes and variables
 
+
+###### ---------------- setting up runs -------------------- ######
+#### clear wk space
+rm(list=ls(all=TRUE))
+
+#### Source functions and packages
 source("R/prepare.R")
 
+
+###### ----------Compute fluxes, variables, and pools-------------- ######
 lai_variable <- make_lai_variable()
 
 sla_variable <- make_sla_variable()
@@ -41,3 +50,11 @@ understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_poo
 #                                                          understorey_sla_variable)
 
 soil_bulk_density_variable <- make_soil_bulk_density()
+
+
+###### ----------Make summary tables-------------- ######
+#### read in functions
+source("R/make_table.R")
+
+### Generate overall summary table (ignoring rings and time)
+overall_tables <- make_EucFACE_table()

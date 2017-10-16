@@ -1,4 +1,4 @@
-### Definitions of global constants
+#### Definitions of global constants
 
 
 # Biomass is 50% carbon
@@ -41,3 +41,9 @@ ndays_in_month <- 30.0
 
 # understorey biomass harvest strip area
 strip_area <- 0.1
+
+# convert production flux from mg m-2 d-1 to g m-2 yr-1
+conv <- 365 / 1000  
+
+# ccost growth respiration (guess value)
+ccost <- 0.3
