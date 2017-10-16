@@ -32,21 +32,22 @@ make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     
     # obtain leaf consumption ~ frass weight relationship
     # currently assuming one relationship for all tree species, all insect species and all co2 levels
-    lrtn <- lm(inDF1$leaf_mass_consumed_mg~inDF1$weight_of_frass_mg)
+    # force intercept to zero
+    lrtn <- lm(inDF1$leaf_mass_consumed_mg~-1+inDF1$weight_of_frass_mg)
     
     # extract coefficients 
-    int <- coefficients(lrtn)[[1]]
-    slp <- coefficients(lrtn)[[2]]
-    
+    slp <- coefficients(lrtn)[[1]]
+
     # generate leaf consumption mass df
     out <- frass_flux
-    out$herbivory_leaf_consumption_flux <- out$frass_production_flux * slp + int
+    out$herbivory_leaf_consumption_flux <- out$frass_production_flux * slp
     
     out$frass_production_flux <- NULL
     
     outDF <- out[,c("Start_date", "End_date", "Ring", "herbivory_leaf_consumption_flux")]
     
     # question: would this consumed leaf C be added on top of the leaf pool?
+    # answer: yes. 
     
     return(outDF)
     
