@@ -6,6 +6,7 @@ make_doc_leaching_flux <- function(){
     ### immediately above the impermeable layer (~ 35 - 75 cm)
     ### Assumes all DOC reaching this depth are all lost from the system
     ### May add a modeling component later, because the data were collected when soils were wet!
+    ### Needs a drainage number to plug in!!!!
     
     #- download the data. 
     download_doc_data()
@@ -16,36 +17,26 @@ make_doc_leaching_flux <- function(){
     
     inDF$date <- as.Date(inDF$date)
 
-
     #- average across rings, dates and depths
     outDF <- summaryBy(organic_carbon~ring+date+depth,data=inDF,FUN=mean,keep.names=T, na.rm=T)
     
     # only keep the deep depth data
+    # Shun's paper suggests DOC at deep layer is constant over time
     outDF <- subset(outDF, depth == "deep")
     
-    #- count number of days between two dates  -- this could be a function itself
-    #d <- unique(outDF$date)
-    #first <- c()
-    #for (i in seq_along(d))
-    #    first[i] <- d[i] - d[1]
-    
-    #between <- c(0, diff(d))
-    
-    #- convert into ml l-1 d-1
-    #outDF$ndays <- rep(between, each = 6)  # the length is unequal for rings
-    #outDF$doc_leaching_flux <- outDF$organic_carbon/outDF$ndays # a unit conversion term is needed here  
-    
-    # doc leaching term as per day
-    outDF$doc_leaching_flux <- outDF$organic_carbon   # Shun's paper suggests DOC at deep layer is constant over time
-  
-    # need to add soil water data from Neutron Probe datasets and soil bulk density
+    # doc leaching term converted from mg/l to mg m-2 d-1
+    outDF$doc_leaching_flux <- outDF$organic_carbon * 0.02 # leaching estimate is simplified! 20 ml m-2 d-1
     
     #- drop NA rows
     outDF <- outDF[complete.cases(outDF),]
     
+    #- add start date, currently only use the end date for represent start date
+    #- because leaching should be precipitation-dependent
+    outDF$Start_date <- outDF$date
+    
     #- format dataframe to return
-    out <- outDF[,c("date","ring","doc_leaching_flux")]
-    colnames(out) <- c("Date", "Ring", "doc_leaching_flux")
+    out <- outDF[,c("Start_date", "date","ring","doc_leaching_flux")]
+    colnames(out) <- c("Start_date", "End_date", "Ring", "doc_leaching_flux")
 
     return(out)
 }

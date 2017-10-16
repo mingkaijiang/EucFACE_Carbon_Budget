@@ -1,6 +1,14 @@
 #- Make the frass C flux
 make_frass_production_flux <- function(){
     
+    # Fo use frassfall data and frass carbon content data to obtain frass production flux.
+    # Frassfall data has longer temporal coverage,
+    # frass carbon content is quite constant over time and across rings.
+    # Currently only time points that have both frassfall and frass C data are included.
+    # May need to consider just using one frass C content coefficient across time,
+    # so that more temporal coverage can be provided. 
+    # returns: frass production per day (mg/d), averaged across start and date dates
+    
     #- download the data. 
     download_frass_data()
     
@@ -28,23 +36,19 @@ make_frass_production_flux <- function(){
     
     #- drop the last 6 entries as they are NA
     outDF <- outDF[1:174,]
-    #- count number of days between two dates  -- this could be a function itself
-    d <- unique(outDF$DATE)
-    first <- c()
-    for (i in seq_along(d))
-        first[i] <- d[i] - d[1]
     
-    between <- c(0, diff(d))
+    #- count number of days between two dates  
+    d <- unique(outDF$DATE)
+    b <- count_ndays(d)
     
     #- convert into mg m-2 d-1
-    outDF$ndays <- rep(between, each = 6)
+    outDF$ndays <- rep(b, each = 6)
     outDF$frass_production_flux <- outDF$frass_production/outDF$ndays * g_to_mg
     
     # add start and end date
     outDF$End_date <- rep(d[1:length(d)], each=6)
-    end <- length(d)-1
-    outDF$Start_date <- rep(d[1:end], each=6)
-    outDF[7:174, "Start_date"] <- as.Date(rep(d[1:end], each=6))
+    outDF$Start_date <- outDF$End_date
+    outDF[7:174, "Start_date"] <- rep(d[1:(length(d)-1)], each=6)
     outDF$Start_date[1:6] <- NA
     
     #- drop NA rows
@@ -55,4 +59,23 @@ make_frass_production_flux <- function(){
     colnames(out) <- c("Start_date", "End_date", "Ring", "frass_production_flux")
 
     return(out)
+}
+
+# function to count number of days in between the dates
+count_ndays <- function(d) {
+    
+    # d: list of dates in the input dataframe
+    # f: number of days difference from the first date
+    # b: number of days in between the dates
+    
+    f <- c()
+    
+    for (i in seq_along(d))
+    {
+        f[i] <- d[i] - d[1]
+    }
+    
+    b <- c(0, diff(d))
+    
+    return(b)
 }

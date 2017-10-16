@@ -6,14 +6,14 @@ allom_agb <- function(diamcm) {
 }
 
 #- Make the live wood C pool
-make_wood_pool <- function(ring_area, c_fraction){
+make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
   
   #- download the data from HIEv
   download_diameter_data()
   
   #- read in 2012-14 data sets
-  f13 <- read.csv("download/FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv")
-  f14 <- read.csv("download/FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv")
+  f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
+  f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
   
   ########################
   # Read in additional files that I used when doing the data analysis
@@ -59,6 +59,8 @@ make_wood_pool <- function(ring_area, c_fraction){
              as.Date("2014-12-23"),as.Date("2015-12-14"))
   data <- long[long$Date %in% dates,]
 
+  if(return_tree_level)return(data)
+  
   #- sum across rings and dates
   data.m <- summaryBy(biom~Date+Ring,data=data,FUN=sum,keep.names=T)
   
