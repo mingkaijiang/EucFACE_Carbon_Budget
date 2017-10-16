@@ -6,4 +6,4 @@ tokenfile.txt
 *.Rproj
 download/
 *.DS_Store
-modules/*.DS_Store
+*.csv
