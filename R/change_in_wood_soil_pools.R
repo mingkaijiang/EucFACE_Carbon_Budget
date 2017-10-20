@@ -57,6 +57,19 @@ plot_change_in_wood_soil_microbe_pools <- function(soilDF, woodDF, micrDF, destD
     ring <- c(1:6)
     micr.delta.DF <- data.frame(ring, micr.delta, c("eCO2", "aCO2", "aCO2", "eCO2", "eCO2", "aCO2"))
     colnames(micr.delta.DF) <- c("Ring", "change_in_micr", "Treatment")
+    
+    ### calculate the relative change in each pool
+    for (i in ring) {
+        soil.delta.DF[soil.delta.DF$Ring == i, "baseline_soil"] <- soil.sub.DF[soil.sub.DF$Ring == i & soil.sub.DF$Date == soil.s.date, "soil_carbon_pool"]
+        wood.delta.DF[wood.delta.DF$Ring == i, "baseline_wood"] <- wood.sub.DF[wood.sub.DF$Ring == i & wood.sub.DF$Date == wood.s.date, "wood_pool"]
+        micr.delta.DF[micr.delta.DF$Ring == i, "baseline_micr"] <- micr.sub.DF[micr.sub.DF$ring == i & micr.sub.DF$Date == micr.s.date, "Cmic_g_m2"]
+    }
+    
+    soil.delta.DF$percent_change <- soil.delta.DF$change_in_soil / soil.delta.DF$baseline_soil * 100
+    wood.delta.DF$percent_change <- wood.delta.DF$change_in_wood / wood.delta.DF$baseline_wood * 100
+    micr.delta.DF$percent_change <- micr.delta.DF$change_in_micr / micr.delta.DF$baseline_micr * 100
+    
+    
 
     ### Plotting
     outName <- paste0(destDir, "/Soil_wood_microbe_pool_comparison.pdf")
@@ -182,6 +195,24 @@ plot_change_in_wood_soil_microbe_pools <- function(soilDF, woodDF, micrDF, destD
         ggtitle("Change in Microbial C by Ring")
     
     print(p6)
+    
+    ## the relative change in soil pools
+    stripchart(percent_change~Treatment, data=soil.delta.DF, vertical=T, 
+               method="stack", pch=20, col=c("gold", "darkgreen"), cex=3,
+               ylab = "Percent Change [%]", main = "Percent Change in Soil C by Treatment", xlab = "Treatment")
+    legend("topright", c("aCO2", "eCO2"), fill=c("gold", "darkgreen"))
+    
+    ## the relative change in wood pools
+    stripchart(percent_change~Treatment, data=wood.delta.DF, vertical=T, 
+               method="stack", pch=20, col=c("gold", "darkgreen"), cex=3,
+               ylab = "Percent Change [%]", main = "Percent Change in Wood C by Treatment", xlab = "Treatment")
+    legend("topright", c("aCO2", "eCO2"), fill=c("gold", "darkgreen"))
+    
+    ## the relative change in microbial pools
+    stripchart(percent_change~Treatment, data=micr.delta.DF, vertical=T, 
+               method="stack", pch=20, col=c("gold", "darkgreen"), cex=3,
+               ylab = "Percent Change [%]", main = "Percent Change in Microbial C by Treatment", xlab = "Treatment")
+    legend("topright", c("aCO2", "eCO2"), fill=c("gold", "darkgreen"))
     
     dev.off()    
     
