@@ -62,17 +62,19 @@ heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respi
                                                                       root_respiration_flux)
 
 ###### ----------Make summary tables-------------- ######
-#### read in functions
-source("R/make_table.R")
-
 ### Generate overall summary table (ignoring rings and time)
+source("R/make_table.R")
 overall_tables <- make_EucFACE_table()
 
-
 ### Generate ring-specific table (ignoring time variable)
+source("R/make_table_by_ring.R")
+tables_by_ring <- make_table_by_ring()
 
-
-
+###### ----------Make comparison plots, etc. -------------- ######
+source("R/change_in_wood_soil_pools.R")
+plot_change_in_wood_soil_pools(soil_carbon_pool,
+                               wood_pool,
+                               destDir = "R_other")
 
 
 ###### ---------------- End -------------------- ######

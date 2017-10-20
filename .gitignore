@@ -7,3 +7,4 @@ tokenfile.txt
 download/
 *.DS_Store
 download/*.csv
+*.pdf
