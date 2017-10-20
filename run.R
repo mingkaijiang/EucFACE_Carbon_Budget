@@ -72,9 +72,10 @@ tables_by_ring <- make_table_by_ring()
 
 ###### ----------Make comparison plots, etc. -------------- ######
 source("R/change_in_wood_soil_pools.R")
-plot_change_in_wood_soil_pools(soil_carbon_pool,
-                               wood_pool,
-                               destDir = "R_other")
+plot_change_in_wood_soil_microbe_pools(soil_carbon_pool,
+                                       wood_pool,
+                                       microbial_pool,
+                                       destDir = "R_other")
 
 
 ###### ---------------- End -------------------- ######
