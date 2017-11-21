@@ -70,6 +70,13 @@ overall_tables <- make_EucFACE_table()
 source("R/make_table_by_ring.R")
 tables_by_ring <- make_table_by_ring()
 
+### Generate per year table (ignore ring variability)
+source("R/make_table_by_year.R")
+tables_by_year <- make_EucFACE_table_by_year()
+
+
+
+
 ###### ----------Make comparison plots, etc. -------------- ######
 source("R/change_in_wood_soil_pools.R")
 plot_change_in_wood_soil_microbe_pools(soil_carbon_pool,
