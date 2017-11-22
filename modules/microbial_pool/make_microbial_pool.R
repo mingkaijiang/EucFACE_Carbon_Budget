@@ -26,6 +26,8 @@ make_microbial_pool <- function(bk_density){
     
     df.out <- df.out[complete.cases(df.out),]
     
+    df.out$date <- as.Date(as.character(df.out$date), format="%d/%m/%Y")
+    
     return(df.out)
     
 }

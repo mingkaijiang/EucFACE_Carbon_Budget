@@ -9,115 +9,185 @@ make_EucFACE_table_by_year <- function() {
     #### NPP fluxes (Method 3 of getting NEP)
     ##############################################
     #### Define dataframe
-    term <- c("Leaf NPP", "Stem NPP", "Understorey NPP",
-              "Fine Root NPP", "Frass production", "R hetero", "Mycorrhizal production",
-              "Flower production")
+    term <- c("LeafNPP", "StemNPP", "UnderstoreyNPP",
+              "FineRootNPP", "FrassProduction", "RHetero", "MycorrhizalProduction",
+              "FlowerProduction")
     
-    npp <- data.frame(term, NA, NA, NA, NA, NA, NA)
-    names(npp) <- c("term", paste0("yr", yr.list))
-    npp$notes <- rep("", length(npp$term))
+    npp <- matrix(nrow=length(yr.list)+1, ncol=length(term)+1)
+    colnames(npp) <- c("year", term)
+    npp <- as.data.frame(npp)
+    npp$year <- c(yr.list, "notes")
+    
     
     ### leaf NPP
-    # leaflitter_flux$twig_flux[leaflitter_flux$twig_flux > 5000] <- 0   # v high twig fluxes - maybe leave in? 
     leaflitter_flux$total <- with(leaflitter_flux, twig_flux + bark_flux + seed_flux + leaf_flux)
     leaflitter_flux$days <- as.numeric(with(leaflitter_flux,End_date - Start_date))
-    litter_prod <- with(leaflitter_flux,sum(total*days)/sum(days)) * conv 
-    npp$value[npp$term == "Leaf NPP"] <- litter_prod
-    npp$notes[npp$term == "Leaf NPP"] <- "Calculated from leaf, twig, bark and seed litterfall"
+    leaflitter_flux$year <- year(leaflitter_flux$Date)
+    
+    for (i in yr.list) {
+        litter_prod <- with(leaflitter_flux[leaflitter_flux$year == i, ],sum(total*days, na.rm=T)/sum(days, na.rm=T)) * conv 
+        npp$LeafNPP[npp$year == i] <- round(litter_prod,2)
+
+    }
+    npp$LeafNPP[npp$year == "notes"] <- "Calculated from leaf, twig, bark and seed litterfall"
     
     ### stem NPP
-    stem_prod <- mean(wood_production_flux$wood_production_flux) * conv
-    npp$value[npp$term == "Stem NPP"] <- stem_prod
-    npp$notes[npp$term == "Stem NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
+    wood_production_flux$year <- year(wood_production_flux$Start_date)
+    for(i in yr.list) {
+        stem_prod <- mean(wood_production_flux[wood_production_flux$year == i, "wood_production_flux"], na.rm=T) * conv
+        npp$StemNPP[npp$year == i] <- round(stem_prod,2)
+    }
+    npp$StemNPP[npp$year == "notes"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
     ### root NPP
-    froot_prod <- mean(fineroot_production_flux$fineroot_production_flux) * conv
-    npp$value[npp$term == "Fine Root NPP"] <- froot_prod
-    npp$notes[npp$term == "Fine Root NPP"] <- "One year's data only"
-    
+    fineroot_production_flux$year <- year(fineroot_production_flux$Date)
+    for(i in yr.list) {
+        froot_prod <- mean(fineroot_production_flux[fineroot_production_flux$year == i, "fineroot_production_flux"]) * conv
+        npp$FineRootNPP[npp$year == i] <- round(froot_prod,2)
+    }
+    npp$FineRootNPP[npp$year == "notes"] <- "One year's data only"
+
     ### frass production
-    npp$value[npp$term == "Frass production"] <- mean(frass_production_flux$frass_production_flux) * conv
-    
+    frass_production_flux$year <- year(frass_production_flux$Start_date)
+    for(i in yr.list) {
+        npp$FrassProduction[npp$year == i] <- mean(frass_production_flux[frass_production_flux$year == i, "frass_production_flux"]) * conv
+        
+    }
+
     ### Rh
-    npp$value[npp$term == "R hetero"] <- mean(heterotrophic_respiration_flux$heterotrophic_respiration_flux) * conv
-    npp$notes[npp$term == "R hetero"] <- "Temperature-dependent function derived from WTC3"
+    heterotrophic_respiration_flux$year <- year(heterotrophic_respiration_flux$Start_date)
+    for(i in yr.list) {
+        npp$RHetero[npp$year == i] <- round(mean(heterotrophic_respiration_flux[heterotrophic_respiration_flux$year == i, "heterotrophic_respiration_flux"]) * conv,2)
         
-        
+    }
+    npp$RHetero[npp$year == "notes"] <- "Temperature-dependent function derived from WTC3"
+
+    #npp <- data.frame(lapply(npp, function(x) {
+    #    gsub("NaN", "NA", x)
+    #}))
+    
         
     ##############################################
     #### Method 1
     #### In / out fluxes (Method 1 of getting NEP)
     ##############################################
     ### define terms and dataframe
-    term <- c("GPP overstorey", "GPP understorey", "CH4 uptake",
-              "Ra leaf", "Ra stem", "Ra understorey", "VOC",
-              "Rherbivore", "DOC loss", "Rsoil", "Rgrowth")
-    inout <- data.frame(term)
-    inout$value <- rep(NA, length(inout$term))
-    inout$notes <- rep("", length(inout$term))
+    term <- c("GPPoverstorey", "GPPunderstorey", "CH4uptake",
+              "RaLeaf", "RaStem", "RaUnderstorey", "VOC",
+              "Rherbivore", "DOCloss", "Rsoil", "Rgrowth")
+    
+    inout <- matrix(nrow=length(yr.list)+1, ncol=length(term)+1)
+    colnames(inout) <- c("year", term)
+    inout <- as.data.frame(inout)
+    inout$year <- c(yr.list, "notes")
     
     ### GPP 
     maespa <- read.csv("data/2013_maespa_gpp_respiration.csv")
-    inout$value[inout$term == "GPP overstorey"] <- mean(maespa$GPP.mg.m2.d) * conv
-    inout$notes[inout$term == "GPP overstorey"] <- "MAESPA output - still working on parameterisation"
+    inout$GPPoverstorey[inout$year == "2013"] <- round(mean(maespa$GPP.mg.m2.d) * conv, 2)
+    inout$GPPoverstorey[inout$year == "notes"] <- "MAESPA output - still working on parameterisation"
     
     ### Ra leaf
-    inout$value[inout$term == "Ra leaf"] <- mean(maespa$Respiration.mg.m2.d) * conv
-    inout$notes[inout$term == "Ra leaf"] <- "MAESPA output - still working on parameterisation"
+    inout$RaLeaf[inout$year == "2013"] <- round(mean(maespa$Respiration.mg.m2.d) * conv, 2)
+    inout$RaLeaf[inout$year == "notes"] <- "MAESPA output - still working on parameterisation"
     
     # Rsoil
-    inout$value[inout$term == "Rsoil"] <- mean(soil_respiration_flux$soil_respiration_flux) * conv
-    inout$notes[inout$term == "Rsoil"] <- "Three years soil respiration data"
+    soil_respiration_flux$year <- year(soil_respiration_flux$Start_date)
+    for(i in yr.list) {
+        inout$Rsoil[inout$year == i] <- round(mean(soil_respiration_flux[soil_respiration_flux$year == i, "soil_respiration_flux"]) * conv, 2)
+        
+    }
+    inout$Rsoil[inout$year == "notes"] <- "Three years soil respiration data"
     
     # Rherbivore
-    inout$value[inout$term == "Rherbivore"] <- mean(herbivory_leaf_consumption_flux$herbivory_leaf_consumption_flux) - 
-                                               mean(frass_production_flux$frass_production_flux) * conv
-    inout$notes[inout$term == "Rherbivore"] <- "Leaf consumption minus frass production"
+    herbivory_leaf_consumption_flux$year <- year(herbivory_leaf_consumption_flux$Start_date)
+    for (i in yr.list) {
+        inout$Rherbivore[inout$year == i] <- round(mean(herbivory_leaf_consumption_flux[herbivory_leaf_consumption_flux$year == i, 
+                                                                                        "herbivory_leaf_consumption_flux"]) - 
+            mean(frass_production_flux[frass_production_flux$year == i, "frass_production_flux"]) * conv, 2)
+    }
+    inout$Rherbivore[inout$year == "notes"] <- "Leaf consumption minus frass production"
     
     # Rgrowth
-    inout$value[inout$term == "Rgrowth"] <- ccost * (litter_prod + stem_prod + froot_prod)
-    inout$notes[inout$term == "Rgrowth"] <- "Calculated by multiplying NPP by 0.3"
+    for (i in yr.list) {
+        inout$Rgrowth[inout$year == i] <- ccost * (as.numeric(npp[npp$year == i, "LeafNPP"]) + as.numeric(npp[npp$year == i, "StemNPP"]) + as.numeric(npp[npp$year == i, "FineRootNPP"]))
+    }
+    inout$Rgrowth[inout$year == "notes"] <- "Calculated by multiplying NPP by 0.3"
     
     # DOC
-    inout$value[inout$term == "DOC loss"] <- mean(doc_leaching_flux$doc_leaching_flux) * conv
-    inout$notes[inout$term == "DOC loss"] <- "Deep soil layer depth"
+    doc_leaching_flux$year <- year(doc_leaching_flux$Start_date)
+    for (i in yr.list) {
+        inout$DOCloss[inout$year == i] <- round(mean(doc_leaching_flux[doc_leaching_flux$year == i, "doc_leaching_flux"]) * conv, 2)
+        
+    }
+    inout$DOCloss[inout$year == "notes"] <- "Deep soil layer depth"
     
     #CH4
-    inout$value[inout$term == "CH4 uptake"] <- mean(methane_flux$methane_flux) * conv
-    
+    methane_flux$year <- year(methane_flux$Date)
+    for (i in yr.list) {
+        inout$CH4uptake[inout$year == i] <- round(mean(methane_flux[methane_flux$year == i, "methane_flux"]) * conv, 2)
+        
+    }
+
     ##############################################
     #### Method 2
     #### Standing C pools
     ##############################################    
     ### Define terms and dataframe
-    term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Litter", "Coarse woody debris", 
-              "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
-    pool <- data.frame(term)
-    pool$value <- rep(NA, length(pool$term))
-    pool$notes <- rep("", length(pool$term))
+    term <- c("OverstoreyLeaf", "OverstoreyWood", "UnderstoreyAboveground",
+              "FineRoot", "CoarseRoot", "Litter", "CoarseWoodyDebris", 
+              "MicrobialBiomass", "SoilC", "Mycorrhizae", "Insects")
+    
+    pool <- matrix(nrow=length(yr.list)+1, ncol=length(term)+1)
+    colnames(pool) <- c("year", term)
+    pool <- as.data.frame(pool)
+    pool$year <- c(yr.list, "notes")
+    
     
     ### Overstorey leaf
-    pool$value[pool$term == "Overstorey leaf"] <- mean(leaf_pool$leaf_pool)
-    pool$notes[pool$term == "Overstorey leaf"] <- "Calculated from plant area index using constant SLA"
+    leaf_pool$year <- year(leaf_pool$Date)
+    for (i in yr.list) {
+        pool$OverstoreyLeaf[pool$year == i] <- round(mean(leaf_pool[leaf_pool$year == i, "leaf_pool"]), 2)
+        
+    }
+    pool$OverstoreyLeaf[pool$year == "notes"] <- "Calculated from plant area index using constant SLA"
     
     ### Overstorey wood
-    pool$value[pool$term == "Overstorey wood"] <- mean(wood_pool$wood_pool)
-    
+    wood_pool$year <- year(wood_pool$Date) 
+    for (i in yr.list) {
+        pool$OverstoreyWood[pool$year == i] <- round(mean(wood_pool[wood_pool$year == i, "wood_pool"]), 2)
+        
+    }
+
     ### Understorey aboveground
-    pool$value[pool$term == "Understorey above-ground"] <- mean(understorey_aboveground_biomass_pool$Total_g_C_m2)
-    pool$notes[pool$term == "Understorey above-ground"] <- "Based on harvesting data"
+    understorey_aboveground_biomass_pool$year <- year(understorey_aboveground_biomass_pool$Date)
+    for (i in yr.list) {
+        pool$UnderstoreyAboveground[pool$year == i] <- round(mean(understorey_aboveground_biomass_pool[understorey_aboveground_biomass_pool$year == i, "Total_g_C_m2"]), 2)
+        
+    }
+    pool$UnderstoreyAboveground[pool$year == "notes"] <- "Based on harvesting data"
     
     ### Fine root
-    pool$value[pool$term == "Fine Root"] <- mean(fineroot_pool$fineroot_pool)
-    
+    fineroot_pool$year <- year(fineroot_pool$Date) 
+    for (i in yr.list) {
+        pool$FineRoot[pool$year == i] <- round(mean(fineroot_pool[fineroot_pool$year == i, "fineroot_pool"]), 2)
+        
+    }
+
     ### Soil C
-    pool$value[pool$term == "Soil C"] <- mean(soil_carbon_pool$soil_carbon_pool)
-    pool$notes[pool$term == "Soil C"] <- "For all depths"
+    soil_carbon_pool$year <- year(soil_carbon_pool$Date)
+    for (i in yr.list) {
+        pool$SoilC[pool$year == i] <- round(mean(soil_carbon_pool[soil_carbon_pool$year == i, "soil_carbon_pool"]), 2)
+        
+    }
+    pool$SoilC[pool$year == "notes"] <- "For all depths"
     
     ### microbial pool
-    pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_pool$Cmic_g_m2)
-    pool$notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
+    microbial_pool$year <- year(microbial_pool$date)
+    for (i in yr.list) {
+        pool$MicrobialBiomass[pool$year == i]  <- round(mean(microbial_pool[microbial_pool$year == i, "Cmic_g_m2"]), 2)
+        
+    }
+    pool$MicrobialBiomass[pool$year == "notes"]  <- "For 0 - 10 cm depth"
         
         
         

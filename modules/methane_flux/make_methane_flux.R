@@ -39,6 +39,9 @@ make_methane_flux <- function(){
     ### format dataframe to return
     myDF.out <- myDF.m[,c("Date","Ring","methane_flux")]
     
+    myDF.out$Date <- as.Date(as.character(myDF.out$Date), format = "%d-%b-%y")
+    
+    
     return(myDF.out)
     
 }
