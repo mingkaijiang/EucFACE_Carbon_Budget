@@ -1,5 +1,6 @@
 #### Main script to compute EucFACE C balance fluxes and variables
-
+#### Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
+#### 
 
 ###### ---------------- setting up runs -------------------- ######
 #### clear wk space
@@ -8,18 +9,29 @@ rm(list=ls(all=TRUE))
 #### Source functions and packages
 source("R/prepare.R")
 
-
-###### ----------Compute fluxes, variables, and pools-------------- ######
+###### ----------Compute c fluxes, variables, and pools-------------- ######
+### Time series leaf LAI measurement
 lai_variable <- make_lai_variable()
 
+### SLA
 sla_variable <- make_sla_variable()
 
-leaf_pool <- make_leaf_pool(lai_variable, sla_variable)
+### This returns soil bulk density in 3 depths 
+### unit is kg m-3
+soil_bulk_density_variable <- make_soil_bulk_density()
 
+### leaf C pool, read in c_fraction defined in constant
+leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable)
+
+### soil respiration flux
 soil_respiration_flux <- make_soil_respiration_flux()
 
-soil_carbon_pool <- make_soil_carbon_pool()
+### Soil C pool, using soil bulk density data
+### output options are shallow and all_depths data
+soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
+                                     return="all_depths")
 
+### Fine root pool
 fineroot_pool <- make_fineroot_pool()
 
 fineroot_production_flux <- make_fineroot_production_flux()
@@ -48,8 +60,6 @@ understorey_sla_variable <- make_understorey_sla_variable()
 understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_pool()
 #understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
 #                                                          understorey_sla_variable)
-
-soil_bulk_density_variable <- make_soil_bulk_density()
 
 microbial_pool <- make_microbial_pool(soil_bulk_density_variable)
 
