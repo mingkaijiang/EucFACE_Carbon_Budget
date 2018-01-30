@@ -87,7 +87,8 @@ understorey_sla_variable <- make_understorey_sla_variable()
 
 
 ### Understorey aboveground C pool
-understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_pool()
+### reads in c_fraction from constant
+understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_pool(c_fraction)
 
 ### Understorey LAI
 #understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
