@@ -32,8 +32,9 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
     all <- merge(all,f15,by=c("Tree","Ring","CO2.trt"))
     
     # remove dead trees
-    all[is.na(all)] <- "TRUE"
+    all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
     all <- subset(all, Active.FALSE.means.dead.== TRUE)
+    #all <- subset(all, Active.FALSE.means.dead.)
     
     # remove "CORR" columns and dead column
     uncorr <- all[,-grep("CORR",names(all))]
@@ -65,7 +66,7 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
     if(return_tree_level)return(data)
     
     #- sum across rings and dates
-    data.m <- summaryBy(biom~Date+Ring,data=data,FUN=sum,keep.names=T)
+    data.m <- summaryBy(biom~Date+Ring,data=data,FUN=sum,keep.names=T,na.rm=T)
     
     # divide by ring area to get biomass per m2
     data.m$wood_pool <- data.m$biom / ring_area

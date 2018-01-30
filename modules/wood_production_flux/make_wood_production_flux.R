@@ -20,8 +20,10 @@ make_wood_production_flux <- function(wood_pool){
   prod$wood_production_flux <- (prod$wood_pool - prod$prev_biom) * 1000/prod$length
   
   #- format dataframe to return
-  wp.out <- prod[,c("Date","Ring","wood_production_flux","Start_date")]
-  names(wp.out) <- c("End_date", "Ring", "wood_production_flux", "Start_date")
+  wp.out <- prod[,c("Start_date", "Date", "Date", "Ring", "wood_production_flux")]
+  
+  names(wp.out) <- c("Start_date", "End_date", "Date", "Ring", "wood_production_flux")
+  
   return(wp.out)
 }
 

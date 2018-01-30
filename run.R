@@ -76,7 +76,7 @@ leaflitter_flux <- make_leaflitter_flux(c_fraction)
 wood_c_pool <- make_wood_pool(ring_area,c_fraction)
 
 ### Wood C production
-wood_production_flux <- make_wood_production_flux(wood_pool)
+wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
 ### Second method for the wood pool.
 ### See R_other/compare_wood_pool_methods.R !
