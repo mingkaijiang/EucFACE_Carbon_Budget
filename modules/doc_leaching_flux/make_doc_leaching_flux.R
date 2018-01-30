@@ -1,9 +1,10 @@
 #- Make the doc leaching flux
-make_doc_leaching_flux <- function(){
+make_doc_leaching_flux <- function(return){
     
     ### Information to know: 
     ### two layers (shallow and deep), with deep assumes to be 
     ### immediately above the impermeable layer (~ 35 - 75 cm)
+    ### shallow depth refer to 0 - 15 cm
     ### Assumes all DOC reaching this depth are all lost from the system
     ### May add a modeling component later, because the data were collected when soils were wet!
     ### Needs a drainage number to plug in!!!!
@@ -35,8 +36,8 @@ make_doc_leaching_flux <- function(){
     outDF$Start_date <- outDF$date
     
     #- format dataframe to return
-    out <- outDF[,c("Start_date", "date","ring","doc_leaching_flux")]
-    colnames(out) <- c("Start_date", "End_date", "Ring", "doc_leaching_flux")
+    out <- outDF[,c("Start_date", "date", "date", "ring", "doc_leaching_flux")]
+    colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "doc_leaching_flux")
 
     return(out)
 }

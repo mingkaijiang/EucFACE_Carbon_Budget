@@ -1,5 +1,5 @@
 #- Make the fine root C pool
-make_fineroot_pool <- function(c_fraction){
+make_fineroot_pool <- function(c_frac){
   
   #- download the data
   download_fineroot_data()
@@ -15,7 +15,7 @@ make_fineroot_pool <- function(c_fraction){
   frb.m <- summaryBy(frb_tot~Date+Ring,data=frb1,FUN=mean,keep.names=T)
   
   #- convert to g C m-2. Use fine-root specific c_fraction from Juan.
-  frb.m$fineroot_pool <- frb.m$frb_tot*c_fraction_fr
+  frb.m$fineroot_pool <- frb.m$frb_tot*c_frac
   
   #- format dataframe to return
   frb.out <- frb.m[,c("Date","Ring","fineroot_pool")]

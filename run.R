@@ -10,64 +10,95 @@ rm(list=ls(all=TRUE))
 source("R/prepare.R")
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
-### Time series leaf LAI measurement
+### LAI
 lai_variable <- make_lai_variable()
 
 ### SLA
 sla_variable <- make_sla_variable()
 
-### This returns soil bulk density in 3 depths 
+### Soil bulk density at 3 depths
 ### unit is kg m-3
 soil_bulk_density_variable <- make_soil_bulk_density()
-
-### leaf C pool, read in c_fraction defined in constant
-leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable)
-
-### soil respiration flux
-soil_respiration_flux <- make_soil_respiration_flux()
 
 ### Soil C pool, using soil bulk density data
 ### output options are shallow and all_depths data
 soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
                                      return="all_depths")
 
+### soil respiration flux
+soil_respiration_flux <- make_soil_respiration_flux()
+
+
+### leaf C pool
+### read in c_fraction defined in constant
+leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction)
+
+
 ### Fine root pool
-fineroot_pool <- make_fineroot_pool()
+### reads in c_fraction_fr defined in constant
+fineroot_c_pool <- make_fineroot_pool(c_fraction_fr)
 
-fineroot_production_flux <- make_fineroot_production_flux()
+### Canopy c production flux
 
+
+### fineroot c production flux
+### reads in c_fraction_fr defined in constant
+fineroot_production_flux <- make_fineroot_production_flux(c_fraction_fr)
+
+### frass c production flux
 frass_production_flux <- make_frass_production_flux()
 
-herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla_variable, frass_production_flux)
+### herbivore leaf c consumption flux
+### extrapolated based on frass weight, leaf area consumed and sla data
+### This consumed leaf mass need to be added on top of the canopy c pool. 
+herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla=sla_variable, 
+                                                                        frass_flux=frass_production_flux)
 
-lerp_production_flux <- make_lerp_production_flux()
+### lerp production flux
+### reads in c_fraction_lp from constant
+lerp_production_flux <- make_lerp_production_flux(c_fraction_lp)
 
-doc_leaching_flux <- make_doc_leaching_flux()
+### DOC leaching flux
+### Can return shallow, deep and all_depths result
+### This data also contains total dissolved carbon, and dissolved inorganic carbon
+### For now, return only deep option
+doc_leaching_flux <- make_doc_leaching_flux(return="deep")
 
 # Litter fluxes. This dataframe includes all of twig, bark, seed, leaf. 
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
-wood_pool <- make_wood_pool(ring_area,c_fraction)
+### wood C pool
+wood_c_pool <- make_wood_pool(ring_area,c_fraction)
 
+### Wood C production
 wood_production_flux <- make_wood_production_flux(wood_pool)
 
-# Second method for the wood pool.
-# See R_other/compare_wood_pool_methods.R !
+### Second method for the wood pool.
+### See R_other/compare_wood_pool_methods.R !
 wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
 
-## understorey stuffs
+### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
+
+
+### Understorey aboveground C pool
 understorey_aboveground_biomass_pool <- make_understorey_aboveground_biomass_pool()
+
+### Understorey LAI
 #understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
 #                                                          understorey_sla_variable)
 
+### Soil microbial C pool
 microbial_pool <- make_microbial_pool(soil_bulk_density_variable)
 
-# still need to correct for unit (currently in ng of CH4-C per cm3)
+### Soil methane C flux
+### still need to correct for unit (currently in ng of CH4-C per cm3)
 methane_flux <- make_methane_flux()
 
+### Root respiration flux
 root_respiration_flux <- make_root_respiration_flux(fineroot_pool)
 
+### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
                                                                       root_respiration_flux)
 

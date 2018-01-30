@@ -1,5 +1,5 @@
 #- Make the lerp C prodution flux
-make_lerp_production_flux <- function(){
+make_lerp_production_flux <- function(c_frac) {
     
     ### The life cycle of lerp is ~ 1 month, and the frass baskets were emptied every 1 month,
     ### So this flux calculated from frass basket measurements is the lerp biomass as well,
@@ -31,7 +31,7 @@ make_lerp_production_flux <- function(){
     #- multiply by carbon content (0.78 estimated by Andrew)
     #- unit: mg C m-2 d-1
     #- question: area of the trap needed or not?
-    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * c_fraction_lp / frass_basket_area / ndays_in_month
+    outDF3$lerp_production_flux <- outDF3$counts * outDF3$weight * c_frac / frass_basket_area / ndays_in_month
         
     #- drop NA rows
     outDF3 <- outDF3[complete.cases(outDF3),]
@@ -50,8 +50,8 @@ make_lerp_production_flux <- function(){
     out$Start_date <- as.Date(paste0("1-", out$date), format = "%d-%b-%y") 
     
     #- format dataframe to return
-    out <- out[,c("Start_date", "End_date","ring","lerp_production_flux")]
-    colnames(out) <- c("Start_date", "End_date", "Ring", "lerp_production_flux")
+    out <- out[,c("Start_date", "End_date","date", "ring","lerp_production_flux")]
+    colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "lerp_production_flux")
     
     return(out)
 }
