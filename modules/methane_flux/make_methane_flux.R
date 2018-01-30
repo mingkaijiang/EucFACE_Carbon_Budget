@@ -34,7 +34,7 @@ make_methane_flux <- function(){
     myDF.m <- summaryBy(Final_CH4_flux~Date*Ring,data=myDF,FUN=mean,keep.names=T,na.rm=T)
     
     ### need a unit conversion here (the current unit is ng cm-3, I believe)
-    myDF.m$methane_flux <- myDF.m$Final_CH4_flux
+    myDF.m$methane_flux <- myDF.m$Final_CH4_flux / 1000 * 10^6 * 0.1
     
     ### format dataframe to return
     myDF.out <- myDF.m[,c("Date","Ring","methane_flux")]

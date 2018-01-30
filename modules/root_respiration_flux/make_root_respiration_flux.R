@@ -12,7 +12,7 @@ make_root_respiration_flux <- function(fr_pool){
   tempDF$Date <- as.Date(tempDF$Date)
   
   ### get ring-average root biomass data
-  fr_biomass <- summaryBy(fineroot_pool~Ring, data=fineroot_pool, keep.names=T, FUN=mean)
+  fr_biomass <- summaryBy(fineroot_pool~Ring, data=fr_pool, keep.names=T, FUN=mean)
   
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {

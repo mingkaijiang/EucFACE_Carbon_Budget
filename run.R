@@ -98,14 +98,15 @@ understorey_aboveground_production_flux <- make_understorey_aboveground_producti
 #                                                          understorey_sla_variable)
 
 ### Soil microbial C pool
-microbial_pool <- make_microbial_pool(soil_bulk_density_variable)
+### top 10 cm only
+microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 
 ### Soil methane C flux
 ### still need to correct for unit (currently in ng of CH4-C per cm3)
-methane_flux <- make_methane_flux()
+# methane_c_flux <- make_methane_flux()
 
 ### Root respiration flux
-root_respiration_flux <- make_root_respiration_flux(fineroot_pool)
+root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool)
 
 ### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
@@ -129,9 +130,9 @@ tables_by_year <- make_EucFACE_table_by_year()
 
 ###### ----------Make comparison plots, etc. -------------- ######
 source("R/change_in_wood_soil_pools.R")
-plot_change_in_wood_soil_microbe_pools(soil_carbon_pool,
-                                       wood_pool,
-                                       microbial_pool,
+plot_change_in_wood_soil_microbe_pools(soil_c_pool,
+                                       wood_c_pool,
+                                       microbial_c_pool,
                                        destDir = "R_other")
 
 
