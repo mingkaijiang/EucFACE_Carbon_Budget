@@ -1,6 +1,8 @@
 #### Main script to compute EucFACE C balance fluxes and variables
 #### Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
-#### 
+#### Simplified assumptions include:
+###                                  1. C fraction of fine root, leaf and lerp
+###                                  2. leaching rate
 
 ###### ---------------- setting up runs -------------------- ######
 #### clear wk space
@@ -62,9 +64,12 @@ lerp_production_flux <- make_lerp_production_flux(c_fraction_lp)
 ### Can return shallow, deep and all_depths result
 ### This data also contains total dissolved carbon, and dissolved inorganic carbon
 ### For now, return only deep option
+### Also assumes leaching = 20 ml m-2 d-1
 doc_leaching_flux <- make_doc_leaching_flux(return="deep")
 
-# Litter fluxes. This dataframe includes all of twig, bark, seed, leaf. 
+### Litter fluxes
+### This dataframe includes all of twig, bark, seed, leaf.
+### reads in c_fraction coefficient from constant
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
 ### wood C pool
