@@ -117,6 +117,16 @@ heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respi
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
                                                               frass_prod=frass_production_flux)
 
+
+### Coarse root C pool 
+coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction) 
+coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction) 
+
+#### Coarse root C production
+coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_pool_1) 
+coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
+
+
 ###### ----------Make summary tables-------------- ######
 ### Generate overall summary table (ignoring rings and time)
 source("R/make_table.R")
