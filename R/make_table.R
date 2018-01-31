@@ -16,13 +16,16 @@ make_EucFACE_table <- function() {
     npp$value <- rep(NA, length(npp$term))
     npp$notes <- rep("", length(npp$term))
     
-    ### leaf NPP
-    # leaflitter_flux$twig_flux[leaflitter_flux$twig_flux > 5000] <- 0   # v high twig fluxes - maybe leave in? 
-    leaflitter_flux$total <- with(leaflitter_flux, twig_flux + bark_flux + seed_flux + leaf_flux)
     leaflitter_flux$days <- as.numeric(with(leaflitter_flux,End_date - Start_date))
-    litter_prod <- with(leaflitter_flux,sum(total*days)/sum(days)) * conv 
+    frass_production_flux$days <- as.numeric(with(frass_production_flux,End_date - Start_date))
+    fineroot_production_flux$days <- as.numeric(with(fineroot_production_flux,End_date - Start_date))
+    understorey_aboveground_production_flux$days <- as.numeric(with(understorey_aboveground_production_flux,
+                                                                    End_date - Start_date))
+    
+    ### leaf NPP
+    litter_prod <- with(leaflitter_flux,sum(leaf_flux*days)/sum(days)) * conv
     npp$value[npp$term == "Leaf NPP"] <- litter_prod
-    npp$notes[npp$term == "Leaf NPP"] <- "Calculated from leaf, twig, bark and seed litterfall"
+    npp$notes[npp$term == "Leaf NPP"] <- "Calculated from leaf litterfall only"
     
     ### stem NPP
     stem_prod <- mean(wood_production_flux$wood_production_flux) * conv
@@ -30,30 +33,38 @@ make_EucFACE_table <- function() {
     npp$notes[npp$term == "Stem NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
     ### root NPP
-    froot_prod <- mean(fineroot_production_flux$fineroot_production_flux) * conv
+    froot_prod <- with(fineroot_production_flux,sum(fineroot_production_flux*days)/sum(days)) * conv
     npp$value[npp$term == "Fine Root NPP"] <- froot_prod
     npp$notes[npp$term == "Fine Root NPP"] <- "One year's data only"
     
     ### frass production
-    npp$value[npp$term == "Frass production"] <- mean(frass_production_flux$frass_production_flux) * conv
+    npp$value[npp$term == "Frass production"] <- with(frass_production_flux,
+                                                      sum(frass_production_flux*days)/sum(days)) * conv
     
     ### Rh
     npp$value[npp$term == "R hetero"] <- mean(heterotrophic_respiration_flux$heterotrophic_respiration_flux) * conv
     npp$notes[npp$term == "R hetero"] <- "Temperature-dependent function derived from WTC3"
         
-        
+    ### Understorey NPP
+    und_prod <- with(understorey_aboveground_production_flux,
+                     sum(understorey_production_flux*days)/sum(days)) * conv
+    npp$value[npp$term == "Understorey NPP"] <- und_prod
+    npp$notes[npp$term == "Understorey NPP"] <- "Harvest data"    
         
     ##############################################
     #### Method 1
     #### In / out fluxes (Method 1 of getting NEP)
     ##############################################
     ### define terms and dataframe
-    term <- c("GPP overstorey", "GPP understorey", "CH4 uptake",
-              "Ra leaf", "Ra stem", "Ra understorey", "VOC",
+    term <- c("GPP overstorey", "GPP understorey", "CH4 efflux",
+              "Ra leaf", "Ra stem", "Ra root", "Ra understorey", "VOC",
               "Rherbivore", "DOC loss", "Rsoil", "Rgrowth")
     inout <- data.frame(term)
     inout$value <- rep(NA, length(inout$term))
     inout$notes <- rep("", length(inout$term))
+    
+    herbivory_respiration_flux$days <- as.numeric(with(herbivory_respiration_flux,End_date - Start_date))
+    
     
     ### GPP 
     maespa <- read.csv("data/2013_maespa_gpp_respiration.csv")
@@ -64,13 +75,18 @@ make_EucFACE_table <- function() {
     inout$value[inout$term == "Ra leaf"] <- mean(maespa$Respiration.mg.m2.d) * conv
     inout$notes[inout$term == "Ra leaf"] <- "MAESPA output - still working on parameterisation"
     
+    ### Ra stem
+    
+    ### Ra root
+    inout$value[inout$term == "Ra root"] <- mean(root_respiration_flux$root_respiration_flux) * conv
+
     # Rsoil
     inout$value[inout$term == "Rsoil"] <- mean(soil_respiration_flux$soil_respiration_flux) * conv
     inout$notes[inout$term == "Rsoil"] <- "Three years soil respiration data"
     
     # Rherbivore
-    inout$value[inout$term == "Rherbivore"] <- mean(herbivory_leaf_consumption_flux$herbivory_leaf_consumption_flux) - 
-                                               mean(frass_production_flux$frass_production_flux) * conv
+    inout$value[inout$term == "Rherbivore"] <- with(herbivory_respiration_flux,
+                                                    sum(respiration_flux*days)/sum(days)) * conv
     inout$notes[inout$term == "Rherbivore"] <- "Leaf consumption minus frass production"
     
     # Rgrowth
@@ -82,7 +98,7 @@ make_EucFACE_table <- function() {
     inout$notes[inout$term == "DOC loss"] <- "Deep soil layer depth"
     
     #CH4
-    inout$value[inout$term == "CH4 uptake"] <- mean(methane_flux$methane_flux) * conv
+    # inout$value[inout$term == "CH4 efflux"] <- mean(methane_c_flux$methane_flux) * conv
     
     ##############################################
     #### Method 2
@@ -97,25 +113,25 @@ make_EucFACE_table <- function() {
     pool$notes <- rep("", length(pool$term))
     
     ### Overstorey leaf
-    pool$value[pool$term == "Overstorey leaf"] <- mean(leaf_pool$leaf_pool)
+    pool$value[pool$term == "Overstorey leaf"] <- mean(leaf_c_pool$leaf_pool)
     pool$notes[pool$term == "Overstorey leaf"] <- "Calculated from plant area index using constant SLA"
     
     ### Overstorey wood
-    pool$value[pool$term == "Overstorey wood"] <- mean(wood_pool$wood_pool)
+    pool$value[pool$term == "Overstorey wood"] <- mean(wood_c_pool$wood_pool)
     
     ### Understorey aboveground
-    pool$value[pool$term == "Understorey above-ground"] <- mean(understorey_aboveground_biomass_pool$Total_g_C_m2)
+    pool$value[pool$term == "Understorey above-ground"] <- mean(understorey_aboveground_c_pool$Total_g_C_m2)
     pool$notes[pool$term == "Understorey above-ground"] <- "Based on harvesting data"
     
     ### Fine root
-    pool$value[pool$term == "Fine Root"] <- mean(fineroot_pool$fineroot_pool)
+    pool$value[pool$term == "Fine Root"] <- mean(fineroot_c_pool$fineroot_pool)
     
     ### Soil C
-    pool$value[pool$term == "Soil C"] <- mean(soil_carbon_pool$soil_carbon_pool)
+    pool$value[pool$term == "Soil C"] <- mean(soil_c_pool$soil_carbon_pool)
     pool$notes[pool$term == "Soil C"] <- "For all depths"
     
     ### microbial pool
-    pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_pool$Cmic_g_m2)
+    pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_c_pool$Cmic_g_m2)
     pool$notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
         
         

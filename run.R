@@ -112,6 +112,11 @@ root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool)
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
                                                                       root_respiration_flux)
 
+
+### Herbivory respiration flux
+herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
+                                                              frass_prod=frass_production_flux)
+
 ###### ----------Make summary tables-------------- ######
 ### Generate overall summary table (ignoring rings and time)
 source("R/make_table.R")
