@@ -7,9 +7,10 @@ make_table_by_ring <- function() {
     #### NPP fluxes (Method 3 of getting NEP)
     ##############################################
     ### set up dataframe
-    term <- c("Leaf NPP", "Stem NPP", "Understorey NPP",
-              "Fine Root NPP", "Frass production", "R hetero", "Mycorrhizal production",
-              "Flower production")
+    term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
+              "Coarse Root NPP", "Understorey NPP",
+              "Frass production", "R hetero", 
+              "Mycorrhizal production", "Flower production")
     npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "notes")
     Ring <- c(1:6)
@@ -20,22 +21,32 @@ make_table_by_ring <- function() {
     litter_prod$value <- rep(NA)
     stem_prod <- litter_prod
     froot_prod <- litter_prod
+    croot_prod <- litter_prod
     frass_prod <- litter_prod
     heter_resp <- litter_prod
     under_prod <- litter_prod
     
     frass_production_flux$days <- as.numeric(with(frass_production_flux,End_date - Start_date))
-    fineroot_production_flux$days <- as.numeric(with(fineroot_production_flux,End_date - Start_date))
-    understorey_aboveground_production_flux$days <- as.numeric(with(understorey_aboveground_production_flux,End_date - Start_date))
+    fineroot_production_flux$days <- as.numeric(with(fineroot_production_flux,
+                                                     End_date - Start_date))
+    understorey_aboveground_production_flux$days <- as.numeric(with(understorey_aboveground_production_flux,
+                                                                    End_date - Start_date))
+    coarse_root_production_flux_1$days <- as.numeric(with(coarse_root_production_flux_1,
+                                                          End_date - Start_date))
+    wood_production_flux$days <- as.numeric(with(wood_production_flux,End_date - Start_date))
     
     for (i in Ring) {
         litter_prod[litter_prod$Ring == i, "value"] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
                                                             sum(leaf_flux*days)/sum(days)) * conv
         
-        stem_prod[stem_prod$Ring == i, "value"] <- mean(wood_production_flux[wood_production_flux$Ring == i, "wood_production_flux"]) * conv
+        stem_prod[stem_prod$Ring == i, "value"] <- with(wood_production_flux[wood_production_flux$Ring ==i,],
+                                                        sum(wood_production_flux*days)/sum(days)) * conv
         
         froot_prod[froot_prod$Ring == i, "value"] <- with(fineroot_production_flux[fineroot_production_flux$Ring ==i,],
                                                           sum(fineroot_production_flux*days)/sum(days)) * conv
+        
+        croot_prod[croot_prod$Ring == i, "value"] <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$Ring ==i,],
+                                                          sum(coarse_root_production_flux*days)/sum(days)) * conv
         
         frass_prod[frass_prod$Ring == i, "value"] <-with(frass_production_flux[frass_production_flux$Ring == i,],
                                                          sum(frass_production_flux*days)/sum(days)) * conv 
@@ -56,9 +67,13 @@ make_table_by_ring <- function() {
     npp[npp$term == "Fine Root NPP", 2:7] <- froot_prod$value
     npp$notes[npp$term == "Fine Root NPP"] <- "One year's data only"
     
+    npp[npp$term == "Coarse Root NPP", 2:7] <- croot_prod$value
+    npp$notes[npp$term == "Coarse Root NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
+    
     npp[npp$term == "Frass production", 2:7] <- frass_prod$value
     
     npp[npp$term == "Understorey NPP", 2:7] <- under_prod$value
+    npp$notes[npp$term == "Understorey NPP"] <- "Based on harvest data"
     
     npp[npp$term == "R hetero", 2:7] <- heter_resp$value
     npp$notes[npp$term == "R hetero"] <- "Temperature-dependent function derived from WTC3"
@@ -114,10 +129,18 @@ make_table_by_ring <- function() {
 
     for (i in Ring) {
         pool[pool$term == "Overstorey leaf", i+1] <- mean(leaf_c_pool[leaf_c_pool$Ring == i, "leaf_pool"])
+        
         pool[pool$term == "Overstorey wood", i+1] <- mean(wood_c_pool[wood_c_pool$Ring == i, "wood_pool"])
+        
         pool[pool$term == "Fine Root", i+1] <- mean(fineroot_c_pool[fineroot_c_pool$Ring == i, "fineroot_pool"])
-        pool[pool$term == "Understorey above-ground", i+1] <- mean(understorey_aboveground_c_pool[understorey_aboveground_c_pool$Ring == i, "Total_g_C_m2"])
+        
+        pool[pool$term == "Coarse Root", i+1] <- mean(coarse_root_c_pool_1[coarse_root_c_pool_1$Ring == i, "coarse_root_pool"])
+        
+        pool[pool$term == "Understorey above-ground", i+1] <- mean(understorey_aboveground_c_pool[understorey_aboveground_c_pool$Ring == i, 
+                                                                                                  "Total_g_C_m2"])
+        
         pool[pool$term == "Soil C", i+1] <- mean(soil_c_pool[soil_c_pool$Ring == i, "soil_carbon_pool"])
+        
         pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool[microbial_c_pool$ring == i, "Cmic_g_m2"])
         
     }
@@ -125,6 +148,7 @@ make_table_by_ring <- function() {
     pool$notes[pool$term == "Overstorey leaf"] <- "Calculated from plant area index using constant SLA"
     pool$notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
     pool$notes[pool$term == "Understorey above-ground"]  <- "Includes both live and dead"
+    pool$notes[pool$term == "Coarse Root"]  <- "Scaled with DBH"
     
     
     ###### calculate aCO2 and eCO2 results

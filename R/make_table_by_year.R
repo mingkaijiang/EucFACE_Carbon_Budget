@@ -9,8 +9,9 @@ make_EucFACE_table_by_year <- function() {
     #### NPP fluxes (Method 3 of getting NEP)
     ##############################################
     #### Define dataframe
-    term <- c("LeafNPP", "StemNPP", "UnderstoreyNPP",
-              "FineRootNPP", "FrassProduction", "RHetero", "MycorrhizalProduction",
+    term <- c("LeafNPP", "StemNPP", "FineRootNPP", 
+              "CoarseRootNPP","UnderstoreyNPP", "FrassProduction", 
+              "RHetero", "MycorrhizalProduction",
               "FlowerProduction")
     
     npp <- matrix(nrow=length(yr.list)+1, ncol=length(term)+1)
@@ -32,14 +33,17 @@ make_EucFACE_table_by_year <- function() {
     npp$LeafNPP[npp$year == "notes"] <- "Calculated from leaf litterfall only"
     
     ### stem NPP
+    wood_production_flux$days <- as.numeric(with(wood_production_flux,End_date - Start_date))
     wood_production_flux$year <- year(wood_production_flux$Start_date)
+    
     for(i in yr.list) {
-        stem_prod <- mean(wood_production_flux[wood_production_flux$year == i, "wood_production_flux"], na.rm=T) * conv
+        stem_prod <- with(wood_production_flux[wood_production_flux$year == i, ],
+                          sum(wood_production_flux*days, na.rm=T)/sum(days, na.rm=T)) * conv 
         npp$StemNPP[npp$year == i] <- round(stem_prod,2)
     }
     npp$StemNPP[npp$year == "notes"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
-    ### root NPP
+    ### fine root NPP
     fineroot_production_flux$days <- as.numeric(with(fineroot_production_flux,End_date - Start_date))
     fineroot_production_flux$year <- year(fineroot_production_flux$Date)
     
@@ -50,6 +54,18 @@ make_EucFACE_table_by_year <- function() {
     }
     npp$FineRootNPP[npp$year == "notes"] <- "One year's data only"
 
+    ### Coarse root NPP
+    coarse_root_production_flux_1$days <- as.numeric(with(coarse_root_production_flux_1,End_date - Start_date))
+    coarse_root_production_flux_1$year <- year(coarse_root_production_flux_1$Start_date)
+    
+    for(i in yr.list) {
+        croot_prod <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$year == i, ],
+                          sum(coarse_root_production_flux*days, na.rm=T)/sum(days, na.rm=T)) * conv 
+        npp$CoarseRootNPP[npp$year == i] <- round(croot_prod,2)
+    }
+    npp$CoarseRootNPP[npp$year == "notes"] <- "Calculated from stem diameter + allometry. Includes all trees"
+    
+    
     ### frass production
     frass_production_flux$days <- as.numeric(with(frass_production_flux,End_date - Start_date))
     frass_production_flux$year <- year(frass_production_flux$Start_date)
@@ -78,8 +94,8 @@ make_EucFACE_table_by_year <- function() {
         under_prod <- with(understorey_aboveground_production_flux[understorey_aboveground_production_flux$year == i, ],
                            sum(understorey_production_flux*days, na.rm=T)/sum(days, na.rm=T)) * conv 
         npp$UnderstoreyNPP[npp$year == i] <- round(under_prod, 2)
-        
     }
+    npp$UnderstoreyNPP[npp$year == "notes"] <- "Based on harvest data, consider no turnover"
     
         
     ##############################################
@@ -192,6 +208,13 @@ make_EucFACE_table_by_year <- function() {
     fineroot_c_pool$year <- year(fineroot_c_pool$Date) 
     for (i in yr.list) {
         pool$FineRoot[pool$year == i] <- round(mean(fineroot_c_pool[fineroot_c_pool$year == i, "fineroot_pool"]), 2)
+        
+    }
+    
+    ### Coarse root
+    coarse_root_c_pool_1$year <- year(coarse_root_c_pool_1$Date) 
+    for (i in yr.list) {
+        pool$CoarseRoot[pool$year == i] <- round(mean(coarse_root_c_pool_1[coarse_root_c_pool_1$year == i, "coarse_root_pool"]), 2)
         
     }
 

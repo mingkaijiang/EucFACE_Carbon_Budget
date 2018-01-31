@@ -8,19 +8,24 @@ make_EucFACE_table <- function() {
     #### NPP fluxes (Method 3 of getting NEP)
     ##############################################
     #### Define dataframe
-    term <- c("Leaf NPP", "Stem NPP", "Understorey NPP",
-              "Fine Root NPP", "Frass production", "R hetero", "Mycorrhizal production",
-              "Flower production")
+    term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
+              "Coarse Root NPP", "Understorey NPP",
+              "Frass production", "R hetero", 
+              "Mycorrhizal production", "Flower production")
     
     npp <- data.frame(term)
     npp$value <- rep(NA, length(npp$term))
     npp$notes <- rep("", length(npp$term))
     
+    ### prepare the ndays in all flux calculations
     leaflitter_flux$days <- as.numeric(with(leaflitter_flux,End_date - Start_date))
     frass_production_flux$days <- as.numeric(with(frass_production_flux,End_date - Start_date))
     fineroot_production_flux$days <- as.numeric(with(fineroot_production_flux,End_date - Start_date))
     understorey_aboveground_production_flux$days <- as.numeric(with(understorey_aboveground_production_flux,
                                                                     End_date - Start_date))
+    wood_production_flux$days <- as.numeric(with(wood_production_flux,End_date - Start_date))
+    coarse_root_production_flux_1$days <- as.numeric(with(coarse_root_production_flux_1,
+                                                          End_date - Start_date))
     
     ### leaf NPP
     litter_prod <- with(leaflitter_flux,sum(leaf_flux*days)/sum(days)) * conv
@@ -28,7 +33,7 @@ make_EucFACE_table <- function() {
     npp$notes[npp$term == "Leaf NPP"] <- "Calculated from leaf litterfall only"
     
     ### stem NPP
-    stem_prod <- mean(wood_production_flux$wood_production_flux) * conv
+    stem_prod <- with(wood_production_flux,sum(wood_production_flux*days)/sum(days)) * conv
     npp$value[npp$term == "Stem NPP"] <- stem_prod
     npp$notes[npp$term == "Stem NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
@@ -36,6 +41,12 @@ make_EucFACE_table <- function() {
     froot_prod <- with(fineroot_production_flux,sum(fineroot_production_flux*days)/sum(days)) * conv
     npp$value[npp$term == "Fine Root NPP"] <- froot_prod
     npp$notes[npp$term == "Fine Root NPP"] <- "One year's data only"
+    
+    ### Coarse root NPP
+    cr_prod <- with(coarse_root_production_flux_1,
+                      sum(coarse_root_production_flux*days)/sum(days)) * conv
+    npp$value[npp$term == "Coarse Root NPP"] <- cr_prod
+    npp$notes[npp$term == "Coarse Root NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
     ### frass production
     npp$value[npp$term == "Frass production"] <- with(frass_production_flux,
@@ -77,7 +88,7 @@ make_EucFACE_table <- function() {
     
     ### Ra stem
     
-    ### Ra root
+    ### Ra fine root
     inout$value[inout$term == "Ra root"] <- mean(root_respiration_flux$root_respiration_flux) * conv
 
     # Rsoil
@@ -125,6 +136,10 @@ make_EucFACE_table <- function() {
     
     ### Fine root
     pool$value[pool$term == "Fine Root"] <- mean(fineroot_c_pool$fineroot_pool)
+    
+    ### Coarse root
+    pool$value[pool$term == "Coarse Root"] <- mean(coarse_root_c_pool_1$coarse_root_pool)
+    pool$notes[pool$term == "Coarse Root"] <- "Allometric relationship with DBH"
     
     ### Soil C
     pool$value[pool$term == "Soil C"] <- mean(soil_c_pool$soil_carbon_pool)
