@@ -8,6 +8,13 @@ make_leaflitter_flux <- function(c_frac){
   litter_raw$Ring[is.na(litter_raw$Ring)] <- litter_raw$RING[is.na(litter_raw$Ring)]
   litter_raw$TRAP[is.na(litter_raw$Ring)] <- litter_raw$RING[is.na(litter_raw$Ring)]
   
+  # remove two data points where big branches fall into litter bascket
+  line.num <- which.max(litter_raw$Twig)
+  litter_raw <- litter_raw[-line.num,]
+  
+  line.num <- which.max(litter_raw$Twig)
+  litter_raw <- litter_raw[-line.num,]
+  
   # Conversion factor from g basket-1 to mg m-2
   conv <- c_frac * 1000 / frass_basket_area
   
