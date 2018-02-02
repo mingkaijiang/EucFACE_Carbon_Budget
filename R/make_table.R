@@ -90,6 +90,12 @@ make_EucFACE_table <- function() {
     
     ### Ra fine root
     inout$value[inout$term == "Ra root"] <- mean(root_respiration_flux$root_respiration_flux) * conv
+    
+    ### Ra understorey
+    inout$value[inout$term == "Ra understorey"] <- with(understorey_respiration_flux,
+                                                        sum(respiration*days)/sum(days)) * conv
+    inout$notes[inout$term == "Ra understorey"] <- "Used one fixed Rd value, huge uncertainty"
+    
 
     # Rsoil
     inout$value[inout$term == "Rsoil"] <- mean(soil_respiration_flux$soil_respiration_flux) * conv

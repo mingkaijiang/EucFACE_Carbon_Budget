@@ -80,7 +80,8 @@ make_EucFACE_table_by_year <- function() {
     ### Rh
     heterotrophic_respiration_flux$year <- year(heterotrophic_respiration_flux$Start_date)
     for(i in yr.list) {
-        npp$RHetero[npp$year == i] <- round(mean(heterotrophic_respiration_flux[heterotrophic_respiration_flux$year == i, "heterotrophic_respiration_flux"]) * conv,2)
+        npp$RHetero[npp$year == i] <- round(mean(heterotrophic_respiration_flux[heterotrophic_respiration_flux$year == i, 
+                                                                                "heterotrophic_respiration_flux"]) * conv,2)
         
     }
     npp$RHetero[npp$year == "notes"] <- "Temperature-dependent function derived from WTC3"
@@ -96,6 +97,7 @@ make_EucFACE_table_by_year <- function() {
         npp$UnderstoreyNPP[npp$year == i] <- round(under_prod, 2)
     }
     npp$UnderstoreyNPP[npp$year == "notes"] <- "Based on harvest data, consider no turnover"
+    
     
         
     ##############################################
@@ -165,6 +167,14 @@ make_EucFACE_table_by_year <- function() {
     #    inout$CH4[inout$year == i] <- round(mean(methane_flux[methane_flux$year == i, "methane_flux"]) * conv, 2)
     #    
     #}
+    
+    # Ra understorey
+    understorey_respiration_flux$year <- year(understorey_respiration_flux$Start_date)
+    for (i in yr.list) {
+        inout$RaUnderstorey[inout$year == i] <- with(understorey_respiration_flux[understorey_respiration_flux$year == i,],
+                                                  sum(respiration*days)/sum(days)) * conv
+    }
+    inout$RaUnderstorey[inout$year == "notes"] <- "Used one fixed Rd value, huge uncertainty"
 
     ##############################################
     #### Method 2

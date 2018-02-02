@@ -100,11 +100,13 @@ make_table_by_ring <- function() {
         inout[inout$term == "Ra leaf", i+1] <- maespa[maespa$Ring==i, "Respiration.mg.m2.d"] * conv
         inout[inout$term == "Rsoil", i+1] <- mean(soil_respiration_flux[soil_respiration_flux$Ring == i, "soil_respiration_flux"]) * conv
         inout[inout$term == "Rgrowth", i+1] <- ccost * (litter_prod[i,"value"] + stem_prod[i,"value"] + froot_prod[i,"value"])
-        inout[inout$term == "Rherbivore", i+1] <- with(herbivory_respiration_flux[herbivory_respiration_flux$Ring ==i,],sum(respiration_flux*days)/sum(days)) * conv
+        inout[inout$term == "Rherbivore", i+1] <- with(herbivory_respiration_flux[herbivory_respiration_flux$Ring ==i,],
+                                                       sum(respiration_flux*days)/sum(days)) * conv
         inout[inout$term == "DOC loss", i+1] <- mean(doc_leaching_flux[doc_leaching_flux$Ring == i, "doc_leaching_flux"]) * conv
         # inout[inout$term == "CH4 efflux", i+1] <- mean(methane_flux[methane_flux$Ring, "methane_flux"]) * conv
         inout[inout$term == "Ra root", i+1] <- mean(root_respiration_flux[root_respiration_flux$Ring == i, "root_respiration_flux"]) * conv
-        
+        inout[inout$term == "Ra understorey", i+1] <- with(understorey_respiration_flux[understorey_respiration_flux$Ring ==i,],
+                                                       sum(respiration*days)/sum(days)) * conv
     }
 
     inout$notes[inout$term == "GPP overstorey"] <- "MAESPA output - still working on parameterisation"
@@ -113,6 +115,7 @@ make_table_by_ring <- function() {
     inout$notes[inout$term == "Rgrowth"] <- "Calculated by multiplying NPP by 0.3"
     inout$notes[inout$term == "Rherbivore"] <- "Leaf consumption minus frass production"
     inout$notes[inout$term == "DOC loss"] <- "Deep soil layer depth"
+    inout$notes[inout$term == "Ra understorey"] <- "Used one fixed Rd value, huge uncertainty"
     
 
     

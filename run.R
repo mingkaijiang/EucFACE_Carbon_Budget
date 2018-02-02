@@ -97,6 +97,12 @@ understorey_aboveground_production_flux <- make_understorey_aboveground_producti
 #understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
 #                                                          understorey_sla_variable)
 
+### Understorey respiration
+### assumes either a fixed or a function of temperature
+understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
+                                                                  c_frac=c_fraction,
+                                                                  assumption="fixed")
+
 ### Soil microbial C pool
 ### top 10 cm only
 microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
