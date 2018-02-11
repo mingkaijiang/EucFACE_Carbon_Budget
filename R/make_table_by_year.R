@@ -115,19 +115,27 @@ make_EucFACE_table_by_year <- function() {
     inout$year <- c(yr.list, "notes")
     
     ### GPP 
-    maespa <- read.csv("data/2013_maespa_gpp_respiration.csv")
-    inout$GPPoverstorey[inout$year == "2013"] <- round(mean(maespa$GPP.mg.m2.d) * conv, 2)
-    inout$GPPoverstorey[inout$year == "notes"] <- "MAESPA output - still working on parameterisation"
+    for (i in yr.list) {
+        inout$GPPoverstorey[inout$year == i] <- round(mean(overstorey_gpp_flux[overstorey_gpp_flux$year == i, "GPP"]), 2)
+    }
+    inout$GPPoverstorey[inout$year == "notes"] <- "MAESPA output"
     
     ### Ra leaf
-    inout$RaLeaf[inout$year == "2013"] <- round(mean(maespa$Respiration.mg.m2.d) * conv, 2)
-    inout$RaLeaf[inout$year == "notes"] <- "MAESPA output - still working on parameterisation"
+    for (i in yr.list) {
+        inout$RaLeaf[inout$year == i] <- round(mean(overstorey_leaf_respiration_flux[overstorey_leaf_respiration_flux$year == i, "Rfoliage"]), 2)
+    }
+    inout$RaLeaf[inout$year == "notes"] <- "MAESPA output"
+    
+    ### understorey GPP
+    for (i in yr.list) {
+        inout$GPPunderstorey[inout$year == i] <- round(mean(understorey_gpp_flux[understorey_gpp_flux$year == i, "GPP"]), 2)
+    }
+    inout$GPPunderstorey[inout$year == "notes"] <- "40% of overstorey GPP"
     
     ### Ra root
     root_respiration_flux$year <- year(root_respiration_flux$Start_date)
     for (i in yr.list) {
         inout$RaRoot[inout$year == i] <- round(mean(root_respiration_flux[root_respiration_flux$year == i, "root_respiration_flux"]) * conv, 2)
-   
     }
     
     # Rsoil

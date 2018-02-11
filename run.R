@@ -133,6 +133,16 @@ coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_
 coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
 
 
+#### Overstorey GPP 
+overstorey_gpp_flux <- make_overstorey_gpp_flux()
+
+### Overstorey foliage respiration
+overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
+
+### Understorey GPP
+understorey_gpp_flux <- make_understorey_GPP_flux()
+
+
 ###### ----------Make summary tables-------------- ######
 ### Generate overall summary table (ignoring rings and time)
 source("R/make_table.R")

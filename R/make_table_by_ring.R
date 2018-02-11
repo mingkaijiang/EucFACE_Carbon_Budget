@@ -91,13 +91,12 @@ make_table_by_ring <- function() {
     inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(inout) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "notes")
     
-    maespa <- read.csv("data/2013_maespa_gpp_respiration.csv")
-    
     herbivory_respiration_flux$days <- as.numeric(with(herbivory_respiration_flux,End_date - Start_date))
     
     for (i in Ring) {
-        inout[inout$term == "GPP overstorey", i+1] <- maespa[maespa$Ring==i, "GPP.mg.m2.d"] * conv
-        inout[inout$term == "Ra leaf", i+1] <- maespa[maespa$Ring==i, "Respiration.mg.m2.d"] * conv
+        inout[inout$term == "GPP overstorey", i+1] <- mean(overstorey_gpp_flux[overstorey_gpp_flux$Ring == i, "GPP"])
+        inout[inout$term == "GPP understorey", i+1] <- mean(understorey_gpp_flux[understorey_gpp_flux$Ring == i, "GPP"])
+        inout[inout$term == "Ra leaf", i+1] <- mean(overstorey_leaf_respiration_flux[overstorey_leaf_respiration_flux$Ring == i, "Rfoliage"])
         inout[inout$term == "Rsoil", i+1] <- mean(soil_respiration_flux[soil_respiration_flux$Ring == i, "soil_respiration_flux"]) * conv
         inout[inout$term == "Rgrowth", i+1] <- ccost * (litter_prod[i,"value"] + stem_prod[i,"value"] + froot_prod[i,"value"])
         inout[inout$term == "Rherbivore", i+1] <- with(herbivory_respiration_flux[herbivory_respiration_flux$Ring ==i,],
@@ -109,8 +108,9 @@ make_table_by_ring <- function() {
                                                        sum(respiration*days)/sum(days)) * conv
     }
 
-    inout$notes[inout$term == "GPP overstorey"] <- "MAESPA output - still working on parameterisation"
-    inout$notes[inout$term == "Ra leaf"] <- "MAESPA output - still working on parameterisation"
+    inout$notes[inout$term == "GPP overstorey"] <- "MAESPA output"
+    inout$notes[inout$term == "GPP understorey"] <- "40% of overstorey GPP"
+    inout$notes[inout$term == "Ra leaf"] <- "MAESPA output"
     inout$notes[inout$term == "Rsoil"] <- "Three years soil respiration data"
     inout$notes[inout$term == "Rgrowth"] <- "Calculated by multiplying NPP by 0.3"
     inout$notes[inout$term == "Rherbivore"] <- "Leaf consumption minus frass production"

@@ -78,14 +78,16 @@ make_EucFACE_table <- function() {
     
     
     ### GPP 
-    maespa <- read.csv("data/2013_maespa_gpp_respiration.csv")
-    inout$value[inout$term == "GPP overstorey"] <- mean(maespa$GPP.mg.m2.d) * conv
-    inout$notes[inout$term == "GPP overstorey"] <- "MAESPA output - still working on parameterisation"
+    inout$value[inout$term == "GPP overstorey"] <- mean(overstorey_gpp_flux$GPP) 
+    inout$notes[inout$term == "GPP overstorey"] <- "MAESPA output"
     
     ### Ra leaf
-    inout$value[inout$term == "Ra leaf"] <- mean(maespa$Respiration.mg.m2.d) * conv
-    inout$notes[inout$term == "Ra leaf"] <- "MAESPA output - still working on parameterisation"
+    inout$value[inout$term == "Ra leaf"] <- mean(overstorey_leaf_respiration_flux$Rfoliage) 
+    inout$notes[inout$term == "Ra leaf"] <- "MAESPA output"
     
+    ### GPP understorey
+    inout$value[inout$term == "GPP understorey"] <- mean(understorey_gpp_flux$GPP) 
+    inout$notes[inout$term == "GPP understorey"] <- "40% of overstorey GPP"
     ### Ra stem
     
     ### Ra fine root
