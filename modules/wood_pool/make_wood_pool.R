@@ -34,7 +34,7 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
     # remove dead trees
     all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
     all <- subset(all, Active.FALSE.means.dead.== TRUE)
-    #all <- subset(all, Active.FALSE.means.dead.)
+    all <- all[complete.cases(all),]
     
     # remove "CORR" columns and dead column
     uncorr <- all[,-grep("CORR",names(all))]

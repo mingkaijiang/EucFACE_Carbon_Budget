@@ -34,7 +34,7 @@ make_coarse_root_pool_1 <- function(c_frac) {
     # remove dead trees
     all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
     all <- subset(all, Active.FALSE.means.dead.== TRUE)
-    #all <- subset(all, Active.FALSE.means.dead.)
+    all <- all[complete.cases(all),]
     
     # remove "CORR" columns and dead column
     uncorr <- all[,-grep("CORR",names(all))]
