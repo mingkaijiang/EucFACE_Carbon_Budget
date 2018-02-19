@@ -132,5 +132,17 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 
 # 7. To-do list
 
+    - Notes on missing data and data contributors. 
+    - Met data (including soil moisture)
+    - Understorey respiration rate scaled with temperature
+    - GPP data from Maespa - need to reconcile CUE issues for both overstorey and understorey
+    - Standing dead pool
+    - Mycorrhizal data for both C and P project (Jeff)
+    - Root mortality and turnover for both C and P project (Juan)
+    - CH4 data
+    - litter pool
+    - Create error bars
+
+    
 <br/>
 <br/>
