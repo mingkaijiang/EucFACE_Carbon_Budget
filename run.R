@@ -88,7 +88,7 @@ understorey_sla_variable <- make_understorey_sla_variable()
 
 ### Understorey aboveground C pool
 ### reads in c_fraction from constant
-understorey_aboveground_c_pool <- make_understorey_aboveground_biomass_pool(c_fraction)
+understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction)
 
 ### Understorey production flux
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction)

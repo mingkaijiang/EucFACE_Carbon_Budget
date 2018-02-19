@@ -53,9 +53,13 @@ make_soil_respiration_flux <- function(){
     #- average across dates and plots
     Rsoil.out <- summaryBy(soil_respiration_flux~Date+ring,data=RE.m.collar.all,FUN=c(mean),keep.names=T)
     
+    #- prepare output df
     names(Rsoil.out) <- c("Start_date","Ring","soil_respiration_flux")
+    Rsoil.out$Date <- Rsoil.out$Start_date
     Rsoil.out$End_date <- Rsoil.out$Start_date
     Rsoil.out$Ring <- as.numeric(Rsoil.out$Ring)
-    Rsoil.out <- Rsoil.out[,c("Start_date","End_date","Ring","soil_respiration_flux")]
+    Rsoil.out$ndays <- as.numeric(Rsoil.out$End_date - Rsoil.out$Start_date)
+    Rsoil.out <- Rsoil.out[,c("Start_date","End_date","Date","Ring","soil_respiration_flux", "ndays")]
+    
     return(Rsoil.out)
 }

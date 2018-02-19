@@ -30,6 +30,7 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 <br/>
 
 ### 2.3 Input functions and variables
+#### 2.3.1 Source the functions
 ``` {r, warning=F, message=F}
     #### Source functions and packages
     source("R/prepare.R")
@@ -43,7 +44,57 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 
 <br/>
 
-#### Overstorey LAI
+#### 2.3.2 Pre-defined constants
+``` {r, echo=F, warning=F, message=F}
+
+    ### Create the df
+    constDF <- as.data.frame(matrix(ncol=3, nrow=10))
+    colnames(constDF) <- c("Abbreviation", "Value", "Definition")
+    
+    ### Assign abbreviation
+    constDF[1, "Abbreviation"] <- "c_fraction"
+    constDF[2, "Abbreviation"] <- "c_fraction_fr"
+    constDF[3, "Abbreviation"] <- "c_fraction_lp"
+    constDF[4, "Abbreviation"] <- "frass_basket_area"
+    constDF[5, "Abbreviation"] <- "ring_diameter"
+    constDF[6, "Abbreviation"] <- "ring_area"
+    constDF[7, "Abbreviation"] <- "wood_density"
+    constDF[8, "Abbreviation"] <- "ndays_in_month"
+    constDF[9, "Abbreviation"] <- "strip_area"
+    constDF[10, "Abbreviation"] <- "ccost"
+
+    ### Assign value
+    constDF[1, "Value"] <- c_fraction
+    constDF[2, "Value"] <- c_fraction_fr
+    constDF[3, "Value"] <- c_fraction_lp
+    constDF[4, "Value"] <- frass_basket_area
+    constDF[5, "Value"] <- ring_diameter
+    constDF[6, "Value"] <- ring_area
+    constDF[7, "Value"] <- wood_density
+    constDF[8, "Value"] <- ndays_in_month
+    constDF[9, "Value"] <- strip_area
+    constDF[10, "Value"] <- ccost
+    
+    ### Assign definitions
+    constDF[1, "Definition"] <- "Fraction of C in dry matter"
+    constDF[2, "Definition"] <- "Fraction of C in fineroot dry matter"
+    constDF[3, "Definition"] <- "Fraction of C in lerp dry matter"
+    constDF[4, "Definition"] <- "Frass basket area (m2)"
+    constDF[5, "Definition"] <- "FACE ring diameter (m)"
+    constDF[6, "Definition"] <- "FACE ring ground area (m2)"
+    constDF[7, "Definition"] <- "Wood density (g cm-3), averaged global entry"
+    constDF[8, "Definition"] <- "number of days in a month"
+    constDF[9, "Definition"] <- "Understorey harvest strip area (m2)"
+    constDF[10, "Definition"] <- "C cost of growth, i.e. growth respiration"
+    
+    constDF$Value <- round(constDF$Value, 2)
+    
+    kable(constDF)
+```
+
+<br/>
+
+#### 2.3.3 Overstorey LAI
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     ### LAI
     lai_variable <- make_lai_variable()
@@ -64,7 +115,7 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 
 <br/>
 
-#### Overstorey SLA
+#### 2.3.4 Overstorey SLA
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     
     ### LAI
@@ -85,7 +136,28 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 
 <br/>
 
-#### Soil bulk density
+#### 2.3.5 Understorey SLA
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    
+    ### LAI
+    understorey_sla_variable <- make_understorey_sla_variable()
+
+   ### make the plot
+    p <- ggplot(sla_variable,
+                aes(Date, sla_variable, color=factor(Ring))) +   
+            geom_point(size = 5) +
+            xlab("Date") + ylab("SLA") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+<br/>
+
+#### 2.3.6 Soil bulk density
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     ### Soil bulk density at 3 depths
     ### unit is kg m-3
@@ -107,20 +179,387 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 <br/>
 
 # 3. Method **Pools**
+### 3.1 Soil C pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
+                                         return="all_depths")
+
+   ### make the plot
+    p <- ggplot(soil_c_pool,
+                aes(Date, soil_carbon_pool, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Soil C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Leaf C Pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction)
+
+   ### make the plot
+    p <- ggplot(leaf_c_pool,
+                aes(Date, leaf_pool, color=factor(Ring))) +   
+            geom_point(size = 2.5) + geom_line() + 
+            xlab("Date") + ylab("Canopy C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Wood C Pool
+
+This wood C pool is estimated based on allometric relationship with height.
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    wood_c_pool <- make_wood_pool(ring_area,c_fraction)
 
+   ### make the plot
+    p <- ggplot(wood_c_pool,
+                aes(Date, wood_pool, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Wood C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+
+Below is a 2nd way of estimating wood C pool, based on wood volume information.
+
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
+
+   ### make the plot
+    p <- ggplot(wood_pool_2,
+                aes(Date, wood_pool_2, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Wood C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+
+Here we need to compare the two methods:
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    wood <- summaryBy(wood_pool~Ring, data=wood_c_pool, FUN=mean, keep.names=T, na.rm=T)
+    wood$wood_pool2 <- wood_pool_2$wood_pool_2
+    colnames(wood) <- c("Ring", "Height", "Volume")
+    plotDF <- melt(wood, id="Ring")
+    
+    
+   ### make the plot
+    p <- ggplot(plotDF,
+                aes(Ring, value)) +   
+            geom_bar(stat = "identity", aes(fill=variable),
+                     position="dodge") +
+            xlab("Ring") + ylab("Wood C Pool (g C m-2)")
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+How do we reconcile the difference in estimated wood c pool?
+
+### Fineroot C Pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    fineroot_c_pool <- make_fineroot_pool(c_fraction_fr)
+
+   ### make the plot
+    p <- ggplot(fineroot_c_pool,
+                aes(Date, fineroot_pool, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Fineroot C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Understorey aboveground C pool
+
+There are two ways of estimating understory aboveground biomass, 1. Harvest data, and 2) Non-destructive, Stereo Camera estimates. 
+
+The harvest data is provided at quarterly timestep, based on harvesting biomass sourced from a strip with area of 0.1 m2. It includes grasses and herbs. It provides % live and % dead information. 
+
+The stereo camera biomass estimate has more temporal coverage, and is estimated based on height and % coverage images (extrapolated based on pre-calibrated height-biomass relationship). The stereo camera estimates include also shrubs. 
+
+#### Harvest estimate of understorey aboveground C pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction)
+
+   ### make the plot
+    p <- ggplot(understorey_aboveground_c_pool,
+                aes(Date, Total_g_C_m2, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Understorey C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+
+#### Stereo camera estimates of understorey aboveground C pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction)
+
+   ### make the plot
+    p <- ggplot(understorey_aboveground_c_pool_2,
+                aes(Date, Total_g_C_m2, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Understorey C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+#### Compare the methods
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    DF1 <- summaryBy(Total_g_C_m2~Date, data=understorey_aboveground_c_pool, 
+                     FUN=mean, na.rm=T, keep.names=T)
+    DF2 <- summaryBy(Total_g_C_m2~Date, data=understorey_aboveground_c_pool_2, 
+                     FUN=mean, na.rm=T, keep.names=T)
+    
+    date.list <- unique(c(DF1$Date, DF2$Date))
+    myDF <- data.frame(date.list, NA, NA)
+    colnames(myDF) <- c("Date", "DF1", "DF2")
+    
+    for (i in DF1$Date) {
+        myDF[myDF$Date == i, "DF1"] <- DF1[DF1$Date == i, "Total_g_C_m2"]
+    }
+    
+    for (i in DF2$Date) {
+        myDF[myDF$Date == i, "DF2"] <- DF2[DF2$Date == i, "Total_g_C_m2"]
+    }
+    
+    plotDF <- melt(myDF, id.var="Date")
+
+   ### make the plot
+   p <- ggplot(plotDF, aes(Date,value)) + 
+            geom_point() + 
+            stat_smooth() +
+            facet_wrap(~variable)
+        
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+The temporal trend is similar, but the estimated biomass is different, with non-destructive method estimated higher biomass than harvesting estimates. 
+
+#### Check % live result
+``` {r, echo=F, warning=F, message=F, fig.width = 7, fig.align="center"}
+    understorey_live_percent <- make_understorey_percent_live_estimate()
+
+    p <- ggplot(understorey_live_percent, aes(Date, percent_live, color=factor(Ring))) +
+        geom_line() + geom_point(size=5) +
+        xlab("Date") + ylab("Understorey % live") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    if (plot_option == T) {
+            plot(p)
+    }
 
 ```
+
+
 <br/>
 <br/>
 
 # 4. Method **Inout**
+### Soil respiration flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"} 
+    soil_respiration_flux <- make_soil_respiration_flux()
+
+   ### make the plot
+    p <- ggplot(soil_respiration_flux,
+                aes(Date, soil_respiration_flux, color=factor(Ring))) +   
+            geom_point(size = 1) + geom_line() + 
+            xlab("Date") + ylab("Soil Respiration Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### DOC Flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    doc_leaching_flux <- make_doc_leaching_flux(return="deep")
+
+   ### make the plot
+    p <- ggplot(doc_leaching_flux,
+                aes(Date, doc_leaching_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("DOC Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+
 
 <br/>
 <br/>
 
 # 5. Method **NPP**
+### Leaf Litter Flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    leaflitter_flux <- make_leaflitter_flux(c_fraction)
+
+   ### make the plot
+    p <- ggplot(leaflitter_flux,
+                aes(Date, leaf_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Leaf Litter Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Leaf, twigs, seeds and bark litter flux comparison
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    r <- c(1:6)
+    myDF <- data.frame(r, NA, NA, NA, NA)
+    colnames(myDF) <- c("Ring", "twig_flux", "bark_flux", "seed_flux", "leaf_flux")
+    for (i in r) {
+        myDF[myDF$Ring == i, "twig_flux"] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
+                                                  sum(twig_flux*ndays)/sum(ndays)) * 365/1000
+        myDF[myDF$Ring == i, "bark_flux"] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
+                                                  sum(bark_flux*ndays)/sum(ndays)) * 365/1000
+        myDF[myDF$Ring == i, "seed_flux"] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
+                                                  sum(seed_flux*ndays)/sum(ndays)) * 365/1000
+        myDF[myDF$Ring == i, "leaf_flux"] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
+                                                  sum(leaf_flux*ndays)/sum(ndays)) * 365/1000
+    }
+    plotDF <- melt(myDF, id="Ring")
+
+   ### make the plot
+    p <- ggplot(plotDF, aes(Ring, value)) +   
+                    geom_bar(stat = "identity", aes(fill=variable),
+                    position="dodge") +
+                xlab("Ring") + ylab("Litter Flux (g m-2 yr-1)")
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Wood Production Flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    wood_production_flux <- make_wood_production_flux(wood_c_pool)
+
+   ### make the plot
+    p <- ggplot(wood_production_flux,
+                aes(Date, wood_production_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Wood Production Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Fineroot Production Flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    fineroot_production_flux <- make_fineroot_production_flux(c_fraction_fr)
+
+   ### make the plot
+    p <- ggplot(fineroot_production_flux,
+                aes(Date, fineroot_production_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Fineroot Production Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Frass Production Flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    frass_production_flux <- make_frass_production_flux()
+
+   ### make the plot
+    p <- ggplot(frass_production_flux,
+                aes(Date, frass_production_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Frass Production Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Herbivory leaf consumption flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla=sla_variable, 
+                                                                            frass_flux=frass_production_flux)
+
+   ### make the plot
+    p <- ggplot(herbivory_leaf_consumption_flux,
+                aes(Date, herbivory_leaf_consumption_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Herbivory leaf consumption flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+### Lerp Production Flux
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    lerp_production_flux <- make_lerp_production_flux(c_fraction_lp)
+
+   ### make the plot
+    p <- ggplot(lerp_production_flux,
+                aes(Date, lerp_production_flux, color=factor(Ring))) +   
+            geom_point(size = 5) +
+            xlab("Date") + ylab("Lerp Production Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
 
 <br/>
 <br/>
