@@ -1,0 +1,136 @@
+---
+title: "EucFACE Carbon Synthesis Project Report"
+author: "Mingkai Jiang"
+date: "2/19/2018"
+output: 
+  html_document:
+    toc: true
+    theme: united
+---
+
+1. Description
+---------------
+This is a progress report of the EucFACE carbon (C) synthesis project. All results presented in this report are linked with the code and the data. 
+
+This file attempts to summarize C-related pools, fluxes, their CO2 treatment and inter-ring variability, and the temporal patterns. 
+
+All the data used in this study will be made available on HIEv. 
+
+# 2. Methods 
+### 2.1 Calculating NEP
+Here, we are trying to use 3 possible ways to compute **Net Ecosystem Productivity**, which are:
+
+    - Change in pools
+    - Total in fluxes - total out fluxes
+    - NPP - Rh
+
+### 2.2 Units
+All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, and will be summarized as g C m-2 yr-1 in the summary table. 
+
+<br/>
+
+### 2.3 Input functions and variables
+``` {r, warning=F, message=F}
+    #### Source functions and packages
+    source("R/prepare.R")
+
+    #### Set plotting option
+    ##   if = T, plot time series figure of individual variable 
+    ##           else, no plots
+    plot_option = T
+
+```
+
+<br/>
+
+#### Overstorey LAI
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    ### LAI
+    lai_variable <- make_lai_variable()
+    
+    ### make the plot
+    p <- ggplot(lai_variable,
+                aes(Date, lai_variable, color=factor(Ring))) +   
+            geom_point(size = 1.5) + geom_line() + 
+            xlab("Date") + ylab("LAI") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+
+```
+
+<br/>
+
+#### Overstorey SLA
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    
+    ### LAI
+    sla_variable <- make_sla_variable()
+
+   ### make the plot
+    p <- ggplot(sla_variable,
+                aes(Date, sla_variable, color=factor(Ring))) +   
+            geom_point(size = 5) +
+            xlab("Date") + ylab("SLA") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+<br/>
+
+#### Soil bulk density
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    ### Soil bulk density at 3 depths
+    ### unit is kg m-3
+    soil_bulk_density_variable <- make_soil_bulk_density()
+
+   ### make the plot
+    p <- ggplot(soil_bulk_density_variable,
+                aes(ring, bulk_density_kg_m3)) +   
+            geom_bar(stat = "identity", aes(fill=Depth),
+                     position="dodge") +
+            xlab("Ring") + ylab("Soil bulk density (kg m-3)")
+    
+    if (plot_option == T) {
+            plot(p)
+    }
+```
+
+<br/>
+<br/>
+
+# 3. Method **Pools**
+
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+
+
+```
+<br/>
+<br/>
+
+# 4. Method **Inout**
+
+<br/>
+<br/>
+
+# 5. Method **NPP**
+
+<br/>
+<br/>
+
+# 6. Summary tables
+
+<br/>
+<br/>
+
+# 7. To-do list
+
+<br/>
+<br/>
