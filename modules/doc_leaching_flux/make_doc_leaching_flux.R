@@ -39,5 +39,7 @@ make_doc_leaching_flux <- function(return){
     out <- outDF[,c("Start_date", "date", "date", "ring", "doc_leaching_flux")]
     colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "doc_leaching_flux")
 
+    out$ndays <- as.numeric(out$End_date - out$Start_date) + 1
+    
     return(out)
 }

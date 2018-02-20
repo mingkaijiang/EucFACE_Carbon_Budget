@@ -42,7 +42,7 @@ make_understorey_respiration_flux <- function(c_pool,
             c_pool[c_pool$Date == date.list[i], "End_date"] <- e.date.list[i]
         }
         
-        c_pool$ndays <- as.numeric(as.Date(c_pool$End_date) - as.Date(c_pool$Start_date))
+        c_pool$ndays <- as.numeric(as.Date(c_pool$End_date) - as.Date(c_pool$Start_date)) + 1
         
         out <- c_pool[, c("Date", "Start_date", "End_date", "Ring", "respiration", "ndays")]
         
@@ -59,7 +59,7 @@ make_understorey_respiration_flux <- function(c_pool,
         
         out <- gpp[,c("Start_date", "End_date", "Date", "Ring", "respiration_mg_m2_d")]
         colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "respiration")
-        out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date))
+        out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date)) + 1
     }
     
     return(out)

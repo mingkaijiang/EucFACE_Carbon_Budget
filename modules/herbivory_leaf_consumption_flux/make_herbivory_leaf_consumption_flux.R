@@ -49,6 +49,8 @@ make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     # question: would this consumed leaf C be added on top of the leaf pool?
     # answer: yes. 
     
+    outDF$ndays <- as.numeric(outDF$End_date - outDF$Start_date) + 1
+    
     return(outDF)
     
 }

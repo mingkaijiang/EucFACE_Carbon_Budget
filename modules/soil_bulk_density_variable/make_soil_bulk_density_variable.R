@@ -10,7 +10,9 @@ make_soil_bulk_density <- function() {
     
     df <- df[,1:7]
     names(df)[7] <- "bulk_density"
-    df$bulk_density <- as.numeric(as.character(df$bulk_density))
+    df$bulk_density <- as.character(df$bulk_density)
+    df <- subset(df, bulk_density != "na")
+    df$bulk_density <- as.numeric(df$bulk_density)
     
     # average across rings and depths, unit: g/cm3
     df.m <- summaryBy(bulk_density~ring+Depth,

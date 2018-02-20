@@ -23,7 +23,7 @@ make_wood_production_flux <- function(wood_pool){
   wp.out <- prod[,c("Start_date", "Date", "Date", "Ring", "wood_production_flux")]
   
   names(wp.out) <- c("Start_date", "End_date", "Date", "Ring", "wood_production_flux")
-  wp.out$ndays <- as.numeric(wp.out$End_date - wp.out$Start_date)
+  wp.out$ndays <- as.numeric(wp.out$End_date - wp.out$Start_date) + 1
   
   return(wp.out)
 }

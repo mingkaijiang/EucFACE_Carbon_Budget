@@ -49,9 +49,11 @@ make_lerp_production_flux <- function(c_frac) {
     out$End_date <- as.Date(paste0("1-", out$date), format = "%d-%b-%y") + months(1) - days(1)
     out$Start_date <- as.Date(paste0("1-", out$date), format = "%d-%b-%y") 
     
+    out$ndays <- as.numeric(out$End_date - out$Start_date) + 1
+    
     #- format dataframe to return
-    out <- out[,c("Start_date", "End_date","date", "ring","lerp_production_flux")]
-    colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "lerp_production_flux")
+    out <- out[,c("Start_date", "End_date","date", "ring","lerp_production_flux", "ndays")]
+    colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "lerp_production_flux", "ndays")
     
     return(out)
 }

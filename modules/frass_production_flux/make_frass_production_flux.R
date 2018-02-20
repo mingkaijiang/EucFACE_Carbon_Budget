@@ -39,7 +39,7 @@ make_frass_production_flux <- function() {
     
     #- count number of days between two dates  
     d <- unique(outDF$DATE)
-    b <- count_ndays(d)
+    b <- count_ndays(d) + 1
     
     #- convert into mg m-2 d-1
     outDF$ndays <- rep(b, each = 6)

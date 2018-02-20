@@ -22,7 +22,7 @@ make_coarse_root_production_flux <- function(cr_pool) {
     
     names(cr.out) <- c("Start_date", "End_date", "Date", "Ring", "coarse_root_production_flux")
     
-    cr.out$ndays <- as.numeric(cr.out$End_date - cr.out$Start_date)
+    cr.out$ndays <- as.numeric(cr.out$End_date - cr.out$Start_date) + 1
     
     return(cr.out)
     

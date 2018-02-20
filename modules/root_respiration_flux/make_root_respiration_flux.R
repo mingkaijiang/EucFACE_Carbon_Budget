@@ -36,7 +36,7 @@ make_root_respiration_flux <- function(fr_pool){
   tempDF.out$End_date <- tempDF.out$Start_date
   tempDF.out$Ring <- as.numeric(tempDF.out$Ring)
   tempDF.out$Date <- tempDF.out$Start_date
-  tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date)
+  tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date) + 1
   tempDF.out <- tempDF.out[,c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")]
   
   return(tempDF.out)
