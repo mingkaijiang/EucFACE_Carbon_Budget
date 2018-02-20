@@ -82,6 +82,10 @@ wood_production_flux <- make_wood_production_flux(wood_c_pool)
 ### See R_other/compare_wood_pool_methods.R !
 wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
 
+### Standing dead C pool
+standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
+                                                  c_frac=c_fraction)
+
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
 
@@ -97,12 +101,6 @@ understorey_aboveground_production_flux <- make_understorey_aboveground_producti
 #understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
 #                                                          understorey_sla_variable)
 
-### Understorey respiration
-### assumes either a fixed or a function of temperature
-understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
-                                                                  c_frac=c_fraction,
-                                                                  gpp=understorey_gpp_flux,
-                                                                  assumption="fixed")
 
 ### Soil microbial C pool
 ### top 10 cm only
@@ -143,6 +141,12 @@ overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 ### Understorey GPP
 understorey_gpp_flux <- make_understorey_GPP_flux()
 
+### Understorey respiration
+### assumes either a fixed or a function of temperature
+understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
+                                                                  c_frac=c_fraction,
+                                                                  gpp=understorey_gpp_flux,
+                                                                  assumption="cue")
 
 ###### ----------Make summary tables-------------- ######
 ### Generate overall summary table (ignoring rings and time)

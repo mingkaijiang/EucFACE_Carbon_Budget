@@ -33,9 +33,10 @@ make_fineroot_production_flux <- function(c_frac){
     
     frp.m$Start_date <- as.Date(frp.m$Start_date)
     frp.m$End_date <- as.Date(frp.m$End_date)
+    frp.m$ndays <- as.numeric(frp.m$End_date - frp.m$Start_date)
     
     #- format dataframe to return
-    frp.out <- frp.m[,c("Date","Start_date", "End_date", "Ring","fineroot_production_flux")]
+    frp.out <- frp.m[,c("Date","Start_date", "End_date", "Ring","fineroot_production_flux", "ndays")]
     return(frp.out)
     
 }

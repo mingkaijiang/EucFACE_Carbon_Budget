@@ -17,40 +17,30 @@ make_EucFACE_table <- function() {
     npp$value <- rep(NA, length(npp$term))
     npp$notes <- rep("", length(npp$term))
     
-    ### prepare the ndays in all flux calculations
-    leaflitter_flux$days <- as.numeric(with(leaflitter_flux,End_date - Start_date))
-    frass_production_flux$days <- as.numeric(with(frass_production_flux,End_date - Start_date))
-    fineroot_production_flux$days <- as.numeric(with(fineroot_production_flux,End_date - Start_date))
-    understorey_aboveground_production_flux$days <- as.numeric(with(understorey_aboveground_production_flux,
-                                                                    End_date - Start_date))
-    wood_production_flux$days <- as.numeric(with(wood_production_flux,End_date - Start_date))
-    coarse_root_production_flux_1$days <- as.numeric(with(coarse_root_production_flux_1,
-                                                          End_date - Start_date))
-    
     ### leaf NPP
-    litter_prod <- with(leaflitter_flux,sum(leaf_flux*days)/sum(days)) * conv
+    litter_prod <- with(leaflitter_flux,sum(leaf_flux*ndays)/sum(ndays)) * conv
     npp$value[npp$term == "Leaf NPP"] <- litter_prod
     npp$notes[npp$term == "Leaf NPP"] <- "Calculated from leaf litterfall only"
     
     ### stem NPP
-    stem_prod <- with(wood_production_flux,sum(wood_production_flux*days)/sum(days)) * conv
+    stem_prod <- with(wood_production_flux,sum(wood_production_flux*ndays)/sum(ndays)) * conv
     npp$value[npp$term == "Stem NPP"] <- stem_prod
     npp$notes[npp$term == "Stem NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
     ### root NPP
-    froot_prod <- with(fineroot_production_flux,sum(fineroot_production_flux*days)/sum(days)) * conv
+    froot_prod <- with(fineroot_production_flux,sum(fineroot_production_flux*ndays)/sum(ndays)) * conv
     npp$value[npp$term == "Fine Root NPP"] <- froot_prod
     npp$notes[npp$term == "Fine Root NPP"] <- "One year's data only"
     
     ### Coarse root NPP
     cr_prod <- with(coarse_root_production_flux_1,
-                      sum(coarse_root_production_flux*days)/sum(days)) * conv
+                      sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
     npp$value[npp$term == "Coarse Root NPP"] <- cr_prod
     npp$notes[npp$term == "Coarse Root NPP"] <- "Calculated from stem diameter + allometry. Includes all trees"
     
     ### frass production
     npp$value[npp$term == "Frass production"] <- with(frass_production_flux,
-                                                      sum(frass_production_flux*days)/sum(days)) * conv
+                                                      sum(frass_production_flux*ndays)/sum(ndays)) * conv
     
     ### Rh
     npp$value[npp$term == "R hetero"] <- mean(heterotrophic_respiration_flux$heterotrophic_respiration_flux) * conv
@@ -58,7 +48,7 @@ make_EucFACE_table <- function() {
         
     ### Understorey NPP
     und_prod <- with(understorey_aboveground_production_flux,
-                     sum(understorey_production_flux*days)/sum(days)) * conv
+                     sum(understorey_production_flux*ndays)/sum(ndays)) * conv
     npp$value[npp$term == "Understorey NPP"] <- und_prod
     npp$notes[npp$term == "Understorey NPP"] <- "Harvest data"    
         
@@ -73,8 +63,6 @@ make_EucFACE_table <- function() {
     inout <- data.frame(term)
     inout$value <- rep(NA, length(inout$term))
     inout$notes <- rep("", length(inout$term))
-    
-    herbivory_respiration_flux$days <- as.numeric(with(herbivory_respiration_flux,End_date - Start_date))
     
     
     ### GPP 
@@ -95,8 +83,8 @@ make_EucFACE_table <- function() {
     
     ### Ra understorey
     inout$value[inout$term == "Ra understorey"] <- with(understorey_respiration_flux,
-                                                        sum(respiration*days)/sum(days)) * conv
-    inout$notes[inout$term == "Ra understorey"] <- "Used one fixed Rd value, huge uncertainty"
+                                                        sum(respiration*ndays)/sum(ndays)) * conv
+    inout$notes[inout$term == "Ra understorey"] <- "Used fixed CUE approach"
     
 
     # Rsoil
@@ -105,7 +93,7 @@ make_EucFACE_table <- function() {
     
     # Rherbivore
     inout$value[inout$term == "Rherbivore"] <- with(herbivory_respiration_flux,
-                                                    sum(respiration_flux*days)/sum(days)) * conv
+                                                    sum(respiration_flux*ndays)/sum(ndays)) * conv
     inout$notes[inout$term == "Rherbivore"] <- "Leaf consumption minus frass production"
     
     # Rgrowth
@@ -118,6 +106,7 @@ make_EucFACE_table <- function() {
     
     #CH4
     # inout$value[inout$term == "CH4 efflux"] <- mean(methane_c_flux$methane_flux) * conv
+    inout$notes[inout$term == "CH4 efflux"] <- "working on parameterization"
     
     ##############################################
     #### Method 2
@@ -137,6 +126,7 @@ make_EucFACE_table <- function() {
     
     ### Overstorey wood
     pool$value[pool$term == "Overstorey wood"] <- mean(wood_c_pool$wood_pool)
+    pool$notes[pool$term == "Overstorey wood"] <- "scaled with height"
     
     ### Understorey aboveground
     pool$value[pool$term == "Understorey above-ground"] <- mean(understorey_aboveground_c_pool$Total_g_C_m2)
@@ -157,7 +147,17 @@ make_EucFACE_table <- function() {
     pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_c_pool$Cmic_g_m2)
     pool$notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
         
-        
+    ### Mycorrhizae
+    # pool$value[pool$term == "Mycorrhizae"]  <- mean(microbial_c_pool$Cmic_g_m2)
+    pool$notes[pool$term == "Mycorrhizae"]  <- "Waiting for data"
+    
+    ### Insects
+    pool$value[pool$term == "Insects"]  <- 0.0
+    pool$notes[pool$term == "Insects"]  <- "We porbably will have to assume it to be 0"
+    
+    ### CWD or standing dead
+    pool$value[pool$term == "Coarse woody debris"]  <- mean(standing_dead_c_pool$wood_pool)
+    pool$notes[pool$term == "Coarse woody debris"]  <- "Taken from the standing dead pool"
         
     ##### output tables
     return(list(inout = data.table(inout), 

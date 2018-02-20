@@ -58,7 +58,7 @@ make_soil_respiration_flux <- function(){
     Rsoil.out$Date <- Rsoil.out$Start_date
     Rsoil.out$End_date <- Rsoil.out$Start_date
     Rsoil.out$Ring <- as.numeric(Rsoil.out$Ring)
-    Rsoil.out$ndays <- as.numeric(Rsoil.out$End_date - Rsoil.out$Start_date)
+    Rsoil.out$ndays <- as.numeric(Rsoil.out$End_date - Rsoil.out$Start_date) + 1
     Rsoil.out <- Rsoil.out[,c("Start_date","End_date","Date","Ring","soil_respiration_flux", "ndays")]
     
     return(Rsoil.out)
