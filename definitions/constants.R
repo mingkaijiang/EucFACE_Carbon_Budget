@@ -47,3 +47,9 @@ conv <- 365 / 1000
 
 # ccost growth respiration (guess value)
 ccost <- 0.3
+
+# root respiration coefficients
+# derived from Whole Tree Chamber experiment 3
+# based on 1-year seedlings of Eucalyptus Tereticornis
+Rcoef <- 1.73 # nmol CO2 m-2 s-1
+Rbase <- 2.26

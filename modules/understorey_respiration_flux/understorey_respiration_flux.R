@@ -30,7 +30,11 @@ make_understorey_respiration_flux <- function(c_pool,
         
     } else if (assumption == "q10") {
         ### Assume a Q10 function with temperature
+        ### Calculate R root
+        c_pool$respiration_nmol <- Rcoef * Rbase ^ ((c_pool$Tsoil - 20) / 10) * c_pool$Live_g_C_m2 / c_frac
         
+        ### convert from nmol CO2 g-1 s-1 to mg C m-2 d-1
+        c_pool$respiration <- c_pool$respiration_nmol*60*60*24*1e-9*12.01*1000
     }
 
     ### make it a flux to cover certain period of time

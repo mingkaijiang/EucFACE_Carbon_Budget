@@ -20,8 +20,8 @@ make_root_respiration_flux <- function(fr_pool){
   }
   
   ### define temperature function
-  Rcoef <- 1.73 # nmol CO2 m-2 s-1
-  Rbase <- 2.26
+  #Rcoef <- 1.73 # nmol CO2 m-2 s-1
+  #Rbase <- 2.26
   
   ### Calculate R root
   tempDF$Rroot <- Rcoef * Rbase ^ ((tempDF$Tsoil - 15) / 10) * tempDF$fr_biomass
@@ -35,7 +35,9 @@ make_root_respiration_flux <- function(fr_pool){
   names(tempDF.out) <- c("Start_date","Ring","root_respiration_flux")
   tempDF.out$End_date <- tempDF.out$Start_date
   tempDF.out$Ring <- as.numeric(tempDF.out$Ring)
-  tempDF.out <- tempDF.out[,c("Start_date","End_date","Ring","root_respiration_flux")]
+  tempDF.out$Date <- tempDF.out$Start_date
+  tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date)
+  tempDF.out <- tempDF.out[,c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")]
   
   return(tempDF.out)
 }
