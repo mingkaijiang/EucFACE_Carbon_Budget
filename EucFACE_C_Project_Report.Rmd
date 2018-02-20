@@ -930,17 +930,20 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 
 # 7. To-do list
 
-    - Notes on missing data and data contributors. 
-    - Met data
-    - Understorey respiration rate scaled with temperature
-    - GPP data from Maespa - need to reconcile CUE issues for both overstorey and understorey
     - Standing dead pool
-    - Mycorrhizal data for both C and P project (Jeff)
-    - Root mortality and turnover for both C and P project (Juan)
-    - CH4 data
-    - litter pool
-    - Other missing data 
+    - Understorey respiration scaled with temperature
+    - summary table with more comments, especialy with information on missing data
+    - Check CUE for overstorey and understorey and try to make sure they are in the expected range
+    - changes in pools at annual timestep
+    - CH4 calculations
+    - Litter pool based on % live information
+    - Calculate NEP based on different method
+    - Lerp, frass, herbivory consumption and respiration, where do they go?
+    - Root mortality and turnover
+    - Other missing variables
+    - Calculate NPE based on all methods
     - Temporal trend?
+    - Met data
     - Create error bars
 
     
