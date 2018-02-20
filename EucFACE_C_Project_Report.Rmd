@@ -888,20 +888,20 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/make_table_by_ring.R")
     tables_by_ring <- make_table_by_ring()
-    tables_by_ring$pool$value <- round(tables_by_ring$pool$value, 2)
+    tables_by_ring$pool[,2:9] <- round(tables_by_ring$pool[,2:9], 2)
     kable(tables_by_ring$pool)
 
 ```
 
 #### Method In and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    tables_by_ring$inout$value <- round(tables_by_ring$inout$value, 2)
+    tables_by_ring$inout[,2:9] <- round(tables_by_ring$inout[,2:9], 2)
     kable(tables_by_ring$inout)
 ```
 
 #### Method NPP
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    tables_by_ring$npp$value <- round(tables_by_ring$npp$value, 2)
+    tables_by_ring$npp[,2:9] <- round(tables_by_ring$npp[,2:9], 2)
     kable(tables_by_ring$npp)
 ```
 
@@ -912,20 +912,17 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/make_table_by_year.R")
     tables_by_year <- make_EucFACE_table_by_year()
-    tables_by_year$pool$value <- round(tables_by_year$pool$value, 2)
     kable(tables_by_year$pool)
 
 ```
 
 #### Method In and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    tables_by_year$inout$value <- round(tables_by_year$inout$value, 2)
     kable(tables_by_year$inout)
 ```
 
 #### Method NPP
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    tables_by_year$npp$value <- round(tables_by_year$npp$value, 2)
     kable(tables_by_year$npp)
 ```
 <br/>
