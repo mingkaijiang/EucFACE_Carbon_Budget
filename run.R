@@ -101,6 +101,7 @@ understorey_aboveground_production_flux <- make_understorey_aboveground_producti
 ### assumes either a fixed or a function of temperature
 understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
                                                                   c_frac=c_fraction,
+                                                                  gpp=understorey_gpp_flux,
                                                                   assumption="fixed")
 
 ### Soil microbial C pool

@@ -429,6 +429,23 @@ The microbial C pool is for top 10 cm of soil only, whereas soil C pool is for t
 ```
 
 
+### Standing dead pool
+
+``` {r, echo=F, warning=F, message=F, fig.width = 7, fig.align="center"}
+    standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
+                                                       c_frac=c_fraction)
+
+    p <- ggplot(standing_dead_c_pool, aes(Date, wood_pool, color=factor(Ring))) +
+        geom_line() + geom_point(size=5) +
+        xlab("Date") + ylab("Standing Dead C Pool (g m-2)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    if (plot_option == T) {
+            plot(p)
+    }
+
+```
+
 <br/>
 <br/>
 
@@ -535,17 +552,18 @@ Here, since we don't have direct measurement of understorey respiration flux, we
     - fixed coefficient
     - Scaling with temperature
     
-Below is the fixed coeffcient estimate of understorey respiration flux. 
+Below is the estimate of understorey respiration flux based on cue approach. 
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"}
     understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
                                                                   c_frac=c_fraction,
-                                                                  assumption="fixed")
+                                                                  gpp=understorey_gpp_flux,
+                                                                  assumption="cue")
 
    ### make the plot
     p <- ggplot(understorey_respiration_flux,
                 aes(Date, respiration, color=factor(Ring))) +   
-            geom_point(size = 5) + geom_line() + 
+            geom_point(size = 5) +
             xlab("Date") + ylab("Understorey respiration flux (mg m-2 d-1)") + 
             scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
                                         "#FF4040", "#8B0000", "#0000FF"))
@@ -555,31 +573,6 @@ Below is the fixed coeffcient estimate of understorey respiration flux.
     }
 ```
 
-Below is the Q10 estimate of understorey respiration flux.
-``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"}
-    understorey_respiration_flux_2 <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
-                                                                  c_frac=c_fraction,
-                                                                  assumption="fixed")
-
-   ### make the plot
-    p <- ggplot(understorey_respiration_flux_2,
-                aes(Date, respiration, color=factor(Ring))) +   
-            geom_point(size = 5) + geom_line() + 
-            xlab("Date") + ylab("Understorey respiration flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
-    
-    if (plot_option == T) {
-            plot(p)
-    }
-```
-
-
-Here, understorey leaf respiration is scaled by a Q10 function with temperature based on data derived from Whole Tree Chamber exmperiment 3. 
-
-The Q10 equation writes as:
-
-$$R_{root} = 1.73 C_{root} 2.26^{(T_{air} - 15) \over 10}$$
 
 ### Herbivore respiration flux
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"}
@@ -931,7 +924,7 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 # 7. To-do list
 
     - Standing dead pool
-    - Understorey respiration scaled with temperature
+    - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
     - summary table with more comments, especialy with information on missing data
     - Check CUE for overstorey and understorey and try to make sure they are in the expected range
     - changes in pools at annual timestep

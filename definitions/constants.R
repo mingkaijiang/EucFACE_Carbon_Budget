@@ -53,3 +53,6 @@ ccost <- 0.3
 # based on 1-year seedlings of Eucalyptus Tereticornis
 Rcoef <- 1.73 # nmol CO2 m-2 s-1
 Rbase <- 2.26
+
+# understorey cue
+under_cue <- 0.5

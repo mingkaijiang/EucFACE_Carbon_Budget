@@ -1,5 +1,6 @@
 make_understorey_respiration_flux <- function(c_pool,
                                               c_frac,
+                                              gpp,
                                               assumption) {
     
     ### assumption options: 1: fixed - use the Rdmass value regardless of temperature and PAR
@@ -26,32 +27,41 @@ make_understorey_respiration_flux <- function(c_pool,
     if (assumption == "fixed") {
         ### Assume a fixed constant
         ### return in mg C m-2 d-1
-        c_pool$respiration <- c_pool$Live_g_C_m2 / c_frac * rd
+        c_pool$dark_respiration <- c_pool$Live_g_C_m2 / c_frac * rd
+        
+        ### Need a rdark to rday conversion coefficient
+        c_pool$respiration <- c_pool$dark_respiration * 2.5
+        
+        ### make it a flux to cover certain period of time
+        date.list <- unique(as.character(c_pool$Date))
+        s.date.list <- c("2014-08-01", date.list[1:length(date.list)-1])
+        e.date.list <- date.list
+        
+        for (i in 1:length(date.list)) {
+            c_pool[c_pool$Date == date.list[i], "Start_date"] <- s.date.list[i]
+            c_pool[c_pool$Date == date.list[i], "End_date"] <- e.date.list[i]
+        }
+        
+        c_pool$days <- as.numeric(as.Date(c_pool$End_date) - as.Date(c_pool$Start_date))
+        
+        out <- c_pool[, c("Date", "Start_date", "End_date", "Ring", "respiration", "days")]
         
     } else if (assumption == "q10") {
         ### Assume a Q10 function with temperature
-        ### Calculate R root
-        c_pool$respiration_nmol <- Rcoef * Rbase ^ ((c_pool$Tsoil - 20) / 10) * c_pool$Live_g_C_m2 / c_frac
-        
-        ### convert from nmol CO2 g-1 s-1 to mg C m-2 d-1
-        c_pool$respiration <- c_pool$respiration_nmol*60*60*24*1e-9*12.01*1000
-    }
 
-    ### make it a flux to cover certain period of time
-    date.list <- unique(as.character(c_pool$Date))
-    s.date.list <- c("2014-08-01", date.list[1:length(date.list)-1])
-    e.date.list <- date.list
-    
-    for (i in 1:length(date.list)) {
-        c_pool[c_pool$Date == date.list[i], "Start_date"] <- s.date.list[i]
-        c_pool[c_pool$Date == date.list[i], "End_date"] <- e.date.list[i]
+        
+    } else if (assumption == "cue") {
+        gpp$respiration <- gpp$GPP * under_cue
+        gpp$Start_date <- paste0(gpp$year, "-01-01")
+        gpp$End_date <- paste0(gpp$year, "-12-31")
+        gpp$Date <- gpp$End_date
+        gpp$respiration_mg_m2_d <- gpp$respiration / 365 * 1000
+        
+        out <- gpp[,c("Start_date", "End_date", "Date", "Ring", "respiration_mg_m2_d")]
+        colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "respiration")
+        out$days <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date))
     }
-    
-    c_pool$days <- as.numeric(as.Date(c_pool$End_date) - as.Date(c_pool$Start_date))
-    
-    out <- c_pool[, c("Date", "Start_date", "End_date", "Ring", "respiration", "days")]
     
     return(out)
-    
     
 }
