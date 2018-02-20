@@ -929,6 +929,7 @@ Here I am providing an overall summary of the results (ignoring ring and years).
     - Litter pool based on % live information
     - Calculate NEP based on different method
     - Lerp, frass, herbivory consumption and respiration, where do they go?
+    
     - Root mortality and turnover
     - Other missing variables
     - Calculate NPE based on all methods
