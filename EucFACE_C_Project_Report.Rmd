@@ -923,18 +923,15 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 
 # 7. To-do list
 
-    - summary table with more comments, especialy with information on missing data
     - changes in pools at annual timestep
     - CH4 calculations
-    - Litter pool based on % live information
+    - Litter pool based on % live information of understorey?
     - Calculate NEP based on different method
     - Lerp, frass, herbivory consumption and respiration, where do they go?
-    
     - Root mortality and turnover
     - Other missing variables
-    - Calculate NPE based on all methods
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
-    - Temporal trend?
+    - Ring-specific data summary, or year-specific data summary
     - Met data
     - Create error bars
 
