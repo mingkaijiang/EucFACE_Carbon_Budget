@@ -417,7 +417,7 @@ The microbial C pool is for top 10 cm of soil only, whereas soil C pool is for t
 ``` {r, echo=F, warning=F, message=F, fig.width = 7, fig.align="center"}
     microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 
-    p <- ggplot(microbial_c_pool, aes(date, Cmic_g_m2, color=factor(ring))) +
+    p <- ggplot(microbial_c_pool, aes(Date, microbial_pool, color=factor(Ring))) +
         geom_line() + geom_point(size=5) +
         xlab("Date") + ylab("Microbial C Pool (g m-2)") + 
             scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",

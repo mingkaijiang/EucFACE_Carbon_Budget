@@ -28,6 +28,8 @@ make_microbial_pool <- function(bk_density){
     
     df.out$date <- as.Date(as.character(df.out$date), format="%d/%m/%Y")
     
+    colnames(df.out) <- c("Ring", "Date", "microbial_pool")
+    
     return(df.out)
     
 }

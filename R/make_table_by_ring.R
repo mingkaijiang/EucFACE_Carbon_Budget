@@ -140,7 +140,7 @@ make_table_by_ring <- function() {
         pool[pool$term == "Soil C", i+1] <- mean(soil_c_pool[soil_c_pool$Ring == i, "soil_carbon_pool"])
         
         # Microbial biomass
-        pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool[microbial_c_pool$ring == i, "Cmic_g_m2"])
+        pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool[microbial_c_pool$Ring == i, "microbial_pool"])
         
         # Coarse Woody Debris
         pool[pool$term == "Coarse woody debris", i+1]  <- mean(standing_dead_c_pool[standing_dead_c_pool$Ring == i, "wood_pool"], na.rm=T)

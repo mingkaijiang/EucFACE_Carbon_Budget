@@ -275,10 +275,10 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Soil C"] <- "For all depths (0 - 30 cm)"
     
     ### microbial pool
-    pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_c_pool$Cmic_g_m2)
-    pool$start_year[pool$term == "Microbial biomass"] <- min(year(microbial_c_pool$date))
-    pool$end_year[pool$term == "Microbial biomass"] <- max(year(microbial_c_pool$date))
-    pool$timepoint[pool$term == "Microbial biomass"] <- length(unique(microbial_c_pool$date))
+    pool$value[pool$term == "Microbial biomass"]  <- mean(microbial_c_pool$microbial_pool)
+    pool$start_year[pool$term == "Microbial biomass"] <- min(year(microbial_c_pool$Date))
+    pool$end_year[pool$term == "Microbial biomass"] <- max(year(microbial_c_pool$Date))
+    pool$timepoint[pool$term == "Microbial biomass"] <- length(unique(microbial_c_pool$Date))
     pool$data_notes[pool$term == "Microbial biomass"] <- ""
     pool$processing_notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
         
