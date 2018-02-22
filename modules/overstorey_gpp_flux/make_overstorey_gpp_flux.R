@@ -1,6 +1,6 @@
 make_overstorey_gpp_flux <- function() {
     ### read in MAESPA GPP output
-    inDF <- read.csv("data/maespa annual.csv")
+    inDF <- read.csv("temp_files/maespa annual.csv")
     
     colnames(inDF) <- c("year", "Ring", "Treat", "GPP", "Rfoliage")
     

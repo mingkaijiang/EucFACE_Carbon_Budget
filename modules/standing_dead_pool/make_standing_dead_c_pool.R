@@ -10,7 +10,7 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
     f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
     ### this file is not on HIEv yet!
-    f12 <- read.csv("~/Documents/Research/Projects/EucFACE_C_Balance/R_repo/data/EucFACE_dendrometers2011-12_RAW.csv")
+    f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     
     ########################
     ### Read in additional files
