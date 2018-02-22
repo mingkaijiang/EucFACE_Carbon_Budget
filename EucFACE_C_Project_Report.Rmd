@@ -5,11 +5,13 @@ date: "2/20/2018"
 output: 
   html_document:
     toc: true
+    toc_float: true
     theme: united
+    
 ---
 
-1. Description
----------------
+# 1. Description
+
 This is a progress report of the EucFACE carbon (C) synthesis project. All results presented in this report are linked with the code and the data. 
 
 This file attempts to summarize C-related pools, fluxes, their CO2 treatment and inter-ring variability, and the temporal patterns. 
@@ -39,6 +41,12 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
     ##   if = T, plot time series figure of individual variable 
     ##           else, no plots
     plot_option = T
+    
+    ring_colours <- c("#FF7F50", "#00FFFF", "#6495ED",
+                      "#FF4040", "#8B0000", "#0000FF")
+    
+    library(knitr)
+    opts_chunk$set(echo = FALSE, message=FALSE, warning=FALSE)
 
 ```
 
@@ -47,49 +55,40 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 #### 2.3.2 Pre-defined constants
 ``` {r, echo=F, warning=F, message=F}
 
-    ### Create the df
-    constDF <- as.data.frame(matrix(ncol=3, nrow=10))
-    colnames(constDF) <- c("Abbreviation", "Value", "Definition")
-    
-    ### Assign abbreviation
-    constDF[1, "Abbreviation"] <- "c_fraction"
-    constDF[2, "Abbreviation"] <- "c_fraction_fr"
-    constDF[3, "Abbreviation"] <- "c_fraction_lp"
-    constDF[4, "Abbreviation"] <- "frass_basket_area"
-    constDF[5, "Abbreviation"] <- "ring_diameter"
-    constDF[6, "Abbreviation"] <- "ring_area"
-    constDF[7, "Abbreviation"] <- "wood_density"
-    constDF[8, "Abbreviation"] <- "ndays_in_month"
-    constDF[9, "Abbreviation"] <- "strip_area"
-    constDF[10, "Abbreviation"] <- "ccost"
 
-    ### Assign value
-    constDF[1, "Value"] <- c_fraction
-    constDF[2, "Value"] <- c_fraction_fr
-    constDF[3, "Value"] <- c_fraction_lp
-    constDF[4, "Value"] <- frass_basket_area
-    constDF[5, "Value"] <- ring_diameter
-    constDF[6, "Value"] <- ring_area
-    constDF[7, "Value"] <- wood_density
-    constDF[8, "Value"] <- ndays_in_month
-    constDF[9, "Value"] <- strip_area
-    constDF[10, "Value"] <- ccost
+    constDF <- data.frame(Abbreviation = c("c_fraction",
+                                           "c_fraction_fr",
+                                           "c_fraction_lp",
+                                           "frass_basket_area",
+                                           "ring_diameter",
+                                           "ring_area",
+                                           "wood_density",
+                                           "ndays_in_month",
+                                           "strip_area",
+                                           "ccost"),
+                          Value = c(c_fraction,
+                                    c_fraction_fr,
+                                    c_fraction_lp,
+                                    frass_basket_area,
+                                    ring_diameter,
+                                    ring_area,
+                                    wood_density,
+                                    ndays_in_month,
+                                    strip_area,
+                                    ccost),
+                          Definition = c("Fraction of C in dry matter",
+                                         "Fraction of C in fineroot dry matter",
+                                         "Fraction of C in lerp dry matter",
+                                         "Frass basket area (m2)",
+                                         "FACE ring diameter (m)",
+                                         "FACE ring ground area (m2)",
+                                         "Wood density (g cm-3), averaged global entry",
+                                         "number of days in a month",
+                                         "Understorey harvest strip area (m2)",
+                                         "C cost of growth, i.e. growth respiration")
+    )
     
-    ### Assign definitions
-    constDF[1, "Definition"] <- "Fraction of C in dry matter"
-    constDF[2, "Definition"] <- "Fraction of C in fineroot dry matter"
-    constDF[3, "Definition"] <- "Fraction of C in lerp dry matter"
-    constDF[4, "Definition"] <- "Frass basket area (m2)"
-    constDF[5, "Definition"] <- "FACE ring diameter (m)"
-    constDF[6, "Definition"] <- "FACE ring ground area (m2)"
-    constDF[7, "Definition"] <- "Wood density (g cm-3), averaged global entry"
-    constDF[8, "Definition"] <- "number of days in a month"
-    constDF[9, "Definition"] <- "Understorey harvest strip area (m2)"
-    constDF[10, "Definition"] <- "C cost of growth, i.e. growth respiration"
-    
-    constDF$Value <- round(constDF$Value, 2)
-    
-    kable(constDF)
+    kable(constDF, digits=2)
 ```
 
 <br/>
@@ -104,10 +103,9 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
                 aes(Date, lai_variable, color=factor(Ring))) +   
             geom_point(size = 1.5) + geom_line() + 
             xlab("Date") + ylab("LAI") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 
@@ -126,10 +124,9 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
                 aes(Date, sla_variable, color=factor(Ring))) +   
             geom_point(size = 5) +
             xlab("Date") + ylab("SLA") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -147,10 +144,9 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
                 aes(Date, sla_variable, color=factor(Ring))) +   
             geom_point(size = 5) +
             xlab("Date") + ylab("SLA") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -170,7 +166,7 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
                      position="dodge") +
             xlab("Ring") + ylab("Soil bulk density (kg m-3)")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -189,10 +185,9 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
                 aes(Date, soil_carbon_pool, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Soil C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -206,10 +201,9 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
                 aes(Date, leaf_pool, color=factor(Ring))) +   
             geom_point(size = 2.5) + geom_line() + 
             xlab("Date") + ylab("Canopy C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -226,10 +220,9 @@ This wood C pool is estimated based on allometric relationship with height.
                 aes(Date, wood_pool, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Wood C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -245,10 +238,9 @@ Below is a 2nd way of estimating wood C pool, based on wood volume information.
                 aes(Date, wood_pool_2, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Wood C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -269,7 +261,7 @@ Here we need to compare the two methods:
                      position="dodge") +
             xlab("Ring") + ylab("Wood C Pool (g C m-2)")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -285,10 +277,9 @@ How do we reconcile the difference in estimated wood c pool?
                 aes(Date, fineroot_pool, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Fineroot C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -311,10 +302,9 @@ I think it makes more sense to use the 1st method, so just show results based on
                 aes(Date, coarse_root_pool, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Coarse root C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -336,10 +326,9 @@ The stereo camera biomass estimate has more temporal coverage, and is estimated 
                 aes(Date, Total_g_C_m2, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Understorey C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -354,10 +343,9 @@ The stereo camera biomass estimate has more temporal coverage, and is estimated 
                 aes(Date, Total_g_C_m2, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Understorey C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -389,7 +377,7 @@ The stereo camera biomass estimate has more temporal coverage, and is estimated 
             stat_smooth() +
             facet_wrap(~variable)
         
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -403,9 +391,8 @@ The temporal trend is similar, but the estimated biomass is different, with non-
     p <- ggplot(understorey_live_percent, aes(Date, percent_live, color=factor(Ring))) +
         geom_line() + geom_point(size=5) +
         xlab("Date") + ylab("Understorey % live") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
-    if (plot_option == T) {
+            scale_color_manual(values=ring_colours, name="Ring")
+    if (plot_option) {
             plot(p)
     }
 
@@ -420,9 +407,8 @@ The microbial C pool is for top 10 cm of soil only, whereas soil C pool is for t
     p <- ggplot(microbial_c_pool, aes(Date, microbial_pool, color=factor(Ring))) +
         geom_line() + geom_point(size=5) +
         xlab("Date") + ylab("Microbial C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
-    if (plot_option == T) {
+            scale_color_manual(values=ring_colours, name="Ring")
+    if (plot_option) {
             plot(p)
     }
 
@@ -438,9 +424,8 @@ The microbial C pool is for top 10 cm of soil only, whereas soil C pool is for t
     p <- ggplot(standing_dead_c_pool, aes(Date, wood_pool, color=factor(Ring))) +
         geom_line() + geom_point(size=5) +
         xlab("Date") + ylab("Standing Dead C Pool (g m-2)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
-    if (plot_option == T) {
+            scale_color_manual(values=ring_colours, name="Ring")
+    if (plot_option) {
             plot(p)
     }
 
@@ -464,10 +449,9 @@ This is MAESPA simulation results, parameterized based on ring-specific data.
                 aes(year, GPP, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Year") + ylab("Overstorey GPP flux (g m-2 yr-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -485,10 +469,9 @@ This is estimated based on overstorey GPP and multiple it by a fixed coefficient
                 aes(year, GPP, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Year") + ylab("Understorey GPP flux (g m-2 yr-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -507,10 +490,9 @@ This is MAESPA simulation output, parameterized based on ring-specific data.
                 aes(year, Rfoliage, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Year") + ylab("Overstorey respiration flux (g m-2 yr-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -530,10 +512,9 @@ Assume all root respiration is fineroot respiration and there is no coarse root 
                 aes(Date, root_respiration_flux, color=factor(Ring))) +   
             geom_point(size = 1) + geom_line() + 
             xlab("Date") + ylab("Root respiration flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -545,7 +526,7 @@ The Q10 equation writes as:
 $$R_{root} = 1.73 C_{root} 2.26^{(T_{soil} - 15) \over 10}$$
 
 
-### Undestorey respiration flux
+### Understorey respiration flux
 
 Here, since we don't have direct measurement of understorey respiration flux, we have to use literature value of dark respiration of Microlaena. we can calculate understorey respiration flux based on two methods:
 
@@ -565,10 +546,9 @@ Below is the estimate of understorey respiration flux based on cue approach.
                 aes(Date, respiration, color=factor(Ring))) +   
             geom_point(size = 5) +
             xlab("Date") + ylab("Understorey respiration flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -591,10 +571,9 @@ Below is the estimate of understorey respiration flux based on cue approach.
                 aes(Date, respiration_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Herbivory respiration flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -608,10 +587,9 @@ Below is the estimate of understorey respiration flux based on cue approach.
                 aes(Date, soil_respiration_flux, color=factor(Ring))) +   
             geom_point(size = 1) + geom_line() + 
             xlab("Date") + ylab("Soil Respiration Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -625,10 +603,9 @@ Below is the estimate of understorey respiration flux based on cue approach.
                 aes(Date, doc_leaching_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("DOC Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -648,7 +625,7 @@ Still working on getting the parameters right!
     #        scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
     #                                    "#FF4040", "#8B0000", "#0000FF"))
     #
-    #if (plot_option == T) {
+    #if (plot_option) {
     #        plot(p)
     #}
 ```
@@ -666,10 +643,9 @@ Still working on getting the parameters right!
                 aes(Date, leaf_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Leaf Litter Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -697,7 +673,7 @@ Still working on getting the parameters right!
                     position="dodge") +
                 xlab("Ring") + ylab("Litter Flux (g m-2 yr-1)")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -711,10 +687,9 @@ Still working on getting the parameters right!
                 aes(Date, wood_production_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Wood Production Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -728,10 +703,9 @@ Still working on getting the parameters right!
                 aes(Date, fineroot_production_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Fineroot Production Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -746,10 +720,9 @@ Still working on getting the parameters right!
                 aes(Date, coarse_root_production_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Coarse root Production Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -765,10 +738,9 @@ Still working on getting the parameters right!
                 aes(Date, frass_production_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Frass Production Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -784,10 +756,9 @@ Still working on getting the parameters right!
                 aes(Date, herbivory_leaf_consumption_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("Herbivory leaf consumption flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -801,10 +772,9 @@ Still working on getting the parameters right!
                 aes(Date, lerp_production_flux, color=factor(Ring))) +   
             geom_point(size = 5) +
             xlab("Date") + ylab("Lerp Production Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -818,10 +788,9 @@ Still working on getting the parameters right!
                 aes(Date, understorey_production_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() +
             xlab("Date") + ylab("Understorey Production Flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -838,10 +807,9 @@ Here I am using the harvest esimates to extrapolate understorey production.
                 aes(Date, heterotrophic_respiration_flux, color=factor(Ring))) +   
             geom_point(size = 1) + geom_line() +
             xlab("Date") + ylab("Heterotrophic respiration flux (mg m-2 d-1)") + 
-            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-                                        "#FF4040", "#8B0000", "#0000FF"))
+            scale_color_manual(values=ring_colours, name="Ring")
     
-    if (plot_option == T) {
+    if (plot_option) {
             plot(p)
     }
 ```
@@ -857,21 +825,18 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/make_table.R")
     overall_tables <- make_EucFACE_table()
-    overall_tables$pool$value <- round(overall_tables$pool$value, 2)
-    kable(overall_tables$pool)
+    kable(overall_tables$pool, digits=2)
 
 ```
 
 #### Method In and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    overall_tables$inout$value <- round(overall_tables$inout$value, 2)
-    kable(overall_tables$inout)
+    kable(overall_tables$inout, digits=2)
 ```
 
 #### Method NPP
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    overall_tables$npp$value <- round(overall_tables$npp$value, 2)
-    kable(overall_tables$npp)
+    kable(overall_tables$npp, digits=2)
 ```
 
 <br/>
@@ -881,21 +846,18 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/make_table_by_ring.R")
     tables_by_ring <- make_table_by_ring()
-    tables_by_ring$pool[,2:9] <- round(tables_by_ring$pool[,2:9], 2)
-    kable(tables_by_ring$pool)
+    kable(tables_by_ring$pool, digits=2)
 
 ```
 
 #### Method In and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    tables_by_ring$inout[,2:9] <- round(tables_by_ring$inout[,2:9], 2)
-    kable(tables_by_ring$inout)
+    kable(tables_by_ring$inout, digits=2)
 ```
 
 #### Method NPP
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    tables_by_ring$npp[,2:9] <- round(tables_by_ring$npp[,2:9], 2)
-    kable(tables_by_ring$npp)
+    kable(tables_by_ring$npp, digits=2)
 ```
 
 <br/>
@@ -905,18 +867,18 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/make_table_by_year.R")
     tables_by_year <- make_EucFACE_table_by_year()
-    kable(tables_by_year$pool)
+    kable(tables_by_year$pool, digits=2)
 
 ```
 
 #### Method In and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    kable(tables_by_year$inout)
+    kable(tables_by_year$inout, digits=2)
 ```
 
 #### Method NPP
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    kable(tables_by_year$npp)
+    kable(tables_by_year$npp, digits=2)
 ```
 <br/>
 <br/>

@@ -10,7 +10,7 @@ make_wood_respiration_flux <- function(Tair,Sapwood,Branchwood){
   
   #- read in the leaf and branch respiration data, calculate mean rate of ambient data
   Rbranch.dat1 <- read.csv("download/WTC_TEMP_CM_GX-RBRANCH_20140513-20140522_L1_v1.csv")
-  Rbranch.dat <- subset(Rbranch.dat1,date=="2014-05-13") # ignore post-girdling data
+  Rbranch.dat <- subset(Rbranch.dat1, date == "2014-05-13") # ignore post-girdling data
   Rleaf <- mean(Rbranch.dat[which(Rbranch.dat$T_treatment=="ambient"),"Rleaf"]) # units are nmol CO2 g-1 s-1 at 15 deg C
   Rbranch <- mean(Rbranch.dat[which(Rbranch.dat$T_treatment=="ambient"),"Rbranch"]) # units are nmol CO2 g-1 s-1 at 15 deg C
   

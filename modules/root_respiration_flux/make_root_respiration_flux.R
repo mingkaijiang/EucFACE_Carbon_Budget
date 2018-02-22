@@ -5,6 +5,9 @@ make_root_respiration_flux <- function(fr_pool){
   #### temperature function derived from Whole Tree Chamber experiment 3
   #### based on 1-year seedlings of Eucalyptus Tereticornis
   
+  #- download the data
+  download_soil_respiration()
+  
   ### read in temperature data
   tempDF <- as.data.frame(data.table::fread(file.path(getToPath(), 
                                   "FACE_P0031_RA_Rsoil-PROCESSED_20120902-20151030_L2_v1.csv")))
