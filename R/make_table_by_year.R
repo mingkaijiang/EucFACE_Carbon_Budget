@@ -10,7 +10,7 @@ make_EucFACE_table_by_year <- function() {
     ##############################################
     #### Define dataframe
     term <- c("LeafNPP", "StemNPP", "FineRootNPP", 
-              "CoarseRootNPP","UnderstoreyNPP", "FrassProduction", 
+              "CoarseRootNPP","UnderstoreyNPP", "FrassProduction", "LeafConsumption",
               "RHetero", "MycorrhizalProduction",
               "FlowerProduction")
     
@@ -58,6 +58,14 @@ make_EucFACE_table_by_year <- function() {
         frass_prod <- with(frass_production_flux[frass_production_flux$year == i, ],
                            sum(frass_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
         npp$FrassProduction[npp$year == i] <- round(frass_prod, 2)
+    }
+    
+    ### leaf consumption
+    herbivory_leaf_consumption_flux$year <- year(herbivory_leaf_consumption_flux$Date)
+    for(i in yr.list) {
+        leaf_cons <- with(herbivory_leaf_consumption_flux[herbivory_leaf_consumption_flux$year == i, ],
+                           sum(herbivory_leaf_consumption_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+        npp$LeafConsumption[npp$year == i] <- round(leaf_cons, 2)
     }
 
     ### Rh

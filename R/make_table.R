@@ -10,7 +10,7 @@ make_EucFACE_table <- function() {
     #### Define dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
               "Coarse Root NPP", "Understorey NPP",
-              "Frass production", "R hetero", 
+              "Frass production", "R hetero", "Leaf consumption",
               "Mycorrhizal production", "Flower production")
     
     npp <- data.frame(term)
@@ -66,6 +66,17 @@ make_EucFACE_table <- function() {
     npp$timepoint[npp$term == "Frass production"] <- length(unique(frass_production_flux$Date))
     npp$data_notes[npp$term == "Frass production"] <- "Data on HIEv"
     npp$processing_notes[npp$term == "Frass production"] <- "Only included time points that have both frassfall and frass C"
+    
+    
+    ### leaf consumption
+    npp$value[npp$term == "Leaf consumption"] <- with(herbivory_leaf_consumption_flux,
+                                                      sum(herbivory_leaf_consumption_flux*ndays)/sum(ndays)) * conv
+    npp$start_year[npp$term == "Leaf consumption"] <- min(year(herbivory_leaf_consumption_flux$Start_date))
+    npp$end_year[npp$term == "Leaf consumption"] <- max(year(herbivory_leaf_consumption_flux$End_date))
+    npp$timepoint[npp$term == "Leaf consumption"] <- length(unique(herbivory_leaf_consumption_flux$Date))
+    npp$data_notes[npp$term == "Leaf consumption"] <- "Data on HIEv"
+    npp$processing_notes[npp$term == "Leaf consumption"] <- "Based on leaf area consumed"
+    
     
     ### Rh
     npp$value[npp$term == "R hetero"] <- mean(heterotrophic_respiration_flux$heterotrophic_respiration_flux) * conv

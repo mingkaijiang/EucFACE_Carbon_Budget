@@ -9,7 +9,7 @@ make_table_by_ring <- function() {
     ### set up dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
               "Coarse Root NPP", "Understorey NPP",
-              "Frass production", "R hetero", 
+              "Frass production", "Leaf consumption", "R hetero", 
               "Mycorrhizal production", "Flower production")
     npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2")
@@ -36,6 +36,10 @@ make_table_by_ring <- function() {
         # Frass Production
         npp[npp$term == "Frass production", i+1] <- with(frass_production_flux[frass_production_flux$Ring == i,],
                                                          sum(frass_production_flux*ndays)/sum(ndays)) * conv 
+        
+        # Leaf consumption
+        npp[npp$term == "Leaf consumption", i+1] <- with(herbivory_leaf_consumption_flux[herbivory_leaf_consumption_flux$Ring == i,],
+                                                         sum(herbivory_leaf_consumption_flux*ndays)/sum(ndays)) * conv 
         
         # Understorey NPP
         npp[npp$term == "Understorey NPP", i+1] <- with(understorey_aboveground_production_flux[understorey_aboveground_production_flux$Ring == i,],
