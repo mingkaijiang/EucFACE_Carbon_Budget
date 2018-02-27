@@ -1,6 +1,16 @@
 #- Make the methane flux
 make_methane_flux <- function(){
     #### returns methane flux (mg m-2 d-1)
+    
+    #### final flux data is the yearly aggregated data
+    #### Information on the data processing is available on HIEv
+    #### not 100% sure about the unit, I think it's ng C cm-3 yr-1
+    #### This cm-3 is tricky, it is most likely the volume of the soil collar,
+    #### which has ~5 cm in soil and ~5 cm aboveground, but also, 
+    #### it needs to include the volume of the chamber!!!
+    #### We just don't have an exact number for this volume!
+    #### Also, this yearly aggregated thing is also problematic:
+    #### Is it scaled with soil temperature, or is it simply a daily rate multiplied by 365?
   
     ### download the data
     download_methane_data()
