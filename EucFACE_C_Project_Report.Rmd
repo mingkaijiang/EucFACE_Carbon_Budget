@@ -885,8 +885,26 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 
 # 7. To-do list
 
+    - Write meeting summaries and send to John, Remko et al.
+    - Met data and soil water data to understand extreme points
+    - Make per ring diagrams for all fluxes and pools
+    - Calculate leaf C pool based on variable SLA data (need more data from Ben Moore)
     - changes in pools at annual timestep
-    - CH4 calculations
+    - Check if soil C pool includes litter layer or not
+    - Check soil C deep layer pools
+    - Fineroot C pool decrease over time - is there a waterlogging effect (correlate with soil moisture and Rsoil, check with Sally and Juan)
+    - Mortality data on HIEv, make them a pool
+    - MAESPA output needs to be on a daily basis
+    - Overstorey leaf respiration flux - check with Jim for parameters
+    - Fineroot respiration flux - more extrapolation is needed, possibly a fraction of Rroot as Rsoil
+    - Understorey gpp needs to compare with respiration
+    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
+    - Leaf production can be estimated based on GPP and litterfall (Remko)
+    - Add twigs, seeds and bark litter into NPP
+    - Lerp production can be cross checked with leaf NPP to understand its effect
+    - Rsoil - what's inter-collar variability? Check with John on its magitude as currently it is quite large. 
+    - Make bar plots of NPP, respiration and GPP to see what's the missing C?
+    - CH4 calculations (need to understand Loic's calculations)
     - Litter pool based on % live information of understorey?
     - Calculate NEP based on different method
     - Lerp, frass, herbivory consumption and respiration, where do they go?
@@ -894,7 +912,6 @@ Here I am providing an overall summary of the results (ignoring ring and years).
     - Other missing variables
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
     - Ring-specific data summary, or year-specific data summary
-    - Met data
     - Create error bars
 
     

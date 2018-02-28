@@ -242,7 +242,7 @@ make_EucFACE_table <- function() {
     pool$start_year[pool$term == "Overstorey leaf"] <- min(year(leaf_c_pool$Date))
     pool$end_year[pool$term == "Overstorey leaf"] <- max(year(leaf_c_pool$Date))
     pool$timepoint[pool$term == "Overstorey leaf"] <- length(unique(leaf_c_pool$Date))
-    pool$data_notes[pool$term == "Overstorey leaf"] <- "LAI and SLA data on HIEv"
+    pool$data_notes[pool$term == "Overstorey leaf"] <- "LAI and SLA data on HIEv, more data on SLA needed from Ben Moore"
     pool$processing_notes[pool$term == "Overstorey leaf"] <- "Calculated from plant area index using constant SLA"
     
     ### Overstorey wood
