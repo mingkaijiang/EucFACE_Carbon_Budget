@@ -8,7 +8,8 @@ make_table_by_ring <- function() {
     ##############################################
     ### set up dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
-              "Coarse Root NPP", "Understorey NPP",
+              "Coarse Root NPP", "Other NPP",
+              "Understorey NPP",
               "Frass production", "Leaf consumption", "R hetero", 
               "Mycorrhizal production", "Flower production")
     npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA)
@@ -32,6 +33,10 @@ make_table_by_ring <- function() {
         # Coarse Root NPP
         npp[npp$term == "Coarse Root NPP", i+1] <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$Ring ==i,],
                                                           sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
+        
+        # Other NPP (i.e. twigs, barks and seeds)
+        npp[npp$term == "Other NPP", i+1] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
+                                                  sum((twig_flux+seed_flux+bark_flux)*ndays)/sum(ndays)) * conv
         
         # Frass Production
         npp[npp$term == "Frass production", i+1] <- with(frass_production_flux[frass_production_flux$Ring == i,],

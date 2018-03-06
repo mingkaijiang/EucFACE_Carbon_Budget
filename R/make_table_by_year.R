@@ -9,8 +9,8 @@ make_EucFACE_table_by_year <- function() {
     #### NPP fluxes (Method 3 of getting NEP)
     ##############################################
     #### Define dataframe
-    term <- c("LeafNPP", "StemNPP", "FineRootNPP", 
-              "CoarseRootNPP","UnderstoreyNPP", "FrassProduction", "LeafConsumption",
+    term <- c("LeafNPP", "StemNPP", "FineRootNPP", "CoarseRootNPP",
+              "OtherNPP", "UnderstoreyNPP", "FrassProduction", "LeafConsumption",
               "RHetero", "MycorrhizalProduction",
               "FlowerProduction")
     
@@ -50,6 +50,14 @@ make_EucFACE_table_by_year <- function() {
         croot_prod <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$year == i, ],
                           sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
         npp$CoarseRootNPP[npp$year == i] <- round(croot_prod,2)
+    }
+    
+    ### leaf NPP
+    leaflitter_flux$year <- year(leaflitter_flux$Date)
+    for (i in yr.list) {
+        other_prod <- with(leaflitter_flux[leaflitter_flux$year == i, ],
+                            sum((twig_flux+seed_flux+bark_flux)*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+        npp$OtherNPP[npp$year == i] <- round(other_prod,2)
     }
     
     ### frass production

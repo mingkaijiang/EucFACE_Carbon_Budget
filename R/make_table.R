@@ -9,7 +9,8 @@ make_EucFACE_table <- function() {
     ##############################################
     #### Define dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
-              "Coarse Root NPP", "Understorey NPP",
+              "Coarse Root NPP", "Other NPP",
+              "Understorey NPP",
               "Frass production", "R hetero", "Leaf consumption",
               "Mycorrhizal production", "Flower production")
     
@@ -57,6 +58,15 @@ make_EucFACE_table <- function() {
     npp$timepoint[npp$term == "Coarse Root NPP"] <- length(unique(coarse_root_production_flux_1$Date))
     npp$data_notes[npp$term == "Coarse Root NPP"] <- "Used literature value based on Eucalyptus nitens"
     npp$processing_notes[npp$term == "Coarse Root NPP"] <- "Scaled with DBH"
+    
+    ### twigs, barks and seeds NPP
+    other_prod <- with(leaflitter_flux,sum((bark_flux+seed_flux+twig_flux)*ndays)/sum(ndays)) * conv
+    npp$value[npp$term == "Other NPP"] <- other_prod
+    npp$start_year[npp$term == "Other NPP"] <- min(year(leaflitter_flux$Start_date))
+    npp$end_year[npp$term == "Other NPP"] <- max(year(leaflitter_flux$End_date))
+    npp$timepoint[npp$term == "Other NPP"] <- length(unique(leaflitter_flux$Date))
+    npp$data_notes[npp$term == "Other NPP"] <- "Data on HIEv"
+    npp$processing_notes[npp$term == "Other NPP"] <- "twigs, barks and seeds"
     
     ### frass production
     npp$value[npp$term == "Frass production"] <- with(frass_production_flux,
