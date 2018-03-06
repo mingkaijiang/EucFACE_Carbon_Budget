@@ -63,20 +63,43 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
         }
     }
     
+    sub.long <- subset(long, diam > 0)
+    
     ### add biomass to long-form dataframe
-    long$biom <- allom_agb(long$diam)  # in kg DM
+    sub.long$biom <- allom_agb(sub.long$diam)  # in kg DM
+    
+    ### calculate heartwood height, 
+    ### based on Morais and Pereira. 2007. Annals of forest science
+    sub.long$heart_height <- 0.957 * as.numeric(sub.long$Height) - 2.298
+
+    ### calculate heartwood diameter,
+    ### based on Morais and Pereira, 2007, Annals of Forest Scienc
+    sub.long$heart_diam <- -1.411 + 0.809 * sub.long$diam
+    
+    ### calculate biomass of heartwood and sapwood
+    sub.long$heart_biom <- allom_agb(sub.long$heart_diam)
+    sub.long$sap_biom <- sub.long$biom - sub.long$heart_biom
     
     ### sum across rings and dates
-    data.tot <- summaryBy(biom~Date+Ring,data=long,FUN=sum,keep.names=T,na.rm=T)
-
+    data.tot <- summaryBy(biom~Date+Ring,data=sub.long,FUN=sum,keep.names=T,na.rm=T)
+    data.heart <- summaryBy(heart_biom~Date+Ring,data=sub.long,FUN=sum,keep.names=T,na.rm=T) 
+    data.sap <- summaryBy(sap_biom~Date+Ring,data=sub.long,FUN=sum,keep.names=T,na.rm=T)
+    
+    out.dat <- cbind(data.tot, data.heart$heart_biom, data.sap$sap_biom)
+    colnames(out.dat) <- c("Date", "Ring", "Tot_biom", "Heart_biom", "Sap_biom")
+    
     ## divide by ring area to get biomass per m2
-    data.tot$wood_pool <- data.tot$biom / ring_area
+    out.dat$wood_pool <- out.dat$Tot_biom / ring_area
+    out.dat$sap_pool <- out.dat$Sap_biom /ring_area
+    out.dat$heart_pool <- out.dat$Heart_biom /ring_area
     
     ### convert from kg DM m-2 to g C m-2
-    data.tot$wood_pool <- data.tot$wood_pool * c_frac * 1000
+    out.dat$wood_pool <- out.dat$wood_pool * c_frac * 1000
+    out.dat$sap_pool <- out.dat$sap_pool * c_frac * 1000
+    out.dat$heart_pool <- out.dat$heart_pool * c_frac * 1000    
     
     ### format dataframe to return
-    wood_pool <- data.tot[,c("Date", "Ring", "wood_pool")]
+    wood_pool <- out.dat[,c("Date", "Ring", "wood_pool", "sap_pool", "heart_pool")]
     
     return(wood_pool)
 }
