@@ -505,7 +505,7 @@ Assume all root respiration is fineroot respiration and there is no coarse root 
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"}
 
-    root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool)
+    root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool, coarse_root_c_pool_1)
 
     ### make the plot
     p <- ggplot(root_respiration_flux,
@@ -519,12 +519,7 @@ Assume all root respiration is fineroot respiration and there is no coarse root 
     }
 ```
 
-Here, root respiration is scaled by a Q10 function with soil temperature based on data derived from Whole Tree Chamber exmperiment 3. 
-
-The Q10 equation writes as:
-
-$$R_{root} = 1.73 C_{root} 2.26^{(T_{soil} - 15) \over 10}$$
-
+Here, fineroot and coarseroot respiration are scaled by a Q10 function with soil temperature based on data derived from Whole Tree Chamber exmperiment 3. 
 
 ### Understorey respiration flux
 

@@ -110,14 +110,6 @@ microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 ### still need to correct for unit (currently in ng of CH4-C per cm3)
 # methane_c_flux <- make_methane_flux()
 
-### Root respiration flux
-root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool)
-
-### Rh C flux
-heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
-                                                                      root_respiration_flux)
-
-
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
                                                               frass_prod=frass_production_flux)
@@ -131,6 +123,12 @@ coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction)
 coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_pool_1) 
 coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
 
+### Root respiration flux
+root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool, coarse_root_c_pool_1)
+
+### Rh C flux
+heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
+                                                                      root_respiration_flux)
 
 #### Overstorey GPP 
 overstorey_gpp_flux <- make_overstorey_gpp_flux()

@@ -51,8 +51,15 @@ ccost <- 0.3
 # root respiration coefficients
 # derived from Whole Tree Chamber experiment 3
 # based on 1-year seedlings of Eucalyptus Tereticornis
-Rcoef <- 1.73 # nmol CO2 m-2 s-1
+# this basal respiration rate is for fineroot only!
+Rcoef_fr <- 4.425 # nmol CO2 m-2 s-1
 Rbase <- 2.26
+
+## fraction of coarse root at top 30 cm of soil
+cr_at_top_soil <- 0.5
+
+# tjos basa; respiration rate is for coarseroot onl!
+Rcoef_cr <- 1.33 # nmol CO2 m-2 s-1
 
 # understorey cue
 under_cue <- 0.5
