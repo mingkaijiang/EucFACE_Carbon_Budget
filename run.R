@@ -161,6 +161,20 @@ tables_by_ring <- make_table_by_ring()
 source("R/make_table_by_year.R")
 tables_by_year <- make_EucFACE_table_by_year()
 
+###### ----------Check for C gaps-------------- ######
+
+### GPP gaps
+source("R/gpp_gap_plot.R")
+pdf("R_other/gpp_gap.pdf")
+gpp_gap_plot(inDF=overall_tables)
+dev.off()
+
+### Rsoil gaps
+
+
+
+### NEP gaps
+
 
 
 

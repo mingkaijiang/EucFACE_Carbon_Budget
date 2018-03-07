@@ -883,7 +883,25 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 <br/>
 <br/>
 
-# 7. To-do list
+# 7. Closing the C gaps
+
+Here, I am going to make some bar plots to compare different ways of calculating GPP, Rsoil and NEP, and check if there is any missing carbon.
+
+### GPP C gaps
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+    source("R/gpp_gap_plot.R")
+    gpp_gap_plot(inDF=overall_tables)
+    
+```
+
+
+### Rsoil C gaps
+
+
+### NEP C gaps
+
+
+# 8. To-do list
 
     - Mortality data on HIEv, make them a pool - done, but how to extract these trees from live wood? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
     - Write meeting summaries and send to John, Remko et al.
