@@ -170,7 +170,10 @@ gpp_gap_plot(inDF=overall_tables)
 dev.off()
 
 ### Rsoil gaps
-
+source("R/rsoil_gap_plot.R")
+pdf("R_other/rsoil_gap.pdf")
+rsoil_gap_plot(inDF=overall_tables)
+dev.off()
 
 
 ### NEP gaps
