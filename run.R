@@ -98,8 +98,8 @@ understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction)
 
 ### Understorey LAI
-#understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_biomass_pool, 
-#                                                          understorey_sla_variable)
+understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
+                                                          understorey_sla_variable)
 
 
 ### Soil microbial C pool
