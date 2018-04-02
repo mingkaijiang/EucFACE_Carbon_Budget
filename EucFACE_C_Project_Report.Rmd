@@ -902,8 +902,9 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 # 8. To-do list
 
+    - EucFACE C group meeting prep
+    - Summary of data availability
     - Mortality data on HIEv, make them a pool - done, but how to extract these trees from live wood? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
-    - Write meeting summaries and send to John, Remko et al.
     - Met data and soil water data to understand extreme points
     - Calculate leaf C pool based on variable SLA data (need more data from Ben Moore)
     - changes in pools at annual timestep
