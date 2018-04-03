@@ -1,7 +1,7 @@
 ---
 title: "EucFACE Carbon Synthesis Project Report"
 author: "Mingkai Jiang"
-date: "2/20/2018"
+date: "4/4/2018"
 output: 
   html_document:
     toc: true
@@ -903,11 +903,15 @@ Here, I am going to make some bar plots to compare different ways of calculating
 # 8. To-do list
 
     - EucFACE C group meeting prep
-    - Summary of data availability
+    - Calculate leaf C pool based on variable SLA data (need more data from Ben Moore)
+    - CH4 calculations (need to understand Loic's calculations)
+    - Lerp production can be cross checked with leaf NPP to understand its effect
+    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
+    - changes in pools at annual timestep
+    - Calculate NEP based on different method
+    - Has leaf C concentration changed with treatment?
     - Mortality data on HIEv, make them a pool - done, but how to extract these trees from live wood? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
     - Met data and soil water data to understand extreme points
-    - Calculate leaf C pool based on variable SLA data (need more data from Ben Moore)
-    - changes in pools at annual timestep
     - Check if soil C pool includes litter layer or not
     - Check soil C deep layer pools
     - Fineroot C pool decrease over time - is there a waterlogging effect (correlate with soil moisture and Rsoil, check with Sally and Juan)
@@ -915,14 +919,8 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Overstorey leaf respiration flux - check with Jim for parameters
     - Fineroot respiration flux - more extrapolation is needed, possibly a fraction of Rroot as Rsoil
     - Understorey gpp needs to compare with respiration
-    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
     - Leaf production can be estimated based on GPP and litterfall (Remko)
-    - Lerp production can be cross checked with leaf NPP to understand its effect
     - Rsoil - what's inter-collar variability? Check with John on its magitude as currently it is quite large. 
-    - Make bar plots of NPP, respiration and GPP to see what's the missing C?
-    - CH4 calculations (need to understand Loic's calculations)
-    - Litter pool based on % live information of understorey?
-    - Calculate NEP based on different method
     - Lerp, frass, herbivory consumption and respiration, where do they go?
     - Root mortality and turnover
     - Other missing variables

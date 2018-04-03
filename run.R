@@ -33,7 +33,10 @@ soil_respiration_flux <- make_soil_respiration_flux()
 
 ### leaf C pool
 ### read in c_fraction defined in constant
-leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction)
+### We can either use mean sla value or variable SLA value to calculate leaf C
+### sla_option: "mean", or "variable"
+leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
+                              sla_option = "variable")
 
 
 ### Fine root pool
