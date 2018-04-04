@@ -589,6 +589,7 @@ Below is the estimate of understorey respiration flux based on cue approach.
     }
 ```
 
+
 ### Soil respiration flux
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"} 
     soil_respiration_flux <- make_soil_respiration_flux()
@@ -928,12 +929,11 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
     - EucFACE C group meeting prep
     - CH4 calculations (need to understand Loic's calculations)
-    - Lerp production can be cross checked with leaf NPP to understand its effect
-    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
     - changes in pools at annual timestep
-    - Calculate NEP based on different method
+    - Calculate NEP based on different method (partially done)
+    - Use Sapwood depth to extrapolate % of live and dead wood (useful for P budget)
     - Has leaf C concentration changed with treatment?
-    - Mortality data on HIEv, make them a pool - done, but how to extract these trees from live wood? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
+    - How to extract standing dead from total wood pool? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
     - Met data and soil water data to understand extreme points
     - Check if soil C pool includes litter layer or not
     - Check soil C deep layer pools
@@ -949,6 +949,8 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Other missing variables
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
     - Create error bars
+    - Lerp production can be cross checked with leaf NPP to understand its effect
+    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
 
     
 <br/>
