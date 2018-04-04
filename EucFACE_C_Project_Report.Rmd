@@ -192,9 +192,10 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
     }
 ```
 
-### Leaf C Pool
+### Leaf C Pool - variable SLA
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
-    leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction)
+    leaf_c_pool_mean <- make_leaf_pool(lai_variable, sla_variable, c_fraction, sla_option="mean")
+    leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction, sla_option="variable")
 
    ### make the plot
     p <- ggplot(leaf_c_pool,
@@ -206,6 +207,21 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
     if (plot_option) {
             plot(p)
     }
+```
+
+The leaf C pool based on variable SLA is provided above, below is the leaf C pool based on fixed SLA. 
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+   ### make the plot
+    p <- ggplot(leaf_c_pool_mean,
+                aes(Date, leaf_pool, color=factor(Ring))) +   
+            geom_point(size = 2.5) + geom_line() + 
+            xlab("Date") + ylab("Canopy C Pool (g m-2)") + 
+            scale_color_manual(values=ring_colours, name="Ring")
+    
+    if (plot_option) {
+            plot(p)
+    }
+
 ```
 
 ### Wood C Pool
@@ -899,11 +915,18 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 ### NEP C gaps
 
+#### Method in and out
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+    source("R/nep_gap_plot.R")
+    nep_gap_plot(inDF=overall_tables)
+    
+```
+
+
 
 # 8. To-do list
 
     - EucFACE C group meeting prep
-    - Calculate leaf C pool based on variable SLA data (need more data from Ben Moore)
     - CH4 calculations (need to understand Loic's calculations)
     - Lerp production can be cross checked with leaf NPP to understand its effect
     - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)

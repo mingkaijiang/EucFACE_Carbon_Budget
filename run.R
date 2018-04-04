@@ -179,7 +179,10 @@ dev.off()
 
 
 ### NEP gaps
-
+source("R/nep_gap_plot.R")
+pdf("R_other/nep_gap.pdf")
+nep_gap_plot(inDF=overall_tables)
+dev.off()
 
 
 
