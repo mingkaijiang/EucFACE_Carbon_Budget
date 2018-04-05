@@ -11,6 +11,12 @@ rm(list=ls(all=TRUE))
 #### Source functions and packages
 source("R/prepare.R")
 
+###### ----------Add met data -------------- ######
+## Tair, prcp, vpd, CO2, wind speed, N dep, ozone, par, SM, Tsoil
+
+
+
+
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI
 lai_variable <- make_lai_variable()
@@ -192,6 +198,7 @@ plot_change_in_wood_soil_microbe_pools(soil_c_pool,
                                        wood_c_pool,
                                        microbial_c_pool,
                                        destDir = "R_other")
+
 
 
 ###### ---------------- End -------------------- ######

@@ -4,7 +4,7 @@ rsoil_gap_plot <- function(inDF) {
     temDF <- inDF$npp[,1:2]
     
     ### only include plant NPP
-    nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],temDF[temDF$term == "Stem NPP",],
+    nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
                    temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
                    temDF[temDF$term == "Frass production",])

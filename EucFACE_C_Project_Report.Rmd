@@ -951,7 +951,11 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Create error bars
     - Lerp production can be cross checked with leaf NPP to understand its effect
     - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
-
-    
+    - Litter decomposition rate for litter pool (Jeff + Uffe)
+    - Understorey biomass phenocamera estimates - pretreatment (Matthias)
+    - Australian forest CUE estimates
+    - soil moisture and understorey LAI
+    - VOC data
+    - Stem mortality more recent data
 <br/>
 <br/>
