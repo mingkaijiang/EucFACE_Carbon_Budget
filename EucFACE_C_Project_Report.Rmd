@@ -955,7 +955,29 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Understorey biomass phenocamera estimates - pretreatment (Matthias)
     - Australian forest CUE estimates
     - soil moisture and understorey LAI
-    - VOC data
+    - VOC data into MAESPA
     - Stem mortality more recent data
+    - Leaf + root tissue specific respiration rate to compare leaf + root respiration flux
+    - Leaf + root N content
+    - Root respiration + stem respiration (Nam Jin + Elise)
+    - Coarse root biomass split into different size categories and calculate respiration rates accordingly
+    - Insect biomass (Markus has data for canopy, Sarah has relative abundance, data may need to be processed)
+    - Root respiration currently is a lump sum of under and overstorey, is it possible to differetiate the two?
+    - Mycorryzae biomass data accompanied by root litter decompsoition rate and isotopic measurement
+    - Some fungi get C from dead plant so no GPP involved there. Microbial biomass has a subset that is fungal biomass, then fungal biomass can be splitted into mycorrhizae and saprotrophs. 
+    - There is respiration associated with root hyphae and of fungi itself. Juan's respiration data has root-associated mycorrhizae in it, whereas Laura's data is non-root associated mycorrhizae. 
+    - The proportion of mycorrhizae in the microbial pool needs to be cross-checked with literature value
+    - Flux of mycorrhizae - colonization rate (Check with Yolima)
+    - Temporal variation of mycorrhizae (2013 - 15, 3 data points, then 2015-16). 
+    - Understorey stem turnover - may need a literature value
+    - Dead vs. live for shrubs (live is shrub, dead is CWD)
+    - Cat and Yolima may have litter biomass data
+    - Johanna and Yolima have quantification of biomass of root down to clay layer
+    - Mark maked that Juan may have Dec 2013 root data down to 50 cm
+    - CH4 has no treatment effect (says Elise). Elise could help constraining this number based on estimates of nearby forest
+    - Nam Jim indicated that his measurement probably won't start before Dec 2018
+    - Compare turnover of root to FRED database
+    - Share Google Drive with everyone
+    - Share to-do list with everyone
 <br/>
 <br/>
