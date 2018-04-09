@@ -9,3 +9,5 @@ download/
 download/*.csv
 *.pdf
 *.html
+
+R_other/*.csv

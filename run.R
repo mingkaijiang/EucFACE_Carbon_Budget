@@ -200,5 +200,8 @@ plot_change_in_wood_soil_microbe_pools(soil_c_pool,
                                        destDir = "R_other")
 
 
+source("R/understorey_production_check.R")
+understorey_production_check()
+
 
 ###### ---------------- End -------------------- ######
