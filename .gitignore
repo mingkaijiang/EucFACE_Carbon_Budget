@@ -11,3 +11,4 @@ download/*.csv
 *.html
 
 R_other/*.csv
+*.Rmd

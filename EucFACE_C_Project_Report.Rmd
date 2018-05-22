@@ -927,9 +927,10 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 # 8. To-do list
 
-    - EucFACE C group meeting prep
+    - Paper outline
     - CH4 calculations (need to understand Loic's calculations)
     - changes in pools at annual timestep
+    - Write method section
     - Calculate NEP based on different method (partially done)
     - Use Sapwood depth to extrapolate % of live and dead wood (useful for P budget)
     - Has leaf C concentration changed with treatment?
