@@ -12,8 +12,8 @@ make_table_by_ring <- function() {
               "Understorey NPP",
               "Frass production", "Leaf consumption", "R hetero", 
               "Mycorrhizal production", "Flower production")
-    npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2")
+    npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "percent_diff")
     Ring <- c(1:6)
     
     for (i in Ring) {
@@ -68,8 +68,8 @@ make_table_by_ring <- function() {
     term <- c("GPP overstorey", "GPP understorey", "CH4 efflux",
               "Ra leaf", "Ra stem", "Ra root", "Ra understorey", "VOC",
               "Rherbivore", "DOC loss", "Rsoil", "Rgrowth")
-    inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(inout) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2")
+    inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(inout) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "percent_diff")
     
     for (i in Ring) {
         
@@ -124,8 +124,8 @@ make_table_by_ring <- function() {
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
               "Fine Root", "Coarse Root", "Litter", "Coarse woody debris", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
-    pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2")
+    pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "percent_diff")
 
     for (i in Ring) {
         
@@ -171,6 +171,13 @@ make_table_by_ring <- function() {
     
     pool$aCO2 <- rowMeans(subset(pool, select=c(Ring_2, Ring_3, Ring_6)), na.rm=T)
     pool$eCO2 <- rowMeans(subset(pool, select=c(Ring_1, Ring_4, Ring_5)), na.rm=T)
+    
+    
+    ###### percent differences (eCO2 - aCO2) / aCO2 * 100
+    
+    inout$percent_diff <- (inout$eCO2 - inout$aCO2) / (inout$aCO2) * 100
+    npp$percent_diff <- (npp$eCO2 - npp$aCO2) / (npp$aCO2) * 100
+    pool$percent_diff <- (pool$eCO2 - pool$aCO2) / (pool$aCO2) * 100
     
     ##### output tables
     return(list(inout = data.table(inout), 
