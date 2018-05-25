@@ -902,7 +902,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 ### GPP C gaps
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/gpp_gap_plot.R")
-    gpp_gap_plot(inDF=overall_tables)
+    gpp_gap_plot(inDF=tables_by_ring)
     
 ```
 
@@ -910,7 +910,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 ### Rsoil C gaps
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/rsoil_gap_plot.R")
-    rsoil_gap_plot(inDF=overall_tables)
+    rsoil_gap_plot(inDF=tables_by_ring)
     
 ```
 
