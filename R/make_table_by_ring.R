@@ -12,10 +12,11 @@ make_table_by_ring <- function() {
               "Understorey NPP",
               "Frass production", "Leaf consumption", "R hetero", 
               "Mycorrhizal production", "Flower production")
-    npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "diff", "percent_diff")
+    npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
+                       "diff", "percent_diff", "aCO2_sd", "eCO2_sd")
     Ring <- c(1:6)
-    
+
     for (i in Ring) {
         
         # Leaf NPP
@@ -59,6 +60,7 @@ make_table_by_ring <- function() {
         # Flower Production
         
     }
+
     
     ##############################################
     #### Method 1
@@ -68,8 +70,9 @@ make_table_by_ring <- function() {
     term <- c("GPP overstorey", "GPP understorey", "CH4 efflux",
               "Ra leaf", "Ra stem", "Ra root", "Ra understorey", "VOC",
               "Rherbivore", "DOC loss", "Rsoil", "Rgrowth")
-    inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(inout) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "diff", "percent_diff")
+    inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(inout) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2",
+                         "diff", "percent_diff", "aCO2_sd", "eCO2_sd")
     
     for (i in Ring) {
         
@@ -114,7 +117,6 @@ make_table_by_ring <- function() {
         # CH4
         
     }
-
     
     ##############################################
     #### Method 2
@@ -124,8 +126,9 @@ make_table_by_ring <- function() {
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
               "Fine Root", "Coarse Root", "Litter", "Coarse woody debris", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
-    pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", "diff", "percent_diff")
+    pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
+                        "diff", "percent_diff", "aCO2_sd", "eCO2_sd")
 
     for (i in Ring) {
         
@@ -182,6 +185,31 @@ make_table_by_ring <- function() {
     inout$percent_diff <- (inout$eCO2 - inout$aCO2) / (inout$aCO2) * 100
     npp$percent_diff <- (npp$eCO2 - npp$aCO2) / (npp$aCO2) * 100
     pool$percent_diff <- (pool$eCO2 - pool$aCO2) / (pool$aCO2) * 100
+    
+    ##### calculate ring-based standard deviation for each variable
+    aC <- data.frame(inout$Ring_2, inout$Ring_3, inout$Ring_6)
+    aCo <- transform(aC, SD = apply(aC, 1, sd, na.rm=T))
+    inout$aCO2_sd <- aCo$SD
+    
+    aC <- data.frame(npp$Ring_2, npp$Ring_3, npp$Ring_6)
+    aCo <- transform(aC, SD = apply(aC, 1, sd, na.rm=T))
+    npp$aCO2_sd <- aCo$SD
+    
+    aC <- data.frame(pool$Ring_2, pool$Ring_3, pool$Ring_6)
+    aCo <- transform(aC, SD = apply(aC, 1, sd, na.rm=T))
+    pool$aCO2_sd <- aCo$SD
+    
+    eC <- data.frame(inout$Ring_1, inout$Ring_4, inout$Ring_5)
+    eCo <- transform(eC, SD = apply(eC, 1, sd, na.rm=T))
+    inout$eCO2_sd <- eCo$SD
+    
+    eC <- data.frame(npp$Ring_1, npp$Ring_4, npp$Ring_5)
+    eCo <- transform(eC, SD = apply(eC, 1, sd, na.rm=T))
+    npp$eCO2_sd <- eCo$SD
+    
+    eC <- data.frame(pool$Ring_1, pool$Ring_4, pool$Ring_5)
+    eCo <- transform(eC, SD = apply(eC, 1, sd, na.rm=T))
+    pool$eCO2_sd <- eCo$SD
     
     ##### output tables
     return(list(inout = data.table(inout), 

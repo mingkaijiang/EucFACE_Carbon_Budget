@@ -15,7 +15,8 @@ pacman::p_load(dplyr,
                lubridate,
                ggplot2,
                knitr,
-               imputeTS) # add other packages needed to this list
+               imputeTS,
+               matrixStats) # add other packages needed to this list
 
 
 # Loading constants
