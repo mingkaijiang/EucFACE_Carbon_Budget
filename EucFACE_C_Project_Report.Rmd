@@ -539,11 +539,12 @@ Here, fineroot and coarseroot respiration are scaled by a Q10 function with soil
 
 ### Understorey respiration flux
 
-Here, since we don't have direct measurement of understorey respiration flux, we have to use literature value of dark respiration of Microlaena. we can calculate understorey respiration flux based on two methods:
+Here, since we don't have direct measurement of understorey respiration flux, we have to use literature value of dark respiration of Microlaena. we can calculate understorey respiration flux based on three methods, each with certain uncertainties:
 
-    - fixed coefficient
-    - Scaling with temperature
-    
+    - fixed Rd coefficient (rd)
+    - Scaling with temperature (q10)
+    - Fixed CUE approach (cue)
+
 Below is the estimate of understorey respiration flux based on cue approach. 
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"}

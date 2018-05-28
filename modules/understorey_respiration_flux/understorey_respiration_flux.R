@@ -3,9 +3,9 @@ make_understorey_respiration_flux <- function(c_pool,
                                               gpp,
                                               assumption) {
     
-    ### assumption options: 1: fixed - use the Rdmass value regardless of temperature and PAR
+    ### assumption options: 1: rd - use the Rdmass value regardless of temperature and PAR
     ###                     2: q10 - a temperature dependent function
-    
+    ###                     3: a fixed CUE approach
     ### This dataset contains dark respiration rate for
     ### Microlaena, obtained from Cumberlandplains by
     ### Leishman et al. (2010). Journal of Ecology, 98, 28-42.
@@ -24,7 +24,7 @@ make_understorey_respiration_flux <- function(c_pool,
     rd <- - (rd.rate * 12/44 * 10^-6 * 24 * 3600)
     
     ### Calculate daily respiration rate
-    if (assumption == "fixed") {
+    if (assumption == "rd") {
         ### Assume a fixed constant
         ### return in mg C m-2 d-1
         c_pool$dark_respiration <- c_pool$Live_g_C_m2 / c_frac * rd
@@ -60,7 +60,8 @@ make_understorey_respiration_flux <- function(c_pool,
         out <- gpp[,c("Start_date", "End_date", "Date", "Ring", "respiration_mg_m2_d")]
         colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "respiration")
         out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date)) + 1
-    }
+        
+    } 
     
     return(out)
     
