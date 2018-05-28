@@ -89,4 +89,26 @@ biomass_increment_plot <- function() {
     
     incDF$diff <- round(incDF$eCO2 - incDF$aCO2,2)
     incDF$percent_diff <- round(incDF$diff / incDF$aCO2,2)
+    
+    # new terms
+    new.terms <- c("Col", "Cw", "Cua", "Cfr", "Ccr", "Cl", "Ccwd", "Cmi", "Cs", "Cmy", "Ci")
+    
+    ### prepare plot DF
+    plotDF1 <- data.frame(new.terms, incDF$aCO2)
+    names(plotDF1) <- c("term", "increment")
+    plotDF2 <- data.frame(new.terms, incDF$eCO2)
+    names(plotDF2) <- c("term", "increment")
+    
+    plotDF <- rbind(plotDF1, plotDF2)
+    n <- nrow(plotDF1)
+    plotDF$treatment <- rep(c("aCO2", "eCO2"), each=n)
+    
+    plotDF <- plotDF[complete.cases(plotDF),]
+    
+    ### make the bar plot
+    p <- ggplot(plotDF,
+                aes(x=term, y=increment, fill=treatment)) +   
+        geom_bar(stat="identity", position=position_dodge()) +
+        xlab("pools") + ylab("increment (g C m-2 yr-1)")
+    plot(p)
 }
