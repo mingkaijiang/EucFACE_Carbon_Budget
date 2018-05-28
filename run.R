@@ -184,12 +184,17 @@ rsoil_gap_plot(inDF=tables_by_ring)
 dev.off()
 
 
-### NEP gaps
+### NEP gaps   - Note the different input file!
 source("R/nep_gap_plot.R")
 pdf("R_other/nep_gap.pdf")
 nep_gap_plot(inDF=overall_tables)
 dev.off()
 
+### Biomass increment
+source("R/biomass_increment_plot.R")
+pdf("R_other/biomass_increment.pdf")
+biomass_increment_plot(inDF=tables_by_ring)
+dev.off()
 
 
 ###### ----------Make comparison plots, etc. -------------- ######
