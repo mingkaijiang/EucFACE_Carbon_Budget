@@ -894,6 +894,26 @@ Here I am providing an overall summary of the results (ignoring ring and years).
     kable(tables_by_year$npp, digits=2)
 ```
 <br/>
+
+#### Biomass increments
+This is to plot eCO2 effect on biomass increment over the entire data period. There are multiple sources of uncertainties:
+
+    1. Inconsistent start and end years for different pools. Most of the negative biomass increment might be due to end year is a insect disturbance year;
+    2. Data processing assumption (e.g. fixed CUE approach for understorey respiration);
+    3. Intra-annual variation in annually-fluctuating pools (e.g. microbial pool).
+    
+Nevertheless, the biomass increment results are summarized below:
+
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+    source("R/biomass_increment_plot.R")
+    biomass_increment_plot()
+```
+<br/>
+
+#### Has leaf C concentration changed over time and by treatment?
+
+
+
 <br/>
 
 # 7. Closing the C gaps

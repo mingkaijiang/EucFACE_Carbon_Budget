@@ -81,6 +81,10 @@ doc_leaching_flux <- make_doc_leaching_flux(return="deep")
 ### reads in c_fraction coefficient from constant
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
+
+### sapwood C and N fraction
+sapwood_cn_fraction <- make_sapwood_c_n_fraction()
+
 ### wood C pool
 wood_c_pool <- make_wood_pool(ring_area,c_fraction)
 
