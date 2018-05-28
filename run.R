@@ -193,7 +193,7 @@ dev.off()
 ### Biomass increment
 source("R/biomass_increment_plot.R")
 pdf("R_other/biomass_increment.pdf")
-biomass_increment_plot(inDF=tables_by_ring)
+biomass_increment_plot()
 dev.off()
 
 
