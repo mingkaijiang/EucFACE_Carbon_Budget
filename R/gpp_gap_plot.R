@@ -44,7 +44,9 @@ gpp_gap_plot <- function(inDF) {
                                                   "Coarse Root NPP" = "darkgreen", "Other NPP" = "greenyellow", "Understorey NPP" = "green",
                                                   "Leaf consumption" = "red", "Ra leaf" = "purple", "Ra stem" = "lavender",
                                                   "Ra root" = "tomato4", "Ra understorey" = "coral", "Rherbivore" = "orange",
-                                                  "Rgrowth" = "yellow")) 
+                                                  "Rgrowth" = "yellow")) +
+        theme(axis.text=element_text(size=14),
+              axis.title=element_text(size=18,face="bold"))
     plot(p)
     
 }

@@ -32,7 +32,9 @@ rsoil_gap_plot <- function(inDF) {
                                                   "Leaf NPP" = "light green", "Fine Root NPP" = "springgreen",
                                                   "Coarse Root NPP" = "darkgreen", "Other NPP" = "greenyellow", 
                                                   "Understorey NPP" = "green","Frass production" = "red", 
-                                                  "Ra root" = "tomato4", "Rsoil" = "orange")) 
+                                                  "Ra root" = "tomato4", "Rsoil" = "orange"))  +
+        theme(axis.text=element_text(size=14),
+              axis.title=element_text(size=18,face="bold"))
     plot(p)
     
 }
