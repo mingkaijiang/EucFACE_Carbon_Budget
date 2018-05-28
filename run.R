@@ -125,7 +125,8 @@ microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
-                                                              frass_prod=frass_production_flux)
+                                                              frass_prod=frass_production_flux,
+                                                              method="diff")
 
 
 ### Coarse root C pool 

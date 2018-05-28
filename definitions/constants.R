@@ -63,3 +63,6 @@ Rcoef_cr <- 1.33 # nmol CO2 m-2 s-1
 
 # understorey cue
 under_cue <- 0.5
+
+# insect cue
+insect_cue <- 0.5

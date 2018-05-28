@@ -588,7 +588,7 @@ Below is the estimate of understorey respiration flux based on cue approach.
                                                                         frass_flux=frass_production_flux)
 
     herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
-                                                              frass_prod=frass_production_flux)
+                                                              frass_prod=frass_production_flux, method = "diff")
 
 
    ### make the plot
@@ -985,13 +985,9 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Understorey gpp needs to compare with respiration
     - Leaf production can be estimated based on GPP and litterfall (Remko)
     - Rsoil - what's inter-collar variability? Check with John on its magitude as currently it is quite large. 
-    - Lerp, frass, herbivory consumption and respiration, where do they go?
     - Root mortality and turnover
-    - Other missing variables
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
     - Create error bars
-    - Lerp production can be cross checked with leaf NPP to understand its effect
-    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
     - Litter decomposition rate for litter pool (Jeff + Uffe)
     - Understorey biomass phenocamera estimates - pretreatment (Matthias)
     - Australian forest CUE estimates
@@ -1025,6 +1021,9 @@ Here, I am going to make some bar plots to compare different ways of calculating
 Attempted list but with problems:
 
     - Has leaf C concentration changed with treatment? Only found this file with C concentration information (EucFACE_P0020_RA_CARBO_RAW_201302-201309_v1);
-    
+    - Lerp production can be cross checked with leaf NPP to understand its effect. Lerp production data up to 2014, not a major psyllid attack year!
+    - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
+
+
 
 <br/>
