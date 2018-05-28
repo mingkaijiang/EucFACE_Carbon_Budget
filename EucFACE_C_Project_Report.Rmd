@@ -172,6 +172,19 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
 ```
 
 <br/>
+
+#### 2.3.6 Sapwood C and N fraction
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+
+   sapwood_cn_fraction <- make_sapwood_c_n_fraction()
+
+   ### make the table
+   kable(sapwood_cn_fraction, digits=4)
+    
+```
+
+
+<br/>
 <br/>
 
 # 3. Method **Pools**
@@ -895,7 +908,7 @@ Here I am providing an overall summary of the results (ignoring ring and years).
 ```
 <br/>
 
-#### Biomass increments
+### 6.4 Biomass increments
 This is to plot eCO2 effect on biomass increment over the entire data period. There are multiple sources of uncertainties:
 
     1. Inconsistent start and end years for different pools. Most of the negative biomass increment might be due to end year is a insect disturbance year;
@@ -909,11 +922,6 @@ Nevertheless, the biomass increment results are summarized below:
     biomass_increment_plot()
 ```
 <br/>
-
-#### Has leaf C concentration changed over time and by treatment?
-
-
-
 <br/>
 
 # 7. Closing the C gaps
@@ -945,6 +953,10 @@ Here, I am going to make some bar plots to compare different ways of calculating
 ```
 
 
+# 9. Understanding disturbances
+
+### 9.1. Leaf NPP and lerp production
+
 
 # 8. To-do list
 
@@ -954,7 +966,6 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Write method section
     - Calculate NEP based on different method (partially done)
     - Use Sapwood depth to extrapolate % of live and dead wood (useful for P budget)
-    - Has leaf C concentration changed with treatment?
     - How to extract standing dead from total wood pool? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
     - Met data and soil water data to understand extreme points
     - Check if soil C pool includes litter layer or not
@@ -1002,4 +1013,10 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Share Google Drive with everyone
     - Share to-do list with everyone
 <br/>
+
+Attempted list but with problems:
+
+    - Has leaf C concentration changed with treatment? Only found this file with C concentration information (EucFACE_P0020_RA_CARBO_RAW_201302-201309_v1);
+    
+
 <br/>
