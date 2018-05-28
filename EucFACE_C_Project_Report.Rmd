@@ -1,7 +1,7 @@
 ---
 title: "EucFACE Carbon Synthesis Project Report"
 author: "Mingkai Jiang"
-date: "4/4/2018"
+date: "29/5/2018"
 output: 
   html_document:
     toc: true
@@ -953,12 +953,20 @@ Here, I am going to make some bar plots to compare different ways of calculating
 ```
 
 
-# 9. Understanding disturbances
+# 8. Understanding disturbances
 
-### 9.1. Leaf NPP and lerp production
+### 8.1. Leaf NPP and lerp production
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+    source("R/leaf_npp_and_lerp_production_plot.R")
+    leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
+                                      lerp_production=lerp_production_flux,
+                                      frass_production = frass_production_flux, 
+                                      lai = lai_variable,
+                                      insect_consumption = herbivory_leaf_consumption_flux)
+    
+```
 
-
-# 8. To-do list
+# 9. To-do list
 
     - Paper outline
     - CH4 calculations (need to understand Loic's calculations)
