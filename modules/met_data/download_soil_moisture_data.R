@@ -1,3 +1,4 @@
 download_soil_moisture_data <- function() {
-    #downloadHIEv(hiev=searchHIEv("FACE_R"))
+    s <- searchHIEv("FACE_R[1-6]_B1_SoilVars")
+    downloadTOA5(hievSearch=s, maxnfiles=1000)
 }
