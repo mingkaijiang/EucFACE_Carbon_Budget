@@ -13,8 +13,9 @@ source("R/prepare.R")
 
 ###### ----------Add met data -------------- ######
 ## Tair, prcp, vpd, CO2, wind speed, N dep, ozone, par, SM, Tsoil
-
-
+pdf("R_other/soil_moisture_plots.pdf", width=10, height=4)
+prepare_soil_moisture_data(plot.image = T)
+dev.off()
 
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######

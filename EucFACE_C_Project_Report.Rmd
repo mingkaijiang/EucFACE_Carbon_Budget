@@ -966,6 +966,15 @@ Here, I am going to make some bar plots to compare different ways of calculating
     
 ```
 
+
+### 8.2. Soil moisture profile
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+    prepare_soil_moisture_data(plot.image=T)
+    
+```
+
+
+
 # 9. To-do list
 
     - soil moisture profile and its relationship to DOC, understorey LAI,  fineroot biomass, Rsoil, 
