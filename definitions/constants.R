@@ -66,6 +66,3 @@ under_cue <- 0.5
 
 # insect cue
 insect_cue <- 0.5
-
-## Percent sand - used for mycorrhizal biomass estimates
-percent_sand <- 0.7

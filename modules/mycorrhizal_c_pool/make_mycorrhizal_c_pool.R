@@ -13,7 +13,7 @@ make_mycorrhizal_c_pool <- function(bk_density) {
     }
     
     ### calculate mycorrhizal biomass increment, in unit of g m-2 period -1
-    myDF$mycorrhizal_c_pool <- myDF$percentC/100 * myDF$bk * 0.3 / g_to_kg * percent_sand
+    myDF$mycorrhizal_c_pool <- myDF$percentC/100 * myDF$bk * 0.3 / g_to_kg 
     
     ### convert dates
     myDF$Start_date <- as.Date(as.character(myDF$Start_date), format="%d/%m/%Y")

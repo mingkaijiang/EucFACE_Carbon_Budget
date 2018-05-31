@@ -50,8 +50,6 @@ leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
 ### reads in c_fraction_fr defined in constant
 fineroot_c_pool <- make_fineroot_pool(c_fraction_fr)
 
-### Canopy c production flux
-
 
 ### fineroot c production flux
 ### reads in c_fraction_fr defined in constant
@@ -117,8 +115,11 @@ understorey_lai_variable <- make_understorey_lai_variable(understorey_abovegroun
 
 
 ### Soil microbial C pool
-### top 10 cm only
+### top 10 cm only - Cat's data
 microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
+
+### Yolima's data
+microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
 
 ### Soil mycorrhizal production
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
