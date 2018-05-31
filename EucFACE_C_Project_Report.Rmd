@@ -1,7 +1,7 @@
 ---
 title: "EucFACE Carbon Synthesis Project Report"
 author: "Mingkai Jiang"
-date: "29/5/2018"
+date: "2/6/2018"
 output: 
   html_document:
     toc: true
@@ -444,14 +444,22 @@ The microbial C pool is for top 10 cm of soil only, whereas soil C pool is for t
 ```
 
 
-A second dataset for microbial C and N pool is available from Laura and Yolima. 
+A second dataset for microbial C and N pool is available from Laura and Yolima. Here we are comparing the two methods for each ring. 
+
 ``` {r, echo=F, warning=F, message=F, fig.width = 7, fig.align="center"}
     microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
-
-    p <- ggplot(microbial_c_pool2, aes(Date, microbial_c_pool, color=factor(Ring))) +
-        geom_line() + geom_point(size=5) +
-        xlab("Date") + ylab("Microbial C Pool (g m-2)") + 
-            scale_color_manual(values=ring_colours, name="Ring")
+    micro <- summaryBy(microbial_pool~Ring, data=microbial_c_pool, FUN=mean, keep.names=T, na.rm=T)
+    micro$micro2 <- microbial_c_pool2$microbial_c_pool
+    colnames(micro) <- c("Ring", "Microbial_C_pool1", "Microbial_C_pool2")
+    plotDF <- melt(micro, id="Ring")
+    
+    
+   ### make the plot
+    p <- ggplot(plotDF,
+                aes(Ring, value)) +   
+            geom_bar(stat = "identity", aes(fill=variable),
+                     position="dodge") +
+            xlab("Ring") + ylab("Microbial C Pool (g C m-2)")
     if (plot_option) {
             plot(p)
     }
@@ -674,19 +682,19 @@ Below is the estimate of understorey respiration flux based on cue approach.
 Still working on getting the parameters right!
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
-    #methane_c_flux <- make_methane_flux()
-
-   #### make the plot
-    #p <- ggplot(doc_leaching_flux,
-    #            aes(Date, doc_leaching_flux, color=factor(Ring))) +   
-    #        geom_point(size = 5) + geom_line() + 
-    #        xlab("Date") + ylab("DOC Flux (mg m-2 d-1)") + 
-    #        scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
-    #                                    "#FF4040", "#8B0000", "#0000FF"))
-    #
-    #if (plot_option) {
-    #        plot(p)
-    #}
+    methane_c_flux <- make_methane_flux()
+    
+    ### make the plot
+    p <- ggplot(methane_c_flux,
+                aes(Date, methane_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("CH4 Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option) {
+            plot(p)
+    }
 ```
 
 <br/>
@@ -1002,7 +1010,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 ### 8.2. Soil moisture profile
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    prepare_soil_moisture_data(plot.image=T)
+    prepare_soil_moisture_data(plot.image=T, monthly=T)
     
 ```
 

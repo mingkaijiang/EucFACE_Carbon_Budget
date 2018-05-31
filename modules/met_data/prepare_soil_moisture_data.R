@@ -1,4 +1,4 @@
-prepare_soil_moisture_data <- function(plot.image) {
+prepare_soil_moisture_data <- function(plot.image, monthly) {
     #### Download the data - takes time to run
     myDF <- download_soil_moisture_data()
     
@@ -43,16 +43,18 @@ prepare_soil_moisture_data <- function(plot.image) {
             thDF <- dDF[, c("Theta5_1_Avg","Theta30_1_Avg","ThetaHL_1_Avg","Theta75_1_Avg")]
             theta <- as.matrix(thDF)
             
-            ### Countour plotting
-            filled.contour(x = d.series, y = depth, z=theta, xlab = "Date", ylab = "Depth (cm)",
-                           col=cols, main = paste0("Ring ", i))
-            
-            ### Prepare theta data frame at daily timestep
-            thDF <- mDF[, c("Theta5_1_Avg","Theta30_1_Avg","ThetaHL_1_Avg","Theta75_1_Avg")]
-            
-            theta <- as.matrix(thDF)
-            filled.contour(x = m.series, y = depth, z=theta, xlab = "Date", ylab = "Depth  (cm)",
-                           col=cols, main = paste0("Ring ", i))
+            if (monthly == F) {
+                ### Countour plotting
+                filled.contour(x = d.series, y = depth, z=theta, xlab = "Date", ylab = "Depth (cm)",
+                               col=cols, main = paste0("Ring ", i))
+            } else if (monthly == T) {
+                ### Prepare theta data frame at daily timestep
+                thDF <- mDF[, c("Theta5_1_Avg","Theta30_1_Avg","ThetaHL_1_Avg","Theta75_1_Avg")]
+                
+                theta <- as.matrix(thDF)
+                filled.contour(x = m.series, y = depth, z=theta, xlab = "Date", ylab = "Depth  (cm)",
+                               col=cols, main = paste0("Ring ", i))   
+            }
         }
         
     } else {

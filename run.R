@@ -14,7 +14,7 @@ source("R/prepare.R")
 ###### ----------Add met data -------------- ######
 ## Tair, prcp, vpd, CO2, wind speed, N dep, ozone, par, SM, Tsoil
 #pdf("R_other/soil_moisture_plots.pdf", width=10, height=4)
-#prepare_soil_moisture_data(plot.image = T)
+#prepare_soil_moisture_data(plot.image = T, monthly=T)
 #dev.off()
 
 
@@ -125,8 +125,8 @@ microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
 
 ### Soil methane C flux
-### still need to correct for unit (currently in ng of CH4-C per cm3)
-# methane_c_flux <- make_methane_flux()
+### This is a simplified version because we didn't fill the gaps
+methane_c_flux <- make_methane_flux()
 
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,

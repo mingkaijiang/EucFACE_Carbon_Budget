@@ -41,16 +41,17 @@ make_methane_flux <- function(){
                                   myDF7[,c("Date", "Ring", "Final_CH4_flux")]))
     
     ### average across rings and dates
+    myDF$Final_CH4_flux <- as.numeric(as.character(myDF$Final_CH4_flux))
+    
     myDF.m <- summaryBy(Final_CH4_flux~Date*Ring,data=myDF,FUN=mean,keep.names=T,na.rm=T)
     
-    ### need a unit conversion here (the current unit is ng cm-3, I believe)
-    myDF.m$methane_flux <- myDF.m$Final_CH4_flux / 1000 * 10^6 * 0.1
+    ### need a unit conversion here (the current unit is ug C/m2/h)
+    myDF.m$methane_flux <- myDF.m$Final_CH4_flux / 1000 * 24
     
     ### format dataframe to return
     myDF.out <- myDF.m[,c("Date","Ring","methane_flux")]
     
     myDF.out$Date <- as.Date(as.character(myDF.out$Date), format = "%d-%b-%y")
-    
     
     return(myDF.out)
     
