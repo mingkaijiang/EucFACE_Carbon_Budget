@@ -13,9 +13,9 @@ source("R/prepare.R")
 
 ###### ----------Add met data -------------- ######
 ## Tair, prcp, vpd, CO2, wind speed, N dep, ozone, par, SM, Tsoil
-pdf("R_other/soil_moisture_plots.pdf", width=10, height=4)
-prepare_soil_moisture_data(plot.image = T)
-dev.off()
+#pdf("R_other/soil_moisture_plots.pdf", width=10, height=4)
+#prepare_soil_moisture_data(plot.image = T)
+#dev.off()
 
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
@@ -119,6 +119,9 @@ understorey_lai_variable <- make_understorey_lai_variable(understorey_abovegroun
 ### Soil microbial C pool
 ### top 10 cm only
 microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
+
+### Soil mycorrhizal production
+mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
 
 ### Soil methane C flux
 ### still need to correct for unit (currently in ng of CH4-C per cm3)

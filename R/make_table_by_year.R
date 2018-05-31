@@ -232,7 +232,13 @@ make_EucFACE_table_by_year <- function() {
         pool$MicrobialBiomass[pool$year == i]  <- round(mean(microbial_c_pool[microbial_c_pool$year == i, "microbial_pool"]), 2)
     }
         
-        
+    ### Mycorrhizae
+    mycorrhizal_c_pool$year <- year(mycorrhizal_c_pool$Date)
+    for (i in yr.list) {
+        pool$Mycorrhizae[pool$year == i]  <- round(mean(mycorrhizal_c_pool[mycorrhizal_c_pool$year == i, "mycorrhizal_c_pool"]), 2)
+    }
+    
+    
     ##### output tables
     return(list(inout = data.table(inout), 
                 npp = data.table(npp), 

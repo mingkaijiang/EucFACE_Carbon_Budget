@@ -304,9 +304,12 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Microbial biomass"]  <- "For 0 - 10 cm depth"
         
     ### Mycorrhizae
-    pool$value[pool$term == "Mycorrhizae"]  <- 0.0
-    pool$data_notes[pool$term == "Mycorrhizae"] <- "Waiting for data (Jeff Powell)"
-    pool$processing_notes[pool$term == "Mycorrhizae"]  <- "Assume 0 for now"
+    pool$value[pool$term == "Mycorrhizae"]  <- mean(mycorrhizal_c_pool$mycorrhizal_c_pool)
+    pool$start_year[pool$term == "Mycorrhizae"] <- min(year(mycorrhizal_c_pool$Date))
+    pool$end_year[pool$term == "Mycorrhizae"] <- max(year(mycorrhizal_c_pool$Date))
+    pool$timepoint[pool$term == "Mycorrhizae"] <- length(unique(mycorrhizal_c_pool$Date))
+    pool$data_notes[pool$term == "Mycorrhizae"] <- "Data not on HIEv"
+    pool$processing_notes[pool$term == "Mycorrhizae"]  <- "For 0 - 30 cm depth, assumed 70% sand"
     
     ### Insects
     pool$value[pool$term == "Insects"]  <- 0.0

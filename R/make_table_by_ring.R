@@ -158,6 +158,7 @@ make_table_by_ring <- function() {
         pool[pool$term == "Coarse woody debris", i+1]  <- mean(standing_dead_c_pool[standing_dead_c_pool$Ring == i, "wood_pool"], na.rm=T)
         
         # Mycorrhizae
+        pool[pool$term == "Mycorrhizae", i+1]  <- mean(mycorrhizal_c_pool[mycorrhizal_c_pool$Ring == i, "mycorrhizal_c_pool"], na.rm=T)
         
         # Insects
         
