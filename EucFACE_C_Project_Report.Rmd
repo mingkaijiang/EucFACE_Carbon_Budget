@@ -968,6 +968,12 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 # 9. To-do list
 
+    - soil moisture profile and its relationship to DOC, understorey LAI,  fineroot biomass, Rsoil, 
+    - frass production and relationship with leaf N
+    - R soil - inter-collar variability
+    - CH4 calculation
+    - Mycorrhizae biomass
+    - 
     - Paper outline
     - CH4 calculations (need to understand Loic's calculations)
     - changes in pools at annual timestep
@@ -984,7 +990,6 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Fineroot respiration flux - more extrapolation is needed, possibly a fraction of Rroot as Rsoil
     - Understorey gpp needs to compare with respiration
     - Leaf production can be estimated based on GPP and litterfall (Remko)
-    - Rsoil - what's inter-collar variability? Check with John on its magitude as currently it is quite large. 
     - Root mortality and turnover
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
     - Create error bars
