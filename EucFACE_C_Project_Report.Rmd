@@ -1021,9 +1021,6 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - soil moisture profile and its relationship to DOC, understorey LAI,  fineroot biomass, Rsoil, 
     - frass production and relationship with leaf N
     - R soil - inter-collar variability
-    - CH4 calculation
-    - Mycorrhizae biomass
-    - 
     - Paper outline
     - CH4 calculations (need to understand Loic's calculations)
     - changes in pools at annual timestep
@@ -1078,6 +1075,7 @@ Attempted list but with problems:
     - Has leaf C concentration changed with treatment? Only found this file with C concentration information (EucFACE_P0020_RA_CARBO_RAW_201302-201309_v1);
     - Lerp production can be cross checked with leaf NPP to understand its effect. Lerp production data up to 2014, not a major psyllid attack year!
     - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
+    - CH4 calculation, still need to do gap-filling using DAMM model. But unsure about parameter fitting. 
 
 
 
