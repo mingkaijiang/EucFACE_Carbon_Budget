@@ -50,8 +50,13 @@ make_methane_flux <- function(){
     
     ### format dataframe to return
     myDF.out <- myDF.m[,c("Date","Ring","methane_flux")]
-    
+
     myDF.out$Date <- as.Date(as.character(myDF.out$Date), format = "%d-%b-%y")
+    
+    ### Start and end date are the same
+    myDF.out$Start_date <- myDF.out$Date
+    myDF.out$End_date <- myDF.out$Date
+    myDF.out$ndays <- as.numeric(myDF.out$End_date - myDF.out$Start_date) + 1
     
     return(myDF.out)
     

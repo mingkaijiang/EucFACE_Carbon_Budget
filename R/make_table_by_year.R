@@ -163,6 +163,11 @@ make_EucFACE_table_by_year <- function() {
     }
 
     # CH4
+    methane_c_flux$year <- year(methane_c_flux$Start_date)
+    for (i in yr.list) {
+        inout$CH4[inout$year == i] <- with(methane_c_flux[methane_c_flux$year == i,],
+                                               sum(methane_flux*ndays)/sum(ndays)) * conv
+    }
     
     # VOC
 

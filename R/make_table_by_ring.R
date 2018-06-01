@@ -115,7 +115,8 @@ make_table_by_ring <- function() {
         # VOC
         
         # CH4
-        
+        inout[inout$term == "CH4 efflux", i+1] <- with(methane_c_flux[methane_c_flux$Ring ==i,],
+                                                      sum(methane_flux*ndays)/sum(ndays)) * conv
     }
     
     ##############################################
