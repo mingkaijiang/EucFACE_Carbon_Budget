@@ -25,8 +25,7 @@ make_leaflitter_flux <- function(c_frac){
                             Twig = as.numeric(Twig) * conv / days.past,
                             Bark = as.numeric(Bark) * conv / days.past,
                             Seed = as.numeric(Seed) * conv / days.past,
-                            Leaf = as.numeric(Leaf) * conv / days.past
-    )
+                            Leaf = as.numeric(Leaf) * conv / days.past)
     
     # Averages by Ring
     litter_a <- summaryBy(Twig + Bark + Seed + Leaf ~ Date + Ring, FUN=mean, na.rm=TRUE,
