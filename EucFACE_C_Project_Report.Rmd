@@ -1,7 +1,7 @@
 ---
 title: "EucFACE Carbon Synthesis Project Report"
 author: "Mingkai Jiang"
-date: "2/6/2018"
+date: "20/6/2018"
 output: 
   html_document:
     toc: true
@@ -1010,7 +1010,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 ### 8.2. Soil moisture profile
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    prepare_soil_moisture_data(plot.image=T, monthly=T)
+    # prepare_soil_moisture_data(plot.image=T, monthly=T)
     
 ```
 
@@ -1034,12 +1034,11 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Fineroot C pool decrease over time - is there a waterlogging effect (correlate with soil moisture and Rsoil, check with Sally and Juan)
     - MAESPA output needs to be on a daily basis
     - Overstorey leaf respiration flux - check with Jim for parameters
-    - Fineroot respiration flux - more extrapolation is needed, possibly a fraction of Rroot as Rsoil
-    - Understorey gpp needs to compare with respiration
+    - Understorey gpp needs to close the balance with production and respiration
     - Leaf production can be estimated based on GPP and litterfall (Remko)
     - Root mortality and turnover
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
-    - Create error bars
+    - Create error bars and statistical analyses
     - Litter decomposition rate for litter pool (Jeff + Uffe)
     - Understorey biomass phenocamera estimates - pretreatment (Matthias)
     - Australian forest CUE estimates

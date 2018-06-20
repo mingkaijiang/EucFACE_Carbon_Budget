@@ -9,9 +9,9 @@ DAMM_optim_CH4 <- function(par,soilT,soilM,flux,type="optim"){
   kMCH4 <- par[3]
   kMO2 <- par[4]
   R <- 8.314472e-3 #kJ K-1 mol-1
-  O2airfrac <- 0.2 #L O2 L-1 air
-  BD <- 0.8 #bulk density of soil. 0.8 in Davidson
-  PD <- 2.52 #particle density of soil. Weight of an individual soil particle (g/cm3). 2.66 is a reasonable average.
+  O2airfrac <- 0.209 #L O2 L-1 air
+  BD <- 1.6 #bulk density of soil. 0.8 in Davidson
+  PD <- 3.5 #particle density of soil. Weight of an individual soil particle (g/cm3). 2.66 is a reasonable average.
   porosity <- 1-BD/PD #total porosity
   CH4const <- 1.8 * 1e-6   # 1.8 uL of CH4 per L of air
   Dgas <- 1.67

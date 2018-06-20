@@ -1,8 +1,6 @@
 #### Main script to compute EucFACE C balance fluxes and variables
 #### Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
-#### Simplified assumptions include:
-###                                  1. C fraction of fine root, leaf and lerp
-###                                  2. leaching rate
+
 
 ###### ---------------- setting up runs -------------------- ######
 #### clear wk space

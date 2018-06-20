@@ -10,11 +10,11 @@ DAMM_optim <- function(par,soilT,soilM,flux,type="optim"){
   kMO2 <- par[4]
   R <- 8.314472e-3 #kJ K-1 mol-1
   O2airfrac <- 0.209 #L O2 L-1 air
-  BD <- 0.8 #bulk density of soil. 0.8 in Davidson
-  PD <- 2.52 #particle density of soil. Weight of an individual soil particle (g/cm3). 2.66 is a reasonable average.
+  BD <- 1.6 #bulk density of soil. 0.8 in Davidson
+  PD <- 3.5 #particle density of soil. Weight of an individual soil particle (g/cm3). 2.66 is a reasonable average.
   porosity <- 1-BD/PD #total porosity
-  Sxtot <- 0.048 #C content (g/cm3)
-  psx <- 4.14e-4 #fraction of available C, 4.14e-4 in Davidson.
+  Sxtot <- 0.0125 #C content (g/cm3)
+  psx <- 2.4e-2 #fraction of available C, 4.14e-4 in Davidson.
   Dliq <- 3.17
   Dgas <- 1.67
   #kMO2 <- 0.121 #0.121 in Davidson et al. (2012)
