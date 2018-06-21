@@ -82,10 +82,7 @@ make_methane_flux2 <- function() {
     myDF.m.collar.all <- do.call(rbind,myDF.m.collar)
     myDF.m.collar.all$ring <- factor(substr(myDF.m.collar.all$ring_collar,1,1))
     #-----
-    head(myDF.m.collar.all)
-    with(myDF.m.collar.all, plot(CH4~DAMM))
-    
-    
+
     
     #- convert from umol CH4 m-2 s-1 to mg C m-2 day-1
     myDF.m.collar.all$methane_flux <- myDF.m.collar.all$DAMM*60*60*24*1e-6*12.01*1000
