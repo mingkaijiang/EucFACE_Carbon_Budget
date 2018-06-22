@@ -45,31 +45,62 @@ CH4_DAMM_parameter_fitting <- function() {
                            "akmch4", "eakmch4", "avmaxch4", "eavmaxch4")
     
     ### Do Fitting 
+    set.seed(1234)
+    
     myDF$Collar.factor <- as.numeric(myDF$Collar)
     colnames(myDF) <- c("Date", "Ring", "CO2_trtmt", "Collar", "SoilT",
                         "SoilM", "Final_CH4_flux", "CH4_flux", "Collar.factor")
+    myDF <- myDF[complete.cases(myDF),]
     
+    ## Set initial parameter values
+    akmch4 <- -100000
+    eakmch4 <- -0.1
+    akmo2 <- -1.0
+    eakmo2 <- -0.1
+    avmaxch4 <- -40
+    eavmaxch4 <- -0.1
+    params <- c(akmch4, eakmch4, akmo2, eakmo2, avmaxch4, eavmaxch4)
+    
+    ## Set boundaries
+    lower <- c(-100000,-0.1,-1.0,-0.1,-40,-0.1)
+    upper <- c(100000,0.1,1.0,0.1,40,0.1)
+    
+    ## Create fitted parameter storage unit
+    out.fit.params <- data.frame(collar.factor, NA, NA, NA, NA, NA, NA)
+    colnames(out.fit.params) <- c("collar.factor", "akmch4", "eakmch4", "akmo2",
+                                  "eakmo2", "avmaxch4", "eavmaxch4")
+    
+    ## Loop through collars to do fitting
     for (i in collar.factor) {
         ### subsetting collar
         fitDF <- subset(myDF, Collar.factor == i)
         
-        obs.ch4 <- fitDF$CH4_flux
-        
         ### Calls the DAMM function
-        mod.fit <- nls(obs.ch4~DAMM_fit_CH4_function(#akmch4,eakmch4,
-                                                     #akmo2,eakmo2,
-                                                     #avmaxch4,eavmaxch4,
-                                                     kMCH4,kMO2,Vmax,
-                                                     SoilT,
-                                                     SoilM), 
-                       data=fitDF,
-                       start=list(kMCH4=7,kMO2=0.1,Vmax=1.0))
+        mod.fit <- DEoptim(fn=DAMM_fit_CH4_function,lower=lower,upper=upper,
+                           control=list(NP=500,itermax=100,trace=TRUE,CR=0.9),
+                           soilT=fitDF$SoilT, soilM=fitDF$SoilM, flux=fitDF$CH4_flux)
+        out.fit.params[out.fit.params$collar.factor == i, 2:7] <- unname(mod.fit$optim$bestmem)
+    }
+
+    ### Check fitting performance
+    pdf("R_other/fitting_CH4_parameters_evaluation.pdf")
+    for (i in collar.factor) {
+        obsDF <- subset(myDF, Collar.factor == i)
+        fit.params <- as.numeric(unname(out.fit.params[out.fit.params$collar.factor==i,2:7]))
+        fit.data <- DAMM_fit_CH4_function(params=fit.params,soilT=obsDF$SoilT, soilM=obsDF$SoilM,
+                                          flux=obsDF$CH4_flux, type="predict")
         
-       
+        plot(obsDF$CH4_flux, fit.data, main = paste0("1:1 line, Collar = ", i), xlab = "obs", ylab = "pred")
+        abline(0,1)
+        
+        obsDF$fit <- fit.data
+        obsDF$Date <- as.Date(as.character(obsDF$Date), "%d-%b-%y")
+        with(obsDF, plot(CH4_flux~Date,col="black", type="b", ylab = "CH4 flux (umol CH4 m-2 s-1)"))
+        with(obsDF, points(fit~Date, col="red", type="b"))
+        legend("topleft", c("obs", "pred"), fill=c("black", "red"))
         
     }
-    
 
-  
+    dev.off()
     
 }
