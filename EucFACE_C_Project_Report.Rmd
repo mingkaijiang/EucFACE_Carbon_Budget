@@ -700,7 +700,7 @@ Below is the estimate of understorey respiration flux based on cue approach.
 
 ##### This is gap-filled data based on DAMM
 
-``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide", include=FALSE} 
     methane_c_flux2 <- make_methane_flux2()
     
     ### make the plot
@@ -714,7 +714,19 @@ Below is the estimate of understorey respiration flux based on cue approach.
     if (plot_option) {
             plot(p)
     }
+    
+    
+    ### Method comparisons
+    m1 <- with(methane_c_flux, sum(methane_flux, na.rm=T) / sum(ndays) * 365 / 1000)
+    m2 <- with(methane_c_flux2, sum(methane_flux) / sum(ndays) * 365 / 1000)
+    
+    ch4.tab <- rbind(m1, m2)
+    ch4.tab <- as.data.frame(ch4.tab)
+    colnames(ch4.tab) <- "Methane_flux_g_m-2_yr-1"
+    ch4.tab$method <- c("raw", "gap-filled")
+    kable(ch4.tab, digits=2)
 ```
+
 
 <br/>
 <br/>

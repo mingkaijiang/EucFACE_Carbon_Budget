@@ -16,7 +16,8 @@ pacman::p_load(dplyr,
                ggplot2,
                knitr,
                imputeTS,
-               matrixStats) # add other packages needed to this list
+               matrixStats,
+               DEoptim) # add other packages needed to this list
 
 
 # Loading constants
