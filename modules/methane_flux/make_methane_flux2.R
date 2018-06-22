@@ -45,62 +45,72 @@ make_methane_flux2 <- function() {
     
     ### Model prediction
     # predict DAMM model parameters
+    CH4_DAMM_parameter_fitting(myDF)
     
+    
+    ### Download soil T and M data
+    RE <- as.data.frame(data.table::fread(file.path(getToPath(), 
+                                                    "FACE_P0031_RA_Rsoil-PROCESSED_20120902-20151030_L2_v1.csv")))
+    RE$DateTime <- as.POSIXct(RE$DateTime,format="%Y-%m-%d %T",tz="GMT")
+    RE$Date <- as.Date(RE$Date)
     
     
     #- read in the DAMM parameter estimates from fitting done outside this repo
     params_all_collars <- read.csv("modules/methane_flux/DAMM_parameters_all_collars_CH4.csv")
-    params_all_collars$ring_collar <- sapply(as.character(params_all_collars$ring_collar),gsub,pattern="_",replacement="\\.")
+    params_all_collars$ring_collar <- sapply(as.character(params_all_collars$collar.factor),gsub,pattern="_",replacement="\\.")
     params_all_collars$ring_collar <- as.factor(as.numeric(params_all_collars$ring_collar))
     
     ### get unique collar factors
     collar.factor <- as.numeric(unique(myDF$Collar))
     params_all_collars <- params_all_collars[which(params_all_collars$ring_collar %in% collar.factor),]
     params_all_collars$ring_collar <- droplevels(params_all_collars$ring_collar)
-    params_all_collars$AlphaCH4 <- -900000
 
     #-----
     #- apply the DAMM model given the collar-specific parameters to predict CH4 for each collar on each day
     
     #- get daily average met drivers for each collar
-    myDF$ring_collar <-factor(myDF$Collar)
-    myDF.m <- data.frame(dplyr::summarize(dplyr::group_by(myDF, Date, CO2_trtmt, Ring, ring_collar), 
-                                        CH4=mean(CH4_flux,na.rm=T),    
-                                        theta=mean(Av_SoilMoisture,na.rm=T),
-                                        Tsoil=mean(Av_SoilTemp,na.rm=T)))
-    myDF.m.collar <- split(myDF.m,myDF.m$ring_collar)
+    RE$ring_collar <-factor(as.numeric(paste(RE$ring,RE$collar,sep=".")))
+    RE.m <- data.frame(dplyr::summarize(dplyr::group_by(RE, Date, ctreat,ring,ring_collar), 
+                                        Rsoil=mean(Rsoil,na.rm=T),    
+                                        theta=mean(VWC,na.rm=T),
+                                        Tsoil=mean(Tsoil,na.rm=T)))
     
+    # shorten the collar list
+    collar.list <- unique(RE.m$ring_collar)
+    
+    # out df
+    outDF <- RE.m
+    outDF$DAMM <- 0
 
     #run the model forward with the optimized parameter set
-    for (i in 1:length(myDF.m.collar)){
+    for (i in collar.list){
         
         #- find the correct row to use in the parameter dataframe, extract the DAMM model parameters
-        row <- which(params_all_collars$ring_collar==myDF.m.collar[[i]]$ring_collar[1])
-        pars <- unname(as.matrix(params_all_collars[row,c("AlphaCH4","EaCH4","kMCH4","kMO2")]))
-        myDF.m.collar[[i]]$DAMM <- 0
-        myDF.m.collar[[i]]$DAMM <- DAMM_optim_CH4(par=pars,soilT=myDF.m.collar[[i]]$Tsoil,
-                                            soilM=myDF.m.collar[[i]]$theta,flux=myDF.m.collar[[i]]$CH4,
-                                            type="predict") 
+        pars <- unname(as.matrix(params_all_collars[params_all_collars$ring_collar==i,
+                                                    c("akmch4","eakmch4","akmo2","eakmo2","avmaxch4","eavmaxch4")]))
+
+        inDF <- subset(RE.m, ring_collar==i)
+        outDF[outDF$ring_collar==i,"DAMM"] <- DAMM_fit_CH4_function(params=pars,soilT=inDF$Tsoil,
+                                                                    soilM=inDF$theta,flux=inDF$Rsoil,
+                                                                    type="predict") 
         
     }
-    myDF.m.collar.all <- do.call(rbind,myDF.m.collar)
-    myDF.m.collar.all$ring <- factor(substr(myDF.m.collar.all$ring_collar,1,1))
-    #-----
-
+    
     
     #- convert from umol CH4 m-2 s-1 to mg C m-2 day-1
-    myDF.m.collar.all$methane_flux <- myDF.m.collar.all$DAMM*60*60*24*1e-6*12.01*1000
-
-    ### average across rings and dates
-    myDF.out <- summaryBy(methane_flux~Date*Ring,data=myDF.m.collar.all,FUN=mean,keep.names=T,na.rm=T)
+    outDF$methane_flux <- outDF$DAMM*60*60*24*1e-6*12.01*1000
+    outDF$Date <- as.Date(as.character(outDF$Date), "%Y-%m-%d")
     
-    myDF.out$Date <- as.Date(as.character(myDF.out$Date), format = "%d-%b-%y")
+    ### average across rings and dates
+    myDF.out <- summaryBy(methane_flux~Date*ring,data=outDF,FUN=mean,keep.names=T,na.rm=T)
     
     ### Start and end date are the same
     myDF.out$Start_date <- myDF.out$Date
     myDF.out$End_date <- myDF.out$Date
     myDF.out$ndays <- as.numeric(myDF.out$End_date - myDF.out$Start_date) + 1
     
+    colnames(myDF.out) <- c("Date", "Ring", "methane_flux", "Start_date", "End_date", "ndays")
+        
     return(myDF.out)
     
 }

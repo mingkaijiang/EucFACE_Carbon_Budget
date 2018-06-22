@@ -679,13 +679,32 @@ Below is the estimate of understorey respiration flux based on cue approach.
 
 ### CH4 flux
 
-Still working on getting the parameters right!
+#### Simplified real data
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     methane_c_flux <- make_methane_flux()
     
     ### make the plot
     p <- ggplot(methane_c_flux,
+                aes(Date, methane_flux, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("CH4 Flux (mg m-2 d-1)") + 
+            scale_color_manual(values=c("#FF7F50", "#00FFFF", "#6495ED",
+                                        "#FF4040", "#8B0000", "#0000FF"))
+    
+    if (plot_option) {
+            plot(p)
+    }
+```
+
+
+##### This is gap-filled data based on DAMM
+
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    methane_c_flux2 <- make_methane_flux2()
+    
+    ### make the plot
+    p <- ggplot(methane_c_flux2,
                 aes(Date, methane_flux, color=factor(Ring))) +   
             geom_point(size = 5) + geom_line() + 
             xlab("Date") + ylab("CH4 Flux (mg m-2 d-1)") + 

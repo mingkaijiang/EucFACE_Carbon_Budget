@@ -123,8 +123,10 @@ microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
 
 ### Soil methane C flux
-### This is a simplified version because we didn't fill the gaps
+## This is a simplified version because we didn't fill the gaps
 methane_c_flux <- make_methane_flux()
+## This is the version with gap-filled data, using DAMM
+methane_c_flux_2 <- make_methane_flux2()
 
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
