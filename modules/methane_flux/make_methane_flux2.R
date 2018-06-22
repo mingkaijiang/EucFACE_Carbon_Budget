@@ -44,6 +44,10 @@ make_methane_flux2 <- function() {
     myDF$CH4_flux <- myDF$Final_CH4_flux / 12 / 3600
     
     ### Model prediction
+    # predict DAMM model parameters
+    
+    
+    
     #- read in the DAMM parameter estimates from fitting done outside this repo
     params_all_collars <- read.csv("modules/methane_flux/DAMM_parameters_all_collars_CH4.csv")
     params_all_collars$ring_collar <- sapply(as.character(params_all_collars$ring_collar),gsub,pattern="_",replacement="\\.")

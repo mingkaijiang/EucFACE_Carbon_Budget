@@ -62,8 +62,8 @@ CH4_DAMM_parameter_fitting <- function() {
     params <- c(akmch4, eakmch4, akmo2, eakmo2, avmaxch4, eavmaxch4)
     
     ## Set boundaries
-    lower <- c(-100000,-0.1,-1.0,-0.1,-40,-0.1)
-    upper <- c(100000,0.1,1.0,0.1,40,0.1)
+    lower <- c(-1e7,-30,-10,-5,-40,-5)
+    upper <- c(1e7,30,10,5,40,5)
     
     ## Create fitted parameter storage unit
     out.fit.params <- data.frame(collar.factor, NA, NA, NA, NA, NA, NA)
@@ -77,7 +77,7 @@ CH4_DAMM_parameter_fitting <- function() {
         
         ### Calls the DAMM function
         mod.fit <- DEoptim(fn=DAMM_fit_CH4_function,lower=lower,upper=upper,
-                           control=list(NP=500,itermax=100,trace=TRUE,CR=0.9),
+                           control=list(NP=500,itermax=50,trace=TRUE,CR=0.9),
                            soilT=fitDF$SoilT, soilM=fitDF$SoilM, flux=fitDF$CH4_flux)
         out.fit.params[out.fit.params$collar.factor == i, 2:7] <- unname(mod.fit$optim$bestmem)
     }
@@ -103,4 +103,8 @@ CH4_DAMM_parameter_fitting <- function() {
 
     dev.off()
     
+    
+    ### Save the parameters
+    write.csv(out.fit.params, "modules/methane_flux/DAMM_parameters_all_collars_CH4.csv",
+              row.names=F)
 }
