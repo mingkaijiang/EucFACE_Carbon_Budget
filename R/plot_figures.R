@@ -172,22 +172,10 @@ p.und.prod <- plot_treatment_effect(inDF=und.prod.tr,
                                       y.lab=expression(paste("Understorey aboveground production (mg ", m^-2, " ", d^-1, ")")))
 
 
-### Coarseroot production
+### heterotrophic respiration 
 rh.tr <- make_treatment_effect_df(inDF=heterotrophic_respiration_flux, v=5, cond=1)
 p.rh <- plot_treatment_effect(inDF=rh.tr, 
-                                      y.lab=expression(paste("Coarseroot production (mg ", m^-2, " ", d^-1, ")")))
-
-
-### Coarseroot production
-croot.prod.tr <- make_treatment_effect_df(inDF=coarse_root_production_flux_1, v=5, cond=1)
-p.croot.prod <- plot_treatment_effect(inDF=croot.prod.tr, 
-                                      y.lab=expression(paste("Coarseroot production (mg ", m^-2, " ", d^-1, ")")))
-
-
-### Coarseroot production
-croot.prod.tr <- make_treatment_effect_df(inDF=coarse_root_production_flux_1, v=5, cond=1)
-p.croot.prod <- plot_treatment_effect(inDF=croot.prod.tr, 
-                                      y.lab=expression(paste("Coarseroot production (mg ", m^-2, " ", d^-1, ")")))
+                                      y.lab=expression(paste("Heterotrophic respiration (mg ", m^-2, " ", d^-1, ")")))
 
 
 #### save into pdf
@@ -284,11 +272,5 @@ plot(p.und.prod)
 
 ### Coarseroot production
 plot(p.rh) 
-
-### Coarseroot production
-plot(p.croot.prod)
-
-### Coarseroot production
-plot(p.croot.prod) 
 
 dev.off()
