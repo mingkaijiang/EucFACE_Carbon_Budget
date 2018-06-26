@@ -8,7 +8,7 @@ rm(list=ls(all=TRUE))
 
 #### Source functions and packages
 source("R/prepare.R")
-
+options(warn=-1)
 ###### ----------Add met data -------------- ######
 ## Tair, prcp, vpd, CO2, wind speed, N dep, ozone, par, SM, Tsoil
 #pdf("R_other/soil_moisture_plots.pdf", width=10, height=4)
@@ -126,7 +126,7 @@ mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
 ## This is a simplified version because we didn't fill the gaps
 methane_c_flux <- make_methane_flux()
 ## This is the version with gap-filled data, using DAMM
-methane_c_flux_2 <- make_methane_flux2()
+methane_c_flux2 <- make_methane_flux2()
 
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
@@ -228,3 +228,4 @@ leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
 dev.off()
 
 ###### ---------------- End -------------------- ######
+options(warn=0)

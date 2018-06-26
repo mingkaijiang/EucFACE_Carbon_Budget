@@ -63,6 +63,8 @@ make_understorey_respiration_flux <- function(c_pool,
         
     } 
     
+    out$Date <- as.Date(as.character(out$Date), "%Y-%m-%d")
+    
     return(out)
     
 }

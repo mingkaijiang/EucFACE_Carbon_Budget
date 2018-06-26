@@ -239,11 +239,11 @@ All pools are in units of g C m-2, and all fluxes are in units of mg C m-2 d-1, 
     understorey_sla_variable <- make_understorey_sla_variable()
 
    ### make the plot
-    p <- ggplot(sla_variable,
-                aes(Date, sla_variable, color=factor(Ring))) +   
-            geom_point(size = 5) +
-            xlab("Date") + ylab("SLA") + 
-            scale_color_manual(values=ring_colours, name="Ring")
+    p <- ggplot(understorey_sla_variable,
+                aes(Ring, Understorey_sla_variable)) +   
+            geom_bar(stat = "identity", aes(fill=Ring),
+                     position="dodge") +
+            xlab("Date") + ylab("SLA") 
     
     if (plot_option) {
             plot(p)
