@@ -3,16 +3,17 @@
 #### Call run.R program
 source("run.R")
 
-#### Create output folder
-if(!dir.exists("output")) {
-    dir.create("output", showWarnings = FALSE)
-}
-
 #### Source the function that makes treatment effect df
 source("R/make_treatment_effect_df.R")
 source("R/plot_treatment_effect.R")
 
-#### Plot each variable
+#### Plot met data
+### Soil moisture
+soil.moist <- prepare_soil_moisture_data(plot.image = F, monthly=T)
+p.soil.moist <- make_six_ring_combined_plot(inList = soil.moist)
+
+
+#### Plot carbon related variable
 ### LAI
 lai.tr <- make_treatment_effect_df(inDF=lai_variable, v=3, cond=1)
 p.lai <- plot_treatment_effect(inDF=lai.tr, y.lab="LAI")
@@ -180,6 +181,7 @@ p.rh <- plot_treatment_effect(inDF=rh.tr,
 
 #### save into pdf
 pdf("output/time_series_plots.pdf", width=10, height=6)
+
 ### LAI
 plot(p.lai)
 
