@@ -11,94 +11,179 @@ generate_stats <- function() {
                                          var.cond="flux", var.col=3)
     
     ### SLA 
-    plot(p.sla)
+    s.sla <- treatment_effect_statistics(inDF=sla_variable, 
+                                         var.cond="flux", var.col=3)
     
     ### Soil C
-    plot(p.soilc)
+    s.soilc <- treatment_effect_statistics(inDF=soil_c_pool, 
+                                           var.cond="pool", var.col=3)
     
     ### Leaf C
-    plot(p.leafc)
+    s.leafc <- treatment_effect_statistics(inDF=leaf_c_pool, 
+                                           var.cond="pool", var.col=3)
     
     ### Wood C pool
-    plot(p.woodc) 
+    s.woodc <- treatment_effect_statistics(inDF=wood_c_pool, 
+                                              var.cond="pool", var.col=3) 
     
     ### Fineroot C pool
-    plot(p.frc) 
+    s.frc <- treatment_effect_statistics(inDF=fineroot_c_pool, 
+                                         var.cond="pool", var.col=3)
     
     ### Coarseroot C pool
-    plot(p.crc) 
+    s.crc <- treatment_effect_statistics(inDF=coarse_root_c_pool_1, 
+                                            var.cond="pool", var.col=3)
     
     ### Understorey aboveground C pool
-    plot(p.uac) 
+    s.uac <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+                                         var.cond="pool", var.col=5)
     
     ### Microbial C pool
-    plot(p.micc) 
+    s.micc <- treatment_effect_statistics(inDF=microbial_c_pool, 
+                                          var.cond="pool", var.col=3)
     
     ### Mycorrhizal C pool
-    plot(p.mycc) 
+    s.mycc <- treatment_effect_statistics(inDF=mycorrhizal_c_pool, 
+                                             var.cond="pool", var.col=3)
     
     ### Standing dead C pool
     
     ### Overstorey GPP
-    #plot(p.ogpp) 
+    
     
     ### Understorey GPP
     
     ### Overstorey Leaf respiration
     
     ### Root respiration
-    plot(p.rroot)
+    s.rroot <- treatment_effect_statistics(inDF=root_respiration_flux, 
+                                              var.cond="flux", var.col=5)
     
     ### Understorey respiration
-    plot(p.rund) 
+    s.rund <- treatment_effect_statistics(inDF=understorey_respiration_flux, 
+                                          var.cond="flux", var.col=5)
     
     ### Frass production
-    plot(p.fras) 
+    s.fras <- treatment_effect_statistics(inDF=frass_production_flux, 
+                                             var.cond="flux", var.col=5)
     
     ### herbivory leaf consumption flux
-    plot(p.hb.cons) 
+    s.hb.cons <- treatment_effect_statistics(inDF=herbivory_leaf_consumption_flux, 
+                                             var.cond="flux", var.col=5)
     
     ### Herbivory respiration
-    plot(p.rhb) 
+    s.rhb <- treatment_effect_statistics(inDF=herbivory_respiration_flux, 
+                                         var.cond="flux", var.col=5)
     
     ### Lerp production
-    plot(p.lerp.prod) 
+    s.lerp.prod <- treatment_effect_statistics(inDF=lerp_production_flux, 
+                                               var.cond="flux", var.col=5)
     
     ### soil respiration
-    plot(p.rsoil) 
+    s.rsoil <- treatment_effect_statistics(inDF=soil_respiration_flux, 
+                                              var.cond="flux", var.col=5)
     
     ### DOC leaching
-    plot(p.doc) 
+    s.doc <- treatment_effect_statistics(inDF=doc_leaching_flux, 
+                                         var.cond="flux", var.col=5)
     
-    ### CH4 uptake
-    plot(p.ch4) 
+    ### CH4 uptake - un-gap filled data
+    s.ch4 <- treatment_effect_statistics(inDF=methane_c_flux, 
+                                         var.cond="flux", var.col=3)
     
     ### Leaflitter flux
-    s.leaflitter_flux <- treatment_effect_statistics(inDF=leaflitter_flux, 
-                                                     var.cond="flux", var.col=3)    
+    s.lit.leaf <- treatment_effect_statistics(inDF=leaflitter_flux, 
+                                                     var.cond="flux", var.col=6)  
+    
     ### twig litter flux
-    plot(p.lit.twig) 
+    s.lit.twig <- treatment_effect_statistics(inDF=leaflitter_flux, 
+                                             var.cond="flux", var.col=3)
     
     ### bark litter flux
-    plot(p.lit.bark) 
+    s.lit.bark <- treatment_effect_statistics(inDF=leaflitter_flux, 
+                                              var.cond="flux", var.col=4) 
     
     ### Seed litter flux
-    plot(p.lit.seed) 
+    s.lit.seed <- treatment_effect_statistics(inDF=leaflitter_flux, 
+                                              var.cond="flux", var.col=5)
     
     ### Wood production flux
-    plot(p.wood.prod) 
+    s.wood.prod <- treatment_effect_statistics(inDF=wood_production_flux, 
+                                               var.cond="flux", var.col=5) 
     
     ### Fineroot production flux
-    plot(p.froot.prod) 
+    s.froot.prod <- treatment_effect_statistics(inDF=fineroot_production_flux, 
+                                                var.cond="flux", var.col=5) 
     
     ### Coarseroot production
-    plot(p.croot.prod) 
+    s.croot.prod <- treatment_effect_statistics(inDF=coarse_root_production_flux_1, 
+                                                var.cond="flux", var.col=5)
     
     ### Understorey aboveground production
-    plot(p.und.prod)
+    s.und.prod <- treatment_effect_statistics(inDF=understorey_aboveground_production_flux, 
+                                              var.cond="flux", var.col=5)
     
-    ### Coarseroot production
-    plot(p.rh) 
+    ### Rh respiration
+    s.rh <- treatment_effect_statistics(inDF=heterotrophic_respiration_flux, 
+                                        var.cond="flux", var.col=5) 
+    
+    #### Create a output table to store all stats
+    var.list <- c("lai", "sla","soil_c","leaf_c","wood_c","fineroot_c",
+                  "coarseroot_c","understorey_c","microbial_c","mycorrhizal_c",
+                  "root_respiration","understorey_respiration",
+                  "frass_prod","herb_consump","herb_respiration","lerp_prod",
+                  "soil_respiration","doc","ch4","leaf_prod","twig_prod",
+                  "bark_prod","seed_prod","wood_prod","fineroot_prod",
+                  "coarseroot_prod","understorey_prod","hetero_respiration",
+                  "over_gpp","over_leaf_respiration","wood_respiration",
+                  "understorey_gpp")
+    out <- data.frame(var.list, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(out) <- c("Variable", "Trt_Chisq", "Date_Chisq", "Trt_Df", "Date_Df",
+                       "Trt_Pr", "Date_Pr", "effect_size", "conf_low", "conf_high")
+    
+    #### Create a function to ease life
+    assign_stats <- function(s.var) {
+        #### Assign values to out
+        temp <- c(s.var$anova$Chisq[1],s.var$anova$Chisq[2],
+                  s.var$anova$Df[1],s.var$anova$Df[2],
+                  s.var$anova$Pr[1],s.var$anova$Pr[2],
+                  s.var$eff,s.var$conf[1],s.var$conf[2])
+
+        return (temp)
+    }
+    
+    #### Assign value to out
+    out[out$Variable=="lai",2:10] <- assign_stats(s.var=s.lai)
+    out[out$Variable=="sla",2:10] <- assign_stats(s.var=s.sla)
+    out[out$Variable=="soil_c",2:10] <- assign_stats(s.var=s.soilc)
+    out[out$Variable=="leaf_c",2:10] <- assign_stats(s.var=s.leafc)
+    out[out$Variable=="wood_c",2:10] <- assign_stats(s.var=s.woodc)
+    out[out$Variable=="fineroot_c",2:10] <- assign_stats(s.var=s.frc)
+    out[out$Variable=="coarseroot_c",2:10] <- assign_stats(s.var=s.crc)
+    out[out$Variable=="understorey_c",2:10] <- assign_stats(s.var=s.uac)
+    out[out$Variable=="microbial_c",2:10] <- assign_stats(s.var=s.micc)
+    out[out$Variable=="mycorrhizal_c",2:10] <- assign_stats(s.var=s.mycc)
+    out[out$Variable=="root_respiration",2:10] <- assign_stats(s.var=s.rroot)
+    out[out$Variable=="understorey_respiration",2:10] <- assign_stats(s.var=s.rund)
+    out[out$Variable=="frass_prod",2:10] <- assign_stats(s.var=s.fras)
+    out[out$Variable=="herb_consump",2:10] <- assign_stats(s.var=s.hb.cons)
+    out[out$Variable=="herb_respiration",2:10] <- assign_stats(s.var=s.rhb)
+    out[out$Variable=="lerp_prod",2:10] <- assign_stats(s.var=s.lerp.prod)
+    out[out$Variable=="soil_respiration",2:10] <- assign_stats(s.var=s.rsoil)
+    out[out$Variable=="doc",2:10] <- assign_stats(s.var=s.doc)
+    out[out$Variable=="ch4",2:10] <- assign_stats(s.var=s.ch4)
+    out[out$Variable=="leaf_prod",2:10] <- assign_stats(s.var=s.lit.leaf)
+    out[out$Variable=="twig_prod",2:10] <- assign_stats(s.var=s.lit.twig)
+    out[out$Variable=="bark_prod",2:10] <- assign_stats(s.var=s.lit.bark)
+    out[out$Variable=="seed_prod",2:10] <- assign_stats(s.var=s.lit.seed)
+    out[out$Variable=="wood_prod",2:10] <- assign_stats(s.var=s.wood.prod)
+    out[out$Variable=="fineroot_prod",2:10] <- assign_stats(s.var=s.froot.prod)
+    out[out$Variable=="coarseroot_prod",2:10] <- assign_stats(s.var=s.croot.prod)
+    out[out$Variable=="understorey_prod",2:10] <- assign_stats(s.var=s.und.prod)
+    out[out$Variable=="hetero_respiration",2:10] <- assign_stats(s.var=s.rh)
+
+    write.csv(out, "R_other/treatment_statistics.csv", row.names=F)
+
     
     
 }

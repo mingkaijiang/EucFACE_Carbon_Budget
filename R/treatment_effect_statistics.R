@@ -57,7 +57,10 @@ treatment_effect_statistics <- function(inDF, var.cond, var.col) {
         #eff.conf1 <- exp(confint(modelt1,"Trtele"))
         
         ## try log effects to get 95% CI
-        modelt2 <- lmer(log(Value)~Trt+Datef+(1|Ring),data=inDF)
+        inDF$log_value <- log(inDF$Value)
+        inDF$log_value[is.infinite(inDF$log_value)] <- 0
+        
+        modelt2 <- lmer(log_value~Trt+Datef+(1|Ring),data=inDF)
         m2.anova <- Anova(modelt2)
 
         ## Check ele - amb diff
@@ -86,7 +89,24 @@ treatment_effect_statistics <- function(inDF, var.cond, var.col) {
                     conf = eff.conf2))
         
     } else if (var.cond == "pool") {
+        ## try log effects to get 95% CI
+        modelt2 <- lmer(log(Value)~Trt+Datef+(1|Ring),data=inDF)
+        m2.anova <- Anova(modelt2)
         
+        ## Check ele - amb diff
+        summ2 <- summary(glht(modelt2, linfct = mcp(Trt = "Tukey")))
+        
+        ## average effect size
+        eff.size2 <- exp(coef(modelt2)[[1]][1,2])
+        
+        ## confidence interval
+        eff.conf2 <- exp(confint(modelt2,"Trtele"))
+        
+        return(list(mod = modelt2, 
+                    anova = m2.anova,
+                    diff = summ2,
+                    eff = eff.size2,
+                    conf = eff.conf2))
     }
     
 }
