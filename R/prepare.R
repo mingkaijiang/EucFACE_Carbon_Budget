@@ -26,7 +26,11 @@ pacman::p_load(dplyr,
                knitr,
                imputeTS,
                matrixStats,
-               DEoptim) # add other packages needed to this list
+               DEoptim,     # For DAMM model parameter optimality
+               car,         # For stats
+               lme4,        # For stats
+               LMERConvenienceFunctions,  # For stats
+               multcomp)  # For stats
 
 
 #### Loading constants
