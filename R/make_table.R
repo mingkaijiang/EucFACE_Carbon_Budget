@@ -312,7 +312,7 @@ make_EucFACE_table <- function() {
     pool$end_year[pool$term == "Mycorrhizae"] <- max(year(mycorrhizal_c_pool$Date))
     pool$timepoint[pool$term == "Mycorrhizae"] <- length(unique(mycorrhizal_c_pool$Date))
     pool$data_notes[pool$term == "Mycorrhizae"] <- "Data not on HIEv"
-    pool$processing_notes[pool$term == "Mycorrhizae"]  <- "For 0 - 30 cm depth, assumed 70% sand"
+    pool$processing_notes[pool$term == "Mycorrhizae"]  <- "For 0 - 10 cm depth, used sand bulk density"
     
     ### Insects
     pool$value[pool$term == "Insects"]  <- 0.0
