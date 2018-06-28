@@ -38,6 +38,15 @@ generate_stats <- function() {
     s.uac <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=5)
     
+    s.uac.live <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+                                         var.cond="pool", var.col=3)
+    
+    s.uac.dead <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+                                         var.cond="pool", var.col=4)
+    
+    s.uac2 <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+                                         var.cond="pool", var.col=3)
+    
     ### Microbial C pool
     s.micc <- treatment_effect_statistics(inDF=microbial_c_pool, 
                                           var.cond="pool", var.col=3)
@@ -129,7 +138,8 @@ generate_stats <- function() {
     
     #### Create a output table to store all stats
     var.list <- c("lai", "sla","soil_c","leaf_c","wood_c","fineroot_c",
-                  "coarseroot_c","understorey_c","microbial_c","mycorrhizal_c",
+                  "coarseroot_c","understorey_c","understorey_c_2","understorey_c_live","understorey_c_dead",
+                  "microbial_c","mycorrhizal_c",
                   "root_respiration","understorey_respiration",
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
                   "soil_respiration","doc","ch4","leaf_prod","twig_prod",
@@ -161,6 +171,9 @@ generate_stats <- function() {
     out[out$Variable=="fineroot_c",2:10] <- assign_stats(s.var=s.frc)
     out[out$Variable=="coarseroot_c",2:10] <- assign_stats(s.var=s.crc)
     out[out$Variable=="understorey_c",2:10] <- assign_stats(s.var=s.uac)
+    out[out$Variable=="understorey_c_2",2:10] <- assign_stats(s.var=s.uac2)
+    out[out$Variable=="understorey_c_live",2:10] <- assign_stats(s.var=s.uac.live)
+    out[out$Variable=="understorey_c_dead",2:10] <- assign_stats(s.var=s.uac.dead)
     out[out$Variable=="microbial_c",2:10] <- assign_stats(s.var=s.micc)
     out[out$Variable=="mycorrhizal_c",2:10] <- assign_stats(s.var=s.mycc)
     out[out$Variable=="root_respiration",2:10] <- assign_stats(s.var=s.rroot)
