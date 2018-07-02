@@ -11,6 +11,9 @@ c_fraction_fr <- 0.5
 # lerp C content (from Andrew)
 c_fraction_lp <- 0.78
 
+# water fraction in biomass
+water_frac <- 0.5
+
 # g to mg
 g_to_mg <- 1000.0
 

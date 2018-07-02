@@ -1,10 +1,14 @@
 make_coarse_root_pool_2 <- function(c_frac) {
     ### Method 1 of making coarse root biomass pool
-    ### Based on Forrester et al. 2006, developed by Jackson & Chittenden, 1981 for
-    ### P. radiata, estimated for tree of 20 cm D, for roots more than 2 mm in diameter.
-    ###  
-    ### cr_biomass = 5.97D^2.8068 * 10^-3
-    ### where cr_biomass is coarse root biomass (kg), and D is stem diameter (cm)
+    ### Based on Forrester et al. 2006, developed by Misra et al., 1998 for
+    ### Eucalyptus nitens. This is an allometric relationship between
+    ### coarse root C (roots > 3 mm in diameter) and aboveground stem volume. 
+    ### This relatinship was not affected by age, fertiliser or irrigation traetments. 
+    ### ln(RB) = 0.75 ln(V)
+    ### where RB is coarse root biomass (g), and V is volume (cm3), as
+    ### V = D^2 * H, where D is stem diameter (cm) at height of 15 cm, and H is tree height (cm).
+    ### D at 15 cm can be derived by:
+    ### D = 0.555 + 1.577Dx, where Dx is diameter at 130 cm. 
     
     #- download the data from HIEv
     download_diameter_data()
@@ -41,16 +45,25 @@ make_coarse_root_pool_2 <- function(c_frac) {
     # make a long-form version of dataframe
     long <- reshape(uncorr,idvar="Tree",varying=list(7:51),direction="long")
     dates <- names(uncorr)[7:51]
-    long$Date <- c(rep(Sys.Date(),length(long$time)))  #wasn't sure how else to make this column date type
+    long$Date <- c(rep(Sys.Date(),length(long$time)))  
     for (i in (1:length(long$time))) {
         long$Date[i] <- as.Date(dates[long$time[i]],format="X%d.%m.%Y")
     }
     long <- renameCol(long,c("X17.02.2011"),c("diam"))
     
     long$diam <- as.numeric(long$diam)
-
+    
+    # add biomass to long-form dataframe
+    long$biom <- allom_agb(long$diam)  # in kg DM
+    
+    # convert diam fro breast height to 15 cm
+    long$d15 <- 0.555 + 1.1577 * long$diam 
+    
+    # calculate volume
+    long$volume <- (long$d15^2) * (long$Height * 100)
+    
     # calculate coarseroot biomass pool, unit of g
-    long$coarse_biomass <- 5.97 * (long$diam^2.8068)
+    long$coarse_biomass <- exp(0.75 * log(long$volume))
     
     dates <- c(as.Date("2012-12-20"),as.Date("2013-12-20"),
                as.Date("2014-12-23"),as.Date("2015-12-14"))
@@ -60,7 +73,7 @@ make_coarse_root_pool_2 <- function(c_frac) {
     data.m <- summaryBy(coarse_biomass~Date+Ring,data=data,FUN=sum,keep.names=T,na.rm=T)
     
     # divide by ring area to get biomass per m2
-    data.m$coarse_root_biomass <- data.m$coarse_biomass / ring_area 
+    data.m$coarse_root_biomass <- data.m$coarse_biomass / ring_area
     
     # convert from g DM m-2 to g C m-2
     data.m$coarse_root_pool <- data.m$coarse_root_biomass * c_frac

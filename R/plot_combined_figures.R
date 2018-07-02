@@ -382,3 +382,7 @@ dev.off()
 #with(tmp, scatter3d(x = Height, y = Diameter, z = Wood_Stock, 
 #                    groups = as.factor(as.character(tmp$Ring)),
 #                    surface=F, type="h"))
+
+###################---------------------######################
+### Coarse root C pool
+##  generate treatment effect df for each variable
