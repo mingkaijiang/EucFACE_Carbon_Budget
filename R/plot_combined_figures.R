@@ -417,3 +417,100 @@ p1 <- ggplot(crc.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor(
 pdf("output/coarseroot_biomass_method_comparison.pdf", width=10, height=4)
 plot(p1)
 dev.off()
+
+
+###################---------------------######################
+### Soil C pool, soil C content, Soil bulk density at different depths
+##  generate treatment effect df for each variable
+soil.bk.tr <- soil_bulk_density_variable
+soil.bk.tr[soil.bk.tr$ring== 2|soil.bk.tr$ring==3|soil.bk.tr$ring==6,"Treatment"] <- "aCO2"
+soil.bk.tr[soil.bk.tr$ring== 1|soil.bk.tr$ring==4|soil.bk.tr$ring==5,"Treatment"] <- "eCO2"
+
+soil.bk.tr[soil.bk.tr$Depth == "0-10cm", "d.factor"] <- "0-10"
+soil.bk.tr[soil.bk.tr$Depth == "10-20cm", "d.factor"] <- "10-20"
+soil.bk.tr[soil.bk.tr$Depth == "20-30cm", "d.factor"] <- "20-30"
+
+soil.bk.tr <- soil.bk.tr[complete.cases(soil.bk.tr),]
+
+soilc.tr <- make_treatment_effect_df(inDF=soil_c_pool, v=3, cond=1)
+soilr.tr <- make_treatment_effect_df(inDF=soil_respiration_flux, v=5, cond=1)
+
+
+## plotting soil c pool
+p1 <- ggplot(soilc.tr, aes(Date))+
+    geom_ribbon(data=soilc.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+    geom_line(data=soilc.tr, aes(y=avg, color=factor(Treatment)))+
+    labs(x="Date", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
+    scale_x_date(date_breaks = "6 month", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-06-01','2015-05-01')))+
+    ylim(c(0,6000))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+## bulk density
+p2 <- ggplot(soil.bk.tr, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+facet_grid(~ring, switch="x")+
+    labs(x="Ring", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+
+grid.labs <- c("(a)", "(b)")
+
+## plot 
+pdf("output/Soil_C_time_series.pdf", width=12,height=10)
+plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l")
+grid.text(grid.labs,x = 0.1, y = c(0.97, 0.48),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+
+
+
+## plotting soil respiration
+p2 <- ggplot(soilr.tr, aes(Date))+
+    geom_ribbon(data=soilr.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+    geom_line(data=soilr.tr, aes(y=avg, color=factor(Treatment)))+
+    labs(x="Date", y=expression(paste(R[soil], " (mg C ", m^-2, " ", d^-1, ")")))+
+    scale_x_date(date_breaks = "6 month", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-06-01','2016-05-01')))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
