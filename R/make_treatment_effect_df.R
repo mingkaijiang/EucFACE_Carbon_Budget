@@ -6,8 +6,7 @@ make_treatment_effect_df <- function(inDF, v, cond) {
     ### cond: condition of processing the input variable, with
     ###       1 == simply one value for each date and each ring
     ###       2 == not all rings share the same dates
-    ###       3 == 
-    
+
     ### Checking for conditions 
     if (cond == 1) {
         ### Process data by treatment

@@ -199,154 +199,33 @@ dev.off()
 ###################---------------------######################
 ### Leaf C, wood C, understorey aboveground C, fineroot C, coarseroot C
 ##  generate treatment effect df for each variable
-leafc.tr <- make_treatment_effect_df(inDF=leaf_c_pool, v=3, cond=1)
-woodc.tr <- make_treatment_effect_df(inDF=wood_c_pool, v=3, cond=1)
-uac.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=3, cond=1)
-frc.tr <- make_treatment_effect_df(inDF=fineroot_c_pool, v=3, cond=1)
-crc.tr <- make_treatment_effect_df(inDF=coarse_root_c_pool_1, v=3, cond=1)
-
-## split into ac and ec
-ac <- subset(leafc.tr, Treatment == "aCO2")
-ec <- subset(leafc.tr, Treatment == "eCO2")
+woodc.tr <- make_treatment_effect_df_2(inDF=wood_c_pool, v=3)
 
 ## leaf c plot
-p1 <- ggplot(leafc.tr, aes(Date))+
-    geom_ribbon(data=leafc.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
-    geom_line(data=leafc.tr, aes(y=avg, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste(C[leaf], " (g C ", m^-2, ")")))+
+p1 <- ggplot(woodc.tr, aes(x=as.character(Date),y=wood_pool,fill=Treatment))+
+    geom_boxplot(position=position_dodge(1))+
+    geom_dotplot(binaxis='y', stackdir='center', 
+                 position=position_dodge(1), binwidth=30, dotsize=2)+
+    labs(x="Date", y=expression(paste(C[wood], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
-          legend.position="none")+
+          legend.position="right")+
     scale_y_continuous(position="left")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
 plot(p1)
 
-## understorey c plot
-p2 <- ggplot(uac.tr, aes(Date))+
-    geom_segment(data=uac.tr, aes(x = Date, y = neg, xend = Date, yend = pos, color=factor(Treatment)))+
-    #geom_ribbon(data=uac.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
-    geom_point(data=uac.tr, aes(y=avg, color=factor(Treatment)))+
-    labs(x="Date", y="   ")+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.text=element_text(size=12),
-          axis.title=element_text(size=14),
-          legend.text=element_text(size=14),
-          legend.title=element_text(size=16),
-          panel.grid.major=element_line(color="grey"),
-          legend.position="bottom",
-          axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))+
-    scale_y_continuous(sec.axis = sec_axis(~., name = expression(paste(C[ua], " (g C ", m^-2, ")"))))+
-    scale_colour_manual(name="", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
 
-plot(p2)
-
-
-
-## Compute monthly averages
-leafc.tr$Month <- format(as.Date(leafc.tr$Date), "%Y-%m")
-leafc.tr$Month <- as.Date(paste0(as.character(leafc.tr$Month), "-01"), format="%Y-%m-%d")
-leafc.m <- aggregate(.~Treatment+Month, data=leafc.tr, FUN=mean)
-
-woodc.tr$Month <- format(as.Date(woodc.tr$Date), "%Y-%m")
-woodc.tr$Month <- as.Date(paste0(as.character(woodc.tr$Month), "-01"), format="%Y-%m-%d")
-woodc.m <- aggregate(.~Treatment+Month, data=woodc.tr, FUN=mean)
-
-uac.tr$Month <- format(as.Date(uac.tr$Date), "%Y-%m")
-uac.tr$Month <- as.Date(paste0(as.character(uac.tr$Month), "-01"), format="%Y-%m-%d")
-uac.m <- aggregate(.~Treatment+Month, data=uac.tr, FUN=mean)
-
-frc.tr$Month <- format(as.Date(frc.tr$Date), "%Y-%m")
-frc.tr$Month <- as.Date(paste0(as.character(frc.tr$Month), "-01"), format="%Y-%m-%d")
-frc.m <- aggregate(.~Treatment+Month, data=frc.tr, FUN=mean)
-
-crc.tr$Month <- format(as.Date(crc.tr$Date), "%Y-%m")
-crc.tr$Month <- as.Date(paste0(as.character(crc.tr$Month), "-01"), format="%Y-%m-%d")
-crc.m <- aggregate(.~Treatment+Month, data=crc.tr, FUN=mean)
-
-
-## assign all variable values onto the time series
-s1 <- merge(leafc.m, woodc.m, by=c("Month", "Treatment"), all=T)
-s2 <- merge(s1, uac.m, by=c("Month", "Treatment"), all=T)
-s3 <- merge(s2, frc.m, by=c("Month", "Treatment"), all=T)
-s4 <- merge(s3, crc.m, by=c("Month", "Treatment"), all=T)
-
-colnames(s4) <- c("Month", "Treatment", "date1", "a1", "b1", "c1",
-                  "lai_avg", "lai_max", "lai_min", "lai_sd", "lai_pos", "lai_neg",
-                  "date2", "a2", "b2", "c2",
-                  "sla_avg", "sla_max", "sla_min", "sla_sd", "sla_pos", "sla_neg",
-                  "date3", "a3", "b3", "c3",
-                  "leafc_avg", "leafc_max", "leafc_min", "leafc_sd", "leafc_pos", "leafc_neg",
-                  "date4", "a4", "b4", "c4",
-                  "uac_avg", "uac_max", "uac_min", "uac_sd", "uac_pos", "uac_neg")
-
-## split into ac and ec
-ac <- subset(s4, Treatment == "aCO2")
-ec <- subset(s4, Treatment == "eCO2")
-
-## leaf c plot
-p1 <- ggplot(ac, aes(Month))+
-    geom_line(data=ac, aes(y=leafc_avg, col="aCO2"))+
-    geom_ribbon(data=ac,aes(ymin=leafc_neg,ymax=leafc_pos),fill="cyan", alpha=0.3)+
-    geom_line(data=ec, aes(y=leafc_avg, col="eCO2"))+
-    geom_ribbon(data=ec,aes(ymin=leafc_neg,ymax=leafc_pos),fill="red", alpha=0.3)+
-    labs(x="Date", y=expression(paste(C[leaf], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))
-
-## understorey c plot
-p3 <- ggplot(ac, aes(Month))+
-    geom_segment(data=ac, aes(x = Month, y = uac_neg, xend = Month, yend = uac_pos), col="cyan")+
-    geom_segment(data=ec, aes(x = Month, y = uac_neg, xend = Month, yend = uac_pos), col="red")+
-    geom_point(data=ac, aes(y=uac_avg, col="aCO2"))+
-    geom_point(data=ec, aes(y=uac_avg, col="eCO2"))+
-    labs(x="Date", y="   ")+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.text=element_text(size=12),
-          axis.title=element_text(size=14),
-          legend.text=element_text(size=14),
-          legend.title=element_text(size=16),
-          panel.grid.major=element_line(color="grey"),
-          legend.position="bottom",
-          axis.title.y = element_text(margin = margin(t = 0, r = 20, b = 0, l = 0)))+
-    scale_y_continuous(sec.axis = sec_axis(~., name = expression(paste(C[ua], " (g C ", m^-2, ")"))))+
-    scale_colour_manual(name="", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))
-
-grid.labs <- c("(a)", "(b)", "(c)", "(d)", "(e)")
 
 ## plot 
-pdf("output/Plant_C_time_series.pdf", width=14,height=8)
-grid.newpage()
-grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), 
-                ggplotGrob(p3), ggplotGrob(p4), 
-                ggplotGrob(p5), size="last"))
-grid.text(grid.labs,x = 0.07, y = c(0.95, 0.73, 0.51, 0.29),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
+pdf("output/Wood_C_time_series.pdf", width=14,height=8)
+plot(p1)
 dev.off()
