@@ -417,10 +417,10 @@ How do we reconcile the difference in estimated wood c pool?
 
 Here, we have two ways of estimating coarse root C pool, based on allometric relationships for:
 
-    - 1. Eucalyptus nitens.
-    - 2. P. radiata
+    - 1. Australian species
+    - 2. Eucalyptus nitens.
     
-I think it makes more sense to use the 1st method, so just show results based on it.
+Both methods compare similarly. Method 1:
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction, fr_pool=fineroot_c_pool) 
@@ -436,6 +436,25 @@ I think it makes more sense to use the 1st method, so just show results based on
             plot(p)
     }
 ```
+
+Method 2:
+
+
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction) 
+
+   ### make the plot
+    p <- ggplot(coarse_root_c_pool_2 ,
+                aes(Date, coarse_root_pool, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Coarse root C Pool (g m-2)") + 
+            scale_color_manual(values=ring_colours, name="Ring")
+    
+    if (plot_option) {
+            plot(p)
+    }
+```
+
 
 ### Understorey aboveground C pool
 

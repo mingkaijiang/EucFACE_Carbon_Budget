@@ -386,3 +386,34 @@ dev.off()
 ###################---------------------######################
 ### Coarse root C pool
 ##  generate treatment effect df for each variable
+crc1.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_1)
+crc2.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_2)
+
+crc1.tr$total_root_c_pool <- NULL
+crc1.tr$Method <- "A"
+crc2.tr$Method <- "B"
+colnames(crc1.tr) <- c("Date", "Ring", "coarse_root_pool", "Treatment", "Method")
+crc.tr <- rbind(crc1.tr, crc2.tr)
+
+## plotting
+p1 <- ggplot(crc.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor(Treatment)))+
+    geom_boxplot(position=position_dodge(1))+facet_grid(~Method)+
+    labs(x="Date", y=expression(paste(C[cr], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+pdf("output/coarseroot_biomass_method_comparison.pdf", width=10, height=4)
+plot(p1)
+dev.off()

@@ -141,6 +141,7 @@ herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herb
 coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction, fr_pool=fineroot_c_pool) 
 coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction) 
 
+
 #### Coarse root C production
 coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_pool_1) 
 coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
