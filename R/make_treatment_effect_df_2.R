@@ -1,4 +1,4 @@
-make_treatment_effect_df_2 <- function(inDF, v) {
+make_treatment_effect_df_2 <- function(inDF) {
     ### This function processes input variable by treatment
     ### so that they are in format for plotting
     ### inDF: the input variable
