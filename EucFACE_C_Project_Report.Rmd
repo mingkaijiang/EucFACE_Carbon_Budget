@@ -1190,7 +1190,6 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Leaf production can be estimated based on GPP and litterfall (Remko)
     - Root mortality and turnover
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
-    - Create error bars and statistical analyses
     - Litter decomposition rate for litter pool (Jeff + Uffe)
     - Understorey biomass phenocamera estimates - pretreatment (Matthias)
     - Australian forest CUE estimates

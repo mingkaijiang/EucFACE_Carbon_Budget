@@ -1,4 +1,4 @@
-treatment_effect_statistics <- function(inDF, var.cond, var.col, date.as.factor) {
+treatment_effect_ratio_statistics <- function(inDF, var.cond, var.col, date.as.factor) {
     
     #### compare treatment effect of inDF variable
     #### var.cond: == flux 

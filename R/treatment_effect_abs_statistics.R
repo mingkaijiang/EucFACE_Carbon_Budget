@@ -8,6 +8,9 @@ treatment_effect_abs_statistics <- function(inDF, var.cond, var.col, date.as.fac
     #### For fluxes, time should always be a factor
     #### For pools that increment over time, time doesn't have to be a factor
     
+    require(lmerTest)
+    require(pbkrtest)
+    
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
         if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {
@@ -203,56 +206,73 @@ treatment_effect_abs_statistics <- function(inDF, var.cond, var.col, date.as.fac
 
         ### Analyse the variable model
         ## 1. with interaction between date and treatment
-        modelt5 <- lmer(Value~Trt*Yr + (1|Ring),data=tDF)
+        #modelt5 <- lmer(Value~Trt*Yr + (1|Ring),data=tDF)
         ## 2. without interaction between date and treatment
-        modelt6 <- lmer(Value~Trt+Yr + (1|Ring),data=tDF)
+        #modelt6 <- lmer(Value~Trt+Yr + (1|Ring),data=tDF)
         ## 3. with interaction, date as factor
         modelt7 <- lmer(Value~Trt*Yrf + (1|Ring),data=tDF)
         ## 4. without interaction, date as factor
         modelt8 <- lmer(Value~Trt+Yrf + (1|Ring),data=tDF)
         
         ### Check interaction significance to non-interaction model
-        interaction.p3 <- KRmodcomp(modelt5, modelt6)
         interaction.p4 <- KRmodcomp(modelt7, modelt8)
         
-        ### anova
-        m5.anova <- Anova(modelt5, test="F")
-        m6.anova <- Anova(modelt6, test="F")
-        m7.anova <- Anova(modelt7, test="F")
-        m8.anova <- Anova(modelt8, test="F")
-        
-        ### Check ele - amb diff
-        summ5 <- summary(glht(modelt5, linfct = mcp(Trt = "Tukey")))
-        summ6 <- summary(glht(modelt6, linfct = mcp(Trt = "Tukey")))
-        summ7 <- summary(glht(modelt7, linfct = mcp(Trt = "Tukey")))
-        summ8 <- summary(glht(modelt8, linfct = mcp(Trt = "Tukey")))
-        
-        ### average effect size
-        eff.size5 <- coef(modelt5)[[1]][1,2]
-        eff.size6 <- coef(modelt6)[[1]][1,2]
-        eff.size7 <- coef(modelt7)[[1]][1,2]
-        eff.size8 <- coef(modelt8)[[1]][1,2]
-        
-        ### confidence interval 
-        ### if reporting confidence interval for annual,
-        ### need to actually calculate annual fluxes!!!
-        ### Also, confidence interval is too large. It doesn't mean anything now!
-        eff.conf5 <- confint(modelt5,"Trtele")
-        eff.conf6 <- confint(modelt6,"Trtele")
-        eff.conf7 <- confint(modelt7,"Trtele")
-        eff.conf8 <- confint(modelt8,"Trtele")
-        
-        
-        ### all fluxes should consider date as a factor
-        ### hene only need to compare and report best model of models 5-8
-        ### Here we need to report the CO2 by date interaction, 
-        ### hence reporting model 7
-        
-        return(list(mod = modelt7, 
-                    anova = m7.anova,
-                    diff = summ7,
-                    eff = eff.size7,
-                    conf = eff.conf7))
+        ### If interaction model makes no difference, report non-interaction model
+        if(interaction.p4$stats$p.value <= 0.05) {
+            
+            ### Non-interactive model
+            int.m <- "interative"
+                
+            ### anova
+            m.anova <- Anova(modelt7, test="F")
+            
+            ### Check ele - amb diff
+            summ <- summary(glht(modelt7, linfct = mcp(Trt = "Tukey")))
+            
+            ### average effect size
+            eff.size <- coef(modelt7)[[1]][1,2]
+            
+            ### confidence interval 
+            ### if reporting confidence interval for annual,
+            ### need to actually calculate annual fluxes!!!
+            ### Also, confidence interval is too large. It doesn't mean anything now!
+            eff.conf <- confint(modelt7,"Trtele")
+            
+            ### all fluxes should consider date as a factor
+            return(list(int.state=int.m,
+                        mod = modelt7, 
+                        anova = m.anova,
+                        diff = summ,
+                        eff = eff.size,
+                        conf = eff.conf))
+            
+        } else {
+            ### Interactive model
+            int.m <- "non-interative"
+            
+            ### anova
+            m.anova <- Anova(modelt8, test="F")
+            
+            ### Check ele - amb diff
+            summ <- summary(glht(modelt8, linfct = mcp(Trt = "Tukey")))
+            
+            ### average effect size
+            eff.size <- coef(modelt8)[[1]][1,2]
+            
+            ### confidence interval 
+            ### if reporting confidence interval for annual,
+            ### need to actually calculate annual fluxes!!!
+            ### Also, confidence interval is too large. It doesn't mean anything now!
+            eff.conf <- confint(modelt8,"Trtele")
+            
+            ### all fluxes should consider date as a factor
+            return(list(int.state=int.m,
+                        mod = modelt8, 
+                        anova = m.anova,
+                        diff = summ,
+                        eff = eff.size,
+                        conf = eff.conf))
+        }
         
     } else if (var.cond == "pool") {
         #### Analyse the variable model
@@ -260,70 +280,81 @@ treatment_effect_abs_statistics <- function(inDF, var.cond, var.col, date.as.fac
         ###------ Ring random factor
         ###------ Unit g m-2
         
-        ### mixed linear model
-        ## 1. with interaction between date and treatment
-        modelt1 <- lmer(Value~Trt*Date + (1|Ring),data=inDF)
-        ## 2. without interaction between date and treatment
-        modelt2 <- lmer(Value~Trt+Date + (1|Ring),data=inDF)
-        ## 3. with interaction, date as factor
-        modelt3 <- lmer(Value~Trt*Datef + (1|Ring),data=inDF)
-        ## 4. without interaction, date as factor
-        modelt4 <- lmer(Value~Trt+Datef + (1|Ring),data=inDF)
+        if (date.as.factor==T) {
+            ### mixed linear model
+            ## 3. with interaction, date as factor
+            modelt1 <- lmer(Value~Trt*Datef + (1|Ring),data=inDF)
+            ## 4. without interaction, date as factor
+            modelt2 <- lmer(Value~Trt+Datef + (1|Ring),data=inDF)
+            
+        } else {
+            ### mixed linear model
+            ## 1. with interaction between date and treatment
+            modelt1 <- lmer(Value~Trt*Date + (1|Ring),data=inDF)
+            ## 2. without interaction between date and treatment
+            modelt2 <- lmer(Value~Trt+Date + (1|Ring),data=inDF)
+            
+        }
         
         ### inspect individual coefficient p-values
-        ## if p<0.05, interaction is not significant
-        require(lmerTest)
-        require(pbkrtest)
+        ## if p>0.05, interaction is not significant
         interaction.p1 <- KRmodcomp(modelt1, modelt2)
-        interaction.p2 <- KRmodcomp(modelt3, modelt4)
         
-        ### AIC - smaller means better model
-        ### if p value above tells no difference between models considering interaction and not,
-        ### smaller AIC model should be picked.
-        mod.aic <- AIC(modelt1, modelt2, modelt3, modelt4)
-        
-        ### anova
-        ### Type I, II, and III explained:
-        ### Type I tests sequential effect of A and B
-        ### Type II tests for each main effect after the other main effect
-        ### Type III tests for the presence of  a main effect after the other main effect and the interaction
-        ### If the interaction is not significance, type II is more powerful
-        m1.anova <- Anova(modelt1, test="F")
-        m2.anova <- Anova(modelt2, test="F")
-        m3.anova <- Anova(modelt3, test="F")
-        m4.anova <- Anova(modelt4, test="F")
-
-        ### Check ele - amb diff
-        summ1 <- summary(glht(modelt1, linfct = mcp(Trt = "Tukey")))
-        summ2 <- summary(glht(modelt2, linfct = mcp(Trt = "Tukey")))
-        summ3 <- summary(glht(modelt3, linfct = mcp(Trt = "Tukey")))
-        summ4 <- summary(glht(modelt4, linfct = mcp(Trt = "Tukey")))
-        
-        ### average effect size
-        eff.size1 <- coef(modelt1)[[1]][1,2]
-        eff.size2 <- coef(modelt2)[[1]][1,2]
-        eff.size3 <- coef(modelt3)[[1]][1,2]
-        eff.size4 <- coef(modelt4)[[1]][1,2]
-        
-        ### confidence interval
-        eff.conf1 <- confint(modelt1,"Trtele")
-        eff.conf2 <- confint(modelt2,"Trtele")
-        eff.conf3 <- confint(modelt3,"Trtele")
-        eff.conf4 <- confint(modelt4,"Trtele")
-        
-        
-        if (date.as.factor==T) {
-            return(list(mod = modelt3, 
-                        anova = m3.anova,
-                        diff = summ3,
-                        eff = eff.size3,
-                        conf = eff.conf3))
+        if(interaction.p1$stats$p.value > 0.05) {
+            
+            ### Non-interactive model
+            int.m <- "non-interative"
+            
+            ### anova
+            ### Type I, II, and III explained:
+            ### Type I tests sequential effect of A and B
+            ### Type II tests for each main effect after the other main effect
+            ### Type III tests for the presence of  a main effect after the other main effect and the interaction
+            ### If the interaction is not significance, type II is more powerful
+            m.anova <- Anova(modelt2, test="F")
+            
+            ### Check ele - amb diff
+            summ <- summary(glht(modelt2, linfct = mcp(Trt = "Tukey")))
+            
+            ### average effect size
+            eff.size <- coef(modelt2)[[1]][1,2]
+            
+            ### confidence interval
+            eff.conf <- confint(modelt2,"Trtele")
+            
+            return(list(int.state=int.m,
+                        mod = modelt2, 
+                        anova = m.anova,
+                        diff = summ,
+                        eff = eff.size,
+                        conf = eff.conf))
         } else {
-            return(list(mod = modelt1, 
-                        anova = m1.anova,
-                        diff = summ1,
-                        eff = eff.size1,
-                        conf = eff.conf1))
+            ### Interactive model
+            int.m <- "interative"
+            
+            ### anova
+            ### Type I, II, and III explained:
+            ### Type I tests sequential effect of A and B
+            ### Type II tests for each main effect after the other main effect
+            ### Type III tests for the presence of  a main effect after the other main effect and the interaction
+            ### If the interaction is not significance, type II is more powerful
+            m.anova <- Anova(modelt1, test="F")
+            
+            ### Check ele - amb diff
+            summ <- summary(glht(modelt1, linfct = mcp(Trt = "Tukey")))
+
+            ### average effect size
+            eff.size <- coef(modelt1)[[1]][1,2]
+
+            ### confidence interval
+            eff.conf <- confint(modelt1,"Trtele")
+
+            return(list(int.state=int.m,
+                        mod = modelt1, 
+                        anova = m.anova,
+                        diff = summ,
+                        eff = eff.size,
+                        conf = eff.conf))
         }
     }  # flux or pool if statement
 }

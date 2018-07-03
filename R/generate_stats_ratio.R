@@ -3,68 +3,68 @@ generate_stats_ratio <- function() {
     source("run.R")
     
     #### Call the stats function - this compares eC/aC in terms of treatment ratio
-    source("R/treatment_effect_statistics.R")
+    source("R/treatment_effect_ratio_statistics.R")
     
     #### Work on each variable per time
     ### LAI
-    s.lai <- treatment_effect_statistics(inDF=lai_variable, 
+    s.lai <- treatment_effect_ratio_statistics(inDF=lai_variable, 
                                          var.cond="pool", var.col=3,
                                          date.as.factor=T)
     
     ### SLA 
-    s.sla <- treatment_effect_statistics(inDF=sla_variable, 
+    s.sla <- treatment_effect_ratio_statistics(inDF=sla_variable, 
                                          var.cond="pool", var.col=3,
                                          date.as.factor=T)
     
     ### Soil C
-    s.soilc <- treatment_effect_statistics(inDF=soil_c_pool, 
+    s.soilc <- treatment_effect_ratio_statistics(inDF=soil_c_pool, 
                                            var.cond="pool", var.col=3,
                                            date.as.factor=T)
     
     ### Leaf C
-    s.leafc <- treatment_effect_statistics(inDF=leaf_c_pool, 
+    s.leafc <- treatment_effect_ratio_statistics(inDF=leaf_c_pool, 
                                            var.cond="pool", var.col=3,
                                            date.as.factor=T)
     
     ### Wood C pool
-    s.woodc <- treatment_effect_statistics(inDF=wood_c_pool, 
+    s.woodc <- treatment_effect_ratio_statistics(inDF=wood_c_pool, 
                                               var.cond="pool", var.col=3,
                                            date.as.factor=F) 
     
     ### Fineroot C pool
-    s.frc <- treatment_effect_statistics(inDF=fineroot_c_pool, 
+    s.frc <- treatment_effect_ratio_statistics(inDF=fineroot_c_pool, 
                                          var.cond="pool", var.col=3,
                                          date.as.factor=T)
     
     ### Coarseroot C pool
-    s.crc <- treatment_effect_statistics(inDF=coarse_root_c_pool_1, 
+    s.crc <- treatment_effect_ratio_statistics(inDF=coarse_root_c_pool_1, 
                                             var.cond="pool", var.col=3,
                                          date.as.factor=F)
     
     ### Understorey aboveground C pool
-    s.uac <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    s.uac <- treatment_effect_ratio_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=5,
                                          date.as.factor=T)
     
-    s.uac.live <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    s.uac.live <- treatment_effect_ratio_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=3,
                                          date.as.factor=T)
     
-    s.uac.dead <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    s.uac.dead <- treatment_effect_ratio_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=4,
                                          date.as.factor=T)
     
-    s.uac2 <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+    s.uac2 <- treatment_effect_ratio_statistics(inDF=understorey_aboveground_c_pool_2, 
                                          var.cond="pool", var.col=3,
                                          date.as.factor=T)
     
     ### Microbial C pool
-    s.micc <- treatment_effect_statistics(inDF=microbial_c_pool, 
+    s.micc <- treatment_effect_ratio_statistics(inDF=microbial_c_pool, 
                                           var.cond="pool", var.col=3,
                                           date.as.factor=T)
     
     ### Mycorrhizal C pool
-    s.mycc <- treatment_effect_statistics(inDF=mycorrhizal_c_pool, 
+    s.mycc <- treatment_effect_ratio_statistics(inDF=mycorrhizal_c_pool, 
                                              var.cond="pool", var.col=3,
                                           date.as.factor=T)
     
@@ -78,92 +78,92 @@ generate_stats_ratio <- function() {
     ### Overstorey Leaf respiration
     
     ### Root respiration
-    s.rroot <- treatment_effect_statistics(inDF=root_respiration_flux, 
+    s.rroot <- treatment_effect_ratio_statistics(inDF=root_respiration_flux, 
                                               var.cond="flux", var.col=5,
                                            date.as.factor=T)
     
     ### Understorey respiration
-    s.rund <- treatment_effect_statistics(inDF=understorey_respiration_flux, 
+    s.rund <- treatment_effect_ratio_statistics(inDF=understorey_respiration_flux, 
                                           var.cond="flux", var.col=5,
                                           date.as.factor=T)
     
     ### Frass production
-    s.fras <- treatment_effect_statistics(inDF=frass_production_flux, 
+    s.fras <- treatment_effect_ratio_statistics(inDF=frass_production_flux, 
                                              var.cond="flux", var.col=5,
                                           date.as.factor=T)
     
     ### herbivory leaf consumption flux
-    s.hb.cons <- treatment_effect_statistics(inDF=herbivory_leaf_consumption_flux, 
+    s.hb.cons <- treatment_effect_ratio_statistics(inDF=herbivory_leaf_consumption_flux, 
                                              var.cond="flux", var.col=5,
                                              date.as.factor=T)
     
     ### Herbivory respiration
-    s.rhb <- treatment_effect_statistics(inDF=herbivory_respiration_flux, 
+    s.rhb <- treatment_effect_ratio_statistics(inDF=herbivory_respiration_flux, 
                                          var.cond="flux", var.col=5,
                                          date.as.factor=T)
     
     ### Lerp production
-    s.lerp.prod <- treatment_effect_statistics(inDF=lerp_production_flux, 
+    s.lerp.prod <- treatment_effect_ratio_statistics(inDF=lerp_production_flux, 
                                                var.cond="flux", var.col=5,
                                                date.as.factor=T)
     
     ### soil respiration
-    s.rsoil <- treatment_effect_statistics(inDF=soil_respiration_flux, 
+    s.rsoil <- treatment_effect_ratio_statistics(inDF=soil_respiration_flux, 
                                               var.cond="flux", var.col=5,
                                            date.as.factor=T)
     
     ### DOC leaching
-    s.doc <- treatment_effect_statistics(inDF=doc_leaching_flux, 
+    s.doc <- treatment_effect_ratio_statistics(inDF=doc_leaching_flux, 
                                          var.cond="flux", var.col=5,
                                          date.as.factor=T)
     
     ### CH4 uptake - un-gap filled data
-    s.ch4 <- treatment_effect_statistics(inDF=methane_c_flux, 
+    s.ch4 <- treatment_effect_ratio_statistics(inDF=methane_c_flux, 
                                          var.cond="flux", var.col=3,
                                          date.as.factor=T)
     
     ### Leaflitter flux
-    s.lit.leaf <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.leaf <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 
                                                      var.cond="flux", var.col=6,
                                               date.as.factor=T)  
     
     ### twig litter flux
-    s.lit.twig <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.twig <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 
                                              var.cond="flux", var.col=3,
                                              date.as.factor=T)
     
     ### bark litter flux
-    s.lit.bark <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.bark <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 
                                               var.cond="flux", var.col=4,
                                               date.as.factor=T) 
     
     ### Seed litter flux
-    s.lit.seed <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.seed <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 
                                               var.cond="flux", var.col=5,
                                               date.as.factor=T)
     
     ### Wood production flux
-    s.wood.prod <- treatment_effect_statistics(inDF=wood_production_flux, 
+    s.wood.prod <- treatment_effect_ratio_statistics(inDF=wood_production_flux, 
                                                var.cond="flux", var.col=5,
                                                date.as.factor=T) 
     
     ### Fineroot production flux
-    s.froot.prod <- treatment_effect_statistics(inDF=fineroot_production_flux, 
+    s.froot.prod <- treatment_effect_ratio_statistics(inDF=fineroot_production_flux, 
                                                 var.cond="flux", var.col=5,
                                                 date.as.factor=T) 
     
     ### Coarseroot production
-    s.croot.prod <- treatment_effect_statistics(inDF=coarse_root_production_flux_1, 
+    s.croot.prod <- treatment_effect_ratio_statistics(inDF=coarse_root_production_flux_1, 
                                                 var.cond="flux", var.col=5,
                                                 date.as.factor=T)
     
     ### Understorey aboveground production
-    s.und.prod <- treatment_effect_statistics(inDF=understorey_aboveground_production_flux, 
+    s.und.prod <- treatment_effect_ratio_statistics(inDF=understorey_aboveground_production_flux, 
                                               var.cond="flux", var.col=5,
                                               date.as.factor=T)
     
     ### Rh respiration
-    s.rh <- treatment_effect_statistics(inDF=heterotrophic_respiration_flux, 
+    s.rh <- treatment_effect_ratio_statistics(inDF=heterotrophic_respiration_flux, 
                                         var.cond="flux", var.col=5,
                                         date.as.factor=T) 
     
