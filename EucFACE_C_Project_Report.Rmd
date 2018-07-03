@@ -1173,7 +1173,6 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Some fungi get C from dead plant so no GPP involved there. Microbial biomass has a subset that is fungal biomass, then fungal biomass can be splitted into mycorrhizae and saprotrophs. 
     - There is respiration associated with root hyphae and of fungi itself. Juan's respiration data has root-associated mycorrhizae in it, whereas Laura's data is non-root associated mycorrhizae.     
     - Yolima and Luara to check lipid concentration inside and outside mesh bag to constrain concentration differences
-    - Cat to check microbial extraction efficiency constant
     - soil moisture profile and its relationship to DOC, understorey LAI,  fineroot biomass, Rsoil
     - Met data and soil water data to understand extreme points
     - frass production and relationship with leaf N
@@ -1221,6 +1220,8 @@ Attempted list but with problems:
     - Herbivory respiration rate can be done using a 2nd method (frass * use efficiency)
     - CH4 calculation gap-filled. Did not make a huge difference.
     - Nam Jin has estimate of root respiration, and our values are in the range.
+    - 2nd way of estimating coarse root biomass - equivalent to 1st way anyway. 
+    - Cat checked microbial extraction efficiency constant
 
 
 

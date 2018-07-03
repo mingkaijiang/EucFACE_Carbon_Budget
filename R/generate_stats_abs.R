@@ -1,58 +1,58 @@
-generate_stats <- function() {
+generate_stats_abs <- function() {
     #### Call run.R program
     source("run.R")
     
-    #### Call the stats function
-    source("R/treatment_effect_statistics.R")
+    #### Call the stats function - this compares eC/aC in terms of absolute difference
+    source("R/treatment_effect_abs_statistics.R")
     
     #### Work on each variable per time
     ### LAI
-    s.lai <- treatment_effect_statistics(inDF=lai_variable, 
+    s.lai <- treatment_effect_abs_statistics(inDF=lai_variable, 
                                          var.cond="flux", var.col=3)
     
     ### SLA 
-    s.sla <- treatment_effect_statistics(inDF=sla_variable, 
+    s.sla <- treatment_effect_abs_statistics(inDF=sla_variable, 
                                          var.cond="flux", var.col=3)
     
     ### Soil C
-    s.soilc <- treatment_effect_statistics(inDF=soil_c_pool, 
+    s.soilc <- treatment_effect_abs_statistics(inDF=soil_c_pool, 
                                            var.cond="pool", var.col=3)
     
     ### Leaf C
-    s.leafc <- treatment_effect_statistics(inDF=leaf_c_pool, 
+    s.leafc <- treatment_effect_abs_statistics(inDF=leaf_c_pool, 
                                            var.cond="pool", var.col=3)
     
     ### Wood C pool
-    s.woodc <- treatment_effect_statistics(inDF=wood_c_pool, 
+    s.woodc <- treatment_effect_abs_statistics(inDF=wood_c_pool, 
                                               var.cond="pool", var.col=3) 
     
     ### Fineroot C pool
-    s.frc <- treatment_effect_statistics(inDF=fineroot_c_pool, 
+    s.frc <- treatment_effect_abs_statistics(inDF=fineroot_c_pool, 
                                          var.cond="pool", var.col=3)
     
     ### Coarseroot C pool
-    s.crc <- treatment_effect_statistics(inDF=coarse_root_c_pool_1, 
+    s.crc <- treatment_effect_abs_statistics(inDF=coarse_root_c_pool_1, 
                                             var.cond="pool", var.col=3)
     
     ### Understorey aboveground C pool
-    s.uac <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    s.uac <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=5)
     
-    s.uac.live <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    s.uac.live <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=3)
     
-    s.uac.dead <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    s.uac.dead <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 
                                          var.cond="pool", var.col=4)
     
-    s.uac2 <- treatment_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+    s.uac2 <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool_2, 
                                          var.cond="pool", var.col=3)
     
     ### Microbial C pool
-    s.micc <- treatment_effect_statistics(inDF=microbial_c_pool, 
+    s.micc <- treatment_effect_abs_statistics(inDF=microbial_c_pool, 
                                           var.cond="pool", var.col=3)
     
     ### Mycorrhizal C pool
-    s.mycc <- treatment_effect_statistics(inDF=mycorrhizal_c_pool, 
+    s.mycc <- treatment_effect_abs_statistics(inDF=mycorrhizal_c_pool, 
                                              var.cond="pool", var.col=3)
     
     ### Standing dead C pool
@@ -65,75 +65,75 @@ generate_stats <- function() {
     ### Overstorey Leaf respiration
     
     ### Root respiration
-    s.rroot <- treatment_effect_statistics(inDF=root_respiration_flux, 
+    s.rroot <- treatment_effect_abs_statistics(inDF=root_respiration_flux, 
                                               var.cond="flux", var.col=5)
     
     ### Understorey respiration
-    s.rund <- treatment_effect_statistics(inDF=understorey_respiration_flux, 
+    s.rund <- treatment_effect_abs_statistics(inDF=understorey_respiration_flux, 
                                           var.cond="flux", var.col=5)
     
     ### Frass production
-    s.fras <- treatment_effect_statistics(inDF=frass_production_flux, 
+    s.fras <- treatment_effect_abs_statistics(inDF=frass_production_flux, 
                                              var.cond="flux", var.col=5)
     
     ### herbivory leaf consumption flux
-    s.hb.cons <- treatment_effect_statistics(inDF=herbivory_leaf_consumption_flux, 
+    s.hb.cons <- treatment_effect_abs_statistics(inDF=herbivory_leaf_consumption_flux, 
                                              var.cond="flux", var.col=5)
     
     ### Herbivory respiration
-    s.rhb <- treatment_effect_statistics(inDF=herbivory_respiration_flux, 
+    s.rhb <- treatment_effect_abs_statistics(inDF=herbivory_respiration_flux, 
                                          var.cond="flux", var.col=5)
     
     ### Lerp production
-    s.lerp.prod <- treatment_effect_statistics(inDF=lerp_production_flux, 
+    s.lerp.prod <- treatment_effect_abs_statistics(inDF=lerp_production_flux, 
                                                var.cond="flux", var.col=5)
     
     ### soil respiration
-    s.rsoil <- treatment_effect_statistics(inDF=soil_respiration_flux, 
+    s.rsoil <- treatment_effect_abs_statistics(inDF=soil_respiration_flux, 
                                               var.cond="flux", var.col=5)
     
     ### DOC leaching
-    s.doc <- treatment_effect_statistics(inDF=doc_leaching_flux, 
+    s.doc <- treatment_effect_abs_statistics(inDF=doc_leaching_flux, 
                                          var.cond="flux", var.col=5)
     
     ### CH4 uptake - un-gap filled data
-    s.ch4 <- treatment_effect_statistics(inDF=methane_c_flux, 
+    s.ch4 <- treatment_effect_abs_statistics(inDF=methane_c_flux, 
                                          var.cond="flux", var.col=3)
     
     ### Leaflitter flux
-    s.lit.leaf <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.leaf <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
                                                      var.cond="flux", var.col=6)  
     
     ### twig litter flux
-    s.lit.twig <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.twig <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
                                              var.cond="flux", var.col=3)
     
     ### bark litter flux
-    s.lit.bark <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.bark <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
                                               var.cond="flux", var.col=4) 
     
     ### Seed litter flux
-    s.lit.seed <- treatment_effect_statistics(inDF=leaflitter_flux, 
+    s.lit.seed <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
                                               var.cond="flux", var.col=5)
     
     ### Wood production flux
-    s.wood.prod <- treatment_effect_statistics(inDF=wood_production_flux, 
+    s.wood.prod <- treatment_effect_abs_statistics(inDF=wood_production_flux, 
                                                var.cond="flux", var.col=5) 
     
     ### Fineroot production flux
-    s.froot.prod <- treatment_effect_statistics(inDF=fineroot_production_flux, 
+    s.froot.prod <- treatment_effect_abs_statistics(inDF=fineroot_production_flux, 
                                                 var.cond="flux", var.col=5) 
     
     ### Coarseroot production
-    s.croot.prod <- treatment_effect_statistics(inDF=coarse_root_production_flux_1, 
+    s.croot.prod <- treatment_effect_abs_statistics(inDF=coarse_root_production_flux_1, 
                                                 var.cond="flux", var.col=5)
     
     ### Understorey aboveground production
-    s.und.prod <- treatment_effect_statistics(inDF=understorey_aboveground_production_flux, 
+    s.und.prod <- treatment_effect_abs_statistics(inDF=understorey_aboveground_production_flux, 
                                               var.cond="flux", var.col=5)
     
     ### Rh respiration
-    s.rh <- treatment_effect_statistics(inDF=heterotrophic_respiration_flux, 
+    s.rh <- treatment_effect_abs_statistics(inDF=heterotrophic_respiration_flux, 
                                         var.cond="flux", var.col=5) 
     
     #### Create a output table to store all stats
@@ -195,7 +195,7 @@ generate_stats <- function() {
     out[out$Variable=="understorey_prod",2:10] <- assign_stats(s.var=s.und.prod)
     out[out$Variable=="hetero_respiration",2:10] <- assign_stats(s.var=s.rh)
 
-    write.csv(out, "R_other/treatment_statistics.csv", row.names=F)
+    write.csv(out, "R_other/treatment_statistics_abs.csv", row.names=F)
 
     
     
