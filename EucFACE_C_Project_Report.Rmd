@@ -1211,6 +1211,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - Mark maked that Juan may have Dec 2013 root data down to 50 cm
     - Compare turnover of root to FRED database
     - Make a shiny app of EucFACE C budget
+    - Confidence interval for treatment effect is very large !
 <br/>
 
 Attempted list but with problems:
