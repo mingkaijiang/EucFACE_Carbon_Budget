@@ -11,21 +11,21 @@ plot_change_in_wood_soil_microbe_pools <- function(soilDF, woodDF, micrDF, destD
     for (i in eCO2) {
         soilDF[soilDF$Ring == i, "Treatment"] <- "eCO2"
         woodDF[woodDF$Ring == i, "Treatment"] <- "eCO2"
-        micrDF[micrDF$ring == i, "Treatment"] <- "eCO2"
+        micrDF[micrDF$Ring == i, "Treatment"] <- "eCO2"
         
     }
     
     for (i in aCO2) {
         soilDF[soilDF$Ring == i, "Treatment"] <- "aCO2"
         woodDF[woodDF$Ring == i, "Treatment"] <- "aCO2"
-        micrDF[micrDF$ring == i, "Treatment"] <- "aCO2"
+        micrDF[micrDF$Ring == i, "Treatment"] <- "aCO2"
         
     }
     
     soilDF$Ring <- as.factor(soilDF$Ring)
     woodDF$Ring <- as.factor(woodDF$Ring)
-    micrDF$ring <- as.factor(micrDF$ring)
-    micrDF$Date <- as.Date(micrDF$date, format = "%d/%m/%Y")
+    micrDF$Ring <- as.factor(micrDF$Ring)
+    micrDF$Date <- as.Date(micrDF$Date, format = "%d/%m/%Y")
     
     
     ### get start and end dates from both dataframes
@@ -52,8 +52,8 @@ plot_change_in_wood_soil_microbe_pools <- function(soilDF, woodDF, micrDF, destD
     wood.delta.DF <- wood.sub.DF[1:6, c(2,4)]
     wood.delta.DF$change_in_wood <- wood.delta
     
-    micr.delta <- micr.sub.DF[micr.sub.DF$Date == micr.e.date, "Cmic_g_m2"] -
-        micr.sub.DF[micr.sub.DF$Date == micr.s.date, "Cmic_g_m2"]
+    micr.delta <- micr.sub.DF[micr.sub.DF$Date == micr.e.date, "microbial_pool"] -
+        micr.sub.DF[micr.sub.DF$Date == micr.s.date, "microbial_pool"]
     ring <- c(1:6)
     micr.delta.DF <- data.frame(ring, micr.delta, c("eCO2", "aCO2", "aCO2", "eCO2", "eCO2", "aCO2"))
     colnames(micr.delta.DF) <- c("Ring", "change_in_micr", "Treatment")
@@ -62,7 +62,7 @@ plot_change_in_wood_soil_microbe_pools <- function(soilDF, woodDF, micrDF, destD
     for (i in ring) {
         soil.delta.DF[soil.delta.DF$Ring == i, "baseline_soil"] <- soil.sub.DF[soil.sub.DF$Ring == i & soil.sub.DF$Date == soil.s.date, "soil_carbon_pool"]
         wood.delta.DF[wood.delta.DF$Ring == i, "baseline_wood"] <- wood.sub.DF[wood.sub.DF$Ring == i & wood.sub.DF$Date == wood.s.date, "wood_pool"]
-        micr.delta.DF[micr.delta.DF$Ring == i, "baseline_micr"] <- micr.sub.DF[micr.sub.DF$ring == i & micr.sub.DF$Date == micr.s.date, "Cmic_g_m2"]
+        micr.delta.DF[micr.delta.DF$Ring == i, "baseline_micr"] <- micr.sub.DF[micr.sub.DF$Ring == i & micr.sub.DF$Date == micr.s.date, "microbial_pool"]
     }
     
     soil.delta.DF$percent_change <- soil.delta.DF$change_in_soil / soil.delta.DF$baseline_soil * 100
@@ -124,14 +124,14 @@ plot_change_in_wood_soil_microbe_pools <- function(soilDF, woodDF, micrDF, destD
     print(p2)
     
     ## plot comparison for microbe
-    stripchart(Cmic_g_m2~Treatment*Date, data=micr.sub.DF, vertical=T, 
+    stripchart(microbial_pool~Treatment*Date, data=micr.sub.DF, vertical=T, 
                method="stack", pch=20, col=c("gold", "darkgreen"), cex=3,
                group.names=c(paste0("                               ", micr.s.date), NA,
                              paste0("                               ", micr.e.date), NA),
                ylab = "Microbial C [g C m-2]", main = "Microbial C by Treatment", xlab = "Date")
     legend("topleft", c("aCO2", "eCO2"), fill=c("gold", "darkgreen"))
     
-    p3 <- ggplot(micr.sub.DF, aes(x=ring, y=Cmic_g_m2, color=as.factor(Date))) +
+    p3 <- ggplot(micr.sub.DF, aes(x=Ring, y=microbial_pool, color=as.factor(Date))) +
         theme(legend.title=element_blank()) + 
         xlim("1", "2", "3", "4", "5", "6") +
         ylab("Microbial C [g C m-2]") +
