@@ -125,7 +125,7 @@ generate_stats_ratio <- function() {
     ### Leaflitter flux
     s.lit.leaf <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 
                                                      var.cond="flux", var.col=6,
-                                              date.as.factor=T)  
+                                                     date.as.factor=T)  
     
     ### twig litter flux
     s.lit.twig <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 

@@ -7,6 +7,17 @@ treatment_effect_abs_statistics <- function(inDF, var.cond, var.col, date.as.fac
     #### Compute confidence interval of the absolute values
     #### For fluxes, time should always be a factor
     #### For pools that increment over time, time doesn't have to be a factor
+    #### For fluxes, calculate annual sum
+    #### Check if the model with interaction is significantly different from the model without interaction
+    #### If they are the same, use the model without interaction.
+    #### A few points to keep in mind:
+    ####       Fluxes as daily values could result in different model statistics;
+    ####       The model assumption that ring as a random variable could be removed;
+    ####       Within ring variability has not been considered here, as we are reporting one value per ring per date only;
+    ####       Some fluxes (e.g. CH4) have both positive and negative values - effect size using log is not a good idea;
+    ####       Some variables don't have a balanced data input (e.g. SLA);
+    ####       Soil C pool should possibly consider time not as a factor;
+    ####       To simply look at treatment effect we probably don't need to consider interaction anyway.
     
     require(lmerTest)
     require(pbkrtest)

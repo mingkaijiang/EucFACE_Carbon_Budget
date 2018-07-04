@@ -112,19 +112,21 @@ treatment_effect_ratio_statistics <- function(inDF, var.cond, var.col, date.as.f
         ###------ Treatment interacting with date, or not
         ###------ Ring random factor
         
+        inDF$Yrf <- as.factor(inDF$Yr)
+        
         if (date.as.factor==T) {
             ### mixed linear model
             ## 3. with interaction, date as factor
-            modelt1 <- lmer(Value~Trt*Yrf + (1|Ring),data=inDF)
+            modelt1 <- lmer(log_value~Trt*Yrf + (1|Ring),data=inDF)
             ## 4. without interaction, date as factor
-            modelt2 <- lmer(Value~Trt+Yrf + (1|Ring),data=inDF)
+            modelt2 <- lmer(log_value~Trt+Yrf + (1|Ring),data=inDF)
             
         } else {
             ### mixed linear model
             ## 1. with interaction between date and treatment
-            modelt1 <- lmer(Value~Trt*Yr + (1|Ring),data=inDF)
+            modelt1 <- lmer(log_value~Trt*Yr + (1|Ring),data=inDF)
             ## 2. without interaction between date and treatment
-            modelt2 <- lmer(Value~Trt+Yr + (1|Ring),data=inDF)
+            modelt2 <- lmer(log_value~Trt+Yr + (1|Ring),data=inDF)
         }
         
         ### inspect individual coefficient p-values
