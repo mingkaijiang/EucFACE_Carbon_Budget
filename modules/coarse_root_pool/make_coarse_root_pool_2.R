@@ -46,8 +46,8 @@ make_coarse_root_pool_2 <- function(c_frac) {
     uncorr <- uncorr[,names(uncorr) != "Active.FALSE.means.dead."]
     
     # make a long-form version of dataframe
-    long <- reshape(uncorr,idvar="Tree",varying=list(7:51),direction="long")
-    dates <- names(uncorr)[7:51]
+    long <- reshape(uncorr,idvar="Tree",varying=list(7:58),direction="long")
+    dates <- names(uncorr)[7:58]
     long$Date <- c(rep(Sys.Date(),length(long$time)))  
     for (i in (1:length(long$time))) {
         long$Date[i] <- as.Date(dates[long$time[i]],format="X%d.%m.%Y")
