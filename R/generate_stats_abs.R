@@ -189,6 +189,7 @@ generate_stats_abs <- function() {
     
     #### Create a function to ease life
     assign_stats <- function(s.var) {
+        temp <- c()
         
         if(s.var$int.state == "non-interactive") {
             #### Assign values to out
@@ -199,7 +200,7 @@ generate_stats_abs <- function() {
                       s.var$anova$`Pr(>F)`[1],s.var$anova$`Pr(>F)`[2],NA,
                       s.var$eff,s.var$conf[1],s.var$conf[2])
             
-        } else if (s.var$int.state == "interactive") {
+        } else {#if (s.var$int.state == "interactive") {
             #### Assign values to out
             temp <- c(s.var$int.state,
                       s.var$anova$F[1],s.var$anova$F[2],s.var$anova$F[3],
@@ -208,7 +209,6 @@ generate_stats_abs <- function() {
                       s.var$anova$`Pr(>F)`[1],s.var$anova$`Pr(>F)`[2],s.var$anova$`Pr(>F)`[3],
                       s.var$eff,s.var$conf[1],s.var$conf[2])
         }
-        
         return(temp)
     }
     
