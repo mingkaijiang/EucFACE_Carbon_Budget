@@ -9,6 +9,8 @@ make_dbh_and_wood_stock <- function(include.bark.effect){
     f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
     f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
+    f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
+    
     # this file is not on HIEv yet!
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     
@@ -24,6 +26,7 @@ make_dbh_and_wood_stock <- function(include.bark.effect){
     all <- merge(all,f13,by=c("Tree","Ring","CO2.trt")) 
     all <- merge(all,f14,by=c("Tree","Ring","CO2.trt"))  
     all <- merge(all,f15,by=c("Tree","Ring","CO2.trt"))
+    all <- merge(all,f16,by=c("Tree","Ring","CO2.trt"))
     
     # remove dead trees
     all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
@@ -55,7 +58,8 @@ make_dbh_and_wood_stock <- function(include.bark.effect){
         # Hence, just calculate biomass once per year 
         # Specify dates here - may update this to March in future
         dates <- c(as.Date("2012-12-20"),as.Date("2013-12-20"),
-                   as.Date("2014-12-23"),as.Date("2015-12-14"))
+                   as.Date("2014-12-23"),as.Date("2015-12-14"),
+                   as.Date("2016-12-21"))
         data <- long[long$Date %in% dates,]
         
         #- convert from kg DM to g C 

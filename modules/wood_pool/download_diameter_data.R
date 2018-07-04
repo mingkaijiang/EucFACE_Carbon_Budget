@@ -9,6 +9,7 @@ download_diameter_data <- function() {
     infile5 <- "FACE_P0079_RA_SAPWOOD_N_RAW_2015-11_v1.csv"
     infile6 <- "FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv"
     infile7 <- "All_dendros_diameter_and_biomass_data.csv"
+    infile8 <- "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"
     
     if(!file.exists(paste0("download/", infile1))) {
         downloadHIEv(hiev=searchHIEv(infile1))
@@ -36,6 +37,10 @@ download_diameter_data <- function() {
     
     if(!file.exists(paste0("download/", infile7))) {
         downloadHIEv(hiev=searchHIEv(infile7))
+    }
+    
+    if(!file.exists(paste0("download/", infile8))) {
+        downloadHIEv(hiev=searchHIEv(infile8))
     }
     
     # missing a file for 2011-12
