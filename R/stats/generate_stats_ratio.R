@@ -2,8 +2,24 @@ generate_stats_ratio <- function() {
     #### Call run.R program
     source("run.R")
     
-    #### Call the stats function - this compares eC/aC in terms of treatment ratio
-    source("R/treatment_effect_ratio_statistics.R")
+    stat.model == "no_interaction"
+    
+    #### Call the stats function
+    #### this compares eC/aC in terms of absolute difference.
+    #### We can call dynamic model, meaning the model determines whether to consider
+    #### interaction effect or not, or
+    #### "no-interaction" just considers a simple model without look at interaction look
+    #### "interaction" is a model with interaction considered.
+    #### default model is a model without random effect, assuming no interaction. 
+    if (stat.model == "dynamic") {
+        source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+    } else if (stat.model == "no_interaction") {
+        source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+    } else if (stat.model == "interaction") {
+        source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+    } else {
+        source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+    }
     
     #### Work on each variable per time
     ### LAI
@@ -245,8 +261,21 @@ generate_stats_ratio <- function() {
     out[out$Variable=="understorey_prod",2:17] <- assign_stats(s.var=s.und.prod)
     out[out$Variable=="hetero_respiration",2:17] <- assign_stats(s.var=s.rh)
 
-    write.csv(out, "R_other/treatment_statistics_ratio.csv", row.names=F)
+    #### Write output
+    if (stat.model == "dynamic") {
+        write.csv(out, "R_other/treatment_statistics_ratio_dynamic.csv", row.names=F)
+    } else if (stat.model == "no_interaction") {
+        write.csv(out, "R_other/treatment_statistics_ratio_no_interaction.csv", row.names=F)
+    } else if (stat.model == "interaction") {
+        write.csv(out, "R_other/treatment_statistics_ratio_interaction.csv", row.names=F)
+    } else {
+        write.csv(out, "R_other/treatment_statistics_ratio_no_random_effect.csv", row.names=F)
+    }
 
+    
+    
+    
+    
     ############ read in the csv file to plot the treatment effect and confidence interval
     myDF <- read.csv("R_other/treatment_statistics_ratio.csv")
     

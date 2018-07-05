@@ -38,8 +38,13 @@ treatment_effect_ratio_statistics <- function(inDF, var.cond, var.col, date.as.f
         ### Loop through data, return annual flux in g m-2 yr-1
         for (i in 1:6) {
             for (j in yr.list) {
+                ### averaged over days within a year 
+                #tmp <- with(inDF[inDF$Ring == i & inDF$Yr == j, ],
+                #            sum(Value*ndays, na.rm=T)/sum(ndays, na.rm=T)) * 365 / 1000
+                
+                ### summed of all available data within a year
                 tmp <- with(inDF[inDF$Ring == i & inDF$Yr == j, ],
-                            sum(Value*ndays, na.rm=T)/sum(ndays, na.rm=T)) * 365 / 1000 
+                            sum(Value*ndays, na.rm=T)) / 1000 
                 tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- tmp
             }
         }
