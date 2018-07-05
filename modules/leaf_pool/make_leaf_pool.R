@@ -1,4 +1,7 @@
-make_leaf_pool <- function(lai_variable, sla_variable, c_frac, sla_option){
+make_leaf_pool <- function(lai_variable, sla_variable, c_frac, sla_option,
+                           return.decision="data",
+                           trt.effect="abs",
+                           stat.model="interaction"){
   
     if (sla_option == "mean") {
         # Use average SLA over campaigns
@@ -38,7 +41,7 @@ make_leaf_pool <- function(lai_variable, sla_variable, c_frac, sla_option){
             tDF[tDF$Ring == i, "SLA"] <- na.interpolation(tDF[tDF$Ring == i, "SLA"])
         }
         
-        # assin SLA onto LAI data frame
+        # assign SLA onto LAI data frame
         lai_variable$Month <- month(lai_variable$Date)
         lai_variable$Year <- year(lai_variable$Date)
         
@@ -55,6 +58,41 @@ make_leaf_pool <- function(lai_variable, sla_variable, c_frac, sla_option){
         out$leaf_pool <- c_frac * lai_variable$lai_variable / (10^-4 * lai_variable$SLA)
     }
     
-    return(out)
-
+    ### Compute statistical analyses
+    if (trt.effect == "abs") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_abs_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_abs_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_abs_statistics(inDF=out, 
+                                                   var.cond="pool", var.col=3,
+                                                   date.as.factor=T)
+    } else if (trt.effect == "ratio") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_ratio_statistics(inDF=out, 
+                                                     var.cond="pool", var.col=3,
+                                                     date.as.factor=T)
+    }
+    
+    ### Decision on what to return
+    if (return.decision == "data") {
+        return(out)
+    } else if (return.decision == "stats") {
+        return(s.stats)
+    }
 }

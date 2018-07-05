@@ -1,5 +1,8 @@
 #- Make the lerp C prodution flux
-make_lerp_production_flux <- function(c_frac) {
+make_lerp_production_flux <- function(c_frac,
+                                      return.decision="data",
+                                      trt.effect="abs",
+                                      stat.model="interaction") {
     
     ### The life cycle of lerp is ~ 1 month, and the frass baskets were emptied every 1 month,
     ### So this flux calculated from frass basket measurements is the lerp biomass as well,
@@ -39,10 +42,20 @@ make_lerp_production_flux <- function(c_frac) {
     #- sum all species for each trap
     outDF4 <- summaryBy(lerp_production_flux ~ ring+trap+date,data=outDF3,FUN=sum,keep.names=T)
     
+    
+    # Fix Date format:
+    # Assume that e.g. 'Jan-13' means the last day of that month (2013-01-31).
+    outDF4$End_date <- as.Date(paste0("1-", outDF4$date), format = "%d-%b-%y") + months(1) - days(1)
+    outDF4$Start_date <- as.Date(paste0("1-", outDF4$date), format = "%d-%b-%y") 
+    outDF4$ndays <- as.numeric(outDF4$End_date - outDF4$Start_date) + 1
+    outDF4$Date <- outDF4$End_date
+    
     #- average across all traps for each ring and date
     outDF5 <- summaryBy(lerp_production_flux ~ ring+date,data=outDF4,FUN=mean,keep.names=T)
     
     out <- outDF5
+    
+    colnames(outDF4) <- c("Ring", "Trap", "date", "lerp_production_flux", "End_Date", "Start_date", "ndays", "Date")
     
     # Fix Date format:
     # Assume that e.g. 'Jan-13' means the last day of that month (2013-01-31).
@@ -57,6 +70,42 @@ make_lerp_production_flux <- function(c_frac) {
     out <- out[,c("Start_date", "End_date","Date", "ring","lerp_production_flux", "ndays")]
     colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "lerp_production_flux", "ndays")
     
-    return(out)
+    ### Compute statistical analyses
+    if (trt.effect == "abs") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_abs_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_abs_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_abs_statistics(inDF=outDF4, 
+                                                   var.cond="flux", var.col=4,
+                                                   date.as.factor=T)
+    } else if (trt.effect == "ratio") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_ratio_statistics(inDF=outDF4, 
+                                                     var.cond="flux", var.col=4,
+                                                     date.as.factor=T)
+    }
+    
+    ### Decision on what to return
+    if (return.decision == "data") {
+        return(out)
+    } else if (return.decision == "stats") {
+        return(s.stats)
+    }
 }
 

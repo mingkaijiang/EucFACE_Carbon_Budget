@@ -97,7 +97,7 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE,
         
         s.stats <- treatment_effect_abs_statistics(inDF=data, 
                                                    var.cond="pool", var.col=11,
-                                                   date.as.factor=T)
+                                                   date.as.factor=F)
     } else if (trt.effect == "ratio") {
         if (stat.model == "dynamic") {
             source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
@@ -111,7 +111,7 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE,
         
         s.stats <- treatment_effect_ratio_statistics(inDF=data, 
                                                      var.cond="pool", var.col=11,
-                                                     date.as.factor=T)
+                                                     date.as.factor=F)
     }
     
     ### Decision on what to return

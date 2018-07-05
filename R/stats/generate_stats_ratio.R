@@ -309,7 +309,7 @@ generate_stats_ratio <- function() {
                            labels = c("Non-sig", "Sig"), 
                            values = c(21,17))+ 
         ylim(0.5, 4)+coord_flip()+
-        labs(x="Variable", y="aC/eC ratio")+
+        labs(x="Variable", y="eC/aC ratio")+
         theme_linedraw()+
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 

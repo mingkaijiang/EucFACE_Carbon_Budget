@@ -1,5 +1,7 @@
 #- Make the frass C flux
-make_frass_production_flux <- function() {
+make_frass_production_flux <- function(return.decision="data",
+                                       trt.effect="abs",
+                                       stat.model="interaction") {
     
     # Fo use frassfall data and frass carbon content data to obtain frass production flux.
     # Frassfall data has longer temporal coverage,

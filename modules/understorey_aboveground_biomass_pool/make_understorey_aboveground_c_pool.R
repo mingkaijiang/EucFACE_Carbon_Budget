@@ -1,4 +1,7 @@
-make_understorey_aboveground_c_pool <- function(c_frac) {
+make_understorey_aboveground_c_pool <- function(c_frac,
+                                                return.decision="data",
+                                                trt.effect="abs",
+                                                stat.model="interaction") {
     
     ### currently only Varsha's harvest data on HIEv
     download_understorey_aboveground_biomass_data()
@@ -29,6 +32,7 @@ make_understorey_aboveground_c_pool <- function(c_frac) {
     
     # combine data
     myDF <- rbind(tempDF1, tempDF2)
+    myDF$total_g_c_m2 <- myDF$Total_g / strip_area * c_frac
     
     #- average across rings and dates
     liveDF <- summaryBy(Live_g~Date+Ring,data=myDF,FUN=mean,keep.names=T,na.rm=T)
@@ -43,7 +47,43 @@ make_understorey_aboveground_c_pool <- function(c_frac) {
     outDF$Total_g_C_m2 <- outDF$Live_g_C_m2 + outDF$Dead_g_C_m2
     out <- outDF[,c("Date", "Ring", "Live_g_C_m2", "Dead_g_C_m2", "Total_g_C_m2")]
     
-    return(out)
+    ### Compute statistical analyses
+    if (trt.effect == "abs") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_abs_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_abs_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_abs_statistics(inDF=myDF, 
+                                                   var.cond="pool", var.col=6,
+                                                   date.as.factor=T)
+    } else if (trt.effect == "ratio") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_ratio_statistics(inDF=myDF, 
+                                                     var.cond="pool", var.col=6,
+                                                     date.as.factor=T)
+    }
+    
+    ### Decision on what to return
+    if (return.decision == "data") {
+        return(out)
+    } else if (return.decision == "stats") {
+        return(s.stats)
+    }
 }
 
 
