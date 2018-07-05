@@ -84,35 +84,38 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE,
     wood_pool <- data.m[,c("Date","Ring","wood_pool")]
     
     ### Compute statistical analyses
-    if (trt.effect == "abs") {
-        if (stat.model == "dynamic") {
-            source("R/stats/treatment_effect_abs_statistics_dynamic.R")
-        } else if (stat.model == "no_interaction") {
-            source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
-        } else if (stat.model == "interaction") {
-            source("R/stats/treatment_effect_abs_statistics_interaction.R")
-        } else {
-            source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+    if (return.decision == "stats") {
+        if (trt.effect == "abs") {
+            if (stat.model == "dynamic") {
+                source("R/stats/treatment_effect_abs_statistics_dynamic.R")
+            } else if (stat.model == "no_interaction") {
+                source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
+            } else if (stat.model == "interaction") {
+                source("R/stats/treatment_effect_abs_statistics_interaction.R")
+            } else {
+                source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+            }
+            
+            s.stats <- treatment_effect_abs_statistics(inDF=data, 
+                                                       var.cond="pool", var.col=11,
+                                                       date.as.factor=F)
+        } else if (trt.effect == "ratio") {
+            if (stat.model == "dynamic") {
+                source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+            } else if (stat.model == "no_interaction") {
+                source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+            } else if (stat.model == "interaction") {
+                source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+            } else {
+                source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+            }
+            
+            s.stats <- treatment_effect_ratio_statistics(inDF=data, 
+                                                         var.cond="pool", var.col=11,
+                                                         date.as.factor=F)
         }
-        
-        s.stats <- treatment_effect_abs_statistics(inDF=data, 
-                                                   var.cond="pool", var.col=11,
-                                                   date.as.factor=F)
-    } else if (trt.effect == "ratio") {
-        if (stat.model == "dynamic") {
-            source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
-        } else if (stat.model == "no_interaction") {
-            source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
-        } else if (stat.model == "interaction") {
-            source("R/stats/treatment_effect_ratio_statistics_interaction.R")
-        } else {
-            source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
-        }
-        
-        s.stats <- treatment_effect_ratio_statistics(inDF=data, 
-                                                     var.cond="pool", var.col=11,
-                                                     date.as.factor=F)
     }
+
     
     ### Decision on what to return
     if (return.decision == "data") {
