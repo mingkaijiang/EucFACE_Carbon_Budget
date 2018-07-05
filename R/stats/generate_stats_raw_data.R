@@ -180,9 +180,9 @@ generate_stats_raw_data <- function() {
     
     ### Soil methane C flux
     ## This is a simplified version because we didn't fill the gaps
-    s.ch4 <- make_methane_flux(return.decision=r.decision,
-                               trt.effect=t.effect,
-                               stat.model=s.model)
+    #s.ch4 <- make_methane_flux(return.decision=r.decision,
+    #                           trt.effect=t.effect,
+    #                           stat.model=s.model)
     
     
     ### Herbivory respiration flux
@@ -284,44 +284,44 @@ generate_stats_raw_data <- function() {
     #### Assign value to out
     out[out$Variable=="lai",2:17] <- assign_stats(s.var=s.lai)
     out[out$Variable=="sla",2:17] <- assign_stats(s.var=s.sla)
-    out[out$Variable=="soil_c",2:17] <- assign_stats(s.var=s.soilc)
+    #out[out$Variable=="soil_c",2:17] <- assign_stats(s.var=s.soilc)
     out[out$Variable=="leaf_c",2:17] <- assign_stats(s.var=s.leafc)
     out[out$Variable=="wood_c",2:17] <- assign_stats(s.var=s.woodc)
     out[out$Variable=="fineroot_c",2:17] <- assign_stats(s.var=s.frc)
     out[out$Variable=="coarseroot_c",2:17] <- assign_stats(s.var=s.crc)
     out[out$Variable=="understorey_c",2:17] <- assign_stats(s.var=s.uac)
-    out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
+    #out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
     #out[out$Variable=="understorey_c_live",2:17] <- assign_stats(s.var=s.uac.live)
     #out[out$Variable=="understorey_c_dead",2:17] <- assign_stats(s.var=s.uac.dead)
-    out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
-    out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
-    out[out$Variable=="root_respiration",2:17] <- assign_stats(s.var=s.rroot)
-    out[out$Variable=="understorey_respiration",2:17] <- assign_stats(s.var=s.rund)
-    out[out$Variable=="frass_prod",2:17] <- assign_stats(s.var=s.fras)
-    out[out$Variable=="herb_consump",2:17] <- assign_stats(s.var=s.hb.cons)
-    out[out$Variable=="herb_respiration",2:17] <- assign_stats(s.var=s.rhb)
+    #out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
+    #out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
+    #out[out$Variable=="root_respiration",2:17] <- assign_stats(s.var=s.rroot)
+    #out[out$Variable=="understorey_respiration",2:17] <- assign_stats(s.var=s.rund)
+    #out[out$Variable=="frass_prod",2:17] <- assign_stats(s.var=s.fras)
+    #out[out$Variable=="herb_consump",2:17] <- assign_stats(s.var=s.hb.cons)
+    #out[out$Variable=="herb_respiration",2:17] <- assign_stats(s.var=s.rhb)
     out[out$Variable=="lerp_prod",2:17] <- assign_stats(s.var=s.lerp.prod)
     out[out$Variable=="soil_respiration",2:17] <- assign_stats(s.var=s.rsoil)
     out[out$Variable=="doc",2:17] <- assign_stats(s.var=s.doc)
-    out[out$Variable=="ch4",2:17] <- assign_stats(s.var=s.ch4)
+    #out[out$Variable=="ch4",2:17] <- assign_stats(s.var=s.ch4)
     out[out$Variable=="leaf_prod",2:17] <- assign_stats(s.var=s.lit.leaf)
-    #out[out$Variable=="twig_prod",2:17] <- assign_stats(s.var=s.lit.twig)
-    #out[out$Variable=="bark_prod",2:17] <- assign_stats(s.var=s.lit.bark)
-    #out[out$Variable=="seed_prod",2:17] <- assign_stats(s.var=s.lit.seed)
-    out[out$Variable=="wood_prod",2:17] <- assign_stats(s.var=s.wood.prod)
-    out[out$Variable=="fineroot_prod",2:17] <- assign_stats(s.var=s.froot.prod)
-    out[out$Variable=="coarseroot_prod",2:17] <- assign_stats(s.var=s.croot.prod)
+    out[out$Variable=="twig_prod",2:17] <- assign_stats(s.var=s.lit.twig)
+    out[out$Variable=="bark_prod",2:17] <- assign_stats(s.var=s.lit.bark)
+    out[out$Variable=="seed_prod",2:17] <- assign_stats(s.var=s.lit.seed)
+    #out[out$Variable=="wood_prod",2:17] <- assign_stats(s.var=s.wood.prod)
+    #out[out$Variable=="fineroot_prod",2:17] <- assign_stats(s.var=s.froot.prod)
+    #out[out$Variable=="coarseroot_prod",2:17] <- assign_stats(s.var=s.croot.prod)
     out[out$Variable=="understorey_prod",2:17] <- assign_stats(s.var=s.und.prod)
-    out[out$Variable=="hetero_respiration",2:17] <- assign_stats(s.var=s.rh)
+    #out[out$Variable=="hetero_respiration",2:17] <- assign_stats(s.var=s.rh)
     
     
     if (s.model == "dynamic") {
-        write.csv(out, "R_other/treatment_statistics_abs_dynamic.csv", row.names=F)
+        write.csv(out, "R_other/treatment_statistics_abs_dynamic_raw.csv", row.names=F)
     } else if (s.model == "no_interaction") {
-        write.csv(out, "R_other/treatment_statistics_abs_no_interaction.csv", row.names=F)
+        write.csv(out, "R_other/treatment_statistics_abs_no_interaction_raw.csv", row.names=F)
     } else if (s.model == "interaction") {
-        write.csv(out, "R_other/treatment_statistics_abs_interaction.csv", row.names=F)
+        write.csv(out, "R_other/treatment_statistics_abs_interaction_raw.csv", row.names=F)
     } else {
-        write.csv(out, "R_other/treatment_statistics_abs_no_random_effect.csv", row.names=F)
+        write.csv(out, "R_other/treatment_statistics_abs_no_random_effect_raw.csv", row.names=F)
     }
 }

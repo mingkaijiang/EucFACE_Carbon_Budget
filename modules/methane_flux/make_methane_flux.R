@@ -40,6 +40,7 @@ make_methane_flux <- function(return.decision="data",
     myDF$Final_CH4_flux <- as.numeric(as.character(myDF$Final_CH4_flux))
     myDF$methane_flux <- myDF$Final_CH4_flux / 1000 * 24
     myDF$ndays <- 1
+    myDF$Date <- as.Date(as.character(myDF$Date), format="%d-%b-%y")
     
     myDF.m <- summaryBy(Final_CH4_flux~Date*Ring,data=myDF,FUN=mean,keep.names=T,na.rm=T)
     
