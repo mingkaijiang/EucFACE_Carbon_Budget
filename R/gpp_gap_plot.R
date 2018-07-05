@@ -27,26 +27,117 @@ gpp_gap_plot <- function(inDF) {
     
     plotDF <- rbind(gppDF, gppDF.est)
     
+    ### convert unit from g C to kg C
+    plotDF$aCO2 <- plotDF$aCO2/1000
+    
+    ### Mannually fill stem respiration
+    plotDF$aCO2[plotDF$term=="Ra stem"] <- 0.0
+    
     ### calculate missing C
-    gpp <- sum(gppDF$value, na.rm=T)
-    npp <- sum(nppDF$value, na.rm=T)
-    ra <- sum(raDF$value, na.rm=T)
+    gpp <- sum(gppDF$aCO2, na.rm=T)
+    npp <- sum(nppDF$aCO2, na.rm=T)
+    ra <- sum(raDF$aCO2, na.rm=T)
     c.miss <- gpp - npp - ra
-
+    
+    ### Prepare variable labels
+    var.labs <- c(expression(GPP[o]), expression(GPP[u]),
+                  expression(NPP[leaf]), expression(NPP[wood]),
+                  expression(NPP[froot]), expression(NPP[croot]),
+                  expression(NPP[other]), expression(NPP[ua]),
+                  expression(NPP[hb]), expression(R[leaf]),
+                  expression(R[wood]), expression(R[root]),
+                  expression(R[ua]), expression(R[hb]),
+                  expression(R[g]))
+    
+    ### Prepare variable colors
+    col.list <- c("navy",        # GPP overstorey
+                  "grey",        # GPP understorey
+                  "green",       # NPP leaf
+                  "darkgreen",   # NPP wood
+                  "lightgreen",  # NPP fineroot
+                  "#d2f53c",     # NPP coarseroot, lime
+                  "#aaffc3",     # NPP other, mint
+                  "beige",       # NPP ua
+                  "#008080",     # NPP insect consumption, teal
+                  "red",         # Rleaf
+                  "yellow",      # Rwood
+                  "brown",       # Rroot
+                  "orange",      # Rua
+                  "pink",        # Rherb
+                  "maroon")      # Rgrowth, yellow
+    
     ### make the bar plot
-    p <- ggplot(plotDF,
+    p1 <- ggplot(plotDF,
                 aes(cat, aCO2)) +   
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        xlab("Method") + ylab("g C m-2 yr-1") +
-        scale_fill_manual(name="term", values = c("GPP overstorey" = "Navy", "GPP understorey" = "blue",
-                                                  "Leaf NPP" = "light green", "Stem NPP" = "yellowgreen", "Fine Root NPP" = "springgreen",
-                                                  "Coarse Root NPP" = "darkgreen", "Other NPP" = "greenyellow", "Understorey NPP" = "green",
-                                                  "Leaf consumption" = "red", "Ra leaf" = "purple", "Ra stem" = "lavender",
-                                                  "Ra root" = "tomato4", "Ra understorey" = "coral", "Rherbivore" = "orange",
-                                                  "Rgrowth" = "yellow")) +
-        theme(axis.text=element_text(size=14),
-              axis.title=element_text(size=18,face="bold"))
-    plot(p)
+        xlab("Method") + ylab(expression(paste("kg C ", m^-2, yr^-1))) +
+        scale_x_discrete(labels=c(expression(GPP[s]), expression(GPP[m])))+
+        scale_fill_manual(name="Variables", 
+                          values = col.list,
+                          labels=var.labs) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="right",
+              legend.text.align=0)
+        
+    plot(p1)
+    
+    pdf("R_other/gpp_gap.pdf")
+    plot(p1)
+    dev.off()
+    
+    
+    
+    ### Subset the DF to compare NPP and Respiration for each component organ
+    subDF <- data.frame(rep(c("Leaf", "Wood", "Root", "UA"), each=2), NA, NA)
+    colnames(subDF) <- c("Organ", "Flux", "Value")
+    subDF$Flux <- rep(c("NPP", "R"), by=4)
+    subDF$Value[subDF$Organ=="Leaf"&subDF$Flux=="NPP"] <- plotDF$aCO2[plotDF$term=="Leaf NPP"]+plotDF$aCO2[plotDF$term=="Leaf consumption"]
+    subDF$Value[subDF$Organ=="Leaf"&subDF$Flux=="R"] <- plotDF$aCO2[plotDF$term=="Ra leaf"]
+    subDF$Value[subDF$Organ=="Wood"&subDF$Flux=="NPP"] <- plotDF$aCO2[plotDF$term=="Stem NPP"]
+    subDF$Value[subDF$Organ=="Wood"&subDF$Flux=="R"] <- plotDF$aCO2[plotDF$term=="Ra stem"]    
+    subDF$Value[subDF$Organ=="Root"&subDF$Flux=="NPP"] <- plotDF$aCO2[plotDF$term=="Fine Root NPP"]+plotDF$aCO2[plotDF$term=="Coarse Root NPP"]
+    subDF$Value[subDF$Organ=="Root"&subDF$Flux=="R"] <- plotDF$aCO2[plotDF$term=="Ra root"]
+    subDF$Value[subDF$Organ=="UA"&subDF$Flux=="NPP"] <- plotDF$aCO2[plotDF$term=="Understorey NPP"]
+    subDF$Value[subDF$Organ=="UA"&subDF$Flux=="R"] <- plotDF$aCO2[plotDF$term=="Ra understorey"]
+    
+    
+    
+    ### make the bar plot
+    p2 <- ggplot(subDF,
+                 aes(y=Value, x=Organ, fill=Flux)) +   
+        geom_bar(stat = "identity",
+                 position="dodge") +
+        xlab("") + ylab(expression(paste("kg C ", m^-2, yr^-1))) +
+        #scale_x_discrete(labels=c(expression(GPP[s]), expression(GPP[m])))+
+        #scale_fill_manual(name="Variables", 
+        #                  values = col.list,
+        #                  labels=var.labs) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="right",
+              legend.text.align=0)
+    
+    plot(p2)
+    
+    pdf("R_other/npp_respiration_comparison.pdf")
+    plot(p2)
+    dev.off()
+    
     
 }

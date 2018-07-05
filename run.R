@@ -186,9 +186,7 @@ tables_by_year <- make_EucFACE_table_by_year()
 
 ### GPP gaps
 source("R/gpp_gap_plot.R")
-pdf("R_other/gpp_gap.pdf")
 gpp_gap_plot(inDF=tables_by_ring)
-dev.off()
 
 ### Rsoil gaps
 source("R/rsoil_gap_plot.R")
