@@ -2,7 +2,8 @@ generate_stats_ratio <- function() {
     #### Call run.R program
     source("run.R")
     
-    stat.model == "no_interaction"
+    #### Decision on what type of model to run
+    stat.model == "interaction"
     
     #### Call the stats function
     #### this compares eC/aC in terms of absolute difference.
@@ -81,8 +82,8 @@ generate_stats_ratio <- function() {
     
     ### Mycorrhizal C pool
     s.mycc <- treatment_effect_ratio_statistics(inDF=mycorrhizal_c_pool, 
-                                             var.cond="pool", var.col=3,
-                                          date.as.factor=T)
+                                                var.cond="pool", var.col=3,
+                                                date.as.factor=T)
     
     ### Standing dead C pool
     

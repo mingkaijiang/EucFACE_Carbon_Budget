@@ -6,7 +6,10 @@ allom_agb <- function(diamcm) {
 }
 
 #- Make the live wood C pool
-make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
+make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE,
+                           return.decision="data",
+                           trt.effect="abs",
+                           stat.model="interaction"){
     
     #- download the data from HIEv
     download_diameter_data()
@@ -66,8 +69,8 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
                as.Date("2016-12-21"))
     data <- long[long$Date %in% dates,]
     
-    if(return_tree_level)return(data)
-    
+    data$biom_g <- data$biom * 1000
+
     #- sum across rings and dates
     data.m <- summaryBy(biom~Date+Ring,data=data,FUN=sum,keep.names=T,na.rm=T)
     
@@ -79,5 +82,42 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE){
     
     #- format dataframe to return
     wood_pool <- data.m[,c("Date","Ring","wood_pool")]
-    return(wood_pool)
+    
+    ### Compute statistical analyses
+    if (trt.effect == "abs") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_abs_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_abs_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_abs_statistics(inDF=data, 
+                                                   var.cond="pool", var.col=11,
+                                                   date.as.factor=T)
+    } else if (trt.effect == "ratio") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_ratio_statistics(inDF=data, 
+                                                     var.cond="pool", var.col=11,
+                                                     date.as.factor=T)
+    }
+    
+    ### Decision on what to return
+    if (return.decision == "data") {
+        return(wood_pool)
+    } else if (return.decision == "stats") {
+        return(s.stats)
+    }
 }

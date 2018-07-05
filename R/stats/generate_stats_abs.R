@@ -2,7 +2,8 @@ generate_stats_abs <- function() {
     #### Call run.R program
     source("run.R")
     
-    stat.model == "no_interaction"
+    #### Decision on what type of model to run
+    stat.model = "interaction"
 
     #### Call the stats function
     #### this compares eC/aC in terms of absolute difference.

@@ -1,4 +1,7 @@
-make_coarse_root_production_flux <- function(cr_pool) {
+make_coarse_root_production_flux <- function(cr_pool,
+                                             return.decision="data",
+                                             trt.effect="abs",
+                                             stat.model="interaction") {
 
     dates <- unique(cr_pool$Date)
     dates <- dates[order(dates)]

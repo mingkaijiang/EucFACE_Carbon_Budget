@@ -74,7 +74,7 @@ lerp_production_flux <- make_lerp_production_flux(c_fraction_lp)
 ### This data also contains total dissolved carbon, and dissolved inorganic carbon
 ### For now, return only deep option
 ### Also assumes leaching = 20 ml m-2 d-1
-doc_leaching_flux <- make_doc_leaching_flux(return="deep")
+doc_leaching_flux <- make_doc_leaching_flux(depth="deep")
 
 ### Litter fluxes
 ### This dataframe includes all of twig, bark, seed, leaf.

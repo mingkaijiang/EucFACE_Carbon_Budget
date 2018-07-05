@@ -781,7 +781,7 @@ Below is the estimate of understorey respiration flux based on cue approach.
 
 ### DOC Flux
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
-    doc_leaching_flux <- make_doc_leaching_flux(return="deep")
+    doc_leaching_flux <- make_doc_leaching_flux(depth="deep")
 
    ### make the plot
     p <- ggplot(doc_leaching_flux,

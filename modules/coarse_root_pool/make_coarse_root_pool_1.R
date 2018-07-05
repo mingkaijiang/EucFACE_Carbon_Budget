@@ -1,10 +1,18 @@
-make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
+make_coarse_root_pool_1 <- function(c_frac, fr_pool,
+                                    return.decision="data",
+                                    trt.effect="abs",
+                                    stat.model="interaction") {
     ### Method 1 of making total root biomass pool
     ### Based on Snowdon et al., 2000. National Carbon accounting system:
     ### synthesis of allometrics, review of root biomass and design of future woody biomass sampling strategies.
     ### Australian Greenhouse Office. Technical Report No. 17.
     ### Relationship: ln(root biomass) = 0.787 * ln(stand basal area) + 1.218
     ### Root biomass in t/ha, basal area in m2/ha.
+    
+    #### three decisions to make:
+    #### 1. return.decision: data - return the dataframe, stats - return the stats
+    #### 2. If return stats, then need to choose what effect to show (trt.effect) i.e. ratio or abs
+    #### 3. Then need to decide which model (stat.model): interaction, no_interaction, dynamic, and no_random_effect
 
     #- download the data from HIEv
     download_diameter_data()
@@ -60,6 +68,13 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
                as.Date("2016-12-21"))
     data <- long[long$Date %in% dates,]
     
+    data$ba2 <- data$ba 
+    data$biomass <- exp(0.787 * log(data$ba2) + 1.218) 
+    
+    # convert from g matter m-2 to g C m-2
+    data$total_root_c_pool <- data$biomass * c_frac * water_frac * 1000000
+    
+    
     # sum across rings and dates
     data.m <- summaryBy(ba~Date+Ring,data=data,FUN=sum,keep.names=T,na.rm=T)
     
@@ -84,6 +99,42 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
     
     colnames(cr_pool) <- c("Date", "Ring", "coarse_root_pool", "total_root_pool")
     
-    return(cr_pool)
+    ### Compute statistical analyses
+    if (trt.effect == "abs") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_abs_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_abs_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_abs_statistics(inDF=data, 
+                                                 var.cond="pool", var.col=13,
+                                                 date.as.factor=T)
+    } else if (trt.effect == "ratio") {
+        if (stat.model == "dynamic") {
+            source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
+        } else if (stat.model == "no_interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
+        } else if (stat.model == "interaction") {
+            source("R/stats/treatment_effect_ratio_statistics_interaction.R")
+        } else {
+            source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
+        }
+        
+        s.stats <- treatment_effect_ratio_statistics(inDF=data, 
+                                                   var.cond="pool", var.col=13,
+                                                   date.as.factor=T)
+    }
+    
+    ### Decision on what to return
+    if (return.decision == "data") {
+        return(cr_pool)
+    } else if (return.decision == "stats") {
+        return(s.stats)
+    }
     
 }
