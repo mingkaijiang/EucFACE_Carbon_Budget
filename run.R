@@ -207,6 +207,9 @@ pdf("R_other/biomass_increment.pdf")
 biomass_increment_plot()
 dev.off()
 
+### NPP allocation
+source("R/make_npp_allocation_ratio.R")
+make_npp_allocation_ratio()
 
 ###### ----------Make comparison plots, etc. -------------- ######
 source("R/change_in_wood_soil_pools.R")

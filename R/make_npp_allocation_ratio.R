@@ -127,6 +127,12 @@ make_npp_allocation_ratio <- function() {
               legend.position="right",
               legend.text.align=0)
     
+    pdf("R_other/NPP_allocation_abs.pdf")
+    plot(p1)
+    dev.off()
+    
+    pdf("R_other/NPP_allocation_ratio.pdf")
     plot(p2)
+    dev.off()
     
 }
