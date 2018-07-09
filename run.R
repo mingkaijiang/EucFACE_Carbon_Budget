@@ -76,6 +76,8 @@ lerp_production_flux <- make_lerp_production_flux(c_fraction_lp)
 ### Also assumes leaching = 20 ml m-2 d-1
 doc_leaching_flux <- make_doc_leaching_flux(depth="deep")
 
+dic_leaching_flux <- make_dic_leaching_flux(depth="deep")
+
 ### Litter fluxes
 ### This dataframe includes all of twig, bark, seed, leaf.
 ### reads in c_fraction coefficient from constant
@@ -210,6 +212,10 @@ dev.off()
 ### NPP allocation
 source("R/make_npp_allocation_ratio.R")
 make_npp_allocation_ratio()
+
+#### TBCA
+source("R/make_belowground_c_flux_allocation.R")
+make_belowground_c_flux_allocation()
 
 ###### ----------Make comparison plots, etc. -------------- ######
 source("R/change_in_wood_soil_pools.R")
