@@ -9,14 +9,25 @@ rm(list=ls(all=TRUE))
 #### Source functions and packages
 source("R/prepare.R")
 
-#### Supress warning messages
+#### Suppress warning messages
 options(warn=-1)
 
 ###### ----------Add met data -------------- ######
-## Tair, prcp, vpd, CO2, wind speed, N dep, ozone, par, SM, Tsoil
+## Soil moisture data
 #pdf("output/soil_moisture_plots.pdf", width=10, height=4)
 #prepare_soil_moisture_data(plot.image = T, monthly=T)
 #dev.off()
+
+### Top canopy Pressure (hPa)
+pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
+
+### Top canopy Rainfall (mm)
+rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
+
+### Tair, RH and PAR top of canopy
+metDF <- prepare_tair_rh_par_data(timestep="Monthly")
+
+### Wind speed top of canopy
 
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
