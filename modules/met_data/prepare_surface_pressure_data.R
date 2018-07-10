@@ -43,6 +43,11 @@ prepare_surface_pressure_data <- function(plot.image, timestep) {
         }
         
     } 
+    
+    ### Save  data
+    write.csv(hDF, "R_other/pressure_data_hourly.csv", row.names=F)
+    write.csv(dDF, "R_other/pressure_data_daily.csv", row.names=F)
+    write.csv(mDF, "R_other/pressure_data_monthly.csv", row.names=F)
         
     if (timestep=="Monthly") {
         return(mDF)

@@ -24,11 +24,14 @@ pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
 ### Top canopy Rainfall (mm)
 rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
 
-### Tair, RH and PAR top of canopy
-metDF <- prepare_tair_rh_par_data(timestep="Monthly")
+### Tair (K), RH and PAR (umol m-2 s-1) top of canopy
+tair_rh_parDF <- prepare_tair_rh_par_data(timestep="Monthly")
 
-### Wind speed top of canopy
+### Wind speed top of canopy (m/s)
+windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
 
+### Combine met data together
+metDF <- combine_met_data()
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI

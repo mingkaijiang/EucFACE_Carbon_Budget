@@ -1,6 +1,6 @@
-prepare_air_temperature_data <- function(plot.image, timestep) {
+prepare_wind_data <- function(plot.image, timestep) {
     #### Download the data - takes time to run
-    myDF <- download_air_temperature_data()
+    myDF <- download_wind_data()
     
     #### Assign ring information
     myDF$Ring <- sub("FACE_R", "", myDF$Source)
@@ -11,35 +11,38 @@ prepare_air_temperature_data <- function(plot.image, timestep) {
     myDF$Month <- as.Date(paste0(myDF$Month,"-1"), format = "%Y-%m-%d") 
     myDF$DateHour <- as.POSIXct(paste0(myDF$Date, " ", hour(myDF$DateTime), ":00:00"),format = "%Y-%m-%d %H:%M:%S")
     
-    myDF$Ts_mean <- as.numeric(myDF$Ts_mean)
+    ### Calculate hourly mean
+    hDF <-aggregate(wnd_spd~DateHour, FUN=mean, na.rm = T, keep.names=T, data=myDF) 
     
-    ### Calculate hourly sum
-    hDF <-aggregate(Ts_mean~DateHour, FUN=mean, na.rm = T, keep.names=T, data=myDF) 
+    ### Calculate daily mean
+    dDF <- aggregate(wnd_spd~Date, FUN=mean, na.rm=T, keep.names=T, data=myDF)
     
-    ### Calculate daily sum
-    dDF <- aggregate(Ts_mean~Date, FUN=mean, na.rm=T, keep.names=T, data=myDF)
-    
-    ### Calculate monthly sum
-    mDF <- aggregate(Ts_mean~Month, FUN=mean, na.rm=T, keep.names=T, data=myDF)
+    ### Calculate monthly mean
+    mDF <- aggregate(wnd_spd~Month, FUN=mean, na.rm=T, keep.names=T, data=myDF)
     
     
     if (plot.image == T) {
         #### Plotting
         if (timestep=="Monthly") {
-            p1 <- ggplot(mDF, aes(Month, Ts_mean)) +
+            p1 <- ggplot(mDF, aes(Month, wnd_spd)) +
                 geom_line()
             plot(p1)
         } else if (timestep=="Daily") {
-            p1 <- ggplot(dDF, aes(Date, Ts_mean)) +
+            p1 <- ggplot(dDF, aes(Date, wnd_spd)) +
                 geom_line()
             plot(p1) 
         } else if (timestep=="Hourly") {
-            p1 <- ggplot(hDF, aes(DateHour, Ts_mean)) +
+            p1 <- ggplot(hDF, aes(DateHour, wnd_spd)) +
                 geom_line()
             plot(p1) 
         }
         
     } 
+    
+    ### Save  data
+    write.csv(hDF, "R_other/wind_data_hourly.csv", row.names=F)
+    write.csv(dDF, "R_other/wind_data_daily.csv", row.names=F)
+    write.csv(mDF, "R_other/wind_data_monthly.csv", row.names=F)
         
     if (timestep=="Monthly") {
         return(mDF)

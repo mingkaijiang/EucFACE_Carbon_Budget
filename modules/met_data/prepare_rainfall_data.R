@@ -41,6 +41,13 @@ prepare_rainfall_data <- function(plot.image, timestep) {
         }
         
     } 
+    
+    ### Save  data
+    write.csv(hDF, "R_other/rainfall_data_hourly.csv", row.names=F)
+    write.csv(dDF, "R_other/rainfall_data_daily.csv", row.names=F)
+    write.csv(mDF, "R_other/rainfall_data_monthly.csv", row.names=F)
+    
+    
         
     if (timestep=="Monthly") {
         return(mDF)

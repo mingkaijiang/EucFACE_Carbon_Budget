@@ -11,35 +11,35 @@ prepare_tair_rh_par_data <- function(timestep) {
     myDF$Month <- as.Date(paste0(myDF$Month,"-1"), format = "%Y-%m-%d") 
     myDF$DateHour <- as.POSIXct(paste0(myDF$Date, " ", hour(myDF$DateTime), ":00:00"),format = "%Y-%m-%d %H:%M:%S")
     
-    ### Calculate hourly sum
+    ### Calculate hourly mean
     hDF <-aggregate(myDF[c("AirTc_Avg","RH_Avg","LI190SB_PAR_Den_Avg")], 
-                    by=myDF[c("DateHour","Ring")], 
+                    by=myDF[c("DateHour")], 
                     FUN=mean, na.rm = T, keep.names=T) 
     
-    ### Calculate daily sum
+    ### Calculate daily mean
     dDF <- aggregate(myDF[c("AirTc_Avg","RH_Avg","LI190SB_PAR_Den_Avg")], 
-                     by=myDF[c("Date","Ring")], 
+                     by=myDF[c("Date")], 
                      FUN=mean, na.rm=T, keep.names=T)
     
-    ### Calculate monthly sum
+    ### Calculate monthly mean
     mDF <- aggregate(myDF[c("AirTc_Avg","RH_Avg","LI190SB_PAR_Den_Avg")], 
-                     by=myDF[c("Month","Ring")], 
+                     by=myDF[c("Month")], 
                      FUN=mean, na.rm=T, keep.names=T)
     
     ### Colnames
-    colnames(hDF) <- c("DateHour", "Ring", "AirT", "RH", "PAR")
-    colnames(dDF) <- c("Date", "Ring", "AirT", "RH", "PAR")
-    colnames(mDF) <- c("Month", "Ring", "AirT", "RH", "PAR")
+    colnames(hDF) <- c("DateHour", "AirT", "RH", "PAR")
+    colnames(dDF) <- c("Date", "AirT", "RH", "PAR")
+    colnames(mDF) <- c("Month", "AirT", "RH", "PAR")
     
     ### Air temperature from degree C to K
     hDF$AirT <- hDF$AirT + 273.15
     dDF$AirT <- dDF$AirT + 273.15
     mDF$AirT <- mDF$AirT + 273.15
     
-    ### Save daily and monthly data
-    #write.csv(hDF, "R_other/met_data_hourly.csv", row.names=F)
-    #write.csv(dDF, "R_other/met_data_daily.csv", row.names=F)
-    #write.csv(mDF, "R_other/met_data_monthly.csv", row.names=F)
+    ### Save  data
+    write.csv(hDF, "R_other/tair_rh_par_data_hourly.csv", row.names=F)
+    write.csv(dDF, "R_other/tair_rh_par_data_daily.csv", row.names=F)
+    write.csv(mDF, "R_other/tair_rh_par_data_monthly.csv", row.names=F)
     
         
     if (timestep=="Monthly") {
