@@ -31,7 +31,7 @@ options(warn=-1)
 #windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
 
 ### Combine met data together
-#metDF <- combine_met_data()
+#metDF <- combine_met_data(timestep="Monthly")
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI
