@@ -11,6 +11,10 @@ prepare_tair_rh_par_data <- function(timestep) {
     myDF$Month <- as.Date(paste0(myDF$Month,"-1"), format = "%Y-%m-%d") 
     myDF$DateHour <- as.POSIXct(paste0(myDF$Date, " ", hour(myDF$DateTime), ":00:00"),format = "%Y-%m-%d %H:%M:%S")
     
+    myDF$AirTc_Avg <- as.numeric(myDF$AirTc_Avg)
+    myDF$RH_Avg <- as.numeric(myDF$RH_Avg)
+    myDF$LI190SB_PAR_Den_Avg <- as.numeric(myDF$LI190SB_PAR_Den_Avg)
+    
     ### Calculate hourly mean
     hDF <-aggregate(myDF[c("AirTc_Avg","RH_Avg","LI190SB_PAR_Den_Avg")], 
                     by=myDF[c("DateHour")], 

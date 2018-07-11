@@ -14,14 +14,14 @@ prepare_rainfall_data <- function(plot.image, timestep) {
     myDF$Rain_mm_Tot <- as.numeric(myDF$Rain_mm_Tot)
     
     ### Calculate hourly sum
-    hDF <-aggregate(Rain_mm_Tot~DateHour+Ring, FUN=sum, na.rm = T, keep.names=T, data=myDF) 
+    hDF <-aggregate(Rain_mm_Tot~DateHour, FUN=sum, na.rm = T, keep.names=T, data=myDF) 
     
     
     ### Calculate daily sum
-    dDF <- aggregate(Rain_mm_Tot~Date+Ring, FUN=sum, na.rm=T, keep.names=T, data=myDF)
+    dDF <- aggregate(Rain_mm_Tot~Date, FUN=sum, na.rm=T, keep.names=T, data=myDF)
     
     ### Calculate monthly sum
-    mDF <- aggregate(Rain_mm_Tot~Month+Ring, FUN=sum, na.rm=T, keep.names=T, data=myDF)
+    mDF <- aggregate(Rain_mm_Tot~Month, FUN=sum, na.rm=T, keep.names=T, data=myDF)
     
     
     if (plot.image == T) {

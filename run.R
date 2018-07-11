@@ -30,6 +30,9 @@ options(warn=-1)
 ### Wind speed top of canopy (m/s)
 #windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
 
+### tair, RH, PAR and pressure 
+#tair_rh_par_presDF <- prepare_met_air_data(timestep="Monthly")
+
 ### Combine met data together
 #metDF <- combine_met_data(timestep="Monthly")
 
@@ -250,8 +253,15 @@ leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
                                   insect_consumption = herbivory_leaf_consumption_flux)
 dev.off()
 
-###### ----------Make stats -------------- ######
+###### ----------Make stats -------------- ######=
+### Generate ratio , considering no interaction
+#generate_stats_ratio(stat.model="no_interaction")
     
-    
+### Generate abs, considering no interaction
+#generate_stats_abs(stat.model="no_interaction")
+
+### Make some plots
+#make_statistical_comparison_plots()
+
 ###### ---------------- End -------------------- ######
 options(warn=0)

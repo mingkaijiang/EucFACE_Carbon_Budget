@@ -1,4 +1,4 @@
-generate_stats_abs <- function() {
+generate_stats_abs <- function(stat.model) {
     #### Call run.R program
     source("run.R")
     

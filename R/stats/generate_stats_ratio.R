@@ -1,9 +1,9 @@
-generate_stats_ratio <- function() {
+generate_stats_ratio <- function(stat.model) {
     #### Call run.R program
     source("run.R")
     
     #### Decision on what type of model to run
-    stat.model <- "no_interaction"
+    #stat.model <- "no_interaction"
     
     #### Call the stats function
     #### this compares eC/aC in terms of absolute difference.
