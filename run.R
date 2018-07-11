@@ -19,19 +19,19 @@ options(warn=-1)
 #dev.off()
 
 ### Top canopy Pressure (hPa)
-pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
+#pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
 
 ### Top canopy Rainfall (mm)
-rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
+#rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
 
 ### Tair (K), RH and PAR (umol m-2 s-1) top of canopy
-tair_rh_parDF <- prepare_tair_rh_par_data(timestep="Monthly")
+#tair_rh_parDF <- prepare_tair_rh_par_data(timestep="Monthly")
 
 ### Wind speed top of canopy (m/s)
-windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
+#windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
 
 ### Combine met data together
-metDF <- combine_met_data()
+#metDF <- combine_met_data()
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI
@@ -219,9 +219,7 @@ dev.off()
 
 ### Biomass increment
 source("R/biomass_increment_plot.R")
-pdf("R_other/biomass_increment.pdf")
 biomass_increment_plot()
-dev.off()
 
 ### NPP allocation
 source("R/make_npp_allocation_ratio.R")

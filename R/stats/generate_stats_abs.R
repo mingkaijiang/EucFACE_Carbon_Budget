@@ -3,7 +3,7 @@ generate_stats_abs <- function() {
     source("run.R")
     
     #### Decision on what type of model to run
-    stat.model = "interaction"
+    stat.model = "no_interaction"
 
     #### Call the stats function
     #### this compares eC/aC in terms of absolute difference.
@@ -47,7 +47,7 @@ generate_stats_abs <- function() {
     ### Wood C pool
     s.woodc <- treatment_effect_abs_statistics(inDF=wood_c_pool, 
                                               var.cond="pool", var.col=3,
-                                              date.as.factor=F) 
+                                              date.as.factor=T) 
     
     ### Fineroot C pool
     s.frc <- treatment_effect_abs_statistics(inDF=fineroot_c_pool, 
@@ -57,7 +57,7 @@ generate_stats_abs <- function() {
     ### Coarseroot C pool
     s.crc <- treatment_effect_abs_statistics(inDF=coarse_root_c_pool_1, 
                                             var.cond="pool", var.col=3,
-                                            date.as.factor=F)
+                                            date.as.factor=T)
     
     ### Understorey aboveground C pool
     s.uac <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 

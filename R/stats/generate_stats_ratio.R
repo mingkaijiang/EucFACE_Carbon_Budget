@@ -3,7 +3,7 @@ generate_stats_ratio <- function() {
     source("run.R")
     
     #### Decision on what type of model to run
-    stat.model == "interaction"
+    stat.model <- "no_interaction"
     
     #### Call the stats function
     #### this compares eC/aC in terms of absolute difference.
@@ -46,7 +46,7 @@ generate_stats_ratio <- function() {
     ### Wood C pool
     s.woodc <- treatment_effect_ratio_statistics(inDF=wood_c_pool, 
                                               var.cond="pool", var.col=3,
-                                           date.as.factor=F) 
+                                           date.as.factor=T) 
     
     ### Fineroot C pool
     s.frc <- treatment_effect_ratio_statistics(inDF=fineroot_c_pool, 
@@ -56,7 +56,7 @@ generate_stats_ratio <- function() {
     ### Coarseroot C pool
     s.crc <- treatment_effect_ratio_statistics(inDF=coarse_root_c_pool_1, 
                                             var.cond="pool", var.col=3,
-                                         date.as.factor=F)
+                                         date.as.factor=T)
     
     ### Understorey aboveground C pool
     s.uac <- treatment_effect_ratio_statistics(inDF=understorey_aboveground_c_pool, 
@@ -80,7 +80,7 @@ generate_stats_ratio <- function() {
                                           var.cond="pool", var.col=3,
                                           date.as.factor=T)
     
-    ### Mycorrhizal C pool
+    ### Mycorrhizal C pool - only have 1 year of data, so can't use year as a predictor
     s.mycc <- treatment_effect_ratio_statistics(inDF=mycorrhizal_c_pool, 
                                                 var.cond="pool", var.col=3,
                                                 date.as.factor=T)
@@ -134,7 +134,7 @@ generate_stats_ratio <- function() {
                                          var.cond="flux", var.col=5,
                                          date.as.factor=T)
     
-    ### CH4 uptake - un-gap filled data
+    ### CH4 uptake - un-gap filled data - have both positive and negative values, can't use log
     s.ch4 <- treatment_effect_ratio_statistics(inDF=methane_c_flux, 
                                          var.cond="flux", var.col=3,
                                          date.as.factor=T)
@@ -159,7 +159,7 @@ generate_stats_ratio <- function() {
                                               var.cond="flux", var.col=5,
                                               date.as.factor=T)
     
-    ### Wood production flux
+    ### Wood production flux - have negative production
     s.wood.prod <- treatment_effect_ratio_statistics(inDF=wood_production_flux, 
                                                var.cond="flux", var.col=5,
                                                date.as.factor=T) 
@@ -169,7 +169,7 @@ generate_stats_ratio <- function() {
                                                 var.cond="flux", var.col=5,
                                                 date.as.factor=T) 
     
-    ### Coarseroot production
+    ### Coarseroot production - have negative production
     s.croot.prod <- treatment_effect_ratio_statistics(inDF=coarse_root_production_flux_1, 
                                                 var.cond="flux", var.col=5,
                                                 date.as.factor=T)
@@ -179,7 +179,7 @@ generate_stats_ratio <- function() {
                                               var.cond="flux", var.col=5,
                                               date.as.factor=T)
     
-    ### Rh respiration
+    ### Rh respiration - have negative values
     s.rh <- treatment_effect_ratio_statistics(inDF=heterotrophic_respiration_flux, 
                                         var.cond="flux", var.col=5,
                                         date.as.factor=T) 
@@ -272,59 +272,4 @@ generate_stats_ratio <- function() {
     } else {
         write.csv(out, "R_other/treatment_statistics_ratio_no_random_effect.csv", row.names=F)
     }
-
-    
-    
-    
-    
-    ############ read in the csv file to plot the treatment effect and confidence interval
-    myDF <- read.csv("R_other/treatment_statistics_ratio.csv")
-    
-    #### assign color scheme according to treatment p-value
-    myDF$sig_factor[myDF$Trt_Pr > 0.15] <- "non-sig"
-    myDF$sig_factor[myDF$Trt_Pr <= 0.15] <- "sig"
-    
-    myDF$eff_factor[myDF$effect_size >1] <- "above"
-    myDF$eff_factor[myDF$effect_size <1] <- "below"
-    
-    myDF <- myDF[complete.cases(myDF$effect_size),]
-    
-    #### Prepare x labels
-    x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
-                expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
-                expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(R[root]),
-                expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
-                expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
-                expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
-                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]))
-    
-    #### Plotting
-    p1 <- ggplot(myDF)+ 
-        geom_point(aes(x=Variable, y=effect_size, shape=factor(sig_factor)), stat='identity', size=2)+
-        geom_segment(aes(x=Variable, y=conf_low, xend=Variable, yend=conf_high, color=factor(eff_factor)))+
-        scale_color_manual(name="Treatment size", 
-                           labels = c("Above", "Below"), 
-                           values = c("above"="#00ba38", "below"="#f8766d"))+ 
-        scale_shape_manual(name="Treatment Significance", 
-                           labels = c("Non-sig", "Sig"), 
-                           values = c(21,17))+ 
-        ylim(0.5, 4)+coord_flip()+
-        labs(x="Variable", y="eC/aC ratio")+
-        theme_linedraw()+
-        theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_blank(),
-              legend.position="right")+
-        geom_hline(yintercept = 1.0)+
-        scale_x_discrete(limits=myDF$Variable,labels=x.labs)
-    
-    pdf("R_other/treatment_effect_ratio.pdf")
-    plot(p1)
-    dev.off()
-    
 }
