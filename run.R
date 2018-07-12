@@ -253,7 +253,7 @@ leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
                                   insect_consumption = herbivory_leaf_consumption_flux)
 dev.off()
 
-###### ----------Make stats -------------- ######=
+###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction
 #generate_stats_ratio(stat.model="no_interaction")
     
