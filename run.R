@@ -148,7 +148,7 @@ mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
 ## This is a simplified version because we didn't fill the gaps
 methane_c_flux <- make_methane_flux()
 ## This is the version with gap-filled data, using DAMM
-methane_c_flux2 <- make_methane_flux2()
+#methane_c_flux2 <- make_methane_flux2()
 
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
@@ -216,9 +216,7 @@ dev.off()
 
 ### NEP gaps   - Note the different input file!
 source("R/nep_gap_plot.R")
-pdf("R_other/nep_gap.pdf")
 nep_gap_plot(inDF=overall_tables)
-dev.off()
 
 ### Biomass increment
 source("R/biomass_increment_plot.R")

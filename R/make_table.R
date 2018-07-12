@@ -223,7 +223,7 @@ make_EucFACE_table <- function() {
     inout$processing_notes[inout$term == "DOC loss"] <- "Deep soil layer, simplified leaching flux"
     
     #CH4
-    inout$value[inout$term == "CH4 efflux"] <- mean(methane_c_flux$methane_flux) * conv
+    inout$value[inout$term == "CH4 efflux"] <- mean(methane_c_flux$methane_flux, na.rm=T) * conv
     inout$start_year[inout$term == "CH4 efflux"] <- min(year(methane_c_flux$Start_date))
     inout$end_year[inout$term == "CH4 efflux"] <- max(year(methane_c_flux$End_date))
     inout$timepoint[inout$term == "CH4 efflux"] <- length(unique(methane_c_flux$Date))
