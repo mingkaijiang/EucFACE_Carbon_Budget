@@ -3,7 +3,7 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     source("run.R")
     
     #### Decision on what type of model to run
-    stat.model = "no_interaction"
+    #stat.model = "interaction"
 
     #### Call the stats function
     #### this compares eC/aC in terms of absolute difference.
@@ -127,17 +127,17 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     }
     
     #### Assign value to out
-    out[out$Variable=="soil_c",2:17] <- assign_stats(s.var=s.soilc)
-    out[out$Variable=="leaf_c",2:17] <- assign_stats(s.var=s.leafc)
-    out[out$Variable=="wood_c",2:17] <- assign_stats(s.var=s.woodc)
-    out[out$Variable=="fineroot_c",2:17] <- assign_stats(s.var=s.frc)
-    out[out$Variable=="coarseroot_c",2:17] <- assign_stats(s.var=s.crc)
-    out[out$Variable=="understorey_c",2:17] <- assign_stats(s.var=s.uac)
-    out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
-    out[out$Variable=="understorey_c_live",2:17] <- assign_stats(s.var=s.uac.live)
-    out[out$Variable=="understorey_c_dead",2:17] <- assign_stats(s.var=s.uac.dead)
-    out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
-    out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
+    out[out$Variable=="delta_soil_c",2:17] <- assign_stats(s.var=s.soilc)
+    out[out$Variable=="delta_leaf_c",2:17] <- assign_stats(s.var=s.leafc)
+    out[out$Variable=="delta_wood_c",2:17] <- assign_stats(s.var=s.woodc)
+    out[out$Variable=="delta_fineroot_c",2:17] <- assign_stats(s.var=s.frc)
+    out[out$Variable=="delta_coarseroot_c",2:17] <- assign_stats(s.var=s.crc)
+    out[out$Variable=="delta_understorey_c",2:17] <- assign_stats(s.var=s.uac)
+    out[out$Variable=="delta_understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
+    out[out$Variable=="delta_understorey_c_live",2:17] <- assign_stats(s.var=s.uac.live)
+    out[out$Variable=="delta_understorey_c_dead",2:17] <- assign_stats(s.var=s.uac.dead)
+    out[out$Variable=="delta_microbial_c",2:17] <- assign_stats(s.var=s.micc)
+    out[out$Variable=="delta_mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
 
     
     if (stat.model == "dynamic") {

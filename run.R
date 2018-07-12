@@ -260,6 +260,9 @@ dev.off()
 ### Generate abs, considering no interaction
 #generate_stats_abs(stat.model="no_interaction")
 
+### Generate abs on changes in pools, considering no interaction
+#generate_stats_abs_change_in_pools(stat.model="interaction")
+
 ### Make some plots
 #make_statistical_comparison_plots()
 
