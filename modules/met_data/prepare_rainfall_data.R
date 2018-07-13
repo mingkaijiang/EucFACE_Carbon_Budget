@@ -7,21 +7,23 @@ prepare_rainfall_data <- function(plot.image, timestep) {
     myDF$Ring <- sub("_T1.*", "", myDF$Ring)
     myDF$Ring <- as.numeric(myDF$Ring)  
     myDF <- myDF[order(myDF$DateTime),]
-    myDF$Month <- format(as.Date(myDF$Date), "%Y-%m")
-    myDF$Month <- as.Date(paste0(myDF$Month,"-1"), format = "%Y-%m-%d") 
-    myDF$DateHour <- as.POSIXct(paste0(myDF$Date, " ", hour(myDF$DateTime), ":00:00"),format = "%Y-%m-%d %H:%M:%S")
     
-    myDF$Rain_mm_Tot <- as.numeric(myDF$Rain_mm_Tot)
+    ## We have two record per measurement time, need to average them hout
+    aDF <- aggregate(Rain_mm_Tot~DateTime, FUN=mean, na.rm=T, keep.names=T, data=myDF)
     
+    aDF$Month <- format(as.Date(aDF$DateTime), "%Y-%m")
+    aDF$Month <- as.Date(paste0(aDF$Month,"-1"), format = "%Y-%m-%d") 
+    aDF$Date <- as.Date(aDF$DateTime)
+    aDF$DateHour <- as.POSIXct(paste0(aDF$Date, " ", hour(aDF$DateTime), ":00:00"),format = "%Y-%m-%d %H:%M:%S")
+
     ### Calculate hourly sum
-    hDF <-aggregate(Rain_mm_Tot~DateHour, FUN=sum, na.rm = T, keep.names=T, data=myDF) 
-    
-    
+    hDF <-aggregate(Rain_mm_Tot~DateHour, FUN=sum, na.rm=T, data=aDF) 
+
     ### Calculate daily sum
-    dDF <- aggregate(Rain_mm_Tot~Date, FUN=sum, na.rm=T, keep.names=T, data=myDF)
+    dDF <- aggregate(Rain_mm_Tot~Date, FUN=sum, na.rm=T, data=aDF)
     
     ### Calculate monthly sum
-    mDF <- aggregate(Rain_mm_Tot~Month, FUN=sum, na.rm=T, keep.names=T, data=myDF)
+    mDF <- aggregate(Rain_mm_Tot~Month, FUN=sum, na.rm=T, data=aDF)
     
     
     if (plot.image == T) {

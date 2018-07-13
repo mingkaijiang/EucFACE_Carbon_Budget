@@ -55,6 +55,11 @@ soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
 ### soil respiration flux
 soil_respiration_flux <- make_soil_respiration_flux()
 
+### VOC flux - process hourly met data within the function
+### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
+### LAI, and soil moisture (m3/m3)
+prepare_VOC_met_data(laiDF=lai_variable)
+
 
 ### leaf C pool
 ### read in c_fraction defined in constant

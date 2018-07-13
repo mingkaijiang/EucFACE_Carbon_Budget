@@ -10,7 +10,6 @@ nep_gap_plot <- function(inDF) {
         inoutDF$value[inoutDF$term == "CH4 efflux"] -
         inoutDF$value[inoutDF$term == "Ra leaf"] -
         #inoutDF$value[inoutDF$term == "Ra stem"] -
-        inoutDF$value[inoutDF$term == "Ra root"] -
         inoutDF$value[inoutDF$term == "Ra understorey"] -
         #inoutDF$value[inoutDF$term == "VOC"] -
         inoutDF$value[inoutDF$term == "Rherbivore"] -
