@@ -58,7 +58,7 @@ soil_respiration_flux <- make_soil_respiration_flux()
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
 ### LAI, and soil moisture (m3/m3)
-prepare_VOC_met_data(laiDF=lai_variable)
+#prepare_VOC_met_data(laiDF=lai_variable)
 
 
 ### leaf C pool

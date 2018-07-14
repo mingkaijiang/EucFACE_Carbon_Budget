@@ -3,10 +3,10 @@ generate_stats_abs <- function(stat.model) {
     source("run.R")
     
     #### Decision on what type of model to run
-    #stat.model = "interaction"
+    #stat.model = "no_interaction"
 
     #### Call the stats function
-    #### this compares eC/aC in terms of absolute difference.
+    #### this compares eC/  in terms of absolute difference.
     #### We can call dynamic model, meaning the model determines whether to consider
     #### interaction effect or not, or
     #### "no-interaction" just considers a simple model without look at interaction look
