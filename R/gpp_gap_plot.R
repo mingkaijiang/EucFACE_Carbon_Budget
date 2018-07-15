@@ -1,7 +1,7 @@
 gpp_gap_plot <- function(inDF) {
     
     ### subseting NPP DF
-    temDF <- inDF$npp[,c("term", "aCO2")]
+    temDF <- inDF$npp[,c("term", "aCO2", "aCO2_sd")]
     
     ### only include plant NPP
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],temDF[temDF$term == "Stem NPP",],
@@ -10,7 +10,7 @@ gpp_gap_plot <- function(inDF) {
                    temDF[temDF$term == "Leaf consumption",])
     
     ### subsetting inout df
-    temDF <- inDF$inout[,c("term", "aCO2")]
+    temDF <- inDF$inout[,c("term", "aCO2", "aCO2_sd")]
     
     ### only include GPP
     gppDF <- rbind(temDF[temDF$term == "GPP overstorey",],temDF[temDF$term == "GPP understorey",])
@@ -18,7 +18,7 @@ gpp_gap_plot <- function(inDF) {
     ### only include respiration
     raDF <- rbind(temDF[temDF$term == "Ra leaf",],temDF[temDF$term == "Ra stem",],
                   temDF[temDF$term == "Ra root",],temDF[temDF$term == "Ra understorey",],
-                  temDF[temDF$term == "Rherbivore",],temDF[temDF$term == "Rgrowth",])
+                  temDF[temDF$term == "Rgrowth",])
     
     ### calculated gpp based on NPP + Ra
     gppDF.est <- rbind(nppDF, raDF)
@@ -29,15 +29,25 @@ gpp_gap_plot <- function(inDF) {
     
     ### convert unit from g C to kg C
     plotDF$aCO2 <- plotDF$aCO2/1000
+    plotDF$aCO2_sd <- plotDF$aCO2_sd/1000
     
     ### Mannually fill stem respiration
     plotDF$aCO2[plotDF$term=="Ra stem"] <- 0.0
+    plotDF$aCO2_sd[plotDF$term=="Ra stem"] <- 0.0
     
     ### calculate missing C
     gpp <- sum(gppDF$aCO2, na.rm=T)
     npp <- sum(nppDF$aCO2, na.rm=T)
     ra <- sum(raDF$aCO2, na.rm=T)
     c.miss <- gpp - npp - ra
+    
+    ### prepare error bar ranges
+    errDF <- data.frame(rep(c("NPP+Ra", "MAESPA"),2), NA, NA)
+    colnames(errDF) <- c("cat", "pos", "neg")
+    errDF$pos[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])+sum(plotDF$aCO2_sd[plotDF$cat=="NPP+Ra"])
+    errDF$neg[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])-sum(plotDF$aCO2_sd[plotDF$cat=="NPP+Ra"])
+    errDF$pos[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])+sum(plotDF$aCO2_sd[plotDF$cat=="MAESPA"])
+    errDF$neg[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])-sum(plotDF$aCO2_sd[plotDF$cat=="MAESPA"])
     
     ### Prepare variable labels
     var.labs <- c(expression(GPP[o]), expression(GPP[u]),
@@ -46,7 +56,7 @@ gpp_gap_plot <- function(inDF) {
                   expression(NPP[other]), expression(NPP[ua]),
                   expression(NPP[hb]), expression(R[leaf]),
                   expression(R[wood]), expression(R[root]),
-                  expression(R[ua]), expression(R[hb]),
+                  expression(R[ua]), #expression(R[hb]),
                   expression(R[g]))
     
     ### Prepare variable colors
@@ -63,16 +73,21 @@ gpp_gap_plot <- function(inDF) {
                   "yellow",      # Rwood
                   "brown",       # Rroot
                   "orange",      # Rua
-                  "pink",        # Rherb
+                  #"pink",        # Rherb
                   "maroon")      # Rgrowth, yellow
+    
+    plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
+    
     
     ### make the bar plot
     p1 <- ggplot(plotDF,
                 aes(cat, aCO2)) +   
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        xlab("Method") + ylab(expression(paste("kg C ", m^-2, yr^-1))) +
-        scale_x_discrete(labels=c(expression(GPP[s]), expression(GPP[m])))+
+        geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
+                     colour="red")+
+        xlab("Method") + ylab(expression(paste("GPP (kg C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("Simulation", "Observation"))+
         scale_fill_manual(name="Variables", 
                           values = col.list,
                           labels=var.labs) +
