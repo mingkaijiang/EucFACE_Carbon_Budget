@@ -87,7 +87,6 @@ make_leaflitter_flux <- function(c_frac,
     } else if (return.decision == "stats") {
         return(s.stats)
     }
-        
-    return(litter_a)
+
 }
 

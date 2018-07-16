@@ -105,6 +105,9 @@ dic_leaching_flux <- make_dic_leaching_flux(depth="deep")
 ### reads in c_fraction coefficient from constant
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
+### Leaf litter pool
+leaflitter_pool <- make_leaflitter_pool(c_fraction)
+
 ### sapwood C and N fraction
 sapwood_cn_fraction <- make_sapwood_c_n_fraction()
 
@@ -254,7 +257,7 @@ understorey_production_check()
 #dev.off()
 
 ### Water logging effect in 2015
-water_logging_2015(fr.pool=fineroot_c_pool)
+water_logging_2015(fr.pool=fineroot_c_pool, soil_respiration_flux)
 
 ###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction

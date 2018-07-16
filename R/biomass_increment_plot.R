@@ -71,6 +71,18 @@ biomass_increment_plot <- function() {
         #incDF[incDF$term == "CoarseRoot", i+1] <- diff
         
     }
+    
+    ### Leaf litter pool
+    min.date <- min(leaflitter_pool$Date)
+    max.date <- max(leaflitter_pool$Date)
+    date.diff <- as.numeric(max.date - min.date)
+    
+    for (i in 1:6) {
+        diff <- leaflitter_pool[leaflitter_pool$Ring == i & leaflitter_pool$Date == max.date, "leaflitter_pool"] - leaflitter_pool[leaflitter_pool$Ring == i & leaflitter_pool$Date == min.date, "leaflitter_pool"]
+        incDF[incDF$term == "Litter", i+1] <- round(diff / date.diff * 365, 2)
+        #incDF[incDF$term == "Litter", i+1] <- diff
+        
+    }
 
     ### Soil C
     min.date <- min(soil_c_pool$Date)

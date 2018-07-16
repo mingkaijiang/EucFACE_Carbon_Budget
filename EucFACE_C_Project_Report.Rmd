@@ -894,6 +894,24 @@ Below is the estimate of understorey respiration flux based on cue approach.
     }
 ```
 
+
+### Leaf litter pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    leaflitter_pool <- make_leaflitter_pool(c_fraction)
+
+   ### make the plot
+    p <- ggplot(leaflitter_pool,
+                aes(Date, leaflitter_pool, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Leaf litter pool (g m-2)") + 
+            scale_color_manual(values=ring_colours, name="Ring")
+    
+    if (plot_option) {
+            plot(p)
+    }
+```
+
+
 ### Wood Production Flux
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     wood_production_flux <- make_wood_production_flux(wood_c_pool)

@@ -20,11 +20,19 @@ make_leaflitter_decomposition_rate <- function() {
     ### Convert into per day
     myDF$Time_d <- myDF$Time * 30
     
+    ### Add initial mass
+    aDF <- data.frame(rep(1:6, each=8), rep(1:4, each=2), rep(0, 48), rep(1:2, 24), NA, NA, NA, NA)
+    colnames(aDF) <- names(myDF)
+    aDF$Mesh <- "2mm"    
+    aDF$RemainingMass.g <- aDF$InitialMass.g <- myDF[1:48, "InitialMass.g"]
+    aDF$Time_d <- 0
+    myDF <- rbind(aDF, myDF)
+        
     ### adding mass loss percentage 
     myDF$MassLoss <- (myDF$InitialMass.g - myDF$RemainingMass.g)/myDF$InitialMass.g * 100
     myDF$MassRemain <- myDF$RemainingMass.g/myDF$InitialMass.g * 100
     myDF$LogMassRemain <- log(myDF$MassRemain)
-    
+
     ### Visual inspection
     with(myDF, plot(MassLoss~Time_d))
     with(myDF, plot(MassRemain~Time_d))
@@ -72,8 +80,13 @@ make_leaflitter_decomposition_rate <- function() {
     ### Summary across rings (should test for statistical significance if do it properly)
     outDF <- summaryBy(coef+int~Ring, data=myDF, FUN=mean, na.rm=T, keep.names=T)
     
-    # Only use data period 2012-2016
-    outDF <- outDF[outDF$Date<="2016-12-31",] 
     
+    ### Need to enforce intercept so that all decomposable materials at day 0 = 100 %
+    outDF$int <- 4.605
+    for (i in 1:6) {
+        myDF$Pred2[myDF$Ring == i] <- exp(outDF$coef[outDF$Ring==i]*myDF$Time_d+outDF$int[outDF$Ring==i])
+        with(myDF[myDF$Ring == i,], points(Pred~Time_d, type="l", col="red"))
+    }
+
     return(outDF)
 }
