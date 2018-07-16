@@ -19,7 +19,7 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -75,7 +75,7 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -137,7 +137,7 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[leaf]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -195,7 +195,7 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[leaf]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -254,15 +254,15 @@ make_statistical_comparison_plots <- function() {
     
     #### exclude all pools
     myDF$Category <- c(rep("other", 2), # 1 - 2
-                       rep("pool", 12), # 3 - 14
-                       rep("resp", 2), # 15 - 16
-                       rep("prod", 1), # 17 
-                       rep("resp", 2), # 18 - 19
-                       rep("prod", 1), # 20
-                       rep("resp", 2), # 21 - 22
-                       rep("prod", 9), # 23 - 31
-                       rep("resp", 1), # 32
-                       rep("change_in_pool", 12))   # 33 - 44
+                       rep("pool", 13), # 3 - 15
+                       rep("resp", 2), # 16 - 17
+                       rep("prod", 1), # 18 
+                       rep("resp", 2), # 19 - 20
+                       rep("prod", 1), # 21
+                       rep("resp", 2), # 22 - 23
+                       rep("prod", 9), # 24 - 32
+                       rep("resp", 1), # 33
+                       rep("change_in_pool", 13))   # 34 - 45
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
@@ -316,7 +316,8 @@ make_statistical_comparison_plots <- function() {
                 "delta_understorey_c_dead"=expression(delta*C[ua_dead]),
                 "delta_microbial_c"=expression(delta*C[micr]),
                 "delta_mycorrhizal_c"=expression(delta*C[myco]),
-                "delta_litter_c"=expression(delta*C[lit]))
+                "delta_litter_c"=expression(delta*C[lit]),
+                "delta_insect_c"=expression(delta*C[ins]))
     
     y.lab2 <- c("root_respiration"=expression(R[root]),
                 "understorey_respiration"=expression(R[ua]),

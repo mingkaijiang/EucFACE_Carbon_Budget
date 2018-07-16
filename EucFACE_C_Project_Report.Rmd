@@ -912,6 +912,22 @@ Below is the estimate of understorey respiration flux based on cue approach.
 ```
 
 
+### Insect pool
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
+    insect_pool <- make_insect_pool(c_fraction_lp)
+
+   ### make the plot
+    p <- ggplot(insect_pool,
+                aes(Date, insect_pool, color=factor(Ring))) +   
+            geom_point(size = 5) + geom_line() + 
+            xlab("Date") + ylab("Insect pool (g m-2)") + 
+            scale_color_manual(values=ring_colours, name="Ring")
+    
+    if (plot_option) {
+            plot(p)
+    }
+```
+
 ### Wood Production Flux
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center"} 
     wood_production_flux <- make_wood_production_flux(wood_c_pool)
@@ -1125,7 +1141,7 @@ This is to plot eCO2 effect on biomass increment over the entire data period. Th
     
 Nevertheless, the biomass increment results are summarized below:
 
-``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
     source("R/biomass_increment_plot.R")
     biomass_increment_plot()
 ```
@@ -1137,7 +1153,7 @@ Nevertheless, the biomass increment results are summarized below:
 Here, I am going to make some bar plots to compare different ways of calculating GPP, Rsoil and NEP, and check if there is any missing carbon.
 
 ### GPP C gaps
-``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
     source("R/gpp_gap_plot.R")
     gpp_gap_plot(inDF=tables_by_ring)
     
@@ -1145,7 +1161,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 
 ### Rsoil C gaps
-``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
     source("R/rsoil_gap_plot.R")
     rsoil_gap_plot(inDF=tables_by_ring)
     
@@ -1154,7 +1170,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 ### NEP C gaps
 
 #### Method in and out
-``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
     source("R/nep_gap_plot.R")
     nep_gap_plot(inDF=tables_by_ring)
     
@@ -1164,7 +1180,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 # 8. Understanding disturbances
 
 ### 8.1. Leaf NPP and lerp production
-``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
     #source("R/leaf_npp_and_lerp_production_plot.R")
     #leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
     #                                  lerp_production=lerp_production_flux,
@@ -1176,7 +1192,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 
 ### 8.2. Soil moisture profile
-``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
     # prepare_soil_moisture_data(plot.image=T, monthly=T)
     
 ```
@@ -1192,10 +1208,8 @@ Here, I am going to make some bar plots to compare different ways of calculating
     - There is respiration associated with root hyphae and of fungi itself. Juan's respiration data has root-associated mycorrhizae in it, whereas Laura's data is non-root associated mycorrhizae.     
     - Yolima and Luara to check lipid concentration inside and outside mesh bag to constrain concentration differences
     - soil moisture profile and its relationship to DOC, understorey LAI,  fineroot biomass, Rsoil
-    - Met data and soil water data to understand extreme points
     - frass production and relationship with leaf N
     - R soil - inter-collar variability
-    - changes in pools at annual timestep
     - Calculate NEP based on different method (partially done)
     - Use Sapwood depth to extrapolate % of live and dead wood (useful for P budget)
     - How to extract standing dead from total wood pool? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
@@ -1238,7 +1252,7 @@ Attempted list but with problems:
     - Nam Jin has estimate of root respiration, and our values are in the range.
     - 2nd way of estimating coarse root biomass - equivalent to 1st way anyway. 
     - Cat checked microbial extraction efficiency constant
-    - Litter decomposition rate computed - but how to get litter pool size? 
+    - Litter decomposition rate computed 
 
 
 

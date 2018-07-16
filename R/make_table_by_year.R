@@ -249,6 +249,12 @@ make_EucFACE_table_by_year <- function() {
         pool$Litter[pool$year == i]  <- round(mean(leaflitter_pool[leaflitter_pool$year == i, "leaflitter_pool"]), 2)
     }
     
+    ### Insects
+    insect_pool$year <- year(insect_pool$Date)
+    for (i in yr.list) {
+        pool$Insects[pool$year == i]  <- round(mean(insect_pool[insect_pool$year == i, "insect_pool"]), 2)
+    }
+    
     
     ##### output tables
     return(list(inout = data.table(inout), 

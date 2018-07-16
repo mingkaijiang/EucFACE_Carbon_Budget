@@ -46,9 +46,10 @@ nep_gap_plot <- function(inDF) {
     delta_ua_c <- make_change_in_pool(mypool=understorey_aboveground_c_pool, var.col=5)
     delta_mic_c <- make_change_in_pool(mypool=microbial_c_pool, var.col=3)
     delta_myc_c <- make_change_in_pool(mypool=mycorrhizal_c_pool, var.col=3)
-    # missing litter, CWD, insect
+    delta_ins_c <- make_change_in_pool(mypool=insect_pool, var.col=3)
+    delta_lit_c <- make_change_in_pool(mypool=leaflitter_pool, var.col=6)
+    # missing CWD
     
-
     ### create df to store pools
     pool.list <- c("soilc", "leafc", "woodc", "crootc", "frootc", "uac",
                    "micc", "mycc", "litter", "cwd", "insect")
@@ -79,9 +80,9 @@ nep_gap_plot <- function(inDF) {
     poolDF[poolDF$Term=="uac",2:7] <- calculate_variable_mean(delta_ua_c)$Value
     poolDF[poolDF$Term=="micc",2:7] <- calculate_variable_mean(delta_mic_c)$Value
     poolDF[poolDF$Term=="mycc",2:7] <- calculate_variable_mean(delta_myc_c)$Value
-    poolDF[poolDF$Term=="insect",2:7] <- 0.0
+    poolDF[poolDF$Term=="insect",2:7] <- calculate_variable_mean(delta_ins_c)$Value
     poolDF[poolDF$Term=="cwd",2:7] <- 0.0
-    poolDF[poolDF$Term=="litter",2:7] <- 0.0
+    poolDF[poolDF$Term=="litter",2:7] <- calculate_variable_mean(delta_lit_c)$Value
     
     ### NEP change in pools
     for (i in c(2:7)) {
@@ -152,7 +153,7 @@ nep_gap_plot <- function(inDF) {
     
     #plot(p1)
     
-    pdf("R_other/nep_gap.pdf")
+    pdf("R_other/nep_gap.pdf", width=6, height=6)
     plot(p1)
     dev.off()
     

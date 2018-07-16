@@ -315,9 +315,12 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Mycorrhizae"]  <- "For 0 - 10 cm depth, used sand bulk density"
     
     ### Insects
-    pool$value[pool$term == "Insects"]  <- 0.0
-    pool$data_notes[pool$term == "Insects"] <- "No data"
-    pool$processing_notes[pool$term == "Insects"]  <- "Assume it to be 0"
+    pool$value[pool$term == "Insects"]  <- mean(insect_pool$insect_pool)
+    pool$start_year[pool$term == "Insects"] <- min(year(insect_pool$Date))
+    pool$end_year[pool$term == "Insects"] <- max(year(insect_pool$Date))
+    pool$timepoint[pool$term == "Insects"] <- length(unique(insect_pool$Date))
+    pool$data_notes[pool$term == "Insects"] <- "taken from litter basket"
+    pool$processing_notes[pool$term == "Insects"]  <- "Assume in equilibrium"
     
     ### CWD or standing dead
     pool$value[pool$term == "Coarse woody debris"]  <- mean(standing_dead_c_pool$wood_pool)

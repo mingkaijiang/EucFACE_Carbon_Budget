@@ -108,6 +108,9 @@ leaflitter_flux <- make_leaflitter_flux(c_fraction)
 ### Leaf litter pool
 leaflitter_pool <- make_leaflitter_pool(c_fraction)
 
+### Insect pool
+insect_pool <- make_insect_pool(c_fraction_lp)
+
 ### sapwood C and N fraction
 sapwood_cn_fraction <- make_sapwood_c_n_fraction()
 

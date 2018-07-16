@@ -118,6 +118,17 @@ biomass_increment_plot <- function() {
         incDF[incDF$term == "Mycorrhizae", i+1] <- round(diff / date.diff * 365, 2)
         #incDF[incDF$term == "Mycorrhizae", i+1] <- diff
     }
+    
+    ### insect pool
+    min.date <- min(insect_pool$Date)
+    max.date <- max(insect_pool$Date)
+    date.diff <- as.numeric(max.date - min.date)
+    
+    for (i in 1:6) {
+        diff <- insect_pool[insect_pool$Ring == i & insect_pool$Date == max.date, "insect_pool"] - insect_pool[insect_pool$Ring == i & insect_pool$Date == min.date, "insect_pool"]
+        incDF[incDF$term == "Insect", i+1] <- round(diff / date.diff * 365, 2)
+        #incDF[incDF$term == "Insect", i+1] <- diff
+    }
         
     # CO2 effect
     incDF$aCO2 <- rowMeans(subset(incDF, select=c(R2, R3, R6)), na.rm=T)
@@ -172,6 +183,7 @@ biomass_increment_plot <- function() {
         scale_x_discrete("Pool variable", 
                          labels=c(expression(C[cr]),
                                   expression(C[fr]),
+                                  expression(C[i]),
                                   expression(C[l]),
                                   expression(C[mi]),
                                   expression(C[my]),
@@ -181,10 +193,7 @@ biomass_increment_plot <- function() {
                                   expression(C[w])))
     
     
-    pdf("R_other/biomass_increment.pdf")
+    pdf("R_other/biomass_increment.pdf", width=6, height=6)
     plot(p1)
     dev.off()
-    
-    
-    
 }

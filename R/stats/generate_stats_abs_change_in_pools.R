@@ -39,6 +39,7 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     delta_mic_c <- make_change_in_pool(mypool=microbial_c_pool, var.col=3)
     delta_myc_c <- make_change_in_pool(mypool=mycorrhizal_c_pool, var.col=3)
     delta_lit_c <- make_change_in_pool(mypool=leaflitter_pool, var.col=6)
+    delta_ins_c <- make_change_in_pool(mypool=insect_pool, var.col=3)
     
     
     #### Work on each variable per time
@@ -91,12 +92,15 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     s.litc <- treatment_effect_abs_statistics(inDF=delta_lit_c, 
                                               var.col=7, date.as.factor=T)
     
+    ### leaf litter C pool
+    s.insc <- treatment_effect_abs_statistics(inDF=delta_ins_c, 
+                                              var.col=7, date.as.factor=T)
     
     #### Create a output table to store all stats
     var.list <- c("delta_soil_c","delta_leaf_c","delta_wood_c","delta_fineroot_c",
                   "delta_coarseroot_c","delta_understorey_c","delta_understorey_c_2",
                   "delta_understorey_c_live","delta_understorey_c_dead",
-                  "delta_microbial_c","delta_mycorrhizal_c", "delta_litter_c")
+                  "delta_microbial_c","delta_mycorrhizal_c", "delta_litter_c", "delta_insect_c")
     out <- data.frame(var.list, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
                       NA,NA,NA,NA,NA,NA)
     colnames(out) <- c("Variable", "interactive_state",
@@ -144,6 +148,7 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     out[out$Variable=="delta_microbial_c",2:17] <- assign_stats(s.var=s.micc)
     out[out$Variable=="delta_mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
     out[out$Variable=="delta_litter_c",2:17] <- assign_stats(s.var=s.litc)
+    out[out$Variable=="delta_insect_c",2:17] <- assign_stats(s.var=s.insc)
     
     
     if (stat.model == "dynamic") {

@@ -93,6 +93,11 @@ generate_stats_abs <- function(stat.model) {
                                               var.cond="pool", var.col=6,
                                               date.as.factor=T)
     
+    ### Insect pool
+    s.insc <- treatment_effect_abs_statistics(inDF=insect_pool, 
+                                              var.cond="pool", var.col=3,
+                                              date.as.factor=T)
+    
     ### Overstorey GPP
     
     
@@ -193,7 +198,7 @@ generate_stats_abs <- function(stat.model) {
     #### Create a output table to store all stats
     var.list <- c("lai", "sla","soil_c","leaf_c","wood_c","fineroot_c",
                   "coarseroot_c","understorey_c","understorey_c_2","understorey_c_live","understorey_c_dead",
-                  "microbial_c","mycorrhizal_c","litter_c",
+                  "microbial_c","mycorrhizal_c","litter_c","insect_c",
                   "root_respiration","understorey_respiration",
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
                   "soil_respiration","doc","ch4","leaf_prod","twig_prod",
@@ -250,6 +255,7 @@ generate_stats_abs <- function(stat.model) {
     out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
     out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
     out[out$Variable=="litter_c",2:17] <- assign_stats(s.var=s.litc)
+    out[out$Variable=="insect_c",2:17] <- assign_stats(s.var=s.insc)
     out[out$Variable=="root_respiration",2:17] <- assign_stats(s.var=s.rroot)
     out[out$Variable=="understorey_respiration",2:17] <- assign_stats(s.var=s.rund)
     out[out$Variable=="frass_prod",2:17] <- assign_stats(s.var=s.fras)
