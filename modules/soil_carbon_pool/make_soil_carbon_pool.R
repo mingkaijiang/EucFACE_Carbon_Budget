@@ -88,6 +88,8 @@ make_soil_carbon_pool <- function(bk_density, return){
     #- average across plots within each ring
     dat.s.m <- summaryBy(soil_carbon_pool~Date+Ring,data=dat.s,FUN=mean,keep.names=T)
     dat.s.m$Ring <- as.numeric(dat.s.m$Ring)
+    # Only use data period 2012-2016
+    dat.s.m <- dat.s.m[dat.s.m$Date<="2016-12-31",]
     return(dat.s.m)
     #------
     

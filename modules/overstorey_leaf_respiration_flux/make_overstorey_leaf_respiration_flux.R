@@ -14,5 +14,8 @@ make_overstorey_leaf_respiration_flux <- function() {
     
     outDF <- summaryBy(Rfoliage~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
     
+    # Only use data period 2012-2016
+    outDF <- outDF[outDF$year<="2016",]
+    
     return(outDF)
 }

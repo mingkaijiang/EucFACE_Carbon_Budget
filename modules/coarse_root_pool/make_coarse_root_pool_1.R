@@ -99,6 +99,9 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool,
     
     colnames(cr_pool) <- c("Date", "Ring", "coarse_root_pool", "total_root_pool")
     
+    # Only use data period 2012-2016
+    cr_pool <- cr_pool[cr_pool$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision=="stats") {
         if (trt.effect == "abs") {

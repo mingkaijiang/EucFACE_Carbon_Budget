@@ -11,5 +11,8 @@ make_heterotrophic_respiration_flux <- function(rsoil, rroot) {
      
     rhDF.out <- rhDF[,c("Start_date", "End_date", "Date", "Ring", "heterotrophic_respiration_flux", "ndays")]
      
+    # Only use data period 2012-2016
+    rhDF.out <- rhDF.out[rhDF.out$Date<="2016-12-31",]
+    
     return(rhDF.out)
 }

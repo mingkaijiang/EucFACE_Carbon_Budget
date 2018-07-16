@@ -47,6 +47,9 @@ make_understorey_aboveground_c_pool <- function(c_frac,
     outDF$Total_g_C_m2 <- outDF$Live_g_C_m2 + outDF$Dead_g_C_m2
     out <- outDF[,c("Date", "Ring", "Live_g_C_m2", "Dead_g_C_m2", "Total_g_C_m2")]
     
+    # Only use data period 2012-2016
+    out <- out[out$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision == "stats") {
         if (trt.effect == "abs") {

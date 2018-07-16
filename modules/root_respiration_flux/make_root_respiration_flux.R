@@ -44,5 +44,8 @@ make_root_respiration_flux <- function(fr_pool, cr_pool){
   tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date) + 1
   tempDF.out <- tempDF.out[,c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")]
   
+  # Only use data period 2012-2016
+  tempDF.out <- tempDF.out[tempDF.out$Date<="2016-12-31",]
+  
   return(tempDF.out)
 }

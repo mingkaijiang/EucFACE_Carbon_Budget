@@ -85,6 +85,9 @@ make_coarse_root_pool_2 <- function(c_frac) {
     # output
     cr_pool <- data.m[,c("Date","Ring","coarse_root_pool")]
     
+    # Only use data period 2012-2016
+    cr_pool <- cr_pool[cr_pool$Date<="2016-12-31",]
+    
     return(cr_pool)
     
 }

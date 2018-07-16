@@ -44,6 +44,9 @@ make_leaflitter_flux <- function(c_frac,
     
     litter_a$ndays <- as.numeric(litter_a$End_date - litter_a$Start_date) + 1
     
+    # Only use data period 2012-2016
+    litter_a <- litter_a[litter_a$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision=="stats") {
         if (trt.effect == "abs") {

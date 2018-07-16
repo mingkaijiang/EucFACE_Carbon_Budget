@@ -101,5 +101,8 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     ### format dataframe to return
     wood_pool <- out.dat[,c("Date", "Ring", "wood_pool", "sap_pool", "heart_pool")]
     
+    # Only use data period 2012-2016
+    wood_pool <- wood_pool[wood_pool$Date<="2016-12-31",]
+    
     return(wood_pool)
 }

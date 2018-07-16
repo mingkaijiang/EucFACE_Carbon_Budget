@@ -25,6 +25,9 @@ make_fineroot_pool <- function(c_frac,
   #- format dataframe to return
   frb.out <- frb.m[,c("Date","Ring","fineroot_pool")]
   
+  # Only use data period 2012-2016
+  frb.out <- frb.out[frb.out$Date<="2016-12-31",]
+  
   
   ### Compute statistical analyses
   if (return.decision=="stats") {

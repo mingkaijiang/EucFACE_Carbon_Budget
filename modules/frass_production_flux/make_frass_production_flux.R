@@ -59,6 +59,9 @@ make_frass_production_flux <- function(return.decision="data",
     out <- out[,c("Start_date", "End_date", "DATE", "RING","frass_production_flux", "ndays")]
     colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "frass_production_flux", "ndays")
     
+    # Only use data period 2012-2016
+    out <- out[out$Date<="2016-12-31",]
+    
     return(out)
 }
 

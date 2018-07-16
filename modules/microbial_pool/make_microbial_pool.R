@@ -30,6 +30,9 @@ make_microbial_pool <- function(bk_density){
     
     colnames(df.out) <- c("Ring", "Date", "microbial_pool")
     
+    # Only use data period 2012-2016
+    df.out <- df.out[df.out$Date<="2016-12-31",]
+    
     return(df.out)
     
 }

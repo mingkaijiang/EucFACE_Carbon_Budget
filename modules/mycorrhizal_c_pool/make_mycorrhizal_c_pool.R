@@ -31,6 +31,9 @@ make_mycorrhizal_c_pool <- function(bk_density) {
     
     outDF <- myDF[,c("Date", "Ring", "mycorrhizal_c_pool")]
     
+    # Only use data period 2012-2016
+    outDF <- outDF[outDF$Date<="2016-12-31",]
+    
     return(outDF)
     
 }

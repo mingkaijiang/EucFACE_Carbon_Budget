@@ -40,6 +40,10 @@ make_fineroot_production_flux <- function(c_frac,
     
     #- format dataframe to return
     frp.out <- frp.m[,c("Date","Start_date", "End_date", "Ring","fineroot_production_flux", "ndays")]
+    
+    # Only use data period 2012-2016
+    frp.out <- frp.out[frp.out$Date<="2016-12-31",]
+    
     return(frp.out)
     
 }

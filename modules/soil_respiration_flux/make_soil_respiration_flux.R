@@ -67,6 +67,9 @@ make_soil_respiration_flux <- function(return.decision="data",
     colnames(RE.m.collar.all) <- c("Date","ctreat", "Ring", "Ring_collar", "Rsoil", "theta", "Tsoil", "DAMM", 
                                    "soil_respiration_flux", "ndays")
     
+    # Only use data period 2012-2016
+    Rsoil.out <- Rsoil.out[Rsoil.out$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision == "stats") {
         if (trt.effect == "abs") {

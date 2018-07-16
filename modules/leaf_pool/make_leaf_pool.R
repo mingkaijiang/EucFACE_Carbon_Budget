@@ -13,6 +13,9 @@ make_leaf_pool <- function(lai_variable, sla_variable, c_frac, sla_option,
         # Leaf pool
         out$leaf_pool <- c_frac * lai_variable$lai_variable / (10^-4 * SLA)
         
+        # Only use data period 2012-2016
+        out <- out[out$Date<="2016-12-31",]
+        
     } else if (sla_option == "variable") {
         # use ring specific and time varying SLA
         sla_variable$Year <- year(sla_variable$Date)
@@ -56,6 +59,9 @@ make_leaf_pool <- function(lai_variable, sla_variable, c_frac, sla_option,
         # Leaf pool
         out <- lai_variable[,c("Date", "Ring")]
         out$leaf_pool <- c_frac * lai_variable$lai_variable / (10^-4 * lai_variable$SLA)
+        
+        # Only use data period 2012-2016
+        out <- out[out$Date<="2016-12-31",]
     }
     
     ### Compute statistical analyses

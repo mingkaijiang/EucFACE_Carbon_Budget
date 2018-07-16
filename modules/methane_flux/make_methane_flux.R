@@ -60,6 +60,9 @@ make_methane_flux <- function(return.decision="data",
     ### Fill the two NAs
     myDF.out$methane_flux[is.na(myDF.out$methane_flux)] <- 0
     
+    # Only use data period 2012-2016
+    myDF.out <- myDF.out[myDF.out$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision=="stats") {
         if (trt.effect == "abs") {

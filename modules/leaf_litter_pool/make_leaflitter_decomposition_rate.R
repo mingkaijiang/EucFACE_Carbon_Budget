@@ -72,6 +72,8 @@ make_leaflitter_decomposition_rate <- function() {
     ### Summary across rings (should test for statistical significance if do it properly)
     outDF <- summaryBy(coef+int~Ring, data=myDF, FUN=mean, na.rm=T, keep.names=T)
     
+    # Only use data period 2012-2016
+    outDF <- outDF[outDF$Date<="2016-12-31",] 
     
     return(outDF)
 }

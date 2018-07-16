@@ -27,6 +27,9 @@ make_coarse_root_production_flux <- function(cr_pool,
     
     cr.out$ndays <- as.numeric(cr.out$End_date - cr.out$Start_date) + 1
     
+    # Only use data period 2012-2016
+    cr.out <- cr.out[cr.out$Date<="2016-12-31",]
+    
     return(cr.out)
     
 }

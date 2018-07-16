@@ -110,6 +110,9 @@ make_methane_flux2 <- function() {
     myDF.out$ndays <- as.numeric(myDF.out$End_date - myDF.out$Start_date) + 1
     
     colnames(myDF.out) <- c("Date", "Ring", "methane_flux", "Start_date", "End_date", "ndays")
+    
+    # Only use data period 2012-2016
+    myDF.out <- myDF.out[myDF.out$Date<="2016-12-31",]
         
     return(myDF.out)
     

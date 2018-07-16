@@ -18,6 +18,9 @@ make_herbivory_respiration_flux <- function(leaf_consumed, frass_prod, method) {
         out <- leaf_prod[,c("Start_date", "End_date", "Date", "Ring", "respiration_flux", "ndays")]
         
     }
+    
+    # Only use data period 2012-2016
+    out <- out[out$Date<="2016-12-31",]
 
     return(out)
 }

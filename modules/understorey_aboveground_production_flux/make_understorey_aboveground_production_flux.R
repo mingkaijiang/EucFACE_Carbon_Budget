@@ -67,6 +67,9 @@ make_understorey_aboveground_production_flux <- function(c_frac,
     #- format dataframe to return
     out <-df[,c("Start_date", "End_date", "Date", "Ring","understorey_production_flux", "ndays")]
     
+    # Only use data period 2012-2016
+    out <- out[out$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision == "stats") {
         if (trt.effect == "abs") {

@@ -83,6 +83,9 @@ make_wood_pool <- function(ring_area, c_fraction, return_tree_level=FALSE,
     #- format dataframe to return
     wood_pool <- data.m[,c("Date","Ring","wood_pool")]
     
+    # Only use data period 2012-2016
+    wood_pool <- wood_pool[wood_pool$Date<="2016-12-31",]
+    
     ### Compute statistical analyses
     if (return.decision == "stats") {
         if (trt.effect == "abs") {

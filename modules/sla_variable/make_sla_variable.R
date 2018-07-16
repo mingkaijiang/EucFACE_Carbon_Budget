@@ -29,6 +29,9 @@ make_sla_variable <- function(return.decision="data",
     
     lma.out <- dplyr::rename(lma_a, sla_variable = SLA)
     
+    # Only use data period 2012-2016
+    lma.out <- lma.out[lma.out$Date<="2016-12-31",]
+    
     
     ### Compute statistical analyses
     if(return.decision=="stats") {
