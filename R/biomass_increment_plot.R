@@ -172,6 +172,7 @@ biomass_increment_plot <- function() {
         scale_x_discrete("Pool variable", 
                          labels=c(expression(C[cr]),
                                   expression(C[fr]),
+                                  expression(C[l]),
                                   expression(C[mi]),
                                   expression(C[my]),
                                   expression(C[ol]),

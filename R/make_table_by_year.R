@@ -243,6 +243,12 @@ make_EucFACE_table_by_year <- function() {
         pool$Mycorrhizae[pool$year == i]  <- round(mean(mycorrhizal_c_pool[mycorrhizal_c_pool$year == i, "mycorrhizal_c_pool"]), 2)
     }
     
+    ### Litter
+    leaflitter_pool$year <- year(leaflitter_pool$Date)
+    for (i in yr.list) {
+        pool$Litter[pool$year == i]  <- round(mean(leaflitter_pool[leaflitter_pool$year == i, "leaflitter_pool"]), 2)
+    }
+    
     
     ##### output tables
     return(list(inout = data.table(inout), 

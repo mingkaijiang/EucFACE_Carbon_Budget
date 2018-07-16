@@ -328,8 +328,12 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Coarse woody debris"]  <- "Taken from the standing dead pool"
     
     ### Litter
-    pool$data_notes[pool$term == "Litter"] <- "No data"
-    pool$processing_notes[pool$term == "Litter"]  <- ""
+    pool$value[pool$term == "Litter"]  <- mean(leaflitter_pool$leaflitter_pool)
+    pool$start_year[pool$term == "Litter"] <- min(year(leaflitter_pool$Date))
+    pool$end_year[pool$term == "Litter"] <- max(year(leaflitter_pool$Date))
+    pool$timepoint[pool$term == "Litter"] <- length(unique(leaflitter_pool$Date))
+    pool$data_notes[pool$term == "Litter"] <- "Based on decomposition rate"
+    pool$processing_notes[pool$term == "Litter"]  <- "leaf litter pool only"
     
     ##### output tables
     return(list(inout = data.table(inout), 

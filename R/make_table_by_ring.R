@@ -164,6 +164,7 @@ make_table_by_ring <- function() {
         # Insects
         
         # Litter
+        pool[pool$term == "Litter", i+1]  <- mean(leaflitter_pool[leaflitter_pool$Ring == i, "leaflitter_pool"], na.rm=T)
         
     }
     

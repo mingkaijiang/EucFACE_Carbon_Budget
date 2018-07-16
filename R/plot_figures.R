@@ -69,6 +69,11 @@ p.mycc <- plot_treatment_effect(inDF=mycc.tr,
 
 ### Standing dead C pool
 
+### Leaf litter C pool
+litc.tr <- make_treatment_effect_df(inDF=leaflitter_pool, v=6, cond=1)
+p.litc <- plot_treatment_effect(inDF=litc.tr, 
+                                y.lab=expression(paste("Leaf Litter Carbon (g ", m^-2, ")")))
+
 ### Overstorey GPP
 #ogpp.tr <- make_treatment_effect_df(inDF=overstorey_gpp_flux, v=3, cond=1)
 #p.ogpp <- plot_treatment_effect(inDF=ogpp.tr, 
@@ -214,6 +219,9 @@ plot(p.mycc)
 
 ### Standing dead C pool
 
+### leaf litter C pool
+plot(p.litc)
+
 ### Overstorey GPP
 #plot(p.ogpp) 
 
@@ -276,3 +284,4 @@ plot(p.und.prod)
 plot(p.rh) 
 
 dev.off()
+
