@@ -150,7 +150,7 @@ nep_gap_plot <- function(inDF) {
                                   "NPP - Rh",
                                   expression(delta*C[pools])))
     
-    plot(p1)
+    #plot(p1)
     
     pdf("R_other/nep_gap.pdf")
     plot(p1)

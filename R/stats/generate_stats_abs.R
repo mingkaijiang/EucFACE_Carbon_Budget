@@ -1,6 +1,6 @@
 generate_stats_abs <- function(stat.model) {
     #### Call run.R program
-    source("run.R")
+    #source("run.R")
     
     #### Decision on what type of model to run
     #stat.model = "no_interaction"

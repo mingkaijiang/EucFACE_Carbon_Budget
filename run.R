@@ -234,11 +234,11 @@ source("R/make_belowground_c_flux_allocation.R")
 make_belowground_c_flux_allocation()
 
 ###### ----------Make comparison plots, etc. -------------- ######
-source("R/change_in_wood_soil_pools.R")
-plot_change_in_wood_soil_microbe_pools(soil_c_pool,
-                                       wood_c_pool,
-                                       microbial_c_pool,
-                                       destDir = "R_other")
+#source("R/change_in_wood_soil_pools.R")
+#plot_change_in_wood_soil_microbe_pools(soil_c_pool,
+#                                       wood_c_pool,
+#                                       microbial_c_pool,
+#                                       destDir = "R_other")
 
 
 source("R/understorey_production_check.R")
@@ -256,13 +256,16 @@ understorey_production_check()
 
 ###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction
-#generate_stats_ratio(stat.model="no_interaction")
-    
+source("R/stats/generate_stats_ratio.R")
+generate_stats_ratio(stat.model="no_interaction")
+
 ### Generate abs, considering no interaction
-#generate_stats_abs(stat.model="no_interaction")
+source("R/stats/generate_stats_abs.R")
+generate_stats_abs(stat.model="no_interaction")
 
 ### Generate abs on changes in pools, considering no interaction
-#generate_stats_abs_change_in_pools(stat.model="interaction")
+source("R/stats/generate_stats_abs_change_in_pools.R")
+generate_stats_abs_change_in_pools(stat.model="no_interaction")
 
 ### Make some plots
 #make_statistical_comparison_plots()

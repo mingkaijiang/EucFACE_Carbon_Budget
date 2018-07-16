@@ -87,8 +87,13 @@ treatment_effect_ratio_statistics <- function(inDF, var.cond, var.col, date.as.f
         inDF$Yrf <- as.factor(inDF$Yr)
         
         if (date.as.factor==T) {
-            ### mixed linear model
-            modelt <- lm(log_value~Trt+Yrf,data=inDF)
+            if (length(unique(inDF$Yrf)) <=1) {
+                ### mixed linear model
+                modelt <- lmer(log_value~Trt+Datef + (1|Ring),data=inDF)
+            } else {
+                ### mixed linear model
+                modelt <- lmer(log_value~Trt+Yrf + (1|Ring),data=inDF)
+            }
             
         } else {
             ### mixed linear model
