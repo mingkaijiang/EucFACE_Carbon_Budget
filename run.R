@@ -214,14 +214,12 @@ gpp_gap_plot(inDF=tables_by_ring)
 
 ### Rsoil gaps
 source("R/rsoil_gap_plot.R")
-pdf("R_other/rsoil_gap.pdf")
 rsoil_gap_plot(inDF=tables_by_ring)
-dev.off()
 
 
 ### NEP gaps   - Note the different input file!
 source("R/nep_gap_plot.R")
-nep_gap_plot(inDF=overall_tables)
+nep_gap_plot(inDF=tables_by_ring)
 
 ### Biomass increment
 source("R/biomass_increment_plot.R")
@@ -247,14 +245,14 @@ source("R/understorey_production_check.R")
 understorey_production_check()
 
 
-source("R/leaf_npp_and_lerp_production_plot.R")
-pdf("R_other/leaf_npp_lerp_production.pdf")
-leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
-                                  lerp_production=lerp_production_flux,
-                                  frass_production = frass_production_flux, 
-                                  lai = lai_variable,
-                                  insect_consumption = herbivory_leaf_consumption_flux)
-dev.off()
+#source("R/leaf_npp_and_lerp_production_plot.R")
+#pdf("R_other/leaf_npp_lerp_production.pdf")
+#leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
+#                                  lerp_production=lerp_production_flux,
+#                                  frass_production = frass_production_flux, 
+#                                  lai = lai_variable,
+#                                  insect_consumption = herbivory_leaf_consumption_flux)
+#dev.off()
 
 ###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction

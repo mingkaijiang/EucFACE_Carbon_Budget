@@ -57,6 +57,8 @@ make_methane_flux <- function(return.decision="data",
     myDF.out$End_date <- myDF.out$Date
     myDF.out$ndays <- as.numeric(myDF.out$End_date - myDF.out$Start_date) + 1
     
+    ### Fill the two NAs
+    myDF.out$methane_flux[is.na(myDF.out$methane_flux)] <- 0
     
     ### Compute statistical analyses
     if (return.decision=="stats") {

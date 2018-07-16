@@ -1138,7 +1138,7 @@ Here, I am going to make some bar plots to compare different ways of calculating
 #### Method in and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
     source("R/nep_gap_plot.R")
-    nep_gap_plot(inDF=overall_tables)
+    nep_gap_plot(inDF=tables_by_ring)
     
 ```
 
@@ -1147,12 +1147,12 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 ### 8.1. Leaf NPP and lerp production
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
-    source("R/leaf_npp_and_lerp_production_plot.R")
-    leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
-                                      lerp_production=lerp_production_flux,
-                                      frass_production = frass_production_flux, 
-                                      lai = lai_variable,
-                                      insect_consumption = herbivory_leaf_consumption_flux)
+    #source("R/leaf_npp_and_lerp_production_plot.R")
+    #leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
+    #                                  lerp_production=lerp_production_flux,
+    #                                  frass_production = frass_production_flux, 
+    #                                  lai = lai_variable,
+    #                                  insect_consumption = herbivory_leaf_consumption_flux)
     
 ```
 
