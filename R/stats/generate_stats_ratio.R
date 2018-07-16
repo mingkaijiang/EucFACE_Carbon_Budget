@@ -135,9 +135,9 @@ generate_stats_ratio <- function(stat.model) {
                                          date.as.factor=T)
     
     ### CH4 uptake - un-gap filled data - have both positive and negative values, can't use log
-    s.ch4 <- treatment_effect_ratio_statistics(inDF=methane_c_flux, 
-                                         var.cond="flux", var.col=3,
-                                         date.as.factor=T)
+    #s.ch4 <- treatment_effect_ratio_statistics(inDF=methane_c_flux, 
+    #                                     var.cond="flux", var.col=3,
+    #                                     date.as.factor=T)
     
     ### Leaflitter flux
     s.lit.leaf <- treatment_effect_ratio_statistics(inDF=leaflitter_flux, 
@@ -251,7 +251,7 @@ generate_stats_ratio <- function(stat.model) {
     out[out$Variable=="lerp_prod",2:17] <- assign_stats(s.var=s.lerp.prod)
     out[out$Variable=="soil_respiration",2:17] <- assign_stats(s.var=s.rsoil)
     out[out$Variable=="doc",2:17] <- assign_stats(s.var=s.doc)
-    out[out$Variable=="ch4",2:17] <- assign_stats(s.var=s.ch4)
+    #out[out$Variable=="ch4",2:17] <- assign_stats(s.var=s.ch4)
     out[out$Variable=="leaf_prod",2:17] <- assign_stats(s.var=s.lit.leaf)
     out[out$Variable=="twig_prod",2:17] <- assign_stats(s.var=s.lit.twig)
     out[out$Variable=="bark_prod",2:17] <- assign_stats(s.var=s.lit.bark)

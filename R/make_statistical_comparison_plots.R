@@ -170,7 +170,7 @@ make_statistical_comparison_plots <- function() {
     plot(p3)
     dev.off()
     
-    ######### 2. Plot abs, with interactions
+    ######### 4. Plot abs, with interactions
     ### read in the csv file to plot the treatment effect and confidence interval
     myDF <- read.csv("R_other/treatment_statistics_abs_interaction.csv")
     
@@ -258,9 +258,9 @@ make_statistical_comparison_plots <- function() {
                        rep("resp", 2), # 17 - 18
                        rep("prod", 1), # 19
                        rep("resp", 2), # 20 - 21
-                       rep("prod", 8), # 22 - 29
-                       rep("resp", 1), # 30
-                       rep("change_in_pool", 11))   # 31 - 41
+                       rep("prod", 9), # 22 - 30
+                       rep("resp", 1), # 31
+                       rep("change_in_pool", 11))   # 32 - 42
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
@@ -332,7 +332,8 @@ make_statistical_comparison_plots <- function() {
                 "wood_prod"=expression(NPP[wood]),
                 "fineroot_prod"=expression(NPP[froot]),
                 "coarseroot_prod"=expression(NPP[croot]),
-                "understorey_prod"=expression(NPP[ua]))
+                "understorey_prod"=expression(NPP[ua]),
+                "ch4"=expression(U[CH[4]]))
     
     #### Plotting
     p5 <- ggplot(plotDF1)+ 

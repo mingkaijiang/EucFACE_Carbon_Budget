@@ -244,7 +244,6 @@ make_belowground_c_flux_allocation()
 source("R/understorey_production_check.R")
 understorey_production_check()
 
-
 #source("R/leaf_npp_and_lerp_production_plot.R")
 #pdf("R_other/leaf_npp_lerp_production.pdf")
 #leaf_npp_and_lerp_production_plot(leaf_npp=leaflitter_flux,
@@ -253,6 +252,9 @@ understorey_production_check()
 #                                  lai = lai_variable,
 #                                  insect_consumption = herbivory_leaf_consumption_flux)
 #dev.off()
+
+### Water logging effect in 2015
+water_logging_2015(fr.pool=fineroot_c_pool)
 
 ###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction
@@ -268,7 +270,8 @@ source("R/stats/generate_stats_abs_change_in_pools.R")
 generate_stats_abs_change_in_pools(stat.model="no_interaction")
 
 ### Make some plots
-#make_statistical_comparison_plots()
+source("R/make_statistical_comparison_plots.R")
+make_statistical_comparison_plots()
 
 ###### ---------------- End -------------------- ######
 options(warn=0)
