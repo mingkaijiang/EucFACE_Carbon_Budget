@@ -267,6 +267,9 @@ make_statistical_comparison_plots <- function() {
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
     
+    ### Drop CWD - confidence interval too large
+    myDF <- subset(myDF, Variable != c("delta_cwd_c"))
+    
     plotDF1 <- subset(myDF, Category == "change_in_pool")
     plotDF2 <- subset(myDF, Category == "resp")
     plotDF3 <- subset(myDF, Category == "prod")
@@ -317,8 +320,7 @@ make_statistical_comparison_plots <- function() {
                 "delta_microbial_c"=expression(delta*C[micr]),
                 "delta_mycorrhizal_c"=expression(delta*C[myco]),
                 "delta_litter_c"=expression(delta*C[lit]),
-                "delta_insect_c"=expression(delta*C[ins]),
-                "delta_cwd_c"=expression(delta*C[cwd]))
+                "delta_insect_c"=expression(delta*C[ins]))
     
     y.lab2 <- c("root_respiration"=expression(R[root]),
                 "understorey_respiration"=expression(R[ua]),

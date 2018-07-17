@@ -56,6 +56,8 @@ ccost <- 0.3
 # based on 1-year seedlings of Eucalyptus Tereticornis
 # this basal respiration rate is for fineroot only!
 Rcoef_fr <- 4.425 # nmol CO2 m-2 s-1
+
+# This is the base rate, the same for root and stem!
 Rbase <- 2.26
 
 ## fraction of coarse root at top 30 cm of soil

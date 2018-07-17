@@ -19,22 +19,22 @@ options(warn=-1)
 #dev.off()
 
 ### Top canopy Pressure (hPa)
-#pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
+pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
 
 ### Top canopy Rainfall (mm)
-#rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
+rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
 
 ### Tair (K), RH and PAR (umol m-2 s-1) top of canopy
-#tair_rh_parDF <- prepare_tair_rh_par_data(timestep="Monthly")
+tair_rh_parDF <- prepare_tair_rh_par_data(timestep="Monthly")
 
 ### Wind speed top of canopy (m/s)
-#windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
+windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
 
 ### tair, RH, PAR and pressure 
-#tair_rh_par_presDF <- prepare_met_air_data(timestep="Monthly")
+tair_rh_par_presDF <- prepare_met_air_data(timestep="Monthly")
 
 ### Combine met data together
-#metDF <- combine_met_data(timestep="Monthly")
+metDF <- combine_met_data(timestep="Monthly")
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI
@@ -127,6 +127,9 @@ wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
 ### Standing dead C pool
 standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
                                                   c_frac=c_fraction)
+
+### Wood respiration flux
+wood_respiration_flux <- make_wood_respiration_flux(wood.pool=wood_c_pool)
 
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
