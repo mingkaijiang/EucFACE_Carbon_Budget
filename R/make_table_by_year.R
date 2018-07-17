@@ -255,6 +255,12 @@ make_EucFACE_table_by_year <- function() {
         pool$Insects[pool$year == i]  <- round(mean(insect_pool[insect_pool$year == i, "insect_pool"]), 2)
     }
     
+    ### CWD
+    standing_dead_c_pool$year <- year(standing_dead_c_pool$Date)
+    for (i in yr.list) {
+        pool$CoarseWoodyDebris[pool$year == i]  <- round(mean(standing_dead_c_pool[standing_dead_c_pool$year == i, "wood_pool"]), 2)
+    }
+    
     
     ##### output tables
     return(list(inout = data.table(inout), 

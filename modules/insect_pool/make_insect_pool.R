@@ -23,9 +23,9 @@ make_insect_pool <- function(c_frac){
                             Start_date = Date - days.past,
                             End_date = Date,
                             ndays = days.past,
-                            Insect = as.numeric(Insect) * conv / days.past,
-                            Other = as.numeric(Other) * conv / days.past,
-                            Leaf = as.numeric(Leaf) * conv / days.past)
+                            Insect = as.numeric(Insect) * conv,
+                            Other = as.numeric(Other) * conv,
+                            Leaf = as.numeric(Leaf) * conv)
     
     # Averages by Ring
     litter_a <- summaryBy(Insect ~ Date + Ring, FUN=mean, na.rm=TRUE,
@@ -41,6 +41,10 @@ make_insect_pool <- function(c_frac){
     
     out <- out[,c("Date", "Ring", "Insect")]
     colnames(out) <- c("Date", "Ring", "insect_pool")
+    
+    ### First date has missing rings
+    min.date <- min(out$Date)
+    out <- out[out$Date != min.date, ]
     
     ### return
     return(out)

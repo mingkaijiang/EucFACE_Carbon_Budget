@@ -134,26 +134,26 @@ make_table_by_ring <- function() {
     for (i in Ring) {
         
         # Overstorey leaf
-        pool[pool$term == "Overstorey leaf", i+1] <- mean(leaf_c_pool[leaf_c_pool$Ring == i, "leaf_pool"])
+        pool[pool$term == "Overstorey leaf", i+1] <- mean(leaf_c_pool[leaf_c_pool$Ring == i, "leaf_pool"], na.rm=T)
         
         # Overstorey wood
-        pool[pool$term == "Overstorey wood", i+1] <- mean(wood_c_pool[wood_c_pool$Ring == i, "wood_pool"])
+        pool[pool$term == "Overstorey wood", i+1] <- mean(wood_c_pool[wood_c_pool$Ring == i, "wood_pool"], na.rm=T)
         
         # Fine Root
-        pool[pool$term == "Fine Root", i+1] <- mean(fineroot_c_pool[fineroot_c_pool$Ring == i, "fineroot_pool"])
+        pool[pool$term == "Fine Root", i+1] <- mean(fineroot_c_pool[fineroot_c_pool$Ring == i, "fineroot_pool"], na.rm=T)
         
         # Coarse Root
-        pool[pool$term == "Coarse Root", i+1] <- mean(coarse_root_c_pool_1[coarse_root_c_pool_1$Ring == i, "coarse_root_pool"])
+        pool[pool$term == "Coarse Root", i+1] <- mean(coarse_root_c_pool_1[coarse_root_c_pool_1$Ring == i, "coarse_root_pool"], na.rm=T)
         
         # Understorey above-ground
         pool[pool$term == "Understorey above-ground", i+1] <- mean(understorey_aboveground_c_pool[understorey_aboveground_c_pool$Ring == i, 
-                                                                                                  "Total_g_C_m2"])
+                                                                                                  "Total_g_C_m2"], na.rm=T)
         
         # Soil C
-        pool[pool$term == "Soil C", i+1] <- mean(soil_c_pool[soil_c_pool$Ring == i, "soil_carbon_pool"])
+        pool[pool$term == "Soil C", i+1] <- mean(soil_c_pool[soil_c_pool$Ring == i, "soil_carbon_pool"], na.rm=T)
         
         # Microbial biomass
-        pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool[microbial_c_pool$Ring == i, "microbial_pool"])
+        pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool[microbial_c_pool$Ring == i, "microbial_pool"], na.rm=T)
         
         # Coarse Woody Debris
         pool[pool$term == "Coarse woody debris", i+1]  <- mean(standing_dead_c_pool[standing_dead_c_pool$Ring == i, "wood_pool"], na.rm=T)
@@ -162,7 +162,7 @@ make_table_by_ring <- function() {
         pool[pool$term == "Mycorrhizae", i+1]  <- mean(mycorrhizal_c_pool[mycorrhizal_c_pool$Ring == i, "mycorrhizal_c_pool"], na.rm=T)
         
         # Insects
-        pool[pool$term == "Insects", i+1] <- mean(insect_pool[insect_pool$Ring == i, "insect_pool"])
+        pool[pool$term == "Insects", i+1] <- mean(insect_pool[insect_pool$Ring == i, "insect_pool"], na.rm=T)
         
         # Litter
         pool[pool$term == "Litter", i+1]  <- mean(leaflitter_pool[leaflitter_pool$Ring == i, "leaflitter_pool"], na.rm=T)

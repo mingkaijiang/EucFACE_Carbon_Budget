@@ -48,7 +48,7 @@ nep_gap_plot <- function(inDF) {
     delta_myc_c <- make_change_in_pool(mypool=mycorrhizal_c_pool, var.col=3)
     delta_ins_c <- make_change_in_pool(mypool=insect_pool, var.col=3)
     delta_lit_c <- make_change_in_pool(mypool=leaflitter_pool, var.col=6)
-    # missing CWD
+
     
     ### create df to store pools
     pool.list <- c("soilc", "leafc", "woodc", "crootc", "frootc", "uac",

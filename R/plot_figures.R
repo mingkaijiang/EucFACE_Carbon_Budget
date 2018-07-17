@@ -68,6 +68,9 @@ p.mycc <- plot_treatment_effect(inDF=mycc.tr,
                                  y.lab=expression(paste("Mycorrhizal Carbon (g ", m^-2, ")")))
 
 ### Standing dead C pool
+#sdc.tr <- make_treatment_effect_df(inDF=standing_dead_c_pool, v=3, cond=1)
+#p.sdc <- plot_treatment_effect(inDF=sdc.tr, 
+#                                y.lab=expression(paste("Standing dead Carbon (g ", m^-2, ")")))
 
 ### Leaf litter C pool
 litc.tr <- make_treatment_effect_df(inDF=leaflitter_pool, v=6, cond=1)
@@ -218,6 +221,7 @@ plot(p.micc)
 plot(p.mycc) 
 
 ### Standing dead C pool
+#plot(p.sdc)
 
 ### leaf litter C pool
 plot(p.litc)

@@ -24,10 +24,10 @@ make_leaflitter_pool <- function(c_frac){
                             Start_date = Date - days.past,
                             End_date = Date,
                             ndays = days.past,
-                            Twig = as.numeric(Twig) * conv / days.past,
-                            Bark = as.numeric(Bark) * conv / days.past,
-                            Seed = as.numeric(Seed) * conv / days.past,
-                            Leaf = as.numeric(Leaf) * conv / days.past)
+                            Twig = as.numeric(Twig) * conv,
+                            Bark = as.numeric(Bark) * conv,
+                            Seed = as.numeric(Seed) * conv,
+                            Leaf = as.numeric(Leaf) * conv)
     
     ### Averages by Ring
     litter_a <- summaryBy(Twig + Bark + Seed + Leaf ~ Date + Ring, FUN=mean, na.rm=TRUE,

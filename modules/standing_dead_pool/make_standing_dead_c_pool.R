@@ -6,13 +6,18 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     download_mortality_data()
     
     ### read in mortality information
-    morDF <- read.csv(file.path(getToPath(), "FACE_P0045_RA_MORTALITY_RAW_20150501_v1.csv"))
+    #morDF <- read.csv(file.path(getToPath(), "FACE_P0045_RA_MORTALITY_RAW_20150501_v1.csv"))
+    #morDF$date_last_observed_alive <- as.Date(morDF$date_last_observed_alive,format="%d/%m/%Y")
+    
+    morDF <- read.csv(file.path(getToPath(), "dendro_mortality_updated.txt"))
     morDF$date_last_observed_alive <- as.Date(morDF$date_last_observed_alive,format="%d/%m/%Y")
     
     ### read in 2012-15 data sets
     f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
     f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
+    f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
+    
     ### this file is not on HIEv yet!
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     
@@ -28,6 +33,7 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     all <- merge(all,f13,by=c("Tree","Ring","CO2.trt")) 
     all <- merge(all,f14,by=c("Tree","Ring","CO2.trt"))  
     all <- merge(all,f15,by=c("Tree","Ring","CO2.trt"))
+    all <- merge(all,f16,by=c("Tree","Ring","CO2.trt"))
     
     ### subset dead trees
     all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
@@ -41,8 +47,8 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     uncorr <- uncorr[,names(uncorr) != "Active.FALSE.means.dead."]
     
     ### make a long-form version of dataframe
-    long <- reshape(uncorr,idvar="Tree",varying=list(7:51),direction="long")
-    dates <- names(uncorr)[7:51]
+    long <- reshape(uncorr,idvar="Tree",varying=list(7:58),direction="long")
+    dates <- names(uncorr)[7:58]
     long$Date <- c(rep(Sys.Date(),length(long$time)))  
     for (i in (1:length(long$time))) {
         long$Date[i] <- as.Date(dates[long$time[i]],format="X%d.%m.%Y")
@@ -55,11 +61,11 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     for (i in tree.list) {
         alive.date <- morDF[morDF$Tree == i, "date_last_observed_alive"]
         last.diam <- morDF[morDF$Tree == i, "last_observed_diameter"]
-        long[long$Tree == i & long$Date < alive.date, "diam"] <- 0.0
-        long[long$Tree == i & long$Date == alive.date, "diam"] <- last.diam
+        long$diam[long$Tree == i & long$Date < alive.date] <- 0.0
+        long$diam[long$Tree == i & long$Date == alive.date] <- last.diam
         
         if (is.na(sum(long[long$Tree == i & long$Date >= alive.date, "diam"]))) {
-            long[long$Tree == i & long$Date >= alive.date, "diam"] <- last.diam
+            long$diam[long$Tree == i & long$Date >= alive.date] <- last.diam
         }
     }
     

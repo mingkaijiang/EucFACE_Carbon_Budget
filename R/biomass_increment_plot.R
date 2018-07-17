@@ -126,8 +126,19 @@ biomass_increment_plot <- function() {
     
     for (i in 1:6) {
         diff <- insect_pool[insect_pool$Ring == i & insect_pool$Date == max.date, "insect_pool"] - insect_pool[insect_pool$Ring == i & insect_pool$Date == min.date, "insect_pool"]
-        incDF[incDF$term == "Insect", i+1] <- round(diff / date.diff * 365, 2)
-        #incDF[incDF$term == "Insect", i+1] <- diff
+        incDF[incDF$term == "Insects", i+1] <- round(diff / date.diff * 365, 2)
+        #incDF[incDF$term == "Insects", i+1] <- diff
+    }
+    
+    ### CWD pool - standing dead pool
+    for (i in unique(standing_dead_c_pool$Ring)) {
+        min.date <- min(standing_dead_c_pool$Date[standing_dead_c_pool$Ring==i])
+        max.date <- max(standing_dead_c_pool$Date[standing_dead_c_pool$Ring==i])
+        date.diff <- as.numeric(max.date - min.date)
+        
+        diff <- standing_dead_c_pool[standing_dead_c_pool$Ring == i & standing_dead_c_pool$Date == max.date, "wood_pool"] - standing_dead_c_pool[standing_dead_c_pool$Ring == i & standing_dead_c_pool$Date == min.date, "wood_pool"]
+        incDF[incDF$term == "CoarseWoodyDebris", i+1] <- round(diff / date.diff * 365, 2)
+        #incDF[incDF$term == "CoarseWoodyDebris", i+1] <- diff
     }
         
     # CO2 effect
@@ -182,6 +193,7 @@ biomass_increment_plot <- function() {
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_x_discrete("Pool variable", 
                          labels=c(expression(C[cr]),
+                                  expression(C[cwd]),
                                   expression(C[fr]),
                                   expression(C[i]),
                                   expression(C[l]),
