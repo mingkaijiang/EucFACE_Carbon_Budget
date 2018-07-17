@@ -158,8 +158,12 @@ make_EucFACE_table <- function() {
     
     
     ### Ra stem
-    inout$data_notes[inout$term == "Ra stem"] <- "Need sapwood, tair and branchwood data"
-    inout$processing_notes[inout$term == "Ra stem"] <- "codes not completed"
+    inout$value[inout$term == "Ra stem"] <- mean(wood_respiration_flux$wood_respiration) * conv
+    inout$start_year[inout$term == "Ra stem"] <- min(year(wood_respiration_flux$Start_date))
+    inout$end_year[inout$term == "Ra stem"] <- max(year(wood_respiration_flux$End_date))
+    inout$timepoint[inout$term == "Ra stem"] <- length(unique(wood_respiration_flux$Date))
+    inout$data_notes[inout$term == "Ra stem"] <- "Used WTC base respiration rate"
+    inout$processing_notes[inout$term == "Ra stem"] <- "Taking sapwood depth"
     
     
     ### Ra fine root

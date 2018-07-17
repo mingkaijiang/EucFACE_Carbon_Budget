@@ -1,7 +1,7 @@
 ####### This script calls run.R and plot figures based on that
 
 #### Call run.R program
-source("run.R")
+#source("run.R")
 
 #### Source the function that makes treatment effect df
 source("R/make_treatment_effect_df.R")
@@ -85,6 +85,11 @@ p.litc <- plot_treatment_effect(inDF=litc.tr,
 ### Understorey GPP
 
 ### Overstorey Leaf respiration
+
+### wood respiration
+rwood.tr <- make_treatment_effect_df(inDF=wood_respiration_flux, v=5, cond=1)
+p.rwood <- plot_treatment_effect(inDF=rwood.tr, 
+                                 y.lab=expression(paste("Wood respiration (mg ", m^-2, " ", d^-1, ")")))
 
 ### Root respiration
 rroot.tr <- make_treatment_effect_df(inDF=root_respiration_flux, v=5, cond=1)
@@ -232,6 +237,9 @@ plot(p.litc)
 ### Understorey GPP
 
 ### Overstorey Leaf respiration
+
+### Wood respiration
+plot(p.rwood)
 
 ### Root respiration
 plot(p.rroot)

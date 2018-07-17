@@ -88,6 +88,10 @@ make_table_by_ring <- function() {
         # Ra root
         inout[inout$term == "Ra root", i+1] <- with(root_respiration_flux[root_respiration_flux$Ring == i,],
                                                     sum(root_respiration_flux*ndays)/sum(ndays)) * conv 
+        
+        # Ra stem
+        inout[inout$term == "Ra stem", i+1] <- with(wood_respiration_flux[wood_respiration_flux$Ring == i,],
+                                                    sum(wood_respiration*ndays)/sum(ndays)) * conv 
 
         # Rgrowth
         inout[inout$term == "Rgrowth", i+1] <- ccost * (npp[npp$term == "Leaf NPP", i+1] + 

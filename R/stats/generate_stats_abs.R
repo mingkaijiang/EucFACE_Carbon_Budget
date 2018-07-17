@@ -109,6 +109,11 @@ generate_stats_abs <- function(stat.model) {
     ### Overstorey Leaf respiration
     
     ### Root respiration
+    s.rwood <- treatment_effect_abs_statistics(inDF=wood_respiration_flux, 
+                                               var.cond="flux", var.col=5,
+                                               date.as.factor=T)
+    
+    ### Root respiration
     s.rroot <- treatment_effect_abs_statistics(inDF=root_respiration_flux, 
                                               var.cond="flux", var.col=5,
                                               date.as.factor=T)
@@ -202,6 +207,7 @@ generate_stats_abs <- function(stat.model) {
     var.list <- c("lai", "sla","soil_c","leaf_c","wood_c","fineroot_c",
                   "coarseroot_c","understorey_c","understorey_c_2","understorey_c_live","understorey_c_dead",
                   "microbial_c","mycorrhizal_c","litter_c","insect_c","cwd_c",
+                  "wood_respiration",
                   "root_respiration","understorey_respiration",
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
                   "soil_respiration","doc","ch4","leaf_prod","twig_prod",
@@ -260,6 +266,7 @@ generate_stats_abs <- function(stat.model) {
     out[out$Variable=="litter_c",2:17] <- assign_stats(s.var=s.litc)
     out[out$Variable=="insect_c",2:17] <- assign_stats(s.var=s.insc)
     out[out$Variable=="cwd_c",2:17] <- assign_stats(s.var=s.sdc)
+    out[out$Variable=="wood_respiration",2:17] <- assign_stats(s.var=s.rwood)
     out[out$Variable=="root_respiration",2:17] <- assign_stats(s.var=s.rroot)
     out[out$Variable=="understorey_respiration",2:17] <- assign_stats(s.var=s.rund)
     out[out$Variable=="frass_prod",2:17] <- assign_stats(s.var=s.fras)
