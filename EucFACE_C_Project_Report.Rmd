@@ -709,6 +709,9 @@ Assume all root respiration is fineroot respiration and there is no coarse root 
 
 Here, fineroot and coarseroot respiration are scaled by a Q10 function with soil temperature based on data derived from Whole Tree Chamber exmperiment 3. 
 
+The coarseroot respiration flux should be lower than what we calcualted here. Because here we assume the entire coarseroot pool is respiring. So close the C budget gap, it may be reasonable to estimate a fraction of coarseroot that is respiring. 
+
+
 ### Understorey respiration flux
 
 Here, since we don't have direct measurement of understorey respiration flux, we have to use literature value of dark respiration of Microlaena. we can calculate understorey respiration flux based on three methods, each with certain uncertainties:
@@ -765,9 +768,10 @@ Below is the estimate of understorey respiration flux based on cue approach.
 
 ### Wood respiration flux
 
+There are two possibilities: 1. use actual Q10 function at EucFACE, 2. use Q10 function from WTC.
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"}
 
-    wood_respiration_flux <- make_wood_respiration_flux(wood.pool=wood_c_pool)
+    wood_respiration_flux <- make_wood_respiration_flux()
 
     ### make the plot
     p <- ggplot(wood_respiration_flux,
@@ -780,6 +784,26 @@ Below is the estimate of understorey respiration flux based on cue approach.
             plot(p)
     }
 ```
+
+
+The second way using WTC has some issues.The basal respiration rate is comparably OK, but the stem biomass is big, hence the calculated annual stem respiration flux is large (~1000 g C m-2 yr-1). Hence, the problem is either basal respiration rate is actually a lot lower, or the sapwood biomass is lot lower than what we have here. The sapwood biomass data is based on sapwood depth information. 
+
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"}
+
+    wood_respiration_flux <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
+
+    ### make the plot
+    p <- ggplot(wood_respiration_flux,
+                aes(Date, wood_respiration, color=factor(Ring))) +   
+            geom_point(size = 1) + geom_line() + 
+            xlab("Date") + ylab("Wood respiration flux (mg m-2 d-1)") + 
+            scale_color_manual(values=ring_colours, name="Ring")
+    
+    if (plot_option) {
+            plot(p)
+    }
+```
+
 
 ### Soil respiration flux
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"} 

@@ -129,7 +129,8 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
                                                   c_frac=c_fraction)
 
 ### Wood respiration flux
-wood_respiration_flux <- make_wood_respiration_flux(wood.pool=wood_c_pool)
+wood_respiration_flux <- make_wood_respiration_flux()
+#wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()

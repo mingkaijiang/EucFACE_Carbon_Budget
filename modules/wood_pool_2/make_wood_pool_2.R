@@ -17,5 +17,5 @@ make_wood_pool_2 <- function(ring_area,c_fraction,wood_density){
         dplyr::select(Date, Ring, wood_pool_2)
     
     
-    ringstemmass
+    return(ringstemmass)
 }
