@@ -33,8 +33,11 @@ options(warn=-1)
 ### tair, RH, PAR and pressure 
 #tair_rh_par_presDF <- prepare_met_air_data(timestep="Monthly")
 
-### Combine met data together
-#metDF <- combine_met_data(timestep="Monthly")
+### Combine met data together, also make combined met data plot
+metDF <- combine_met_data()
+
+### Calculate mean annual temperature and precipitation
+met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI

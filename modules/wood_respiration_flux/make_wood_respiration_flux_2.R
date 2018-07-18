@@ -57,12 +57,12 @@ make_wood_respiration_flux_2 <- function(wood.pool) {
     ### Calculate respiration rate (nmol CO2 m-2 h-1)
     hDF$Resp <- Rstem * Rbase^((hDF$AirTC_1_Avg - 15)/10) * hDF$Sap.DM * 3600
     
-    ### Convert unit from nmol CO2 m-2 h-1 to mg C m-2 h-1
-    hDF$Resp_mg <- hDF$Resp * 1e-9 * 12.01 * 1000
+    ### Convert unit from nmol CO2 m-2 h-1 to mg C m-2 d-1
+    hDF$Resp_mg <- hDF$Resp * 1e-9 * 12.01 * 1000 * 24
     
     ### daily sums of stem respiration
     hDF$Date <- strptime(hDF$DateHour, format="%Y-%m-%d")
-    dDF <- summaryBy(Resp_mg~Date+Ring, data=hDF, FUN=sum, keep.names=T, na.rm=T)
+    dDF <- summaryBy(Resp_mg~Date+Ring, data=hDF, FUN=mean, keep.names=T, na.rm=T)
     colnames(dDF) <- c("Date", "Ring", "wood_respiration")
     dDF$Date <- as.Date(as.character(dDF$Date))
     

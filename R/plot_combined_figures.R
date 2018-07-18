@@ -2,7 +2,7 @@
 
 #############################################################
 #### Call run.R program
-source("run.R")
+# source("run.R")
 
 #### Source the function that makes treatment effect df
 source("R/make_treatment_effect_df.R")
@@ -42,7 +42,7 @@ p1 <- ggplot(lai.tr, aes(Date))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_x_date(date_breaks = "1 year", 
                  date_labels="%b-%Y",
-                 limits = as.Date(c('2012-08-01','2018-12-01')))
+                 limits = as.Date(c('2012-09-01','2016-12-31')))
 
 ## sla plot
 p2 <- ggplot(sla.tr, aes(Date))+
@@ -66,7 +66,7 @@ p2 <- ggplot(sla.tr, aes(Date))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_x_date(date_breaks = "1 year", 
                  date_labels="%b-%Y",
-                 limits = as.Date(c('2012-08-01','2018-12-01')))
+                 limits = as.Date(c('2012-09-01','2016-12-31')))
 
 ## leaf c plot
 p3 <- ggplot(leafc.tr, aes(Date))+
@@ -89,7 +89,7 @@ p3 <- ggplot(leafc.tr, aes(Date))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_x_date(date_breaks = "1 year", 
                  date_labels="%b-%Y",
-                 limits = as.Date(c('2012-08-01','2018-12-01')))
+                 limits = as.Date(c('2012-09-01','2016-12-31')))
 
 grid.labs <- c("(a)", "(b)", "(c)")
 
@@ -489,9 +489,386 @@ grid.text(grid.labs,x = 0.1, y = c(0.97, 0.48),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
+###################---------------------######################
+### Soil bulk density and soil moisture at different depths
+##  generate treatment effect df for each variable
+soil.bk.tr <- soil_bulk_density_variable
+soil.bk.tr[soil.bk.tr$ring== 2|soil.bk.tr$ring==3|soil.bk.tr$ring==6,"Treatment"] <- "aCO2"
+soil.bk.tr[soil.bk.tr$ring== 1|soil.bk.tr$ring==4|soil.bk.tr$ring==5,"Treatment"] <- "eCO2"
+
+soil.bk.tr[soil.bk.tr$Depth == "0-10cm", "d.factor"] <- "0-10"
+soil.bk.tr[soil.bk.tr$Depth == "10-20cm", "d.factor"] <- "10-20"
+soil.bk.tr[soil.bk.tr$Depth == "20-30cm", "d.factor"] <- "20-30"
+
+soil.bk.tr <- soil.bk.tr[complete.cases(soil.bk.tr),]
+
+### Soil moisture content at different depths and over time
+## read in soil moisture data, takes a long time!
+smDF <- prepare_soil_moisture_data(plot.image = F, monthly=T)
+
+### Depth for ring 1, 3, 4, 5, 6
+depth <- c(5, 30, 35, 75)
+
+
+### combine all rings together
+myDF <- rbind(smDF[[1]],smDF[[2]],smDF[[3]],smDF[[4]],smDF[[5]],smDF[[6]])
+myDF$Month <- format(as.Date(myDF$Date), "%Y-%m")
+myDF$Month <- as.Date(paste0(myDF$Month,"-1"), format = "%Y-%m-%d") 
+myDF$Ring <- c(rep(1, length(smDF$R1$Date)),rep(2, length(smDF$R2$Date)),rep(3, length(smDF$R3$Date)),
+               rep(4, length(smDF$R4$Date)),rep(5, length(smDF$R5$Date)),rep(6, length(smDF$R6$Date)))
+
+### Calculate monthly average
+mDF <- summaryBy(Theta5_1_Avg+Theta30_1_Avg+ThetaHL_1_Avg+Theta75_1_Avg~Month+Ring, 
+                 data=myDF,FUN=mean, na.rm=T, keep.names=T)
+
+### Monthly time series
+m.series <- unique(mDF$Month)
+x.m <- c(1:length(m.series))
+d.l <- length(m.series)
+
+### convert data into long format
+plotDF <- data.frame(rep(m.series, 4), rep(depth, each=d.l), NA)
+colnames(plotDF) <- c("Date", "Depth", "Theta")
+
+### Subset data and assign data - ring 1
+sub.mDF <- subset(mDF, Ring==1)
+plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
+plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
+plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
+plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
+
+## Subset soil bulk density plot
+bkDF <- subset(soil.bk.tr, ring==1)
+
+## ggplot of soil bulk density
+p1 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+## ggplot of soil moisture profile
+p2 <- ggplot(plotDF) + 
+    aes(x = Date, y = Depth, z = Theta) + 
+    ylim(5,75)+
+    geom_tile(aes(fill=Theta)) + 
+    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
+    geom_contour(color="white", alpha=0.5) +
+    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
+    theme_bw()+
+    labs(x="Date", y="Depth (cm)")+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          legend.position="none")+
+    scale_x_date(date_breaks = "1 year", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-09-01','2017-08-31')))
+
+
+### Subset data and assign data - ring 3
+sub.mDF <- subset(mDF, Ring==3)
+plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
+plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
+plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
+plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
+
+## Subset soil bulk density plot
+bkDF <- subset(soil.bk.tr, ring==3)
+
+## ggplot of soil bulk density
+p5 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+## ggplot of soil moisture profile
+p6 <- ggplot(plotDF) + 
+    aes(x = Date, y = Depth, z = Theta) + 
+    ylim(5,75)+
+    geom_tile(aes(fill=Theta)) + 
+    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
+    geom_contour(color="white", alpha=0.5) +
+    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
+    theme_bw()+
+    labs(x="Date", y="Depth (cm)")+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          legend.position="none")+
+    scale_x_date(date_breaks = "1 year", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-09-01','2017-08-31')))
+
+
+### Subset data and assign data - ring 4
+sub.mDF <- subset(mDF, Ring==4)
+plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
+plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
+plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
+plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
+
+## Subset soil bulk density plot
+bkDF <- subset(soil.bk.tr, ring==4)
+
+## ggplot of soil bulk density
+p7 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+## ggplot of soil moisture profile
+p8 <- ggplot(plotDF) + 
+    aes(x = Date, y = Depth, z = Theta) + 
+    ylim(5,75)+
+    geom_tile(aes(fill=Theta)) + 
+    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
+    geom_contour(color="white", alpha=0.5) +
+    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
+    theme_bw()+
+    labs(x="Date", y="Depth (cm)")+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          legend.position="none")+
+    scale_x_date(date_breaks = "1 year", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-09-01','2017-08-31')))
+
+
+### Subset data and assign data - ring 5
+sub.mDF <- subset(mDF, Ring==5)
+plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
+plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
+plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
+plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
+
+## Subset soil bulk density plot
+bkDF <- subset(soil.bk.tr, ring==5)
+
+## ggplot of soil bulk density
+p9 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+## ggplot of soil moisture profile
+p10 <- ggplot(plotDF) + 
+    aes(x = Date, y = Depth, z = Theta) + 
+    ylim(5,75)+
+    geom_tile(aes(fill=Theta)) + 
+    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
+    geom_contour(color="white", alpha=0.5) +
+    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
+    theme_bw()+
+    labs(x="Date", y="Depth (cm)")+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          legend.position="none")+
+    scale_x_date(date_breaks = "1 year", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-09-01','2017-08-31')))
+
+### convert data into long format
+plotDF <- data.frame(rep(m.series, 4), rep(depth, each=d.l), NA)
+colnames(plotDF) <- c("Date", "Depth", "Theta")
+
+### Subset data and assign data - ring 6
+sub.mDF <- subset(mDF, Ring==6)
+plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
+plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
+plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
+plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
+
+## Subset soil bulk density plot
+bkDF <- subset(soil.bk.tr, ring==6)
+
+## ggplot of soil bulk density
+p11 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+## ggplot of soil moisture profile
+p12 <- ggplot(plotDF) + 
+    aes(x = Date, y = Depth, z = Theta) + 
+    ylim(5,75)+
+    geom_tile(aes(fill=Theta)) + 
+    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
+    geom_contour(color="white", alpha=0.5) +
+    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
+    theme_bw()+
+    labs(x="Date", y="Depth (cm)")+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          legend.position="bottom")+
+    scale_x_date(date_breaks = "1 year", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-09-01','2017-08-31')))
+
+
+### convert data into long format - note, depth for ring 2 is different
+depth <- c(5, 30, 44, 75)
+plotDF <- data.frame(rep(m.series, 4), rep(depth, each=d.l), NA)
+colnames(plotDF) <- c("Date", "Depth", "Theta")
+
+### Subset data and assign data - ring 2
+sub.mDF <- subset(mDF, Ring==2)
+plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
+plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
+plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
+plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
+
+## Subset soil bulk density plot
+bkDF <- subset(soil.bk.tr, ring==2)
+
+## ggplot of soil bulk density
+p3 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
+                                               "20-30" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))
+
+## ggplot of soil moisture profile
+p4 <- ggplot(plotDF) + 
+    aes(x = Date, y = Depth, z = Theta) + 
+    ylim(5,75)+
+    geom_tile(aes(fill=Theta)) + 
+    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
+    geom_contour(color="white", alpha=0.5) +
+    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
+    theme_bw()+
+    labs(x="Date", y="Depth (cm)")+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_blank(),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          legend.position="none")+
+    scale_x_date(date_breaks = "1 year", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-09-01','2017-08-31')))
 
 
 
+#grid.labs <- c("(a)", "(b)")
+require(cowplot)
+
+## plot 
+pdf("output/Soil_Profile_bk_sm.pdf", width=8,height=12)
+plot_grid(p1, p2, 
+          p3, p4, 
+          p5, p6, 
+          p7, p8, 
+          p9, p10, 
+          p11, p12,
+          labels="", ncol=2, align="v", axis = "l",
+          rel_widths=c(1,1.8))
+#grid.text(grid.labs,x = 0.1, y = c(0.97, 0.48),
+#          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+###################---------------------######################
 ## plotting soil respiration
 p2 <- ggplot(soilr.tr, aes(Date))+
     geom_ribbon(data=soilr.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
