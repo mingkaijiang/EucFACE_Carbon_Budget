@@ -68,6 +68,9 @@ make_soil_carbon_pool <- function(bk_density, return){
     }
     #------
     
+    #- Calculate CN and CP ratios where possible
+    dat$CN <- dat$totCper / dat$totNper
+    dat$CP <- dat$totCper / (dat$totPppm / 10000)
     
     
     #------
@@ -88,6 +91,35 @@ make_soil_carbon_pool <- function(bk_density, return){
     #- average across plots within each ring
     dat.s.m <- summaryBy(soil_carbon_pool~Date+Ring,data=dat.s,FUN=mean,keep.names=T)
     dat.s.m$Ring <- as.numeric(dat.s.m$Ring)
+    
+    #- return by depth, ring, if "return" is "by_depths"
+    if(return=="by_depths"){
+        dat.s <- summaryBy(totCgm2~Plot+Ring+Date+Depth,data=dat,FUN=sum,keep.names=T)
+        names(dat.s)[5] <- "soil_carbon_pool"
+        
+        dat.ph <- summaryBy(ph~Date+Ring+Depth, data=dat, FUN=mean, keep.names=T, na.rm=T)
+        dat.cn <- summaryBy(CN~Date+Ring+Depth, data=dat, FUN=mean, keep.names=T, na.rm=T)
+        dat.cp <- summaryBy(CP~Date+Ring+Depth, data=dat, FUN=mean, keep.names=T, na.rm=T)
+        
+        
+        dat.s.m <- summaryBy(soil_carbon_pool~Date+Ring+Depth,data=dat.s,FUN=mean,keep.names=T)
+        dat.s.m$Ring <- as.numeric(dat.s.m$Ring)
+        
+        dat.s.m <- dat.s.m[,c("Date", "Ring", "soil_carbon_pool", "Depth")]
+        
+        for (i in 1:6) {
+            for (j in unique(dat.s.m$Date)) {
+                for (k in unique(dat.s.m$Depth)) {
+                    dat.s.m$ph[dat.s.m$Ring==i&dat.s.m$Date==j&dat.s.m$Depth==k] <- dat.ph$ph[dat.ph$Ring==i&dat.ph$Date==j&dat.ph$Depth==k]
+                    dat.s.m$cn[dat.s.m$Ring==i&dat.s.m$Date==j&dat.s.m$Depth==k] <- dat.cn$CN[dat.cn$Ring==i&dat.cn$Date==j&dat.cn$Depth==k]
+                    dat.s.m$cp[dat.s.m$Ring==i&dat.s.m$Date==j&dat.s.m$Depth==k] <- dat.cp$CP[dat.cp$Ring==i&dat.cp$Date==j&dat.cp$Depth==k]
+                    
+                }
+            }
+        }
+        
+    }
+    
     # Only use data period 2012-2016
     dat.s.m <- dat.s.m[dat.s.m$Date<="2016-12-31",]
     return(dat.s.m)

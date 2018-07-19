@@ -6,6 +6,7 @@
 
 #### Source the function that makes treatment effect df
 source("R/make_treatment_effect_df.R")
+source("R/make_treatment_effect_df_2.R")
 
 #### library
 require(grid)
@@ -23,7 +24,7 @@ leafc.tr <- make_treatment_effect_df(inDF=leaf_c_pool, v=3, cond=1)
 
 ## lai plot
 p1 <- ggplot(lai.tr, aes(Date))+
-    geom_ribbon(data=lai.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
+    geom_ribbon(data=lai.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
     geom_line(data=lai.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y="LAI")+
     theme_linedraw() +
@@ -48,7 +49,7 @@ p1 <- ggplot(lai.tr, aes(Date))+
 p2 <- ggplot(sla.tr, aes(Date))+
     #geom_ribbon(data=sla.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
     geom_point(data=sla.tr, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=sla.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
+    geom_segment(data=sla.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste("SLA (cm2 ", g^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -70,7 +71,7 @@ p2 <- ggplot(sla.tr, aes(Date))+
 
 ## leaf c plot
 p3 <- ggplot(leafc.tr, aes(Date))+
-    geom_ribbon(data=leafc.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
+    geom_ribbon(data=leafc.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
     geom_line(data=leafc.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[leaf], " (g C ", m^-2, ")")))+
     theme_linedraw() +
@@ -389,15 +390,22 @@ dev.off()
 crc1.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_1)
 crc2.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_2)
 
-crc1.tr$total_root_c_pool <- NULL
+## long format
+crc1.tr$total_root_pool <- NULL
 crc1.tr$Method <- "A"
 crc2.tr$Method <- "B"
 colnames(crc1.tr) <- c("Date", "Ring", "coarse_root_pool", "Treatment", "Method")
 crc.tr <- rbind(crc1.tr, crc2.tr)
 
+## wide format
+temDF <- merge(crc1.tr, crc2.tr, by=c("Ring", "Date"), all=T)
+crc.tr.w <- temDF[,c("Ring", "Date", "coarse_root_pool.x", "coarse_root_pool.y",
+                     "Treatment.x")]
+colnames(crc.tr.w) <- c("Ring", "Date", "M1", "M2", "Treatment")
+
 ## plotting
-p1 <- ggplot(crc.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor(Treatment)))+
-    geom_boxplot(position=position_dodge(1))+facet_grid(~Method)+
+p1 <- ggplot(crc1.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor(Treatment)))+
+    geom_boxplot(position=position_dodge(1))+
     labs(x="Date", y=expression(paste(C[cr], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -414,8 +422,34 @@ p1 <- ggplot(crc.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor(
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
 
-pdf("output/coarseroot_biomass_method_comparison.pdf", width=10, height=4)
-plot(p1)
+p2 <- ggplot(crc.tr.w)+
+    geom_point(aes(x=M1, y=M2, color=factor(Treatment)))+
+    labs(x=expression(paste(C[croot1], " (g C ", m^-2, ")")), 
+         y=expression(paste(C[croot2], " (g C ", m^-2, ")")))+
+    geom_abline(intercept = 0, slope = 1, color="grey", 
+                linetype="dashed", size=1.5)+
+    xlim(600, 1400)+ylim(600,1400)+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+grid.labs <- c("(a)", "(b)")
+
+pdf("output/coarseroot_biomass_method_comparison.pdf", width=6, height=8)
+plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l")
+grid.text(grid.labs,x = 0.2, y = c(0.95, 0.46),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
 
@@ -869,14 +903,24 @@ plot_grid(p1, p2,
 dev.off()
 
 ###################---------------------######################
-## plotting soil respiration
-p2 <- ggplot(soilr.tr, aes(Date))+
-    geom_ribbon(data=soilr.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-    geom_line(data=soilr.tr, aes(y=avg, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste(R[soil], " (mg C ", m^-2, " ", d^-1, ")")))+
-    scale_x_date(date_breaks = "6 month", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-06-01','2016-05-01')))+
+#### plotting fineroot C pool, at different depths
+###  generate treatment effect df for each variable
+froot.tr <- fineroot_c_pool
+froot.tr[froot.tr$Ring== 2|froot.tr$Ring==3|froot.tr$Ring==6,"Treatment"] <- "aCO2"
+froot.tr[froot.tr$Ring== 1|froot.tr$Ring==4|froot.tr$Ring==5,"Treatment"] <- "eCO2"
+
+frDF <- reshape(froot.tr,idvar=c("Ring", "Date", "Treatment"),
+                varying=list(3:5),
+                direction="long")
+l <- length(froot.tr$Date)
+
+frDF$Depth <- c(rep(c("total", "0-10cm","10-30cm"), each=l))
+
+plotDF <- frDF[frDF$Depth != "total",]
+
+p <- ggplot(plotDF, aes(x=Treatment, y=fineroot_pool, fill=Depth))+
+    geom_bar(stat="identity", position="stack")+facet_grid(~Date)+
+    labs(x="Treatment", y=expression(paste(C[froot], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -886,8 +930,174 @@ p2 <- ggplot(soilr.tr, aes(Date))+
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
-          legend.position="bottom")+
+          legend.position="right")+
+    scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-30cm" = "orange"),
+                      labels=c("0-10cm","10-30cm"))+
+    scale_x_discrete(limit=c("aCO2", "eCO2"),
+                     labels=c(expression(aCO[2]), expression(eCO[2])))
+
+pdf("output/fineroot_c_pool_of_depth.pdf", width=8, height=6)
+plot(p)
+dev.off()
+
+###################---------------------######################
+#### plotting soil content and soil c pool
+###  generate treatment effect df for each variable
+froot.tr <- fineroot_c_pool
+froot.tr[froot.tr$Ring== 2|froot.tr$Ring==3|froot.tr$Ring==6,"Treatment"] <- "aCO2"
+froot.tr[froot.tr$Ring== 1|froot.tr$Ring==4|froot.tr$Ring==5,"Treatment"] <- "eCO2"
+
+frDF <- reshape(froot.tr,idvar=c("Ring", "Date", "Treatment"),
+                varying=list(3:5),
+                direction="long")
+l <- length(froot.tr$Date)
+
+frDF$Depth <- c(rep(c("total", "0-10cm","10-30cm"), each=l))
+
+plotDF <- frDF[frDF$Depth != "total",]
+
+p <- ggplot(plotDF, aes(x=Treatment, y=fineroot_pool, fill=Depth))+
+    geom_bar(stat="identity", position="stack")+facet_grid(~Date)+
+    labs(x="Treatment", y=expression(paste(C[froot], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-30cm" = "orange"),
+                      labels=c("0-10cm","10-30cm"))+
+    scale_x_discrete(limit=c("aCO2", "eCO2"),
+                     labels=c(expression(aCO[2]), expression(eCO[2])))
+
+pdf("output/fineroot_c_pool_of_depth.pdf", width=8, height=6)
+plot(p)
+dev.off()
+
+###################---------------------######################
+### Soil C pool, pH, CN and CP ratios, by depth
+soilc.tr <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
+                                       return="by_depths")
+
+soilc.tr[soilc.tr$Ring== 2|soilc.tr$Ring==3|soilc.tr$Ring==6,"Treatment"] <- "aCO2"
+soilc.tr[soilc.tr$Ring== 1|soilc.tr$Ring==4|soilc.tr$Ring==5,"Treatment"] <- "eCO2"
+
+plotDF1 <- summaryBy(soil_carbon_pool+ph+cn+cp~Date+Treatment+Depth, 
+                    data=soilc.tr,FUN=mean, na.rm=T, keep.names=T)
+
+## plotting soil c pool
+p1 <- ggplot(plotDF1, aes(x=Treatment, y=soil_carbon_pool, fill=Depth))+
+    geom_bar(stat="identity", position="stack")+facet_grid(~Date)+
+    labs(x="Treatment", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=10),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-20cm" = "orange", "20-30cm" = "brown"),
+                      labels=c("0-10cm","10-20cm","20-30cm"))+
+    scale_x_discrete(limit=c("aCO2", "eCO2"),
+                     labels=c(expression(aCO[2]), expression(eCO[2])))
+
+## prepare soil ph df
+plotDF2 <- make_treatment_effect_df(inDF=soilc.tr, v=5, cond=2)
+
+## ph
+p2 <- ggplot(plotDF2, aes(x=Date))+
+    geom_point(data=plotDF2, aes(y=avg, color=factor(Treatment)))+
+    geom_segment(data=plotDF2, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    labs(x="Treatment", y="pH")+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_date(date_breaks = "6 months", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-05-01','2014-04-30')))
+
+
+## soil CN 
+plotDF3 <- make_treatment_effect_df(inDF=soilc.tr, v=6, cond=2)
+plotDF3 <- plotDF3[complete.cases(plotDF3),]
+p3 <- ggplot(plotDF3, aes(x=Date))+
+    geom_point(data=plotDF3, aes(y=avg, color=factor(Treatment)))+
+    geom_segment(data=plotDF3, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    labs(x="Treatment", y="CN ratio")+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_date(date_breaks = "6 months", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-05-01','2014-04-30')))
+
+## soil CP 
+plotDF4 <- make_treatment_effect_df(inDF=soilc.tr, v=7, cond=2)
+plotDF4 <- plotDF4[complete.cases(plotDF4),]
+
+p4 <- ggplot(plotDF4, aes(x=Date))+
+    geom_point(data=plotDF4, aes(y=avg, color=factor(Treatment)))+
+    geom_segment(data=plotDF4, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    labs(x="Date", y="CP ratio")+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_date(date_breaks = "6 months", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2012-05-01','2014-04-30')))
+
+grid.labs <- c("(a)", "(b)", "(c)", "(d)")
+
+require(gridExtra)
+## plot 
+pdf("output/Soil_C_pool_time_series.pdf", width=12,height=8)
+#plot_grid(p1, rbind(ggplotGrob(p2), 
+#                    ggplotGrob(p3), ggplotGrob(p4), size="last"), 
+#          labels="auto", ncol=1, align="v", axis = "l")
+grid.arrange(p1, rbind(ggplotGrob(p2), 
+                       ggplotGrob(p3), ggplotGrob(p4), size="last"), 
+             ncol=1)
+grid.text(grid.labs,x = c(0.09, 0.075, 0.075, 0.075), y = c(0.93, 0.46, 0.31, 0.15),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
