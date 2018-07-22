@@ -1,8 +1,8 @@
 make_overstorey_gpp_flux <- function() {
     ### read in MAESPA GPP output
-    inDF <- read.csv("temp_files/maespa annual.csv")
+    inDF <- read.csv("data/overstorey_gpp_annual fluxes.csv")
     
-    colnames(inDF) <- c("year", "Ring", "Treat", "GPP", "Rfoliage")
+    colnames(inDF) <- c("year", "Ring", "GPP", "Rfoliage", "Trans", "Soil")
     
     ### swap ring characters
     inDF$Ring <- gsub("R1","1", inDF$Ring)

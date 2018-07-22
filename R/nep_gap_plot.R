@@ -14,7 +14,7 @@ nep_gap_plot <- function(inDF) {
             inoutDF[inoutDF$term == "GPP understorey", i] -
             inoutDF[inoutDF$term == "CH4 efflux", i] -
             inoutDF[inoutDF$term == "Ra leaf", i] -
-            inoutDF[inoutDF$term == "Ra stem", i] -
+            #inoutDF[inoutDF$term == "Ra stem", i] -
             inoutDF[inoutDF$term == "Ra understorey", i] -
             #inoutDF[inoutDF$term == "VOC", i] -
             inoutDF[inoutDF$term == "Rherbivore", i] -

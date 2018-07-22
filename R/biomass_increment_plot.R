@@ -152,7 +152,10 @@ biomass_increment_plot <- function() {
     incDF$eCO2_sd <- rowSds(as.matrix(subset(incDF, select=c(R1, R4, R5))), na.rm=T)
     
     # new terms
-    new.terms <- c("Col", "Cw", "Cua", "Cfr", "Ccr", "Cl", "Ccwd", "Cmi", "Cs", "Cmy", "Ci")
+    new.terms <- c("Col", "Cw", "Cua", "Cfr", "Ccr", "Cl", #"Ccwd", 
+                   "Cmi", "Cs", "Cmy", "Ci")
+    
+    incDF <- incDF[!incDF$term=="CoarseWoodyDebris",] 
     
     ### prepare plot DF
     plotDF1 <- data.frame(new.terms, incDF$aCO2, incDF$aCO2_sd)
@@ -193,7 +196,7 @@ biomass_increment_plot <- function() {
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_x_discrete("Pool variable", 
                          labels=c(expression(C[cr]),
-                                  expression(C[cwd]),
+                                  #expression(C[cwd]),
                                   expression(C[fr]),
                                   expression(C[i]),
                                   expression(C[l]),

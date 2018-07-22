@@ -1,7 +1,10 @@
-make_wood_respiration_flux <- function() {
+make_wood_respiration_flux <- function(wood.pool) {
     ### "main" module function for wood respiration. 
     ### Needs temperature, sapwood mass, and branch wood mass as inputs
     ### right now we don't have branch wood biomass so ignores this
+    
+    ### download the data
+    download_wood_respiration()
     
     ### calculate stem surface area
     sfcDF <- make_stem_surface_area(ring_area)

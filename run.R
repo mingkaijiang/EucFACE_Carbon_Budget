@@ -34,10 +34,10 @@ options(warn=-1)
 #tair_rh_par_presDF <- prepare_met_air_data(timestep="Monthly")
 
 ### Combine met data together, also make combined met data plot
-metDF <- combine_met_data()
+#metDF <- combine_met_data()
 
 ### Calculate mean annual temperature and precipitation
-met_ann <- calculate_annual_mean_met_data(timestep="Daily")
+#met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
 ### LAI
@@ -132,7 +132,7 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
                                                   c_frac=c_fraction)
 
 ### Wood respiration flux
-wood_respiration_flux <- make_wood_respiration_flux()
+wood_respiration_flux <- make_wood_respiration_flux(wood.pool=wood_c_pool)
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 
 ### understorey SLA
@@ -286,8 +286,19 @@ generate_stats_abs_change_in_pools(stat.model="no_interaction")
 source("R/make_statistical_comparison_plots.R")
 make_statistical_comparison_plots()
 
+
+### Power analysis
+
+
 ### Plot individual variable figures
 #source("R/plot_figures.R")
+
+
+### To do list:
+### 1. Add GPP, understorey GPP, into all results and statistical comparison plots
+### 2. Power analysis
+### 3. Update all figures, and continue on supplementary figures and tables
+### 4. Write, Abstract for AGU, continue manuscript writing
 
 
 ###### ---------------- End -------------------- ######

@@ -138,7 +138,7 @@ make_EucFACE_table <- function() {
     inout$end_year[inout$term == "GPP overstorey"] <- max(overstorey_gpp_flux$year)
     inout$timepoint[inout$term == "GPP overstorey"] <- length(unique(overstorey_gpp_flux$year))
     inout$data_notes[inout$term == "GPP overstorey"] <- "MAESPA annual output"
-    inout$processing_notes[inout$term == "GPP overstorey"] <- ""
+    inout$processing_notes[inout$term == "GPP overstorey"] <- "per ring result"
     
     ### Ra leaf
     inout$value[inout$term == "Ra leaf"] <- mean(overstorey_leaf_respiration_flux$Rfoliage) 
@@ -146,7 +146,7 @@ make_EucFACE_table <- function() {
     inout$end_year[inout$term == "Ra leaf"] <- max(overstorey_leaf_respiration_flux$year)
     inout$timepoint[inout$term == "Ra leaf"] <- length(unique(overstorey_leaf_respiration_flux$year))
     inout$data_notes[inout$term == "Ra leaf"] <- "MAESPA annual output"
-    inout$processing_notes[inout$term == "Ra leaf"] <- ""
+    inout$processing_notes[inout$term == "Ra leaf"] <- "per ring result"
     
     ### GPP understorey
     inout$value[inout$term == "GPP understorey"] <- mean(understorey_gpp_flux$GPP) 
