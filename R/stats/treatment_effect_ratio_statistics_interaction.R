@@ -78,6 +78,53 @@ treatment_effect_ratio_statistics <- function(inDF, var.cond, var.col, date.as.f
                     eff = eff.size,
                     conf = eff.conf))
         
+    } else if (var.cond == "ann.flux") {
+        #### Analyse the variable model
+        ###------ Treatment interacting with date, or not
+        ###------ Ring random factor
+        
+        ## Get year list and ring list
+        yr.list <- unique(inDF$Yr)
+        tDF <- summaryBy(Value~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
+        tDF$Yrf <- as.factor(tDF$Yr)
+        
+        ### Loop through data, return annual flux in g m-2 yr-1
+        for (i in 1:6) {
+            for (j in yr.list) {
+                ### summed of all available data within a year
+                tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- inDF$Value[inDF$Ring == i & inDF$Yr == j]
+            }
+        }
+        
+        tDF$log_value <- log(tDF$Value)
+        tDF$log_value[is.infinite(tDF$log_value)] <- 0
+        
+        ### Analyse the variable model
+        modelt <- lmer(log_value~Trt*Yrf + (1|Ring),data=tDF)
+        
+        ### interactive model
+        int.m <- "interative"
+        
+        ### anova
+        m.anova <- Anova(modelt, test="F")
+        
+        ### Check ele - amb diff
+        summ <- summary(glht(modelt, linfct = mcp(Trt = "Tukey")))
+        
+        ### average effect size
+        eff.size <- exp(coef(modelt)[[1]][1,2])
+        
+        ### confidence interval 
+        eff.conf <- exp(confint(modelt,"Trtele"))
+        
+        ### all fluxes should consider date as a factor
+        return(list(int.state=int.m,
+                    mod = modelt, 
+                    anova = m.anova,
+                    diff = summ,
+                    eff = eff.size,
+                    conf = eff.conf))
+        
     } else if (var.cond == "pool") {
         #### Analyse the variable model
         ###------ Treatment interacting with date, or not

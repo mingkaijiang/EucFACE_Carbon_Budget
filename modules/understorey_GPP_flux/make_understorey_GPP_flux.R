@@ -15,6 +15,7 @@ make_understorey_GPP_flux <- function() {
     outDF <- summaryBy(GPP~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
     
     outDF$GPP <- outDF$GPP * 0.4
+    outDF$Date <- as.Date(paste0(outDF$year, "-01-01"), format = "%Y-%m-%d")
     
     return(outDF)
 }

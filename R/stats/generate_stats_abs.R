@@ -102,11 +102,18 @@ generate_stats_abs <- function(stat.model) {
                                               date.as.factor=T)
     
     ### Overstorey GPP
-    
+    s.o.gpp <- treatment_effect_abs_statistics(inDF=overstorey_gpp_flux, 
+                                              var.cond="ann.flux", var.col=3,
+                                              date.as.factor=T)
     
     ### Understorey GPP
-    
+    s.u.gpp <- treatment_effect_abs_statistics(inDF=understorey_gpp_flux, 
+                                               var.cond="ann.flux", var.col=3,
+                                               date.as.factor=T)
     ### Overstorey Leaf respiration
+    s.rleaf <- treatment_effect_abs_statistics(inDF=overstorey_leaf_respiration_flux, 
+                                               var.cond="ann.flux", var.col=3,
+                                               date.as.factor=T)
     
     ### Root respiration
     s.rwood <- treatment_effect_abs_statistics(inDF=wood_respiration_flux, 
@@ -207,7 +214,6 @@ generate_stats_abs <- function(stat.model) {
     var.list <- c("lai", "sla","soil_c","leaf_c","wood_c","fineroot_c",
                   "coarseroot_c","understorey_c","understorey_c_2","understorey_c_live","understorey_c_dead",
                   "microbial_c","mycorrhizal_c","litter_c","insect_c","cwd_c",
-                  "wood_respiration",
                   "root_respiration","understorey_respiration",
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
                   "soil_respiration","doc","ch4","leaf_prod","twig_prod",
@@ -285,6 +291,9 @@ generate_stats_abs <- function(stat.model) {
     out[out$Variable=="coarseroot_prod",2:17] <- assign_stats(s.var=s.croot.prod)
     out[out$Variable=="understorey_prod",2:17] <- assign_stats(s.var=s.und.prod)
     out[out$Variable=="hetero_respiration",2:17] <- assign_stats(s.var=s.rh)
+    out[out$Variable=="over_gpp",2:17] <- assign_stats(s.var=s.o.gpp)
+    out[out$Variable=="over_leaf_respiration",2:17] <- assign_stats(s.var=s.rleaf)
+    out[out$Variable=="understorey_gpp",2:17] <- assign_stats(s.var=s.u.gpp)
 
     
     if (stat.model == "dynamic") {

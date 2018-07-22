@@ -17,5 +17,7 @@ make_overstorey_gpp_flux <- function() {
     # Only use data period 2012-2016
     outDF <- outDF[outDF$year<="2016",]
     
+    outDF$Date <- as.Date(paste0(outDF$year, "-01-01"), format = "%Y-%m-%d")
+    
     return(outDF)
 }

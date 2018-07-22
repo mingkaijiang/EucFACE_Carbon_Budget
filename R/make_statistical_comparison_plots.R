@@ -19,12 +19,12 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[wood]),
-                expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
-                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]))
+                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]),
+                expression(GPP[o]), expression(R[leaf]), expression(R[wood]), expression(GPP[u]))
     
     #### Plotting
     p1 <- ggplot(myDF)+ 
@@ -76,12 +76,12 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[wood]),
-                expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
-                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]))
+                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]),
+                expression(GPP[o]), expression(R[leaf]), expression(R[wood]), expression(GPP[u]))
     
     #### Plotting
     p2 <- ggplot(myDF)+ 
@@ -139,12 +139,12 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[leaf]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[wood]),
-                expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
-                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]))
+                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]),
+                expression(GPP[o]), expression(R[leaf]), expression(R[wood]), expression(GPP[u]))
     
     #### Plotting
     p3 <- ggplot(myDF)+ 
@@ -198,12 +198,12 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[leaf]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[wood]),
-                expression(R[root]),
+                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
-                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]))
+                expression(NPP[froot]),expression(NPP[croot]),expression(NPP[ua]),expression(R[rh]),
+                expression(GPP[o]), expression(R[leaf]), expression(R[wood]), expression(GPP[u]))
     
     #### Plotting
     p4 <- ggplot(myDF)+ 
@@ -259,14 +259,17 @@ make_statistical_comparison_plots <- function() {
     #### exclude all pools
     myDF$Category <- c(rep("other", 2), # 1 - 2
                        rep("pool", 14), # 3 - 16
-                       rep("resp", 3), # 17 - 19
-                       rep("prod", 1), # 20 
-                       rep("resp", 2), # 21 - 22
-                       rep("prod", 1), # 23
-                       rep("resp", 2), # 24 - 25
-                       rep("prod", 9), # 26 - 34
-                       rep("resp", 1), # 35
-                       rep("change_in_pool", 14))   # 36 - 47
+                       rep("resp", 2), # 17 - 18
+                       rep("prod", 1), # 19
+                       rep("resp", 2), # 20 - 21
+                       rep("prod", 1), # 22
+                       rep("resp", 2), # 23 - 24
+                       rep("prod", 9), # 25 - 33
+                       rep("resp", 1), # 34
+                       rep("gpp", 1),  # 35
+                       rep("resp", 2), # 36 - 37
+                       rep("gpp", 1),  # 38
+                       rep("change_in_pool", 14))   # 39 - 52
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
@@ -277,6 +280,7 @@ make_statistical_comparison_plots <- function() {
     plotDF1 <- subset(myDF, Category == "change_in_pool")
     plotDF2 <- subset(myDF, Category == "resp")
     plotDF3 <- subset(myDF, Category == "prod")
+    plotDF4 <- subset(myDF, Category == "gpp")
     
     ### transform the data so that we could have break point on x axis
     #Function to transform data to y positions
@@ -307,6 +311,12 @@ make_statistical_comparison_plots <- function() {
         plotDF3$effect_size_t[i] <- trans(plotDF3$effect_size[i])
         plotDF3$conf_low_t[i] <- trans(plotDF3$conf_low[i])
         plotDF3$conf_high_t[i] <- trans(plotDF3$conf_high[i])
+    }  
+    
+    for (i in 1:length(plotDF4$Variable)) {
+        plotDF4$effect_size_t[i] <- trans(plotDF4$effect_size[i])
+        plotDF4$conf_low_t[i] <- trans(plotDF4$conf_low[i])
+        plotDF4$conf_high_t[i] <- trans(plotDF4$conf_high[i])
     }  
     
     for (i in 1:length(xticks)) {
@@ -347,7 +357,32 @@ make_statistical_comparison_plots <- function() {
                 "understorey_prod"=expression(NPP[ua]),
                 "ch4"=expression(U[CH[4]]))
     
+    y.lab4 <- c("over_gpp"=expression(GPP[o]),
+                "understorey_gpp"=expression(GPP[u]))
+    
     #### Plotting
+    p8 <- ggplot(plotDF4)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color="red")+
+        labs(x="eC minus aC", y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none")+
+        geom_vline(xintercept = 0.0)+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
+        scale_y_discrete(labels=y.lab4)
+    
+    
     p5 <- ggplot(plotDF1)+ 
         geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
                          yend=reorder(Variable, effect_size_t), xend=conf_high_t), 

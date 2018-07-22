@@ -3,6 +3,7 @@ treatment_effect_abs_statistics <- function(inDF, var.cond, var.col, date.as.fac
     #### compare treatment effect of inDF variable
     #### var.cond: == flux 
     ####           == pool
+    ####           == ann.flux - annual flux
     #### var.col: which variable column to extract data points
     #### Compute confidence interval of the absolute values
     #### For fluxes, time should always be a factor
@@ -66,6 +67,54 @@ treatment_effect_abs_statistics <- function(inDF, var.cond, var.col, date.as.fac
         ### Analyse the variable model
         modelt <- lmer(Value~Trt*Yrf + (1|Ring),data=tDF)
   
+        ### interactive model
+        int.m <- "interative"
+        
+        ### anova
+        m.anova <- Anova(modelt, test="F")
+        
+        ### Check ele - amb diff
+        summ <- summary(glht(modelt, linfct = mcp(Trt = "Tukey")))
+        
+        ### average effect size
+        eff.size <- coef(modelt)[[1]][1,2]
+        
+        ### confidence interval 
+        ### if reporting confidence interval for annual,
+        ### need to actually calculate annual fluxes!!!
+        ### Also, confidence interval is too large. It doesn't mean anything now!
+        eff.conf <- confint(modelt,"Trtele")
+        
+        ### all fluxes should consider date as a factor
+        return(list(int.state=int.m,
+                    mod = modelt, 
+                    anova = m.anova,
+                    diff = summ,
+                    eff = eff.size,
+                    conf = eff.conf))
+        
+    } else if (var.cond == "ann.flux") {
+        #### dataframe with annual totals in g m-2 yr-1
+        ###------ Treatment interacting with date, or not
+        ###------ Ring random factor
+        ###------ Unit g m-2 yr-1
+        
+        ## Get year list and ring list
+        yr.list <- unique(inDF$Yr)
+        tDF <- summaryBy(Value~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
+        tDF$Yrf <- as.factor(tDF$Yr)
+        
+        ### Loop through data, return annual flux in g m-2 yr-1
+        for (i in 1:6) {
+            for (j in yr.list) {
+                ### summed of all available data within a year
+                tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- inDF$Value[inDF$Ring == i & inDF$Yr == j]
+            }
+        }
+        
+        ### Analyse the variable model
+        modelt <- lmer(Value~Trt*Yrf + (1|Ring),data=tDF)
+        
         ### interactive model
         int.m <- "interative"
         
