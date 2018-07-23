@@ -193,6 +193,8 @@ heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respi
 #### Overstorey GPP 
 overstorey_gpp_flux <- make_overstorey_gpp_flux()
 
+# overstorey_gpp_flux <- make_gpp_over_lai(gppDF=overstorey_gpp_flux, laiDF=lai_variable)
+
 ### Overstorey foliage respiration
 overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 

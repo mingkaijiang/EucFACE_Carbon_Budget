@@ -343,7 +343,8 @@ make_statistical_comparison_plots <- function() {
                 "herb_respiration"=expression(R[hb]),
                 "soil_respiration"=expression(R[soil]),
                 "doc"=expression(L[doc]),
-                "hetero_respiration"=expression(R[rh]))
+                "hetero_respiration"=expression(R[rh]),
+                "over_leaf_respiration"=expression(R[leaf]))
     
     y.lab3 <- c("frass_prod"=expression(P[frass]),
                 "lerp_prod"=expression(P[lerp]),
@@ -456,20 +457,27 @@ make_statistical_comparison_plots <- function() {
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
         scale_y_discrete(labels=y.lab2)
     
-    grid.labs <- c("(a)", "(b)", "(c)")
+    #grid.labs <- c("(a)", "(b)", "(c)")
     
-    require(grid)
+    #require(grid)
     
     ## plot 
-    pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool.pdf", width=8, height=10)
-    grid.newpage()
-    grid.draw(rbind(ggplotGrob(p5), ggplotGrob(p6), 
-                    ggplotGrob(p7), size="last"))
-    grid.text(grid.labs,x = 0.95, y = c(0.95, 0.63, 0.32),
-              gp=gpar(fontsize=16, col="black", fontface="bold"))
+    #pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool.pdf", width=8, height=10)
+    #grid.newpage()
+    #grid.draw(rbind(ggplotGrob(p8), ggplotGrob(p5), ggplotGrob(p6), 
+    #                ggplotGrob(p7), size="last"))
+    #grid.text(grid.labs,x = 0.95, y = c(0.95, 0.63, 0.32),
+    #          gp=gpar(fontsize=16, col="black", fontface="bold"))
+    #dev.off()
+
+    pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool.pdf", width=8, height=12)
+    require(cowplot)    
+    plot_grid(p8, p5, 
+              p6, p7, 
+              labels="auto", ncol=1, align="v", axis = "l",
+              rel_heights=c(0.3,1,1,1))
     dev.off()
     
     
     
-    
-}
+ }
