@@ -32,11 +32,11 @@ make_gpp_lai_over_ba <- function(laiDF, gppDF) {
     pdf("R_other/BA_vs_GPP_and_LAI.pdf")
     ggplot(baDF, aes(x=ba_ground_area, y=GPP)) + 
         geom_smooth(method="lm") +
-        geom_point(data=baDF, aes(ba_ground_area, GPP,color=as.factor(baDF$Trt)))
+        geom_point(data=baDF, aes(ba_ground_area, GPP,color=as.factor(baDF$Ring)))
     
     ggplot(baDF, aes(x=ba_ground_area, y=LAI)) + 
         geom_smooth(method="lm") +
-        geom_point(data=baDF, aes(ba_ground_area, LAI, color=as.factor(baDF$Trt)))
+        geom_point(data=baDF, aes(ba_ground_area, LAI, color=as.factor(baDF$Ring)))
     dev.off()
     return(outDF)
 }

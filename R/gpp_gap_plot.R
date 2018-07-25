@@ -33,8 +33,8 @@ gpp_gap_plot <- function(inDF) {
     plotDF$aCO2_sd <- plotDF$aCO2_sd/1000
     
     ### Mannually fill stem respiration
-    plotDF$aCO2[plotDF$term=="Ra stem"] <- 0.0
-    plotDF$aCO2_sd[plotDF$term=="Ra stem"] <- 0.0
+    #plotDF$aCO2[plotDF$term=="Ra stem"] <- 0.0
+    #plotDF$aCO2_sd[plotDF$term=="Ra stem"] <- 0.0
     
     ### calculate missing C
     gpp <- sum(gppDF$aCO2, na.rm=T)
@@ -174,8 +174,8 @@ gpp_gap_plot <- function(inDF) {
     plotDF$eCO2_sd <- plotDF$eCO2_sd/1000
     
     ### Mannually fill stem respiration
-    plotDF$eCO2[plotDF$term=="Ra stem"] <- 0.0
-    plotDF$eCO2_sd[plotDF$term=="Ra stem"] <- 0.0
+    #plotDF$eCO2[plotDF$term=="Ra stem"] <- 0.0
+    #plotDF$eCO2_sd[plotDF$term=="Ra stem"] <- 0.0
     
     
     ### prepare error bar ranges

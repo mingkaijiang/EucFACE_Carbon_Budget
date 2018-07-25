@@ -1,8 +1,7 @@
-make_wood_respiration_flux <- function(wood.pool) {
+make_wood_respiration_flux <- function() {
     ### "main" module function for wood respiration. 
-    ### Needs temperature, sapwood mass, and branch wood mass as inputs
-    ### right now we don't have branch wood biomass so ignores this
-    
+    ### Needs temperature, and wood surface
+
     ### download the data
     download_wood_respiration()
     
@@ -27,32 +26,28 @@ make_wood_respiration_flux <- function(wood.pool) {
     hDF <- hDF[hDF$Date <= "2016-12-31",]
     hDF <- hDF[hDF$Date >= "2012-08-01",]
     
-    ####### read in the stem respiration data, calculate mean rate of ambient data. 
-    Rstem.dat <- read.csv("download/WTC_TEMP_CM_WTCFLUX-STEM_20140528_L1_v1.csv")
-    Rstem <- mean(Rstem.dat[which(Rstem.dat$T_treatment=="ambient"),"R_stem_nmol"]) # units are nmol CO2 g-1 s-1 at 15 deg C
-    
-    ###### One wood pool per year
-    wood.pool$yr <- year(wood.pool$Date)
-    
-    ### obtain sapwood c to calcualte sapwood DM
-    sap.c <- make_sapwood_c_n_fraction()
-    wood.pool$sap.c.frac[wood.pool$Ring%in%c(2,3,6)] <- sap.c$aCO2[sap.c$variable=="C"]
-    wood.pool$sap.c.frac[wood.pool$Ring%in%c(1,4,5)] <- sap.c$eCO2[sap.c$variable=="C"]
-    wood.pool$sap.dm <- wood.pool$sap_pool / wood.pool$sap.c.frac
-    
-    ### assign sapwood DM to hourly Tair data
-    hDF$yr <- year(hDF$DateHour)
-    for (i in unique(wood.pool$yr)) {
-        for (j in 1:6) {
-            hDF$Sap.DM[hDF$yr==i & hDF$Ring==j] <- wood.pool$sap.dm[wood.pool$yr==i & wood.pool$Ring==j]
-        }
+    ### Add stem area data
+    for (i in 1:6) {
+        hDF$SA[hDF$Ring==i] <- sfcDF$wood_surface_area[sfcDF$Ring==i]
     }
     
-    ### Calculate respiration rate (nmol CO2 m-2 h-1)
-    hDF$Resp <- Rstem * Rbase^((hDF$AirTC_1_Avg - 15)/10) * hDF$Sap.DM * 3600
+    ### Add DOY and Year information
+    hDF$Yr <- year(hDF$DateHour)
+    hDF$DOY <- yday(hDF$DateHour)
     
-    ### Convert unit from nmol CO2 m-2 h-1 to mg C m-2 h-1
-    hDF$Resp_mg <- hDF$Resp * 1e-9 * 12.01 * 1000
+    ####### read in the stem respiration data, unit in umol CO2 m-2 of wood area s-1
+    ### Dec to mid feb: Ea = 0.0736 * exp(0.1336 * Tstem)
+    ### Mid Feb to Nov: Ea = 0.6055 * exp(0.0416 * Tstem)
+    hDF$a[hDF$DOY>=46 & hDF$DOY <= 305] <- 0.6055
+    hDF$b[hDF$DOY>=46 & hDF$DOY <= 305] <- 0.0416
+    hDF$a[hDF$DOY<46 | hDF$DOY > 305] <- 0.0736
+    hDF$b[hDF$DOY<46 | hDF$DOY > 305] <- 0.1336
+    
+    ### Calculate respiration rate (umol CO2 m-2 h-1)
+    hDF$Resp <- hDF$a * exp(hDF$b * hDF$AirTC_1_Avg) * hDF$SA * 3600
+    
+    ### Convert unit from umol CO2 m-2 h-1 to mg C m-2 h-1
+    hDF$Resp_mg <- hDF$Resp * 1e-6 * 12.01 * 1000
     
     ### daily sums of stem respiration
     hDF$Date <- strptime(hDF$DateHour, format="%Y-%m-%d")
@@ -64,6 +59,44 @@ make_wood_respiration_flux <- function(wood.pool) {
     dDF$ndays <- 1
     
     out <- dDF[,c("Date", "Start_date", "End_date", "Ring", "wood_respiration", "ndays")]
+    
+    #out$Yr <- year(out$Date)
+    #test <- summaryBy(wood_respiration~Yr+Ring, data=out, FUN=sum, keep.names=T, na.rm=T)
+    #test <- test[test$Yr>2012,]
+    #test$wood_respiration <- test$wood_respiration/1000
+    #test$Treatment[test$Ring%in%c(2,3,6)] <- "aCO2"
+    #test$Treatment[test$Ring%in%c(1,4,5)] <- "eCO2"
+    #
+    #p3 <- ggplot(test, aes(x=as.character(Ring),y=wood_respiration, fill=as.factor(Treatment)))+
+    #    geom_bar(stat="identity")+facet_grid(~Yr)+
+    #    labs(x="Ring", y=expression(paste(R[wood], " (g C ", m^-2, yr^-1, ")")))+
+    #    theme_linedraw() +
+    #    theme(panel.grid.minor=element_blank(),
+    #          axis.title.x = element_text(size=14), 
+    #          axis.text.x = element_text(size=12),
+    #          axis.text.y=element_text(size=12),
+    #          axis.title.y=element_text(size=14),
+    #          legend.text=element_text(size=12),
+    #          legend.title=element_text(size=14),
+    #          panel.grid.major=element_line(color="grey"),
+    #          legend.position="right")+
+    #    scale_y_continuous(position="left")+
+    #    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+    #                      labels=c(expression(aCO[2]), expression(eCO[2])))
+    #
+    #plot(p3)
+    #
+    #test2 <- summaryBy(wood_respiration~Yr, FUN=mean, data=test, keep.names=T)
+    #
+    #
+    #with(dDF[dDF$Ring==1,], plot(wood_respiration~Date, 
+    #                             xlim=c(as.Date("2013-02-01"), as.Date("2013-02-28"))))
+    #abline(v=as.Date("2013-02-15"))
+    #
+    #with(dDF[dDF$Ring==1,], plot(wood_respiration~Date, 
+    #                             xlim=c(as.Date("2013-11-01"), as.Date("2013-12-31"))))
+    #abline(v=as.Date("2013-12-01"))
+    
     
     return(out)
     

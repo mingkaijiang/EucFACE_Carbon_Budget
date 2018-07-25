@@ -132,7 +132,7 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
                                                   c_frac=c_fraction)
 
 ### Wood respiration flux
-wood_respiration_flux <- make_wood_respiration_flux(wood.pool=wood_c_pool)
+wood_respiration_flux <- make_wood_respiration_flux()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 
 ### understorey SLA
@@ -269,7 +269,7 @@ understorey_production_check()
 #dev.off()
 
 ### Water logging effect in 2015
-water_logging_2015(fr.pool=fineroot_c_pool, soil_respiration_flux)
+#water_logging_2015(fr.pool=fineroot_c_pool, soil_respiration_flux)
 
 ###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction
