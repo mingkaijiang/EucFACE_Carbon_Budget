@@ -288,6 +288,11 @@ generate_stats_abs_change_in_pools(stat.model="no_interaction")
 source("R/make_statistical_comparison_plots.R")
 make_statistical_comparison_plots()
 
+source("R/make_eCO2_effect_on_GPP_plot.R")
+make_eCO2_effect_on_GPP_plot()
+
+source("R/make_eCO2_effect_on_GPP_plot2.R")
+make_eCO2_effect_on_GPP_plot2()
 
 ### Power analysis
 

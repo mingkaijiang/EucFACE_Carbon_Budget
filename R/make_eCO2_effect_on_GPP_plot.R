@@ -1,5 +1,5 @@
 make_eCO2_effect_on_GPP_plot <- function() {
-    ######### 5. Plot abs, no interactions, and change in pools
+    ######### Plot abs, no interactions, and change in pools
     ### read in the csv file to plot the treatment effect and confidence interval
     myDF1 <- read.csv("R_other/treatment_statistics_abs_no_interaction.csv")
     myDF2 <- read.csv("R_other/treatment_statistics_abs_change_in_pool_no_interaction.csv")
@@ -108,7 +108,7 @@ make_eCO2_effect_on_GPP_plot <- function() {
                  position="stack") +
         #geom_segment(data=plotDF1, aes(x=cat, xend=cat, y=conf_low, yend=conf_high), 
         #             colour="grey")+
-        xlab("Method") + ylab(expression(paste(CO[2], " Treatment effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        xlab("Method") + ylab("") +
         scale_x_discrete(labels=c("Influxes", "Others"))+
         scale_fill_manual(name="", 
                           breaks = plotDF1$Variable,
@@ -127,9 +127,6 @@ make_eCO2_effect_on_GPP_plot <- function() {
               legend.position="bottom",
               legend.text.align=0)
     
-
-    #plot(p1)
-    
     ### Plot DF 2, look at the sum of these fluxes and pools
     plotDF2 <- summaryBy(effect_size+conf_low+conf_high~plot.cat, data=plotDF1, FUN=sum, keep.names=T, na.rm=T)
     
@@ -147,12 +144,12 @@ make_eCO2_effect_on_GPP_plot <- function() {
     plotDF2$plot.order <- c(2,1,2,2)
     
     
-    #### Plotting
+    ## Plotting
     p2 <- ggplot(plotDF2,
                  aes(reorder(plot.cat, plot.order), effect_size)) +   
         geom_bar(stat = "identity", aes(fill=Category),
                  position="stack") +
-        xlab("Method")+ ylab("") +
+        xlab("Method")+ ylab(expression(paste(CO[2], " treatment effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("Influxes", "Others"))+
         scale_fill_manual(name="", 
                           values = col.list2,
@@ -171,14 +168,120 @@ make_eCO2_effect_on_GPP_plot <- function() {
               legend.text.align=0)
     
     
-    #plot(p2)
+    ### Plot changes in plant pool
+    plotDF3 <- subset(myDF, Variable %in% c("leaf_prod", "twig_prod", "bark_prod",
+                                            "seed_prod", "wood_prod", "fineroot_prod",
+                                            "coarseroot_prod", "understorey_prod", "herb_consump",
+                                            "over_leaf_respiration", "wood_respiration", "root_respiration",
+                                            "understorey_respiration", 
+                                            "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", 
+                                            "delta_coarseroot_c", "delta_understorey_c"))
+    plotDF3$plot.cat[plotDF3$Category=="change_in_pool"] <- "Change_in_pools"
+    plotDF3$plot.cat[plotDF3$Category=="resp"] <- "Respirations"
+    plotDF3$plot.cat[plotDF3$Category=="prod"] <- "NPP"
+
+    tmpDF <- subset(myDF, Variable %in% c("leaf_prod", "twig_prod", "bark_prod",
+                                          "seed_prod", "fineroot_prod",
+                                          "understorey_prod"))
+    tmpDF$plot.cat[tmpDF$Category=="prod"] <- "Litterfalls"
+    
+    plotDF3 <- rbind(plotDF3, tmpDF)
+    
+    ### Summarize
+    plotDF4 <- summaryBy(effect_size+conf_low+conf_high~plot.cat, FUN=sum, data=plotDF3, keep.names=T, na.rm=T)
+    
+    names(plotDF4)[1] <- "Category"
+    plotDF4$plot.cat <- c("Delta", "Other", "Other", "Other")
+    
+    ### Set y labs
+    y.lab3 <- c("Change_in_pools"=expression(Delta*C[plant]),
+                "Litterfalls"="Litterfalls",
+                "NPP"="NPP",
+                "Respirations"="respirations")
+    
+    col.list3 <- hsv(seq(0,1 - 1/4,length.out = 4),0.8,1)
+    
+    plotDF4$plot.order <- c(1,2,2,2)
+    
+    ## Plotting
+    p3 <- ggplot(plotDF4,
+                 aes(reorder(plot.cat, plot.order), effect_size)) +   
+        geom_bar(stat = "identity", aes(fill=Category),
+                 position="stack") +
+        xlab("Method")+ ylab(expression(paste(CO[2], " treatment effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c(expression(Delta*C[plant]), "In & Out"))+
+        scale_fill_manual(name="", 
+                          values = col.list3,
+                          labels=y.lab3) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="bottom",
+              legend.text.align=0)
+    
+    
+    ##### Plot changes in soil + litter pools
+    plotDF5 <- subset(myDF, Variable %in% c("leaf_prod", "twig_prod", "bark_prod",
+                                            "seed_prod", "fineroot_prod",
+                                            "understorey_prod", "delta_soil_c", "delta_litter_c",
+                                            "hetero_respiration", "doc", "ch4"))
+    
+    plotDF5$plot.cat[plotDF5$Category=="change_in_pool"] <- "Change_in_pools"
+    plotDF5$plot.cat[plotDF5$Category=="resp"] <- "Outfluxes"
+    plotDF5$plot.cat[plotDF5$Category=="prod"] <- "Influxes"
+    plotDF5$plot.cat[plotDF5$Variable=="ch4"] <- "Influxes"
+    plotDF5$plot.cat[plotDF5$Variable=="doc"] <- "Outfluxes"
+    
+    ### Summarize
+    plotDF6 <- summaryBy(effect_size+conf_low+conf_high~plot.cat, FUN=sum, data=plotDF5, keep.names=T, na.rm=T)
+    
+    names(plotDF6)[1] <- "Category"
+    plotDF6$plot.cat <- c("Delta", "Other", "Other")
+    
+    ### Set y labs
+    y.lab4 <- c("Change_in_pools"=expression(Delta*C[soil]),
+                "Influxes"="Influxes",
+                "Outfluxes"="Outfluxes")
+    
+    col.list4 <- hsv(seq(0,1 - 1/3,length.out = 3),0.8,1)
+    
+    plotDF6$plot.order <- c(1,2,2)
+    
+    ## Plotting
+    p4 <- ggplot(plotDF6,
+                 aes(reorder(plot.cat, plot.order), effect_size)) +   
+        geom_bar(stat = "identity", aes(fill=Category),
+                 position="stack") +
+        xlab("Method")+ ylab("") +
+        scale_x_discrete(labels=c(expression(Delta*C[soil]), "In & Out"))+
+        scale_fill_manual(name="", 
+                          values = col.list4,
+                          labels=y.lab4) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="bottom",
+              legend.text.align=0)
+    
     
     ### Plotting
-    pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools.pdf", width=12, height=6)
+    pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools.pdf", width=12, height=12)
     require(cowplot)    
-    plot_grid(p2, p1, 
+    plot_grid(p2, p1, p3, p4,
               labels="auto", ncol=2, align="h", axis = "l",
-              rel_widths=c(0.7,0.7))
+              rel_widths=c(0.7,0.7, 0.7, 0.7))
     dev.off()
     
     

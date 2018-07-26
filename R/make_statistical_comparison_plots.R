@@ -323,18 +323,18 @@ make_statistical_comparison_plots <- function() {
         xticks.brk[i] <- trans(xticks[i])
     }
     
-    y.lab1 <- c("delta_soil_c"=expression(delta*C[soil]),
-                "delta_leaf_c"=expression(delta*C[leaf]),
-                "delta_wood_c"=expression(delta*C[wood]),
-                "delta_fineroot_c"=expression(delta*C[froot]),
-                "delta_coarseroot_c"=expression(delta*C[croot]),
-                "delta_understorey_c"=expression(delta*C[ua]),
-                "delta_understorey_c_live"=expression(delta*C[ua_live]),
-                "delta_understorey_c_dead"=expression(delta*C[ua_dead]),
-                "delta_microbial_c"=expression(delta*C[micr]),
-                "delta_mycorrhizal_c"=expression(delta*C[myco]),
-                "delta_litter_c"=expression(delta*C[lit]),
-                "delta_insect_c"=expression(delta*C[ins]))
+    y.lab1 <- c("delta_soil_c"=expression(Delta*C[soil]),
+                "delta_leaf_c"=expression(Delta*C[leaf]),
+                "delta_wood_c"=expression(Delta*C[wood]),
+                "delta_fineroot_c"=expression(Delta*C[froot]),
+                "delta_coarseroot_c"=expression(Delta*C[croot]),
+                "delta_understorey_c"=expression(Delta*C[ua]),
+                "delta_understorey_c_live"=expression(Delta*C[ua_live]),
+                "delta_understorey_c_dead"=expression(Delta*C[ua_dead]),
+                "delta_microbial_c"=expression(Delta*C[micr]),
+                "delta_mycorrhizal_c"=expression(Delta*C[myco]),
+                "delta_litter_c"=expression(Delta*C[lit]),
+                "delta_insect_c"=expression(Delta*C[ins]))
     
     y.lab2 <- c("wood_respiration"=expression(R[wood]),
                 "root_respiration"=expression(R[root]),
