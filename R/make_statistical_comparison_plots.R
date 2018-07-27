@@ -273,7 +273,7 @@ make_statistical_comparison_plots <- function() {
                        rep("gpp", 1),  # 35
                        rep("resp", 2), # 36 - 37
                        rep("gpp", 1),  # 38
-                       rep("change_in_pool", 14))   # 39 - 52
+                       rep("change_in_pool", 13))   # 39 - 52
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
