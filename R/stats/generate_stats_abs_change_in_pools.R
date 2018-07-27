@@ -40,7 +40,7 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     delta_myc_c <- make_change_in_pool(mypool=mycorrhizal_c_pool, var.col=3)
     delta_lit_c <- make_change_in_pool(mypool=leaflitter_pool, var.col=6)
     delta_ins_c <- make_change_in_pool(mypool=insect_pool, var.col=3)
-    delta_sd_c <- make_change_in_pool(mypool=standing_dead_c_pool, var.col=3)
+    #delta_sd_c <- make_change_in_pool(mypool=standing_dead_c_pool, var.col=3)
     
     
     #### Work on each variable per time
@@ -88,8 +88,8 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
                                               var.col=7, date.as.factor=T)
     
     ### Standing dead C pool
-    s.sdc <- treatment_effect_abs_statistics(inDF=delta_sd_c, 
-                                              var.col=7, date.as.factor=T)
+    #s.sdc <- treatment_effect_abs_statistics(inDF=delta_sd_c, 
+    #                                          var.col=7, date.as.factor=T)
     
     ### leaf litter C pool
     s.litc <- treatment_effect_abs_statistics(inDF=delta_lit_c, 
@@ -153,7 +153,7 @@ generate_stats_abs_change_in_pools <- function(stat.model) {
     out[out$Variable=="delta_mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
     out[out$Variable=="delta_litter_c",2:17] <- assign_stats(s.var=s.litc)
     out[out$Variable=="delta_insect_c",2:17] <- assign_stats(s.var=s.insc)
-    out[out$Variable=="delta_cwd_c",2:17] <- assign_stats(s.var=s.sdc)
+    #out[out$Variable=="delta_cwd_c",2:17] <- assign_stats(s.var=s.sdc)
     
     
     if (stat.model == "dynamic") {

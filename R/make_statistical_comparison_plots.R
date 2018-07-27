@@ -19,7 +19,8 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),#expression(C[cwd]),
+                expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -76,7 +77,8 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[soil]), expression(C[leaf]), expression(C[wood]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),#expression(C[cwd]),
+                expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -139,7 +141,8 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[leaf]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),#expression(C[cwd]),
+                expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -198,7 +201,8 @@ make_statistical_comparison_plots <- function() {
     x.labs <- c("LAI", "SLA", expression(C[leaf]),
                 expression(C[froot]),expression(C[croot]),expression(C[ua]),expression(C[ua2]),
                 expression(C[ua_live]),expression(C[ua_dead]),expression(C[micr]),expression(C[myco]),
-                expression(C[lit]),expression(C[ins]),expression(C[cwd]),expression(R[root]),
+                expression(C[lit]),expression(C[ins]),#expression(C[cwd]),
+                expression(R[root]),
                 expression(R[ua]),expression(L[frass]),expression(NPP[hb]),expression(R[hb]),
                 expression(NPP[lerp]),expression(R[soil]),expression(L[doc]),expression(NPP[leaf]),
                 expression(NPP[twig]),expression(NPP[bark]),expression(NPP[seed]),expression(NPP[wood]),
@@ -480,4 +484,4 @@ make_statistical_comparison_plots <- function() {
     
     
     
- }
+}
