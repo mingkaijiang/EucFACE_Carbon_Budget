@@ -62,6 +62,17 @@ make_wood_pool <- function(ring_area, c_frac_ht){
                as.Date("2016-12-21"))
     data <- long[long$Date %in% dates,]
     
+    #dates <- data.frame(c(2012:2016), NA)
+    #colnames(dates) <- c("yr", "date")
+    #long$yr <- year(long$Date)
+    #for (i in 2012:2016) {
+    #    test <- long[long$Ring==1 & long$yr == i, ]
+    #    r.n <- which.max(test$biom)
+    #    dates$date[dates$yr==i] <- test[r.n, "Date"]
+    #}
+    #
+    #data <- long[long$Date %in% dates$date,]
+    
     ### Update unit, gram
     data$biom_g <- data$biom * 1000
     

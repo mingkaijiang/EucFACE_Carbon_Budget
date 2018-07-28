@@ -790,18 +790,18 @@ The second way using WTC has some issues.The basal respiration rate is comparabl
 
 ``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"}
 
-    wood_respiration_flux <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
-
-    ### make the plot
-    p <- ggplot(wood_respiration_flux,
-                aes(Date, wood_respiration, color=factor(Ring))) +   
-            geom_point(size = 1) + geom_line() + 
-            xlab("Date") + ylab("Wood respiration flux (mg m-2 d-1)") + 
-            scale_color_manual(values=ring_colours, name="Ring")
-    
-    if (plot_option) {
-            plot(p)
-    }
+    #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
+#
+    #### make the plot
+    #p <- ggplot(wood_respiration_flux2,
+    #            aes(Date, wood_respiration, color=factor(Ring))) +   
+    #        geom_point(size = 1) + geom_line() + 
+    #        xlab("Date") + ylab("Wood respiration flux (mg m-2 d-1)") + 
+    #        scale_color_manual(values=ring_colours, name="Ring")
+    #
+    #if (plot_option) {
+    #        plot(p)
+    #}
 ```
 
 
