@@ -1,4 +1,4 @@
-make_lai_over_ba <- function(laiDF) {
+make_lai_over_ba <- function(laiDF, gppDF) {
 
     ### Read initial basal area data
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
@@ -20,7 +20,7 @@ make_lai_over_ba <- function(laiDF) {
     }
     
     ### Standardize
-    laiDF$lai.ba <- laiDF$lai_variable/gppDF$BA
+    laiDF$lai.ba <- laiDF$lai_variable/laiDF$BA
     
     outDF <- laiDF[,c("Yr", "Ring", "lai.ba", "Date")]
     colnames(outDF) <- c("year", "Ring", "LAI", "Date")
@@ -38,7 +38,51 @@ make_lai_over_ba <- function(laiDF) {
     
     
     ### LAI vs. BA
-    ggplot(laiDF, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")
+    t1 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=laiDF, keep.names=T, na.rm=T)
+    p1 <- ggplot(laiDF, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
+        geom_point(data=t1, aes(BA, lai_variable,color=as.factor(t1$Ring)))+
+        ylab("LAI (2012-2016)")
+    
+    ## 2013
+    lai2013 <- subset(laiDF, Yr==2013)
+    t2 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2013, keep.names=T, na.rm=T)
+    p2 <- ggplot(lai2013, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
+        geom_point(data=t2, aes(BA, lai_variable,color=as.factor(t2$Ring)))+
+        ylab("LAI (2013)")
+    
+    ## 2014
+    lai2014 <- subset(laiDF, Yr==2014)
+    t3 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2014, keep.names=T, na.rm=T)
+    p3 <- ggplot(lai2014, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
+        geom_point(data=t3, aes(BA, lai_variable,color=as.factor(t3$Ring)))+
+        ylab("LAI (2014)")
+    
+    ## 2015
+    lai2015 <- subset(laiDF, Yr==2015)
+    t4 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2015, keep.names=T, na.rm=T)
+    p4 <- ggplot(lai2015, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
+        geom_point(data=t4, aes(BA, lai_variable,color=as.factor(t4$Ring)))+
+        ylab("LAI (2015)")
+    
+    ## 2016
+    lai2016 <- subset(laiDF, Yr==2016)
+    t5 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2016, keep.names=T, na.rm=T)
+    p5 <- ggplot(lai2016, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
+        geom_point(data=t5, aes(BA, lai_variable,color=as.factor(t5$Ring)))+
+        ylab("LAI (2016)")
+    
+    ### Plotting
+    require(cowplot)
+    pdf("R_other/lai_vs_BA.pdf", width=8, height=8)
+    plot_grid(p1, p2, p3, p4, p5, labels="", ncol=2, align="v", axis = "l")
+    
+    #plot(p1)
+    #plot(p2)
+    #plot(p3)
+    #plot(p4)
+    #plot(p5)
+    dev.off()
+    
     
     return(outDF)
 }
