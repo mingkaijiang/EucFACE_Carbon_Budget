@@ -43,6 +43,9 @@ options(warn=-1)
 ### LAI
 lai_variable <- make_lai_variable()
 
+#### Overstorey GPP 
+overstorey_gpp_flux <- make_overstorey_gpp_flux()
+
 ### SLA
 sla_variable <- make_sla_variable()
 
@@ -189,9 +192,6 @@ root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool, coarse_root
 ### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
                                                                       root_respiration_flux)
-
-#### Overstorey GPP 
-overstorey_gpp_flux <- make_overstorey_gpp_flux()
 
 # overstorey_gpp_flux <- make_gpp_over_lai(gppDF=overstorey_gpp_flux, laiDF=lai_variable)
 

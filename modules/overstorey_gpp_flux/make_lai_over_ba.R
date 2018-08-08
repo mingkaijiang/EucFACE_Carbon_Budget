@@ -46,41 +46,97 @@ make_lai_over_ba <- function(laiDF, gppDF) {
     ## 2013
     lai2013 <- subset(laiDF, Yr==2013)
     t2 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2013, keep.names=T, na.rm=T)
-    p2 <- ggplot(lai2013, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
-        geom_point(data=t2, aes(BA, lai_variable,color=as.factor(t2$Ring)))+
-        ylab("LAI (2013)")
+    
+    p2 <- ggplot(lai2013, aes(x=BA, y=lai_variable)) + 
+        geom_smooth(method="lm") + ylab("LAI") +
+        geom_point(data=t2, aes(BA, lai_variable,color=as.factor(t2$Ring)), size=4)+
+        scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
+                                                    "4" = "pink",  "5" = "orange", "6" = "darkblue"),
+                            labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="none")+
+        ggtitle("Year 2013")+
+        ylim(1, 2.1)
     
     ## 2014
     lai2014 <- subset(laiDF, Yr==2014)
     t3 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2014, keep.names=T, na.rm=T)
-    p3 <- ggplot(lai2014, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
-        geom_point(data=t3, aes(BA, lai_variable,color=as.factor(t3$Ring)))+
-        ylab("LAI (2014)")
+    p3 <- ggplot(lai2014, aes(x=BA, y=lai_variable)) + 
+        geom_smooth(method="lm") + ylab("LAI") +
+        geom_point(data=t4, aes(BA, lai_variable,color=as.factor(t3$Ring)), size=4)+
+        scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
+                                                    "4" = "pink",  "5" = "orange", "6" = "darkblue"),
+                            labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="none")+
+        ggtitle("Year 2014")+
+        ylim(1, 2.1)
     
     ## 2015
     lai2015 <- subset(laiDF, Yr==2015)
     t4 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2015, keep.names=T, na.rm=T)
-    p4 <- ggplot(lai2015, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
-        geom_point(data=t4, aes(BA, lai_variable,color=as.factor(t4$Ring)))+
-        ylab("LAI (2015)")
+    p4 <- ggplot(lai2015, aes(x=BA, y=lai_variable)) + 
+        geom_smooth(method="lm") + ylab("LAI") +
+        geom_point(data=t4, aes(BA, lai_variable,color=as.factor(t4$Ring)), size=4)+
+        scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
+                                                    "4" = "pink",  "5" = "orange", "6" = "darkblue"),
+                            labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="bottom")+
+        ggtitle("Year 2015")+
+        ylim(1, 2.1)
     
     ## 2016
     lai2016 <- subset(laiDF, Yr==2016)
     t5 <- summaryBy(BA+lai_variable~Ring, FUN=mean, data=lai2016, keep.names=T, na.rm=T)
-    p5 <- ggplot(lai2016, aes(x=BA, y=lai_variable)) + geom_smooth(method="lm")+
-        geom_point(data=t5, aes(BA, lai_variable,color=as.factor(t5$Ring)))+
-        ylab("LAI (2016)")
+    p5 <- ggplot(lai2016, aes(x=BA, y=lai_variable)) + 
+        geom_smooth(method="lm") + ylab("LAI") +
+        geom_point(data=t5, aes(BA, lai_variable,color=as.factor(t5$Ring)), size=4)+
+        scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
+                                                    "4" = "pink",  "5" = "orange", "6" = "darkblue"),
+                            labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="bottom")+
+        ggtitle("Year 2016")+
+        ylim(1, 2.1)
     
     ### Plotting
     require(cowplot)
     pdf("R_other/lai_vs_BA.pdf", width=8, height=8)
-    plot_grid(p1, p2, p3, p4, p5, labels="", ncol=2, align="v", axis = "l")
-    
-    #plot(p1)
-    #plot(p2)
-    #plot(p3)
-    #plot(p4)
-    #plot(p5)
+    plot_grid(p2, p3, p4, p5, labels="AUTO", ncol=2, align="v", axis = "l",
+              rel_heights = c(0.7, 1.0))
     dev.off()
     
     
