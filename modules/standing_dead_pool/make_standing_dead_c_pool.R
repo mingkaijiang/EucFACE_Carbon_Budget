@@ -23,27 +23,30 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     
     ########################
     ### Read in additional files
-    classif <- read.csv("download/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)
+    classif1 <- read.csv("download/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)
+    classif <- read.csv("data/Tree_classifications.csv",stringsAsFactors = FALSE)
     classif$Active.FALSE.means.dead.[classif$Tree == 608] <- FALSE  # This tree dead too
+    classif2 <- merge(classif1,classif,by=c("Tree","Ring","CO2.trt"))
+    classif2 <- classif2[,c("Tree", "Ring", "CO2.trt", "Classif.x", "Height", "Diameter", "Active.FALSE.means.dead.")]
+    colnames(classif2) <- c("Tree", "Ring", "CO2.trt", "Classif", "Height", "Diameter", "Active.FALSE.means.dead.")
     
     ########################
     
     ### Merge the files
-    all <- merge(classif,f12,by=c("Tree","Ring","CO2.trt"))
+    all <- merge(classif2,f12,by=c("Tree","Ring","CO2.trt"))
     all <- merge(all,f13,by=c("Tree","Ring","CO2.trt")) 
     all <- merge(all,f14,by=c("Tree","Ring","CO2.trt"))  
     all <- merge(all,f15,by=c("Tree","Ring","CO2.trt"))
     all <- merge(all,f16,by=c("Tree","Ring","CO2.trt"))
     
     ### subset dead trees
-    all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
-    tree.list <- morDF$Tree
-    subDF <- all[all$Tree %in% tree.list, ]
+    tree.list1 <- all$Tree[all$Active.FALSE.means.dead.=="FALSE"]
+    tree.list2 <- morDF$Tree
+    
+    subDF <- all[all$Tree %in% tree.list2, ]
 
     ### remove "CORR" columns and dead column
     uncorr <- subDF[,-grep("CORR",names(subDF))]
-    uncorr <- uncorr[,-grep("Coor",names(uncorr))]
-    
     uncorr <- uncorr[,names(uncorr) != "Active.FALSE.means.dead."]
     
     ### make a long-form version of dataframe
@@ -58,7 +61,7 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     long$diam <- as.numeric(long$diam)
     
     ### Use date last seen alive and diameter information to work out biomass
-    for (i in tree.list) {
+    for (i in tree.list2) {
         alive.date <- morDF[morDF$Tree == i, "date_last_observed_alive"]
         last.diam <- morDF[morDF$Tree == i, "last_observed_diameter"]
         long$diam[long$Tree == i & long$Date < alive.date] <- 0.0
@@ -108,7 +111,7 @@ make_standing_dead_c_pool <- function(ring_area, c_frac) {
     wood_pool <- out.dat[,c("Date", "Ring", "wood_pool", "sap_pool", "heart_pool")]
     
     # Only use data period 2012-2016
-    wood_pool <- wood_pool[wood_pool$Date<="2016-12-31",]
+    #wood_pool <- wood_pool[wood_pool$Date<="2016-12-31",]
     
     return(wood_pool)
 }
