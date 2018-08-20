@@ -231,6 +231,10 @@ gpp_gap_plot(inDF=tables_by_ring)
 source("R/rsoil_gap_plot.R")
 rsoil_gap_plot(inDF=tables_by_ring)
 
+### Plot a combined gpp and rsoil gap plot
+source("R/gpp_and_rsoil_gap_plot.R")
+gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
+
 
 ### NEP gaps   - Note the different input file!
 source("R/nep_gap_plot.R")

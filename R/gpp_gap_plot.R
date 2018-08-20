@@ -43,12 +43,14 @@ gpp_gap_plot <- function(inDF) {
     c.miss <- gpp - npp - ra
     
     ### prepare error bar ranges
-    errDF <- data.frame(rep(c("NPP+Ra", "MAESPA"),2), NA, NA)
+    errDF <- data.frame(c("NPP+Ra", "MAESPA"), NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg")
     errDF$pos[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])+sum(plotDF$aCO2_sd[plotDF$cat=="NPP+Ra"])
     errDF$neg[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])-sum(plotDF$aCO2_sd[plotDF$cat=="NPP+Ra"])
     errDF$pos[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])+sum(plotDF$aCO2_sd[plotDF$cat=="MAESPA"])
     errDF$neg[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])-sum(plotDF$aCO2_sd[plotDF$cat=="MAESPA"])
+    errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])
+    errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])
     
     ### Prepare variable labels
     var.labs <- c(expression(GPP[o]), expression(GPP[u]),
@@ -62,6 +64,8 @@ gpp_gap_plot <- function(inDF) {
     
     ### Prepare variable colors
     col.list <- hsv(seq(0,1 - 1/14,length.out = 14),0.8,1)
+    require(viridis)
+    col.list <- viridis(14)
     
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
     
@@ -72,9 +76,13 @@ gpp_gap_plot <- function(inDF) {
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
         geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="grey")+
+                     colour="black")+
+        #geom_errorbar(data=errDF, mapping=aes(x=cat, ymin=neg, ymax=pos),
+        #              width=0.1, size=1, color="grey")+ 
+        geom_point(data=errDF, mapping=aes(x=cat, y=sum), 
+                   size=4, shape=21, fill="white")+
         xlab("Method") + ylab(expression(paste("GPP (kg C ", m^-2, " ", yr^-1, ")"))) +
-        scale_x_discrete(labels=c("Simulation", "Observation"))+
+        scale_x_discrete(labels=c("GPP", expression(paste("NPP+", R[a]))))+
         scale_fill_manual(name="Variables", 
                           values = col.list,
                           labels=var.labs) +
@@ -86,7 +94,7 @@ gpp_gap_plot <- function(inDF) {
               axis.title.y=element_text(size=14),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
-              panel.grid.major=element_line(color="grey"),
+              panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)
         
@@ -179,12 +187,14 @@ gpp_gap_plot <- function(inDF) {
     
     
     ### prepare error bar ranges
-    errDF <- data.frame(rep(c("NPP+Ra", "MAESPA"),2), NA, NA)
+    errDF <- data.frame(c("NPP+Ra", "MAESPA"), NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg")
     errDF$pos[errDF$cat=="NPP+Ra"] <- sum(plotDF$eCO2[plotDF$cat=="NPP+Ra"])+sum(plotDF$eCO2_sd[plotDF$cat=="NPP+Ra"])
     errDF$neg[errDF$cat=="NPP+Ra"] <- sum(plotDF$eCO2[plotDF$cat=="NPP+Ra"])-sum(plotDF$eCO2_sd[plotDF$cat=="NPP+Ra"])
     errDF$pos[errDF$cat=="MAESPA"] <- sum(plotDF$eCO2[plotDF$cat=="MAESPA"])+sum(plotDF$eCO2_sd[plotDF$cat=="MAESPA"])
     errDF$neg[errDF$cat=="MAESPA"] <- sum(plotDF$eCO2[plotDF$cat=="MAESPA"])-sum(plotDF$eCO2_sd[plotDF$cat=="MAESPA"])
+    errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$eCO2[plotDF$cat=="NPP+Ra"])
+    errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$eCO2[plotDF$cat=="MAESPA"])
     
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
     
@@ -195,9 +205,13 @@ gpp_gap_plot <- function(inDF) {
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
         geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="grey")+
+                     colour="black")+
+        #geom_errorbar(data=errDF, mapping=aes(x=cat, ymin=neg, ymax=pos),
+        #              width=0.1, size=1, color="grey")+ 
+        geom_point(data=errDF, mapping=aes(x=cat, y=sum), 
+                   size=4, shape=21, fill="white")+
         xlab("Method") + ylab(expression(paste("GPP (kg C ", m^-2, " ", yr^-1, ")"))) +
-        scale_x_discrete(labels=c("Simulation", "Observation"))+
+        scale_x_discrete(labels=c("GPP", expression(paste("NPP+", R[a]))))+
         scale_fill_manual(name="Variables", 
                           values = col.list,
                           labels=var.labs) +
@@ -209,7 +223,7 @@ gpp_gap_plot <- function(inDF) {
               axis.title.y=element_text(size=14),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
-              panel.grid.major=element_line(color="grey"),
+              panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)
     
