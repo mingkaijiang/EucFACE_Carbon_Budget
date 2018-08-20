@@ -273,18 +273,19 @@ make_eCO2_effect_on_GPP_plot2 <- function() {
                 "delta_wood_c"=expression(Delta*C[wood]),         # 20
                 "delta_fineroot_c"=expression(Delta*C[froot]))     # 21
     
+    library(viridis)
     
     ## gpp
-    colfunc.inf <- colorRampPalette(c("black", "grey"))
+    colfunc.inf <- colorRampPalette(c("orange", "yellow"))
     A.col.list <- colfunc.inf(2)
     
     # 2nd column bar - NPP + Ra + Rother
-    colfunc.inf <- colorRampPalette(c("darkgreen", "darkred", "red"))
+    colfunc.inf <- colorRampPalette(c("green", "darkred", "red"))
     B.col.list <- colfunc.inf(3)
     
     ## NPP
-    colfunc.npp <- colorRampPalette(c("darkgreen", "yellow"))
-    C.col.list <- colfunc.npp(8)
+    colfunc.npp <- colorRampPalette(c("darkgreen", "green"))
+    C.col.list <- viridis(8) 
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
@@ -293,6 +294,8 @@ make_eCO2_effect_on_GPP_plot2 <- function() {
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
     E.col.list <- colfunc.delta(3)
+    
+    v.list <- viridis(21)
     
     ### Combine all color list
     col.list2 <- c("over_gpp"=A.col.list[1],                    
@@ -315,13 +318,55 @@ make_eCO2_effect_on_GPP_plot2 <- function() {
                    "wood_respiration"=D.col.list[5],           
                    "delta_soil_c"=E.col.list[1],         
                    "delta_wood_c"=E.col.list[2],        
-                   "delta_fineroot_c"=E.col.list[3])        
-
+                   "delta_fineroot_c"=E.col.list[3])      
     
+    col.list2 <- c("over_gpp"=v.list[1],                    
+                   "understorey_gpp"=v.list[2],             
+                   "NPP"=v.list[3],   
+                   "Outfluxes"=v.list[4],
+                   "Ra"=v.list[5],      
+                   "herb_consump"=v.list[6],           
+                   "leaf_prod"=v.list[7],                
+                   "twig_prod"=v.list[8],                
+                   "bark_prod"=v.list[9],                
+                   "seed_prod"=v.list[10],                
+                   "wood_prod"=v.list[11],               
+                   "fineroot_prod"=v.list[12],           
+                   "understorey_prod"=v.list[13], 
+                   "root_respiration"=v.list[14],           
+                   "understorey_respiration"=v.list[15],      
+                   "hetero_respiration"=v.list[16],            
+                   "over_leaf_respiration"=v.list[17],      
+                   "wood_respiration"=v.list[18],           
+                   "delta_soil_c"=v.list[19],         
+                   "delta_wood_c"=v.list[20],        
+                   "delta_fineroot_c"=v.list[21])        
+
+    for (i in 1:5) {
+        if (confDF[i, "conf_low"] >= -50) {
+            confDF[i, "conf_low_sc"] <- confDF[i, "conf_low"]
+        } else {
+            confDF[i, "conf_low_sc"] <- -50 + (confDF[i, "conf_low"] * 0.125)
+        }
+        
+        if (confDF[i, "conf_high"] <= 150) {
+            confDF[i, "conf_high_sc"] <- confDF[i, "conf_high"]
+        } else {
+            confDF[i, "conf_high_sc"] <- 150 + ((confDF[i, "conf_high"] - 150) * 0.1)
+        }
+
+    }
+
     p3 <- ggplot(plotDF2,
-                 aes(plot.cat2, effect_size)) +   
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_hline(yintercept=150, linetype="dashed", color="grey")+
+        geom_hline(yintercept=-50, linetype="dashed", color="grey")+
+        geom_errorbar(data=confDF, mapping=aes(x=plot.cat2, ymin=conf_low_sc, ymax=conf_high_sc), 
+                      width=0.1, size=1, color="grey") + 
         geom_bar(stat = "identity", aes(fill=Variable),
                  position="stack") +
+        geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=4, shape=21, fill="white")+
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("Influxes", 
                                   "NPP+R",
@@ -329,11 +374,10 @@ make_eCO2_effect_on_GPP_plot2 <- function() {
                                   "R",
                                   expression(Delta*C[pools])))+
         scale_fill_manual(name="", 
-                          breaks = plotDF$Variable,
+                          breaks = plotDF2$Variable,
                           values = col.list2,
                           labels=y.lab2) +
         theme_linedraw() +
-        ylim(-50,150)+
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
               axis.text.x = element_text(size=12),
@@ -343,12 +387,19 @@ make_eCO2_effect_on_GPP_plot2 <- function() {
               legend.title=element_text(size=14),
               panel.grid.major=element_blank(),
               legend.position="bottom",
-              legend.text.align=0)
-
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-100, 200), 
+                           breaks=c(-100, -75, -50, -25, 0, 50, 100, 150, 175, 200),
+                           labels=c(-400, -200, -50, -25, 0, 50, 100, 150, 400, 650))+
+        #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
+        guides(fill=guide_legend(ncol=5))
+        
+    plot(p3)
 
     ### Plotting
     pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools2.pdf", width=8, height=6)
-    plot(p1)
+    #plot(p1)
+    plot(p3)
     #plot(p2)
     dev.off()
     
