@@ -127,31 +127,32 @@ nep_gap_plot <- function(inDF) {
     
     ### make the bar plot
     p1 <- ggplot(plotDF,
-                aes(Method, NEP)) +   
-        geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+                aes(Method, NEP)) + 
         geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
-                      position = position_dodge(0.9), width=0.2) +
+                      position = position_dodge(0.9), width=0.1) +
+        geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
         xlab("Method") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
-              panel.grid.major=element_line(color="grey"),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=14),
+              axis.text.y=element_text(size=14),
+              axis.title.y=element_text(size=16),
+              legend.text=element_text(size=14),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
               legend.position="bottom")+
-        scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+        scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+        scale_colour_manual(name="", values = c("aCO2" = "blue", "eCO2" = "red"),
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_x_discrete("Method", 
+        scale_x_discrete("",  
                          labels=c("In - Out",
-                                  "NPP - Rh",
-                                  expression(delta*C[pools])))
+                                  expression(paste("NPP - ", R[h])),
+                                  expression(Delta*C[pools])))+
+        theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
     
-    #plot(p1)
+    # plot(p1)
     
     pdf("R_other/nep_gap.pdf", width=6, height=6)
     plot(p1)

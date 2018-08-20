@@ -1243,29 +1243,38 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 # 9. To-do list
 
+    - VOC data
+    - Update Rsoil
+    - Update mycorrhizal biomass
+    - Estimate mycorrhizal production (possibly flower production)
+    - Root mortality and turnover 
+    - MAESPA output (GPP, Ra for overstorey and understorey)
+    - C balance figure to show where the extra C ended up.
+    - C budget figure to close the balance
+    - C budget figure for NEP
+    - power analysis
+    - Standardize response by something (e.g. wood biomass) to show a clearer response ratio
+    - Update summary tables here and in the manuscript
+
+<br/> 
+
+below are non-major to-do list:
+
     - The proportion of mycorrhizae in the microbial pool needs to be cross-checked with literature value
     - Flux of mycorrhizae - colonization rate (Check with Yolima)
     - Temporal variation of mycorrhizae (2013 - 15, 3 data points, then 2015-16). 
     - Some fungi get C from dead plant so no GPP involved there. Microbial biomass has a subset that is fungal biomass, then fungal biomass can be splitted into mycorrhizae and saprotrophs. 
     - There is respiration associated with root hyphae and of fungi itself. Juan's respiration data has root-associated mycorrhizae in it, whereas Laura's data is non-root associated mycorrhizae.     
     - Yolima and Luara to check lipid concentration inside and outside mesh bag to constrain concentration differences
-    - soil moisture profile and its relationship to DOC, understorey LAI,  fineroot biomass, Rsoil
     - frass production and relationship with leaf N
     - R soil - inter-collar variability
-    - Calculate NEP based on different method (partially done)
-    - Use Sapwood depth to extrapolate % of live and dead wood (useful for P budget)
-    - How to extract standing dead from total wood pool? Considering once they are dead, they don't do anything, is it worth to split wood pool into live and dead? 
+    - Update Rsoil from Alexis result
     - Check soil C deep layer pools
-    - MAESPA output needs to be on a daily basis
-    - Overstorey leaf respiration flux - check with Jim for parameters
     - Understorey gpp needs to close the balance with production and respiration
     - Leaf production can be estimated based on GPP and litterfall (Remko)
-    - Root mortality and turnover
     - Understorey respiration scaled with CUE, can also work with temperature, but hard to find an appropriate relationship
     - Understorey biomass phenocamera estimates - pretreatment (Matthias)
     - Australian forest CUE estimates
-    - soil moisture and understorey LAI
-    - VOC data into MAESPA
     - Leaf + root tissue specific respiration rate to compare leaf + root respiration flux
     - Leaf + root N content
     - Root respiration + stem respiration (Nam Jin + Elise)
