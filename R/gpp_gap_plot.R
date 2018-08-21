@@ -14,8 +14,21 @@ gpp_gap_plot <- function(inDF) {
     temDF <- inDF$inout[,c("term", "aCO2", "aCO2_sd")]
     
     ### only include GPP
-    gppDF <- rbind(temDF[temDF$term == "GPP overstorey",],temDF[temDF$term == "GPP understorey",])
+    gpp.d <- summaryBy(GPP~Trt, data=overstorey_gpp_flux, FUN=mean, keep.names=T)
+    gpp.sd <- summaryBy(GPP~Trt, data=overstorey_gpp_flux, FUN=sd, keep.names=T)
     
+    temDF$aCO2[temDF$term == "GPP overstorey"] <- gpp.d$GPP[gpp.d$Trt=="aCO2"]
+    temDF$aCO2_sd[temDF$term == "GPP overstorey"] <- gpp.sd$GPP[gpp.sd$Trt=="aCO2"]
+    
+    gpp.d <- summaryBy(GPP~Trt, data=understorey_gpp_flux, FUN=mean, keep.names=T)
+    gpp.sd <- summaryBy(GPP~Trt, data=understorey_gpp_flux, FUN=sd, keep.names=T)
+    
+    temDF$aCO2[temDF$term == "GPP understorey"] <- gpp.d$GPP[gpp.d$Trt=="aCO2"]
+    
+    temDF$aCO2_sd[temDF$term == "GPP understorey"] <- gpp.sd$GPP[gpp.sd$Trt=="aCO2"]
+    
+    gppDF <- rbind(temDF[temDF$term == "GPP overstorey",],temDF[temDF$term == "GPP understorey",])
+
     ### only include respiration
     raDF <- rbind(temDF[temDF$term == "Ra leaf",],temDF[temDF$term == "Ra stem",],
                   temDF[temDF$term == "Ra root",],temDF[temDF$term == "Ra understorey",],
@@ -163,6 +176,18 @@ gpp_gap_plot <- function(inDF) {
     temDF <- inDF$inout[,c("term", "eCO2", "eCO2_sd")]
     
     ### only include GPP
+    gpp.d <- summaryBy(GPP~Trt, data=overstorey_gpp_flux, FUN=mean, keep.names=T)
+    gpp.sd <- summaryBy(GPP~Trt, data=overstorey_gpp_flux, FUN=sd, keep.names=T)
+    
+    temDF$eCO2[temDF$term == "GPP overstorey"] <- gpp.d$GPP[gpp.d$Trt=="eCO2"]
+    temDF$eCO2_sd[temDF$term == "GPP overstorey"] <- gpp.sd$GPP[gpp.sd$Trt=="eCO2"]
+    
+    gpp.d <- summaryBy(GPP~Trt, data=understorey_gpp_flux, FUN=mean, keep.names=T)
+    gpp.sd <- summaryBy(GPP~Trt, data=understorey_gpp_flux, FUN=sd, keep.names=T)
+    
+    temDF$eCO2[temDF$term == "GPP understorey"] <- gpp.d$GPP[gpp.d$Trt=="eCO2"]
+    temDF$eCO2_sd[temDF$term == "GPP understorey"] <- gpp.sd$GPP[gpp.sd$Trt=="eCO2"]
+    
     gppDF <- rbind(temDF[temDF$term == "GPP overstorey",],temDF[temDF$term == "GPP understorey",])
     
     ### only include respiration

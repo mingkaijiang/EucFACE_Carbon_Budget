@@ -223,9 +223,10 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
         geom_point(data=errDF, mapping=aes(x=cat, y=sum), 
                    size=4, shape=21, fill="white")+
         geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="grey")+
+                     colour="black")+
         xlab("") + ylab(expression(paste(R[soil], " (kg C ", m^-2, " ", yr^-1, ")"))) +
-        scale_x_discrete(labels=c("Litter+Rroot", "Rsoil"))+
+        scale_x_discrete(labels=c(expression(paste("Litter+", R[root])),
+                                  expression(R[soil])))+
         scale_fill_manual(name="Rsoil", 
                           values = col.list2,
                           labels=var.labs2) +
@@ -288,9 +289,10 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
         geom_point(data=errDF, mapping=aes(x=cat, y=sum), 
                    size=4, shape=21, fill="white")+
         geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="grey")+
+                     colour="black")+
         xlab("") + ylab(expression(paste(R[soil], " (kg C ", m^-2, " ", yr^-1, ")"))) +
-        scale_x_discrete(labels=c("Litter+Rroot", "Rsoil"))+
+        scale_x_discrete(labels=c(expression(paste("Litter+", R[root])),
+                                  expression(R[soil])))+
         scale_fill_manual(name="Rsoil", 
                           values = col.list2,
                           labels=var.labs2) +

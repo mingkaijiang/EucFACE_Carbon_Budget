@@ -30,24 +30,25 @@ make_gpp_over_ba_2 <- function() {
     
     plotDF1 <- subset(gppDF, Yr == 2013)
     p1 <- ggplot(plotDF1, aes(x=BA, y=GPP)) + 
-        geom_smooth(method="lm") + ylab("GPP") +
+        geom_smooth(method="lm") + 
+        ylab(expression(paste("GPP (g C ", m^-2, " ", yr^-1, ")"))) +
         geom_point(data=plotDF1, aes(BA, GPP,shape=Mod.Trt, color=as.factor(plotDF1$Ring)), size=4)+
         scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
                                                     "4" = "pink",  "5" = "orange", "6" = "darkblue"),
                             labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
-        scale_shape_manual(name="Simulated Treatment", values = c("a"=19, "e"=17),
+        scale_shape_manual(name="Treatment", values = c("a"=19, "e"=17),
                            labels=c("aCa", "eCa"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
               axis.text.y=element_text(size=12),
               axis.title.y=element_text(size=14),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
               legend.position="none")+
-        ggtitle("Year 2013")+
+        annotate("text", x=18, y=2400, label= "2013", size=10) +
         ylim(750, 2500)
     
     plotDF2 <- subset(gppDF, Yr == 2014)
@@ -57,30 +58,32 @@ make_gpp_over_ba_2 <- function() {
         scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
                                                     "4" = "pink",  "5" = "orange", "6" = "darkblue"),
                             labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
-        scale_shape_manual(name="Simulated Treatment", values = c("a"=19, "e"=17),
+        scale_shape_manual(name="Treatment", values = c("a"=19, "e"=17),
                            labels=c("aCa", "eCa"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
               legend.position="none")+
-        ggtitle("Year 2014")+
+        annotate("text", x=18, y=2400, label= "2014", size=10) +
         ylim(750, 2500)
     
     
     plotDF3 <- subset(gppDF, Yr == 2015)
     p3 <- ggplot(plotDF3, aes(x=BA, y=GPP)) + 
-        geom_smooth(method="lm") + ylab("GPP") +
+        geom_smooth(method="lm") + 
+        ylab(expression(paste("GPP (g C ", m^-2, " ", yr^-1, ")"))) +
+        xlab(expression(paste("Basal Area (", cm^2, ")")))+
         geom_point(data=plotDF3, aes(BA, GPP,shape=Mod.Trt, color=as.factor(plotDF3$Ring)), size=4)+
         scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
                                                     "4" = "pink",  "5" = "orange", "6" = "darkblue"),
                             labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
-        scale_shape_manual(name="Simulated Treatment", values = c("a"=19, "e"=17),
+        scale_shape_manual(name="Treatment", values = c("a"=19, "e"=17),
                            labels=c("aCa", "eCa"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -92,7 +95,7 @@ make_gpp_over_ba_2 <- function() {
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
               legend.position="bottom")+
-        ggtitle("Year 2015")+
+        annotate("text", x=18, y=2400, label= "2015", size=10) +
         ylim(750, 2500)
     
 
@@ -100,23 +103,24 @@ make_gpp_over_ba_2 <- function() {
     plotDF4 <- subset(gppDF, Yr == 2016)
     p4 <- ggplot(plotDF4, aes(x=BA, y=GPP)) + 
         geom_smooth(method="lm") + ylab("GPP") +
+        xlab(expression(paste("Basal Area (", cm^2, ")")))+
         geom_point(data=plotDF4, aes(BA, GPP,shape=Mod.Trt, color=as.factor(plotDF4$Ring)), size=4)+
         scale_colour_manual(name="Ring", values = c("1" = "red", "2" = "cyan",  "3" = "blue", 
                                                     "4" = "pink",  "5" = "orange", "6" = "darkblue"),
                             labels=c("R1", "R2", "R3", "R4", "R5", "R6")) +
-        scale_shape_manual(name="Simulated Treatment", values = c("a"=19, "e"=17),
+        scale_shape_manual(name="Treatment", values = c("a"=19, "e"=17),
                            labels=c("aCa", "eCa"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
               axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
               legend.position="bottom")+
-        ggtitle("Year 2016")+
+        annotate("text", x=18, y=2400, label= "2016", size=10) +
         ylim(750, 2500)
     
     pdf("R_other/GPP_vs_BA.pdf", width=12, height=8)
@@ -125,4 +129,4 @@ make_gpp_over_ba_2 <- function() {
               rel_heights = c(0.7, 1.0))
     dev.off()
     
-}
+ }
