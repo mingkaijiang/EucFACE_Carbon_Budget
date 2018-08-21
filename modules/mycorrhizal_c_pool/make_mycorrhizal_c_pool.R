@@ -1,35 +1,14 @@
-make_mycorrhizal_c_pool <- function(bk_density) {
+make_mycorrhizal_c_pool <- function(micDF) {
     
-    ### read in the df
-    myDF <- read.csv("data/Mycorrhizae_data_JennifferW_experiment.csv")
+    ### calculate mycorrhizal biomass
+    micDF$mycorrhizal_c_pool[micDF$Ring==1] <- micDF$microbial_pool[micDF$Ring==1] * 0.105
+    micDF$mycorrhizal_c_pool[micDF$Ring==2] <- micDF$microbial_pool[micDF$Ring==2] * 0.115
+    micDF$mycorrhizal_c_pool[micDF$Ring==3] <- micDF$microbial_pool[micDF$Ring==3] * 0.101
+    micDF$mycorrhizal_c_pool[micDF$Ring==4] <- micDF$microbial_pool[micDF$Ring==4] * 0.11
+    micDF$mycorrhizal_c_pool[micDF$Ring==5] <- micDF$microbial_pool[micDF$Ring==5] * 0.088
+    micDF$mycorrhizal_c_pool[micDF$Ring==6] <- micDF$microbial_pool[micDF$Ring==6] * 0.128
     
-    ### aggregate ring average bulk density
-    bk <- aggregate(bk_density$bulk_density_kg_m3, by=list(bk_density$ring), mean, na.action=na.rm)
-    colnames(bk) <- c("Ring", "bk")
-    
-    ### sand bulk density
-    bk.sand <- 1200
-    
-    #### convert unit from % (or mg C per g sand) to mg C kg soil
-    for (i in 1:6) {
-        myDF[myDF$Ring == i, "bk"] <- bk[bk$Ring == i, "bk"]
-    }
-    
-    ### Calculate bag volume
-    myDF$Bag_volume <- myDF$Bag_dimension * 0.005
-    
-    ### calculate mycorrhizal biomass increment, in unit of g m-2 period -1
-    #myDF$mycorrhizal_c_pool2 <- myDF$mgC /g_to_mg * myDF$grsand / myDF$Bag_volume * 0.1
-    #myDF$mycorrhizal_c_pool <- myDF$percentC / 100 * myDF$bk * 0.1 / g_to_kg
-    myDF$mycorrhizal_c_pool <- myDF$percentC / 100 * bk.sand * 0.1 / g_to_kg
-    
-    ### convert dates
-    myDF$Start_date <- as.Date(as.character(myDF$Start_date), format="%d/%m/%Y")
-    myDF$End_Date <- as.Date(as.character(myDF$End_Date), format="%d/%m/%Y")
-    myDF$ndays <- as.numeric(myDF$End_Date - myDF$Start_date) + 1
-    myDF$Date <- myDF$End_Date
-    
-    outDF <- myDF[,c("Date", "Ring", "mycorrhizal_c_pool")]
+    outDF <- micDF[,c("Date", "Ring", "mycorrhizal_c_pool")]
     
     # Only use data period 2012-2016
     outDF <- outDF[outDF$Date<="2016-12-31",]

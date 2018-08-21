@@ -163,8 +163,11 @@ microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 ### Yolima's data
 microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
 
-### Soil mycorrhizal production
-mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
+### Soil mycorrhizae pool
+mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
+
+mycorrhizal_c_pool_2 <- make_mycorrhizal_c_pool_2(soil_bulk_density_variable)
+
 
 ### Soil methane C flux
 ## This is a simplified version because we didn't fill the gaps
