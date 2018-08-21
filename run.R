@@ -306,10 +306,8 @@ make_eCO2_effect_on_GPP_plot2()
 
 
 ### To do list:
-### 1. Add GPP, understorey GPP, into all results and statistical comparison plots
+### 1. Decide what GPP, understorey GPP to use in all statistical comparison plots
 ### 2. Power analysis
-### 3. Update all figures, and continue on supplementary figures and tables
-### 4. Write, Abstract for AGU, continue manuscript writing
 
 
 ###### ---------------- End -------------------- ######

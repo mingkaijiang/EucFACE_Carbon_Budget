@@ -365,13 +365,20 @@ make_statistical_comparison_plots <- function() {
     y.lab4 <- c("over_gpp"=expression(GPP[o]),
                 "understorey_gpp"=expression(GPP[u]))
     
+    
+    ### add conditional color to data frames
+    plotDF1$col.con <- ifelse(plotDF1$effect_size_t<0, "red3", "blue2")
+    plotDF2$col.con <- ifelse(plotDF2$effect_size_t<0, "red3", "blue2")
+    plotDF3$col.con <- ifelse(plotDF3$effect_size_t<0, "red3", "blue2")
+    plotDF4$col.con <- ifelse(plotDF4$effect_size_t<0, "red3", "blue2")
+    
     #### Plotting
     p8 <- ggplot(plotDF4)+ 
         geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
                          yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
                      size=6, color="grey")+
         geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
-                   stat='identity', size=4, shape=19, color="red")+
+                   stat='identity', size=4, shape=19, color=plotDF4$col.con)+
         labs(x="eC minus aC", y="")+
         theme_linedraw()+
         theme(panel.grid.minor=element_blank(),
@@ -384,6 +391,10 @@ make_statistical_comparison_plots <- function() {
               panel.grid.major=element_blank(),
               legend.position="none")+
         geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
         scale_y_discrete(labels=y.lab4)
     
@@ -393,7 +404,7 @@ make_statistical_comparison_plots <- function() {
                          yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
                      size=6, color="grey")+
         geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
-                   stat='identity', size=4, shape=19, color="red")+
+                   stat='identity', size=4, shape=19, color=plotDF1$col.con)+
         #scale_color_manual(name="Treatment significance", 
         #                   labels = c("Non-sig", "Sig (P<0.1)"), 
         #                   values = c("non-sig"="#f8766d","sig"="#00ba38"))+ 
@@ -412,6 +423,10 @@ make_statistical_comparison_plots <- function() {
               panel.grid.major=element_blank(),
               legend.position="none")+
         geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
         scale_y_discrete(labels=y.lab1)
     
@@ -420,7 +435,7 @@ make_statistical_comparison_plots <- function() {
                          yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
                      size=6, color="grey")+
         geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
-                   stat='identity', size=4, shape=19, color="red")+
+                   stat='identity', size=4, shape=19, color=plotDF3$col.con)+
         labs(x="eC minus aC", y="")+
         theme_linedraw()+
         theme(panel.grid.minor=element_blank(),
@@ -433,15 +448,19 @@ make_statistical_comparison_plots <- function() {
               panel.grid.major=element_blank(),
               legend.position="none")+
         geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
         scale_y_discrete(labels=y.lab3)
     
     p7 <- ggplot(plotDF2)+ 
         geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
                          yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
-                     size=10, color="grey")+
+                     size=6, color="grey")+
         geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
-                   stat='identity', size=4, shape=19, color="red")+
+                   stat='identity', size=4, shape=19, color=plotDF2$col.con)+
         scale_color_manual(name="Treatment significance", 
                            labels = c("Non-sig", "Sig (P<0.1)"), 
                            values = c("non-sig"="#f8766d","sig"="#00ba38"))+ 
@@ -457,6 +476,10 @@ make_statistical_comparison_plots <- function() {
               panel.grid.major=element_blank(),
               legend.position="bottom")+
         geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 40, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         #geom_rect(aes(xmin=-50, xmax=-40, ymin=0, ymax=18), fill="white")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
         scale_y_discrete(labels=y.lab2)
@@ -478,10 +501,188 @@ make_statistical_comparison_plots <- function() {
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 
-              labels="auto", ncol=1, align="v", axis = "l",
-              rel_heights=c(0.3,1,1,1))
+              labels="AUTO", ncol=1, align="v", axis = "l",
+              rel_heights=c(0.3,1,1,0.9))
     dev.off()
     
+    
+    ######### 6. Plot ratio, no interactions, and no change in pools
+    ### read in the csv file to plot the treatment effect and confidence interval
+    myDF <- read.csv("R_other/treatment_statistics_ratio_no_interaction.csv")
+    
+    #### assign color scheme according to treatment p-value
+    myDF$trt_sig[myDF$Trt_Pr > 0.1] <- "non-sig"
+    myDF$trt_sig[myDF$Trt_Pr <= 0.1] <- "sig"
+    
+    myDF$date_sig[myDF$Date_Pr > 0.05] <- "non-sig"
+    myDF$date_sig[myDF$Date_Pr <= 0.05] <- "sig"
+    
+    myDF <- myDF[complete.cases(myDF$effect_size),]
+    
+    #### exclude all pools
+    myDF$Category <- c(rep("other", 2), # 1 - 2
+                       rep("pool", 14), # 3 - 16
+                       rep("resp", 2), # 17 - 18
+                       rep("prod", 1), # 19
+                       rep("resp", 2), # 20 - 21
+                       rep("prod", 1), # 22
+                       rep("resp", 2), # 23 - 24
+                       rep("prod", 8), # 25 - 33
+                       rep("resp", 1), # 34
+                       rep("gpp", 1),  # 35
+                       rep("resp", 2), # 36 - 37
+                       rep("gpp", 1))   # 38
+    
+    plotDF2 <- subset(myDF, Category == "resp")
+    plotDF3 <- subset(myDF, Category == "prod")
+    plotDF4 <- subset(myDF, Category == "gpp")
+    
+    ### transform the data so that we could have break point on x axis
+    #Function to transform data to y positions
+    trans <- function(x) {
+        if (x > 1.2) {
+            pmin(x,1.2) + 0.15*pmax(x-1.2,0)
+        } else {
+            x
+        }
+    }
+    
+    xticks.brk <- xticks <- c(0.4, 0.6, 0.8, 0.9, 1, 1.1, 1.2, 
+                              2, 3, 4)
+    
+    #Transform the data onto the display scale
+    for (i in 1:length(plotDF2$Variable)) {
+        plotDF2$effect_size_t[i] <- trans(plotDF2$effect_size[i])
+        plotDF2$conf_low_t[i] <- trans(plotDF2$conf_low[i])
+        plotDF2$conf_high_t[i] <- trans(plotDF2$conf_high[i])
+    }  
+    
+    for (i in 1:length(plotDF3$Variable)) {
+        plotDF3$effect_size_t[i] <- trans(plotDF3$effect_size[i])
+        plotDF3$conf_low_t[i] <- trans(plotDF3$conf_low[i])
+        plotDF3$conf_high_t[i] <- trans(plotDF3$conf_high[i])
+    }  
+    
+    for (i in 1:length(plotDF4$Variable)) {
+        plotDF4$effect_size_t[i] <- trans(plotDF4$effect_size[i])
+        plotDF4$conf_low_t[i] <- trans(plotDF4$conf_low[i])
+        plotDF4$conf_high_t[i] <- trans(plotDF4$conf_high[i])
+    }  
+    
+    for (i in 1:length(xticks)) {
+        xticks.brk[i] <- trans(xticks[i])
+    }
+    
+    y.lab2 <- c("wood_respiration"=expression(R[wood]),
+                "root_respiration"=expression(R[root]),
+                "understorey_respiration"=expression(R[ua]),
+                "herb_consump"=expression(NPP[hb]),
+                "herb_respiration"=expression(R[hb]),
+                "soil_respiration"=expression(R[soil]),
+                "doc"=expression(L[doc]),
+                "hetero_respiration"=expression(R[rh]),
+                "over_leaf_respiration"=expression(R[leaf]))
+    
+    y.lab3 <- c("frass_prod"=expression(P[frass]),
+                "lerp_prod"=expression(P[lerp]),
+                "leaf_prod"=expression(NPP[leaf]),
+                "twig_prod"=expression(NPP[twig]),
+                "bark_prod"=expression(NPP[bark]),
+                "seed_prod"=expression(NPP[seed]),
+                "wood_prod"=expression(NPP[wood]),
+                "fineroot_prod"=expression(NPP[froot]),
+                "coarseroot_prod"=expression(NPP[croot]),
+                "understorey_prod"=expression(NPP[ua]))
+    
+    y.lab4 <- c("over_gpp"=expression(GPP[o]),
+                "understorey_gpp"=expression(GPP[u]))
+    
+    
+    ### add conditional color to data frames
+    plotDF2$col.con <- ifelse(plotDF2$effect_size<1, "red3", "blue2")
+    plotDF3$col.con <- ifelse(plotDF3$effect_size<1, "red3", "blue2")
+    plotDF4$col.con <- ifelse(plotDF4$effect_size<1, "red3", "blue2")
+    
+    #### Plotting
+    p9 <- ggplot(plotDF4)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF4$col.con)+
+        labs(x="eC minus aC", y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none")+
+        geom_vline(xintercept = 1.0)+
+        scale_y_discrete(labels=y.lab4)+
+        geom_vline(xintercept = 1.2, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 3, linetype="dashed", color="grey")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)   
+    
+    
+    p10 <- ggplot(plotDF3)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF3$col.con)+
+        labs(x="eC minus aC", y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none")+
+        geom_vline(xintercept = 1.0)+
+        scale_y_discrete(labels=y.lab3)+
+        geom_vline(xintercept = 1.2, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 3, linetype="dashed", color="grey")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)    
+    
+    p11 <- ggplot(plotDF2)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF2$col.con)+
+        labs(x=expression(paste(CO[2], " effect (%)")), y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="bottom")+
+        geom_vline(xintercept = 1.0)+
+        scale_y_discrete(labels=y.lab2)+        
+        geom_vline(xintercept = 1.2, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 3, linetype="dashed", color="grey")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)  
+
+    
+    
+    pdf("R_other/treatment_effect_ratio_no_interaction_change_in_pool.pdf", width=8, height=10)
+    require(cowplot)    
+    plot_grid(p9, p10, 
+              p11, 
+              labels="AUTO", ncol=1, align="v", axis = "l",
+              rel_heights=c(0.2,0.8,0.8))
+    dev.off()
     
     
 }
