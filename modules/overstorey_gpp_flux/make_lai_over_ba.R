@@ -1,4 +1,4 @@
-make_lai_over_ba <- function(laiDF, gppDF) {
+make_lai_over_ba <- function(laiDF) {
 
     ### Read initial basal area data
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
@@ -21,6 +21,12 @@ make_lai_over_ba <- function(laiDF, gppDF) {
     
     ### Standardize
     laiDF$lai.ba <- laiDF$lai_variable/laiDF$BA
+    
+    a.ba.cv <- sd(laiDF$BA[laiDF$Ring%in%c(2,3,6)])/mean(laiDF$BA[laiDF$Ring%in%c(2,3,6)])
+    e.ba.cv <- sd(laiDF$BA[laiDF$Ring%in%c(1,4,5)])/mean(laiDF$BA[laiDF$Ring%in%c(1,4,5)])
+    
+    
+    
     
     outDF <- laiDF[,c("Yr", "Ring", "lai.ba", "Date")]
     colnames(outDF) <- c("year", "Ring", "LAI", "Date")

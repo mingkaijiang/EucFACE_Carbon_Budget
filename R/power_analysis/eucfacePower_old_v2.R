@@ -14,7 +14,15 @@ tryCatch.converg <- function(expr) {
  				     converged = converged)
 }
 
-eucface.power<-function(file.out,effect.size,n.tree,n.leaf,ranef.ring.sd=NULL,ranef.tree.sd=NULL,rand.sd,intercept,n.ring=6) {  
+eucface.power<-function(file.out,
+                        effect.size,
+                        n.tree,
+                        n.leaf,
+                        ranef.ring.sd=NULL,
+                        ranef.tree.sd=NULL,
+                        rand.sd,
+                        intercept,
+                        n.ring=6) {  
   n.ring<-n.ring
   n.tree<-n.tree
   n.leaf<-n.leaf
