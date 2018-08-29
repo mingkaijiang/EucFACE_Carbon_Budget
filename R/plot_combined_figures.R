@@ -119,6 +119,7 @@ p1 <- ggplot(uac1.tr, aes(Date))+
     #geom_ribbon(data=uac1.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
     geom_segment(data=uac1.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
     geom_point(data=uac1.tr, aes(y=avg, color=factor(Treatment)))+
+    #geom_smooth(method="loess", aes(y=Total_g_C_m2, color=factor(Ring)))+
     labs(x="Date", y=expression(paste(C[ua1], " (g C ", m^-2, ")")))+
     scale_x_date(date_breaks = "6 month", 
                  date_labels="%b-%Y",
@@ -140,9 +141,10 @@ p1 <- ggplot(uac1.tr, aes(Date))+
 
 ## uac2 plot
 p2 <- ggplot(uac2.tr, aes(Date))+
-    geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+    #geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
     #geom_segment(data=uac2.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
-    geom_line(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
+    geom_smooth(method="loess", aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
+    geom_point(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
     scale_x_date(date_breaks = "6 month", 
                  date_labels="%b-%Y",
@@ -217,19 +219,20 @@ woodc.tr$wood_pool <- woodc.tr$wood_pool/1000
 ## wood c plot
 p1 <- ggplot(woodc.tr, aes(x=as.character(Date),y=wood_pool,fill=Treatment))+
     geom_boxplot(position=position_dodge(1))+
-    geom_dotplot(binaxis='wood_pool', stackdir='center', 
-                 position=position_dodge(1), binwidth=30, dotsize=2)+
+    #geom_smooth(method='lm')+
+    #geom_dotplot(binaxis='wood_pool', stackdir='center', 
+    #             position=position_dodge(1), binwidth=30, dotsize=2)+
     labs(x="Date", y=expression(paste(C[wood], " (kg C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
-          legend.position="none")+
+          legend.position="right")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -295,12 +298,13 @@ p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as
                                               "Suppressed" = "brown"))
 
 
-grid.labs <- c("(a)", "(b)", "(c)", "(d)")
+#grid.labs <- c("(a)", "(b)", "(c)", "(d)")
+grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/Wood_C_time_series.pdf", width=12,height=14)
-plot_grid(p1, p2, p3, p4, labels="", ncol=1, align="v", axis = "l")
-grid.text(grid.labs,x = 0.1, y = c(0.97, 0.72, 0.48, 0.23),
+pdf("output/Wood_C_time_series.pdf", width=9,height=7)
+plot_grid(p1, p4, labels="", ncol=1, align="v", axis = "b")
+grid.text(grid.labs,x = 0.12, y = c(0.97, 0.46),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -472,12 +476,13 @@ soilr.tr <- make_treatment_effect_df(inDF=soil_respiration_flux, v=5, cond=1)
 
 ## plotting soil c pool
 p1 <- ggplot(soilc.tr, aes(Date))+
-    geom_ribbon(data=soilc.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-    geom_line(data=soilc.tr, aes(y=avg, color=factor(Treatment)))+
+    #geom_ribbon(data=soilc.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+    geom_point(data=soilc.tr, aes(y=avg, color=factor(Treatment)))+
+    geom_smooth(method='lm',aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
     scale_x_date(date_breaks = "6 month", 
                  date_labels="%b-%Y",
-                 limits = as.Date(c('2012-06-01','2015-05-01')))+
+                 limits = as.Date(c('2012-06-01','2015-01-01')))+
     ylim(c(0,6000))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -517,9 +522,10 @@ p2 <- ggplot(soil.bk.tr, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill
 grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/Soil_C_time_series.pdf", width=12,height=10)
-plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l")
-grid.text(grid.labs,x = 0.1, y = c(0.97, 0.48),
+pdf("output/Soil_C_time_series.pdf", width=8,height=6)
+plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
+          rel_heights=c(1,0.8))
+grid.text(grid.labs,x = 0.135, y = c(0.95, 0.4),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -1104,6 +1110,11 @@ dev.off()
 mic.tr <- make_treatment_effect_df(inDF=microbial_c_pool, v=3, cond=1)
 myc.tr <- make_treatment_effect_df(inDF=mycorrhizal_c_pool, v=3, cond=1)
 
+myc.prop <- (mycorrhizal_c_pool$mycorrhizal_c_pool[mycorrhizal_c_pool$Date=="2014-03-10"] / microbial_c_pool$microbial_pool[microbial_c_pool$Date=="2014-03-10"])
+myc.prop <- data.frame(c(1:6), myc.prop, c("eCO2", "aCO2", "aCO2", "eCO2", "eCO2", "aCO2"))
+colnames(myc.prop) <- c("Ring", "myc.prop", "Trt")
+
+
 ## Plot microbial
 p1 <- ggplot(mic.tr, aes(x=Date))+
     geom_point(data=mic.tr, aes(y=avg, color=factor(Treatment)))+
@@ -1111,14 +1122,14 @@ p1 <- ggplot(mic.tr, aes(x=Date))+
     labs(x="Date", y=expression(paste(C[mic], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
-          legend.position="none")+
+          legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1149,13 +1160,33 @@ p2 <- ggplot(myc.tr, aes(x=Date))+
                  date_labels="%b-%Y",
                  limits = as.Date(c('2012-07-01','2016-02-28')))
 
+p3 <- ggplot(myc.prop, aes(x=as.character(Ring), y=myc.prop*100, fill=factor(Trt)))+
+    geom_bar(stat = "identity")+
+    labs(x="Ring", y="Mycorrhizal proportion (%)")+
+    theme_linedraw() +
+    ylim(0, 15)+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+plot(p3)
+
 grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/microbial_and_mycorrhizal_pool.pdf", width=8,height=8)
-grid.newpage()
-grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), size="last"))
-grid.text(grid.labs,x = 0.14, y = c(0.97, 0.50),
+pdf("output/microbial_and_mycorrhizal_pool.pdf", width=9,height=6)
+#grid.newpage()
+#grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p3), size="last"))
+plot_grid(p1, p3, labels="", ncol=1, align="v", axis = "l")
+grid.text(grid.labs, x = 0.14, y = c(0.95, 0.45),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -1173,7 +1204,6 @@ decp.rt[decp.rt$Ring== 1|decp.rt$Ring==4|decp.rt$Ring==5,"Treatment"] <- "eCO2"
 ### Litter, CWD and insect
 lit.tr <- make_treatment_effect_df(inDF=leaflitter_pool, v=6, cond=1)
 cwd.tr <- make_treatment_effect_df(inDF=standing_dead_c_pool, v=3, cond=2)
-ins.tr <- make_treatment_effect_df(inDF=insect_pool, v=3, cond=1)
 
 ### Plot decomposition rate
 p1 <- ggplot(decp.rt, aes(x=Treatment,y=coef,fill=Treatment))+
@@ -1196,7 +1226,7 @@ p1 <- ggplot(decp.rt, aes(x=Treatment,y=coef,fill=Treatment))+
 ### Plot leaf litter production
 p2 <- ggplot(lit.prod.tr, aes(x=Treatment,y=leaf_flux,fill=Treatment))+
     geom_boxplot(position=position_dodge(1))+
-    labs(x="Treatment", y=expression(paste(NPP[leaf], " (g C ", m^-2, d^-1, ")")))+
+    labs(x="Treatment", y=expression(paste("Leaf litterfall (mg C ", m^-2, d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1243,5 +1273,150 @@ plot_grid(top_row, p3, ncol = 1, rel_heights = c(1, 1.2))
 grid.labs <- c("(a)", "(b)", "(c)")
 
 grid.text(grid.labs,x = c(0.14, 0.625, 0.13), y = c(0.97, 0.97, 0.50),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+
+###################---------------------######################
+### Insect pool
+insDF <- insect_pool
+insDF[insDF$Ring== 2|insDF$Ring==3|insDF$Ring==6,"Treatment"] <- "aCO2"
+insDF[insDF$Ring== 1|insDF$Ring==4|insDF$Ring==5,"Treatment"] <- "eCO2"
+
+plotDF1 <- summaryBy(insect_pool~Treatment, data=insDF, FUN=mean, na.rm=T, keep.names=T)
+plotDF2 <- summaryBy(insect_pool~Treatment, data=insDF, FUN=sd, na.rm=T, keep.names=T)
+plotDF1$sd <- plotDF2$insect_pool
+
+### Plot 
+p1 <- ggplot(plotDF1)+
+    geom_point(aes(x=Treatment, y=insect_pool, color=Treatment), size=1.5)+
+    geom_segment(data=plotDF1, aes(x=Treatment, y=insect_pool-sd, 
+                                   xend=Treatment, yend=insect_pool+sd, color=factor(Treatment)))+
+    labs(x="", y=expression(paste(C[ins], " (g C", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_discrete("", 
+                     labels=c(expression(aCO[2]),
+                              expression(eCO[2])))
+
+pdf("output/insect_pool.pdf", width=5,height=4)
+plot(p1)
+dev.off()
+
+###################---------------------######################
+### NPP leaf, twigs, bark and seed
+lit.prod.tr <- leaflitter_flux
+lit.prod.tr[lit.prod.tr$Ring== 2|lit.prod.tr$Ring==3|lit.prod.tr$Ring==6,"Treatment"] <- "aCO2"
+lit.prod.tr[lit.prod.tr$Ring== 1|lit.prod.tr$Ring==4|lit.prod.tr$Ring==5,"Treatment"] <- "eCO2"
+
+leaf.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=6, cond=1)
+seed.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=5, cond=1)
+bark.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=4, cond=1)
+twig.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=3, cond=1)
+
+
+### plot
+p1 <- ggplot(leaf.lit, aes(x=Date))+
+    geom_ribbon(data=leaf.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
+    labs(x="", y=expression(paste(NPP[ol], " (mg C ", m^-2, d^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p2 <- ggplot(twig.lit, aes(x=Date))+
+    geom_ribbon(data=twig.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
+    labs(x="", y=expression(paste(NPP[twig], " (mg C ", m^-2, d^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p3 <- ggplot(bark.lit, aes(x=Date))+
+    geom_ribbon(data=bark.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
+    labs(x="", y=expression(paste(NPP[bark], " (mg C ", m^-2, d^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p4 <- ggplot(seed.lit, aes(x=Date))+
+    geom_ribbon(data=seed.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
+    labs(x="Date", y=expression(paste(NPP[seed], " (mg C ", m^-2, d^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+
+grid.labs <- c("(a)", "(b)", "(c)", "(d)")
+
+## plot 
+pdf("output/NPP_litter.pdf", width=8,height=12)
+plot_grid(p1, p2, 
+          p3, p4, 
+          labels="", ncol=1, align="v", axis = "l", 
+          rel_heights=c(0.7, 0.7, 0.7, 1))
+grid.text(grid.labs,x = 0.15, y = c(0.97, 0.74, 0.5, 0.29),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()

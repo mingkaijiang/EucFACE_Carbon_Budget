@@ -194,7 +194,7 @@ biomass_increment_plot <- function() {
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_x_discrete("Pool variable", 
+        scale_x_discrete("Pools", 
                          labels=c(expression(C[cr]),
                                   #expression(C[cwd]),
                                   expression(C[fr]),

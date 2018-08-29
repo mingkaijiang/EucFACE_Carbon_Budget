@@ -11,7 +11,7 @@ combine_met_data <- function() {
     ### Update date column names to be consistent
     names(DF1)[1] <- names(DF2)[1] <- "Date"
     myDF <- merge(DF1, DF2, by.x="Date", all=T)
-    colnames(myDF) <- c("Date", "Tair", "RH", "PAR", "Pressure", "Wind", "Rain")
+    colnames(myDF) <- c("Date", "Tair", "RH", "PAR", "Pressure", "Wind", "PAR_W", "PAR_MJ_d", "Rain")
     myDF$Date <- as.Date(myDF$Date)
     
     ### Add month information
@@ -23,11 +23,11 @@ combine_met_data <- function() {
     myDF$PAR_MJ <- myDF$PAR_W * 3.6 / 1000
     
     ### compute monthly mean and sd
-    plotDF1 <- summaryBy(Tair+RH+PAR+Pressure+Wind~Month, data=myDF, FUN=mean, keep.names=T, na.rm=T)
+    plotDF1 <- summaryBy(Tair+RH+PAR_MJ+Pressure+Wind~Month, data=myDF, FUN=mean, keep.names=T, na.rm=T)
     plotDF2 <- summaryBy(Rain~Month, data=myDF, FUN=sum, keep.names=T, na.rm=T)
-    plotDF3 <- summaryBy(Tair+RH+PAR+Pressure+Wind~Month, data=myDF, FUN=sd, keep.names=T, na.rm=T)
+    plotDF3 <- summaryBy(Tair+RH+PAR_MJ+Pressure+Wind~Month, data=myDF, FUN=sd, keep.names=T, na.rm=T)
     
-    plotDF <- cbind(plotDF1, plotDF2$Rain, plotDF3$Tair, plotDF3$RH, plotDF3$PAR, plotDF3$Pressure, plotDF3$Wind)
+    plotDF <- cbind(plotDF1, plotDF2$Rain, plotDF3$Tair, plotDF3$RH, plotDF3$PAR_MJ, plotDF3$Pressure, plotDF3$Wind)
     colnames(plotDF) <- c("Date", "Tair", "RH", "PAR", "Pressure", "Wind", "Rain",
                           "Tair_sd", "RH_sd", "PAR_sd", "Pressure_sd", "Wind_sd")
     
