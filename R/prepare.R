@@ -30,7 +30,10 @@ pacman::p_load(dplyr,
                car,         # For stats
                lme4,        # For stats
                LMERConvenienceFunctions,  # For stats
-               multcomp)  # For stats
+               multcomp,    # For stats
+               lmerTest,    # For stats
+               pbkrtest,    # For stats
+               cowplot)    
 
 
 #### Loading constants
