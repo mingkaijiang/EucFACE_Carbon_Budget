@@ -31,7 +31,7 @@ pacman::p_load(dplyr,
                lme4,        # For stats
                LMERConvenienceFunctions,  # For stats
                multcomp,    # For stats
-               lmerTest,    # For stats
+               #lmerTest,    # For stats
                pbkrtest,    # For stats
                cowplot)    
 

@@ -40,7 +40,7 @@ make_overstorey_gpp_treatment_effect_statistics <- function(inDF, var.cond,
     
     ## Get year list and ring list
     yr.list <- unique(inDF$Yr)
-    tDF <- summaryBy(Value+Cov+Cov2~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
+    tDF <- summaryBy(Value+PreTrt+Cov+Cov2~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
     tDF$Yrf <- as.factor(tDF$Yr)
     
     ### Loop through data, return annual flux in g m-2 yr-1
@@ -51,10 +51,14 @@ make_overstorey_gpp_treatment_effect_statistics <- function(inDF, var.cond,
         }
     }
     
+    ### Add psyllid attack event
+    tDF$Psyllid <- "Before"
+    tDF$Psyllid[tDF$Yr >= 2016] <- "After"
+
     ### Analyse the variable model
-    ## model 1: no interaction, year as factor, ring random factor
-    int.m1 <- "non-interative"
-    modelt1 <- lmer(Value~Trt + Yrf + (1|Ring),data=tDF)
+    ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
+    int.m1 <- "non-interative_with_pretreatment"
+    modelt1 <- lmer(Value~Trt + Yrf + PreTrt + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -69,9 +73,9 @@ make_overstorey_gpp_treatment_effect_statistics <- function(inDF, var.cond,
     eff.conf1 <- confint(modelt1,"Trtele")
     
     ### Analyse the variable model
-    ## model 2: interaction, year as factor, ring random factor
-    int.m2 <- "interative"
-    modelt2 <- lmer(Value~Trt*Yrf + (1|Ring),data=tDF)
+    ## model 2: interaction, year as factor, ring random factor, with pre-treatment
+    int.m2 <- "interative_with_pretreatment"
+    modelt2 <- lmer(Value~Trt*Yrf+PreTrt + (1|Ring),data=tDF)
     
     ## anova
     m2.anova <- Anova(modelt2, test="F")
@@ -84,67 +88,91 @@ make_overstorey_gpp_treatment_effect_statistics <- function(inDF, var.cond,
     
     ## confidence interval 
     eff.conf2 <- confint(modelt2,"Trtele")
-
-    ### Analyse the variable model
-    ## model 3: no interaction, year as factor, no random effect
-    int.m3 <- "non-interative"
-    modelt3 <- lm(Value~Trt+Yrf,data=tDF)
     
-    ### anova
+    ### Analyse the variable model
+    ## model 3: no interaction, year as factor, soil P as covariate
+    int.m3 <- "non-interative_with_pretreatment_and_covariate"
+    modelt3 <- lmer(Value~Trt + Yrf + PreTrt + Cov + (1|Ring),data=tDF)
+
+    ## anova
     m3.anova <- Anova(modelt3, test="F")
     
-    ### Check ele - amb diff
+    ## Check ele - amb diff
     summ3 <- summary(glht(modelt3, linfct = mcp(Trt = "Tukey")))
     
-    ### average effect size
-    eff.size3 <- coef(modelt3)[[2]]
+    ## average effect size
+    eff.size3 <- coef(modelt3)[[1]][1,2]
     
-    ### confidence interval 
+    ## confidence interval 
     eff.conf3 <- confint(modelt3,"Trtele")
     
     ### Analyse the variable model
-    ## model 4: no interaction, year as factor, soil P as covariate
-    int.m4 <- "non-interative"
-    modelt4 <- lmer(Value~Trt+Yrf+Cov + (1|Ring),data=tDF)
-    
-    ## anova
-    m4.anova <- Anova(modelt4, test="F")
-    
-    ## Check ele - amb diff
-    summ4 <- summary(glht(modelt4, linfct = mcp(Trt = "Tukey")))
+    ## model 4: no interaction, year as factor, paired t-test
+    int.m4 <- "paired_t_test"
+    modelt4 <- t.test(Value~Trt, data=tDF, paired=T)
     
     ## average effect size
-    eff.size4 <- coef(modelt4)[[1]][1,2]
+    eff.size4 <- -modelt4$estimate[[1]]
     
     ## confidence interval 
-    eff.conf4 <- confint(modelt4,"Trtele")
-    
-    ### Analyse the variable model
-    ## model 5: interaction, year as factor, soil P as covariate
-    modelt5 <- t.test(Value~Trt, data=tDF, paired=T)
-    
-    library(afex)
-    mixed(Value ~ Trt + Yrf +Cov +Cov2+ (1|Ring), type=3,method="KR",data=tDF) 
-    
-    library(lmerTest)
-    options(contrasts=c('contr.sum', 'contr.poly'))
-    anova(lmer(Value ~ Trt + (1|Ring),data=tDF),ddf="Kenward-Roger")
-    
-    library(nlme)
-    fm1 <- lme(Value ~ Trt + Cov, random=~1|Ring, data=tDF)
-    fm2 <- gls(Value ~ Trt + Cov, correlation=corCompSymm(form=~1|Ring), data=tDF)
-    
-    summary(fm1)
-    summary(fm2)
+    eff.conf4 <- cbind(as.numeric(-modelt4$conf.int[2]),as.numeric(-modelt4$conf.int[1]))
     
     
-    ## pairing ring 1 and 2 only
-    testDF <- tDF[tDF$Ring %in% c(5,6),]
-    t.test(Value~Trt, data=testDF, paired=T)
+    m6 <- aov(Value~Trt*Yrf+PreTrt,data=tDF)
+    summary(m6)
+    model.tables(m6, "means")
+    TukeyHSD(m6)
+    
+    m7 <- aov(Value~Trt*Psyllid,data=tDF)
+    summary(m7)
+    model.tables(m7, "means")
+    TukeyHSD(m7)
+    
+    
+    tDF3 <- subset(tDF, Yr<=2015)
+    testDF2 <- summaryBy(Value~Yrf+Trt, data=tDF3, FUN=mean, keep.names=T)
+    m8 <- lm(Value~Trt+Yrf, data=tDF3, paired=T)
+    summary(m8)
+    
+    m9 <- lm(Value~Trt+Yrf, data=testDF2, paired=T)
+    summary(m9)
+    
+    m10 <- aov(Value~Trt+Psyllid + Error(Ring), data=tDF, paired=T)
+    summary(m10)
+    
+    m11 <- aov(Value ~ Trt*Psyllid + Error(Ring), data=tDF)
+    summary(m11)
+    
+    
+    ### Summary of findings on GPP:
+    ### method tested include: paired t-test of treatment means,
+    ###                        mixed linear model
+    ###                        two-way anova
+    ### variables tested include: CO2 treatment, psyllid attach year, year, soil P as covariate
+    ### non-statistically significant treatment effect across all methods
+    ### But:
+    ### 1. lower bound of standard error is above 0 for linear model of treatment means
+    ### 2. Before psyllid attack, ambient is consistently lower than elevated treatment (treatment means),
+    ###    After psyllid attack (2016), ambient is higher than elevated treatment (treatment means).
+    ### 3. Psyllid attack is marginally significant
+    ### 4. Year can be marginally significant
+    ### So the summary is that, eCO2 does not have a statistically significant effect on GPP, 
+    ### and the reason we did not detect a CO2 treatment effect is multitude: complicated by biological disturbance,
+    ### inter-annual variability, and inter-treatment variability. 
+    ### Question is, is this argument defensible (alternatively, what to show to make this argument defensible)? 
+    ### And, what implication this might have for the following C budget? And, what message to tell?
+    ###
+    ### What to show: descriptive texts in the manuscript and refer to supplementary analyses
+    ### Implications for the C budget: repeat the same analyses for all other variables and hopefully message is similar throughout
+    ### Message: Natural experiment is complicated,
+    ###          the capacity for EucFACE to respond more positively to eCO2 is constrained by multiple factors,
+    ###          Future eCO2 probably won't cause enhanced C sequestration in similar mature forests
+    ### Problem with introducing inter-annual variability or psyllid attack is that, we don't have good temporal coverage for all data. 
+    ### Given with what we have, we either have to gap-fill missing data (data assimilation), or avoid emphasizing temporal variation. 
     
     
     ### conditional output
-    if (stat.model == "no_interaction") {
+    if (stat.model == "no_interaction_with_pretreatment") {
         int.m <- int.m1
         modelt <- modelt1
         m.anova <- m1.anova
