@@ -25,57 +25,56 @@ generate_stats_abs_covariate <- function(stat.model) {
     
     #### Work on each variable per time
     ### LAI
-    s.lai <- treatment_effect_abs_statistics(inDF=lai_variable, 
-                                         var.cond="pool", var.col=3,
-                                         date.as.factor=T)
-    
-    ### SLA 
-    s.sla <- treatment_effect_abs_statistics(inDF=sla_variable, 
-                                         var.cond="pool", var.col=3,
-                                         date.as.factor=T)
+   # s.lai <- treatment_effect_abs_statistics(inDF=lai_variable, 
+   #                                      var.cond="pool", var.col=3,
+   #                                      date.as.factor=T)
+   # 
+   # ### SLA 
+   # s.sla <- treatment_effect_abs_statistics(inDF=sla_variable, 
+   #                                      var.cond="pool", var.col=3,
+   #                                      date.as.factor=T)
     
     ### Soil C
-    s.soilc <- make_soilc_treatment_effect_statistics(inDF=soil_c_pool, 
+    s.soilc <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
                                                       var.cond="pool", var.col=3,
                                                       date.as.factor=T,
                                                       stat.model="no_interaction_with_pretreatment")
     
     ### Leaf C
-    s.leafc <- treatment_effect_abs_statistics(inDF=leaf_c_pool, 
-                                           var.cond="pool", var.col=3,
-                                           date.as.factor=T)
+    s.leafc <- make_leafc_treatment_abs_effect_statistics(inDF=leaf_c_pool, 
+                                                          var.cond="pool", var.col=3,
+                                                          date.as.factor=T,
+                                                          stat.model="no_interaction_with_covariate")
     
     ### Wood C pool
-    s.woodc <- treatment_effect_abs_statistics(inDF=wood_c_pool, 
-                                              var.cond="pool", var.col=3,
-                                              date.as.factor=T) 
+    s.woodc <- make_woodc_treatment_abs_effect_statistics(inDF=wood_c_pool, 
+                                                          var.cond="pool", var.col=3,
+                                                          date.as.factor=T,
+                                                          stat.model="no_interaction_with_covariate") 
     
     ### Fineroot C pool
-    s.frc <- treatment_effect_abs_statistics(inDF=fineroot_c_pool, 
-                                         var.cond="pool", var.col=3,
-                                         date.as.factor=T)
+    s.frc <- make_frootc_treatment_abs_effect_statistics(inDF=fineroot_c_pool, 
+                                                         var.cond="pool", var.col=3,
+                                                         date.as.factor=T,
+                                                         stat.model="no_interaction_with_covariate")
     
     ### Coarseroot C pool
-    s.crc <- treatment_effect_abs_statistics(inDF=coarse_root_c_pool_1, 
+    s.crc <- make_crootc_treatment_abs_effect_statistics(inDF=coarse_root_c_pool_1, 
                                             var.cond="pool", var.col=3,
-                                            date.as.factor=T)
+                                            date.as.factor=T,
+                                            stat.model="no_interaction_with_covariate")
     
     ### Understorey aboveground C pool
-    s.uac <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 
-                                         var.cond="pool", var.col=5,
-                                         date.as.factor=T)
     
-    s.uac.live <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 
-                                         var.cond="pool", var.col=3,
-                                         date.as.factor=T)
-    
-    s.uac.dead <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool, 
-                                         var.cond="pool", var.col=4,
-                                         date.as.factor=T)
-    
-    s.uac2 <- treatment_effect_abs_statistics(inDF=understorey_aboveground_c_pool_2, 
-                                         var.cond="pool", var.col=3,
-                                         date.as.factor=T)
+    #s.uac <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
+    #                                     var.cond="pool", var.col=5,
+    #                                     date.as.factor=T,
+    #                                     stat.model="no_interaction_with_covariate")
+    #
+    #s.uac2 <- make_uac2_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+    #                                     var.cond="pool", var.col=3,
+    #                                     date.as.factor=T,
+    #                                     stat.model="no_interaction_with_covariate")
     
     ### Microbial C pool
     s.micc <- treatment_effect_abs_statistics(inDF=microbial_c_pool, 
@@ -103,13 +102,13 @@ generate_stats_abs_covariate <- function(stat.model) {
                                               date.as.factor=T)
     
     ### Overstorey GPP
-    s.o.gpp <- make_overstorey_gpp_treatment_effect_statistics(inDF=overstorey_gpp_flux, 
+    s.o.gpp <- make_overstorey_gpp_treatment_abs_effect_statistics(inDF=overstorey_gpp_flux, 
                                                                var.cond="ann.flux", var.col=3,
                                                                date.as.factor=T,
                                                                stat.model="no_interaction_with_pretreatment")
     
     ### Understorey GPP
-    s.u.gpp <- make_understorey_gpp_treatment_effect_statistics(inDF=understorey_gpp_flux, 
+    s.u.gpp <- make_understorey_gpp_treatment_abs_effect_statistics(inDF=understorey_gpp_flux, 
                                                                 var.cond="ann.flux", var.col=3,
                                                                 date.as.factor=T,
                                                                 stat.model="no_interaction_with_pretreatment")

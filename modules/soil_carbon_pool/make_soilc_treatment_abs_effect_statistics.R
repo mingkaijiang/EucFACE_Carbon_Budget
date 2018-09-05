@@ -1,4 +1,4 @@
-make_soilc_treatment_effect_statistics <- function(inDF, var.cond, 
+make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                    var.col, date.as.factor,
                                                    stat.model) {
     

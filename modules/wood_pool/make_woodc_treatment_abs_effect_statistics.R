@@ -1,4 +1,4 @@
-make_leafc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+make_woodc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                    var.col, date.as.factor,
                                                    stat.model) {
     
@@ -42,7 +42,7 @@ make_leafc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include covariate
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(Value~Trt + Datef + Cov + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Datef +Cov + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
