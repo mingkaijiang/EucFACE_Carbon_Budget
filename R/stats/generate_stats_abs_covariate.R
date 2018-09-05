@@ -35,9 +35,10 @@ generate_stats_abs_covariate <- function(stat.model) {
                                          date.as.factor=T)
     
     ### Soil C
-    s.soilc <- treatment_effect_abs_statistics(inDF=soil_c_pool, 
-                                           var.cond="pool", var.col=3,
-                                           date.as.factor=T)
+    s.soilc <- make_soilc_treatment_effect_statistics(inDF=soil_c_pool, 
+                                                      var.cond="pool", var.col=3,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction_with_pretreatment")
     
     ### Leaf C
     s.leafc <- treatment_effect_abs_statistics(inDF=leaf_c_pool, 
@@ -105,12 +106,14 @@ generate_stats_abs_covariate <- function(stat.model) {
     s.o.gpp <- make_overstorey_gpp_treatment_effect_statistics(inDF=overstorey_gpp_flux, 
                                                                var.cond="ann.flux", var.col=3,
                                                                date.as.factor=T,
-                                                               stat.model="no_interaction")
+                                                               stat.model="no_interaction_with_pretreatment")
     
     ### Understorey GPP
-    s.u.gpp <- treatment_effect_abs_statistics(inDF=understorey_gpp_flux, 
-                                               var.cond="ann.flux", var.col=3,
-                                               date.as.factor=T)
+    s.u.gpp <- make_understorey_gpp_treatment_effect_statistics(inDF=understorey_gpp_flux, 
+                                                                var.cond="ann.flux", var.col=3,
+                                                                date.as.factor=T,
+                                                                stat.model="no_interaction_with_pretreatment")
+    
     ### Overstorey Leaf respiration
     s.rleaf <- treatment_effect_abs_statistics(inDF=overstorey_leaf_respiration_flux, 
                                                var.cond="ann.flux", var.col=3,

@@ -1,4 +1,4 @@
-make_overstorey_gpp_flux_2 <- function() {
+make_overstorey_gpp_flux <- function() {
     ### read in MAESPA GPP output
     inDF <- read.csv("data/maespa.year.ring.csv")
     

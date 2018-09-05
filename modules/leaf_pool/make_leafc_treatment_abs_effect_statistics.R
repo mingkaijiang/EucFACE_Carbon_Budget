@@ -1,18 +1,18 @@
-make_overstorey_gpp_treatment_effect_statistics <- function(inDF, var.cond, 
-                                                            var.col, date.as.factor,
-                                                            stat.model) {
-
-    ### Pass in covariate values (assuming 1 value for each ring)
-    covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
-    covDF$Ring <- as.numeric(covDF$Ring)
-    inDF$Ring <- as.numeric(inDF$Ring)
+make_leafc_treatment_effect_statistics <- function(inDF, var.cond, 
+                                                   var.col, date.as.factor,
+                                                   stat.model) {
     
-    covDF2 <- summaryBy(p_mineralization_mg_m2_d~ring, data=soil_p_mineralization, FUN=mean, keep.names=T, na.rm=T)
-    covDF2$Ring <- as.numeric(covDF2$ring)
+    ### Read initial basal area data
+    f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
+    f12$ba <- ((f12$X20.09.2012/2)^2) * pi
+    baDF <- summaryBy(ba~Ring, data=f12, FUN=sum, na.rm=T, keep.names=T)
+    
+    ### return in unit of cm2/m2, which is m2 ha-1
+    baDF$ba_ground_area <- baDF$ba / ring_area
 
+    ### pass in covariate
     for (i in 1:6) {
-        inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
-        inDF$Cov2[inDF$Ring==i] <- covDF2$p_mineralization_mg_m2_d[covDF2$Ring==i]
+        inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
     }
     
     #### Assign amb and ele factor
@@ -26,39 +26,23 @@ make_overstorey_gpp_treatment_effect_statistics <- function(inDF, var.cond,
     
     #### Assign factors
     inDF$Trt <- as.factor(inDF$Trt)
-    inDF$Yr <- year(inDF$Date)
     inDF$Ring <- as.factor(inDF$Ring)
     inDF$Datef <- as.factor(inDF$Date)
 
     #### Update variable name so that this function can be used across different variables
     colnames(inDF)[var.col] <- "Value"
     
-    #### dataframe with annual totals in g m-2 yr-1
-    ###------ Treatment interacting with date, or not
-    ###------ Ring random factor
-    ###------ Unit g m-2 yr-1
-    
-    ## Get year list and ring list
-    yr.list <- unique(inDF$Yr)
-    tDF <- summaryBy(Value+PreTrt+Cov+Cov2~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
-    tDF$Yrf <- as.factor(tDF$Yr)
-    
-    ### Loop through data, return annual flux in g m-2 yr-1
-    for (i in 1:6) {
-        for (j in yr.list) {
-            ### summed of all available data within a year
-            tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- inDF$Value[inDF$Ring == i & inDF$Yr == j]
-        }
-    }
+    #### dataframe 
+    tDF <- inDF
     
     ### Add psyllid attack event
     tDF$Psyllid <- "Before"
     tDF$Psyllid[tDF$Yr >= 2016] <- "After"
 
     ### Analyse the variable model
-    ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
-    int.m1 <- "non-interative_with_pretreatment"
-    modelt1 <- lmer(Value~Trt + Yrf + PreTrt + (1|Ring),data=tDF)
+    ## model 1: no interaction, year as factor, ring random factor, include covariate
+    int.m1 <- "non-interative_with_covariate"
+    modelt1 <- lmer(Value~Trt + Datef + Cov + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
