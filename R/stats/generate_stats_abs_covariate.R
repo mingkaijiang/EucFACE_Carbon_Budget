@@ -24,16 +24,6 @@ generate_stats_abs_covariate <- function(stat.model) {
 
     
     #### Work on each variable per time
-    ### LAI
-   # s.lai <- treatment_effect_abs_statistics(inDF=lai_variable, 
-   #                                      var.cond="pool", var.col=3,
-   #                                      date.as.factor=T)
-   # 
-   # ### SLA 
-   # s.sla <- treatment_effect_abs_statistics(inDF=sla_variable, 
-   #                                      var.cond="pool", var.col=3,
-   #                                      date.as.factor=T)
-    
     ### Soil C
     s.soilc <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
                                                           var.cond="pool", var.col=3,
@@ -87,8 +77,6 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                         date.as.factor=T,
                                                         stat.model="no_interaction_with_pretreatment")
     
-    ### Standing dead C pool
-    
     
     ### Leaf litter C pool
     s.litc <- make_litc_treatment_abs_effect_statistics(inDF=leaflitter_pool, 
@@ -115,16 +103,16 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                                     stat.model="no_interaction_with_pretreatment")
     
     ### Overstorey Leaf respiration
-    #s.rleaf <- make_overstorey_ra_leaftreatment_abs_effect_statistics(inDF=overstorey_leaf_respiration_flux, 
-    #                                                                  var.cond="ann.flux", var.col=3,
-    #                                                                  date.as.factor=T,
-    #                                                                  stat.model="no_interaction_with_pretreatment")
+    s.rleaf <- make_overstorey_ra_leaf_treatment_abs_effect_statistics(inDF=overstorey_leaf_respiration_flux, 
+                                                                      var.cond="ann.flux", var.col=3,
+                                                                      date.as.factor=T,
+                                                                      stat.model="no_interaction_with_covariate")
     
     ### Wood respiration
     s.rwood <- treatment_effect_abs_statistics(inDF=wood_respiration_flux, 
                                                var.cond="flux", var.col=5,
                                                date.as.factor=T,
-                                               stat.model="no_interaction_with_covariate")
+                                               stat.model="paired_t_test")
     
     ### Root respiration
     s.rroot <- make_ra_root_treatment_abs_effect_statistics(inDF=root_respiration_flux, 
@@ -133,93 +121,110 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                             stat.model="no_interaction_with_covariate")
     
     ### Understorey respiration
-    s.rund <- treatment_effect_abs_statistics(inDF=understorey_respiration_flux, 
-                                          var.cond="flux", var.col=5,
-                                          date.as.factor=T)
+    s.rund <- make_ra_und_treatment_abs_effect_statistics(inDF=understorey_respiration_flux, 
+                                                          var.cond="flux", var.col=5,
+                                                          date.as.factor=T,
+                                                          stat.model="no_interaction_with_covariate")
     
     ### Frass production
-    s.fras <- treatment_effect_abs_statistics(inDF=frass_production_flux, 
-                                             var.cond="flux", var.col=5,
-                                             date.as.factor=T)
+    s.fras <- make_frass_treatment_abs_effect_statistics(inDF=frass_production_flux, 
+                                                         var.cond="flux", var.col=5,
+                                                         date.as.factor=T,
+                                                         stat.model="no_interaction_with_covariate")
     
     ### herbivory leaf consumption flux
-    s.hb.cons <- treatment_effect_abs_statistics(inDF=herbivory_leaf_consumption_flux, 
-                                             var.cond="flux", var.col=5,
-                                             date.as.factor=T)
+    s.hb.cons <- make_hb_cons_treatment_abs_effect_statistics(inDF=herbivory_leaf_consumption_flux, 
+                                                              var.cond="flux", var.col=5,
+                                                              date.as.factor=T,
+                                                              stat.model="no_interaction_with_covariate")
     
     ### Herbivory respiration
-    s.rhb <- treatment_effect_abs_statistics(inDF=herbivory_respiration_flux, 
-                                         var.cond="flux", var.col=5,
-                                         date.as.factor=T)
+    s.rhb <- make_r_hb_treatment_abs_effect_statistics(inDF=herbivory_respiration_flux, 
+                                                       var.cond="flux", var.col=5,
+                                                       date.as.factor=T,
+                                                       stat.model="no_interaction_with_covariate")
     
     ### Lerp production
-    s.lerp.prod <- treatment_effect_abs_statistics(inDF=lerp_production_flux, 
-                                               var.cond="flux", var.col=5,
-                                               date.as.factor=T)
+    s.lerp.prod <- make_lp_treatment_abs_effect_statistics(inDF=lerp_production_flux, 
+                                                           var.cond="flux", var.col=5,
+                                                           date.as.factor=T,
+                                                           stat.model="no_interaction_with_covariate")
     
     ### soil respiration
-    s.rsoil <- treatment_effect_abs_statistics(inDF=soil_respiration_flux, 
-                                              var.cond="flux", var.col=5,
-                                              date.as.factor=T)
+    s.rsoil <- make_rsoil_treatment_effect_abs_statistics(inDF=soil_respiration_flux, 
+                                                          var.cond="flux", var.col=5,
+                                                          date.as.factor=T,
+                                                          stat.model="no_interaction_with_covariate")
     
     ### DOC leaching
-    s.doc <- treatment_effect_abs_statistics(inDF=doc_leaching_flux, 
-                                         var.cond="flux", var.col=5,
-                                         date.as.factor=T)
+    s.doc <- make_doc_treatment_abs_effect_statistics(inDF=doc_leaching_flux, 
+                                                      var.cond="flux", var.col=5,
+                                                      date.as.factor=T,
+                                                      stat.model="interaction")
     
     ### CH4 uptake - un-gap filled data
-    s.ch4 <- treatment_effect_abs_statistics(inDF=methane_c_flux, 
-                                         var.cond="flux", var.col=3,
-                                         date.as.factor=T)
+    s.ch4 <- make_ch4_treatment_abs_effect_statistics(inDF=methane_c_flux, 
+                                                      var.cond="flux", var.col=3,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction")
     
     ### Leaflitter flux
-    s.lit.leaf <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
-                                                  var.cond="flux", var.col=6,
-                                                  date.as.factor=T)  
+    s.lit.leaf <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                                   var.cond="flux", var.col=6,
+                                                                   date.as.factor=T,
+                                                                   stat.model="paired_t_test")  
     
     ### twig litter flux
-    s.lit.twig <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
-                                             var.cond="flux", var.col=3,
-                                             date.as.factor=T)
+    s.lit.twig <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                                   var.cond="flux", var.col=3,
+                                                                   date.as.factor=T,
+                                                                   stat.model="paired_t_test")
     
     ### bark litter flux
-    s.lit.bark <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
-                                              var.cond="flux", var.col=4,
-                                              date.as.factor=T) 
+    s.lit.bark <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                                   var.cond="flux", var.col=4,
+                                                                   date.as.factor=T,
+                                                                   stat.model="paired_t_test") 
     
     ### Seed litter flux
-    s.lit.seed <- treatment_effect_abs_statistics(inDF=leaflitter_flux, 
-                                              var.cond="flux", var.col=5,
-                                              date.as.factor=T)
+    s.lit.seed <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                                   var.cond="flux", var.col=5,
+                                                                   date.as.factor=T,
+                                                                   stat.model="paired_t_test")
     
     ### Wood production flux
-    s.wood.prod <- treatment_effect_abs_statistics(inDF=wood_production_flux, 
+    s.wood.prod <- make_wood_prod_treatment_abs_effect_statistics(inDF=wood_production_flux, 
                                                var.cond="flux", var.col=5,
-                                               date.as.factor=T) 
+                                               date.as.factor=T,
+                                               stat.model="no_interaction") 
     
     ### Fineroot production flux
-    s.froot.prod <- treatment_effect_abs_statistics(inDF=fineroot_production_flux, 
-                                                var.cond="flux", var.col=5,
-                                                date.as.factor=T) 
+    s.froot.prod <- make_froot_prod_treatment_abs_effect_statistics(inDF=fineroot_production_flux, 
+                                                                    var.cond="flux", var.col=5,
+                                                                    date.as.factor=T,
+                                                                    stat.model="no_interaction") 
     
     ### Coarseroot production
-    s.croot.prod <- treatment_effect_abs_statistics(inDF=coarse_root_production_flux_1, 
-                                                var.cond="flux", var.col=5,
-                                                date.as.factor=T)
+    s.croot.prod <- make_croot_prod_treatment_abs_effect_statistics(inDF=coarse_root_production_flux_1, 
+                                                                    var.cond="flux", var.col=5,
+                                                                    date.as.factor=T,
+                                                                    stat.model="no_interaction")
     
     ### Understorey aboveground production
-    s.und.prod <- treatment_effect_abs_statistics(inDF=understorey_aboveground_production_flux, 
-                                              var.cond="flux", var.col=5,
-                                              date.as.factor=T)
+    s.und.prod <- make_und_prod_treatment_abs_effect_statistics(inDF=understorey_aboveground_production_flux, 
+                                                                var.cond="flux", var.col=5,
+                                                                date.as.factor=T,
+                                                                stat.model="no_interaction")
     
     ### Rh respiration
-    s.rh <- treatment_effect_abs_statistics(inDF=heterotrophic_respiration_flux, 
-                                        var.cond="flux", var.col=5,
-                                        date.as.factor=T) 
+    s.rh <- make_rh_treatment_abs_effect_statistics(inDF=heterotrophic_respiration_flux, 
+                                                    var.cond="flux", var.col=5,
+                                                    date.as.factor=T,
+                                                    stat.model="no_interaction_with_covariate") 
     
     #### Create a output table to store all stats
-    var.list <- c("lai", "sla","soil_c","leaf_c","wood_c","fineroot_c",
-                  "coarseroot_c","understorey_c","understorey_c_2","understorey_c_live","understorey_c_dead",
+    var.list <- c("soil_c","leaf_c","wood_c","fineroot_c",
+                  "coarseroot_c","understorey_c","understorey_c_2",
                   "microbial_c","mycorrhizal_c","litter_c","insect_c","cwd_c",
                   "root_respiration","understorey_respiration",
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
@@ -263,8 +268,6 @@ generate_stats_abs_covariate <- function(stat.model) {
     }
     
     #### Assign value to out
-    out[out$Variable=="lai",2:17] <- assign_stats(s.var=s.lai)
-    out[out$Variable=="sla",2:17] <- assign_stats(s.var=s.sla)
     out[out$Variable=="soil_c",2:17] <- assign_stats(s.var=s.soilc)
     out[out$Variable=="leaf_c",2:17] <- assign_stats(s.var=s.leafc)
     out[out$Variable=="wood_c",2:17] <- assign_stats(s.var=s.woodc)
@@ -272,13 +275,10 @@ generate_stats_abs_covariate <- function(stat.model) {
     out[out$Variable=="coarseroot_c",2:17] <- assign_stats(s.var=s.crc)
     out[out$Variable=="understorey_c",2:17] <- assign_stats(s.var=s.uac)
     out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
-    out[out$Variable=="understorey_c_live",2:17] <- assign_stats(s.var=s.uac.live)
-    out[out$Variable=="understorey_c_dead",2:17] <- assign_stats(s.var=s.uac.dead)
     out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
     out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
     out[out$Variable=="litter_c",2:17] <- assign_stats(s.var=s.litc)
     out[out$Variable=="insect_c",2:17] <- assign_stats(s.var=s.insc)
-    out[out$Variable=="cwd_c",2:17] <- assign_stats(s.var=s.sdc)
     out[out$Variable=="wood_respiration",2:17] <- assign_stats(s.var=s.rwood)
     out[out$Variable=="root_respiration",2:17] <- assign_stats(s.var=s.rroot)
     out[out$Variable=="understorey_respiration",2:17] <- assign_stats(s.var=s.rund)

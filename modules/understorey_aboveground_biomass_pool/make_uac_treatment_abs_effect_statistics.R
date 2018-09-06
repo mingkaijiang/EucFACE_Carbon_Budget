@@ -1,7 +1,6 @@
 make_uac_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                    var.col, date.as.factor,
                                                    stat.model) {
-    
     ### Read initial basal area data
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     f12$ba <- ((f12$X20.09.2012/2)^2) * pi
@@ -9,7 +8,7 @@ make_uac_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### return in unit of cm2/m2, which is m2 ha-1
     baDF$ba_ground_area <- baDF$ba / ring_area
-
+    
     ### pass in covariate
     for (i in 1:6) {
         inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]

@@ -1,7 +1,7 @@
-make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                                var.col, date.as.factor,
-                                                                stat.model) {
-
+make_ra_und_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+                                                         var.col, date.as.factor,
+                                                         stat.model) {
+    
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
         if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {
@@ -33,8 +33,10 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     ### Loop through data, return annual flux in g m-2 yr-1
     for (i in 1:6) {
         for (j in yr.list) {
-            ### summed of all available data within a year
-            tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- inDF$Value[inDF$Ring == i & inDF$Yr == j]
+            ### averaged over days within a year 
+            tmp <- with(inDF[inDF$Ring == i & inDF$Yr == j, ],
+                        sum(Value*ndays, na.rm=T)/sum(ndays, na.rm=T)) * 365 / 1000
+            tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- tmp
         }
     }
     
@@ -73,7 +75,7 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor
     int.m1 <- "non-interative"
-    modelt1 <- lmer(Value~Trt + Yrf + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + (1|Ring), data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -88,7 +90,7 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     eff.conf1 <- confint(modelt1,"Trtele")
     
     ### Analyse the variable model
-    ## model 2: interaction, year as factor, ring random factor, with pre-treatment
+    ## model 2: interaction, year as factor, ring random factor
     int.m2 <- "interative"
     modelt2 <- lmer(Value~Trt*Yrf + (1|Ring),data=tDF)
     
@@ -105,7 +107,7 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     eff.conf2 <- confint(modelt2,"Trtele")
     
     ### Analyse the variable model
-    ## model 3: no interaction, year as factor, soil P as covariate
+    ## model 3: no interaction, year as factor, covariate
     int.m3 <- "non-interative_with_covariate"
     modelt3 <- lmer(Value~Trt + Yrf + Cov + (1|Ring),data=tDF)
 

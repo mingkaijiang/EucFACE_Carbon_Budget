@@ -1,7 +1,7 @@
-make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                                var.col, date.as.factor,
-                                                                stat.model) {
-
+make_ra_wood_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+                                                         var.col, date.as.factor,
+                                                         stat.model) {
+    
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
         if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {
@@ -33,8 +33,10 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     ### Loop through data, return annual flux in g m-2 yr-1
     for (i in 1:6) {
         for (j in yr.list) {
-            ### summed of all available data within a year
-            tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- inDF$Value[inDF$Ring == i & inDF$Yr == j]
+            ### averaged over days within a year 
+            tmp <- with(inDF[inDF$Ring == i & inDF$Yr == j, ],
+                        sum(Value*ndays, na.rm=T)/sum(ndays, na.rm=T)) * 365 / 1000
+            tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- tmp
         }
     }
     
@@ -51,20 +53,6 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
         tDF$Cov[tDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
     }
     
-    ### Pass in covariate values (assuming 1 value for each ring)
-    cov2 <- read.csv("R_other/VOC_met_data.csv")
-    cov2$Date <- as.Date(as.character(cov2$DateHour), format="%Y-%m-%d")
-    cov2$Year <- year(cov2$Date)
-    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Year, data=cov2, FUN=mean, keep.names=T, na.rm=T)
-    
-    for (j in unique(tDF$Yr)) {
-        tDF$Cov2[tDF$Ring==1&tDF$Yr==j] <- covDF2$SM_R1[covDF2$Year==j]
-        tDF$Cov2[tDF$Ring==2&tDF$Yr==j] <- covDF2$SM_R2[covDF2$Year==j]
-        tDF$Cov2[tDF$Ring==3&tDF$Yr==j] <- covDF2$SM_R3[covDF2$Year==j]
-        tDF$Cov2[tDF$Ring==4&tDF$Yr==j] <- covDF2$SM_R4[covDF2$Year==j]
-        tDF$Cov2[tDF$Ring==5&tDF$Yr==j] <- covDF2$SM_R5[covDF2$Year==j]
-        tDF$Cov2[tDF$Ring==6&tDF$Yr==j] <- covDF2$SM_R6[covDF2$Year==j]
-    }
     
     ### Add psyllid attack event
     tDF$Psyllid <- "Before"
@@ -73,7 +61,7 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor
     int.m1 <- "non-interative"
-    modelt1 <- lmer(Value~Trt + Yrf + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + (1|Ring), data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -88,7 +76,7 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     eff.conf1 <- confint(modelt1,"Trtele")
     
     ### Analyse the variable model
-    ## model 2: interaction, year as factor, ring random factor, with pre-treatment
+    ## model 2: interaction, year as factor, ring random factor
     int.m2 <- "interative"
     modelt2 <- lmer(Value~Trt*Yrf + (1|Ring),data=tDF)
     
