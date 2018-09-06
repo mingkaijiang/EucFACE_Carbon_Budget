@@ -1,27 +1,4 @@
 generate_stats_abs_covariate <- function(stat.model) {
-    #### Call run.R program
-    #source("run.R")
-    
-    #### Decision on what type of model to run
-    #stat.model = "no_interaction"
-
-    #### Call the stats function
-    #### this compares eC/  in terms of absolute difference.
-    #### We can call dynamic model, meaning the model determines whether to consider
-    #### interaction effect or not, or
-    #### "no-interaction" just considers a simple model without look at interaction look
-    #### "interaction" is a model with interaction considered.
-    #### default model is a model without random effect, assuming no interaction. 
-    if (stat.model == "dynamic") {
-        source("R/stats/treatment_effect_abs_statistics_dynamic_covariate.R")
-    } else if (stat.model == "no_interaction") {
-        source("R/stats/treatment_effect_abs_statistics_no_interaction_covariate.R")
-    } else if (stat.model == "interaction") {
-        source("R/stats/treatment_effect_abs_statistics_interaction_covariate.R")
-    } else {
-        source("R/stats/treatment_effect_abs_statistics_no_random_effect_covariate.R")
-    }
-
     
     #### Work on each variable per time
     ### Soil C
@@ -85,7 +62,7 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                         stat.model="no_interaction_with_covariate_and_covariate")
     
     ### Insect pool
-    s.insc <- make_insc_treatment_abs_effect_abs_statistics(inDF=insect_pool, 
+    s.insc <- make_insc_treatment_abs_effect_statistics(inDF=insect_pool, 
                                                             var.cond="pool", var.col=3,
                                                             date.as.factor=T,
                                                             stat.model="no_interaction_with_covariate_and_covariate")

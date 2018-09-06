@@ -12,7 +12,7 @@ make_crootc_treatment_abs_effect_statistics <- function(inDF, var.cond,
 
     ### pass in covariate
     for (i in 1:6) {
-        inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
+        inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
     }
     
     #### Assign amb and ele factor

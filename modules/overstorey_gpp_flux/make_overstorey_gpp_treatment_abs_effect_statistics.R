@@ -7,25 +7,13 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     covDF$Ring <- as.numeric(covDF$Ring)
     inDF$Ring <- as.numeric(inDF$Ring)
     
-    cov2 <- read.csv("R_other/VOC_met_data.csv")
-    cov2$Date <- as.Date(as.character(cov2$DateHour), format="%Y-%m-%d")
-    cov2$Year <- year(cov2$Date)
-    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Year, data=cov2, FUN=mean, keep.names=T, na.rm=T)
-
+    #cov2 <- lai_variable[lai_variable$Date<="2013-01-01",]
+    cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
+    covDF2 <- summaryBy(lai_variable~Ring, data=cov2, FUN=mean, keep.names=T)
     for (i in 1:6) {
         inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
+        inDF$Cov2[inDF$Ring==i] <- covDF2$lai_variable[covDF2$Ring==i]
     }
-    
-    for (j in 2013:2016) {
-        inDF$Cov2[inDF$Ring==1&inDF$year==j] <- covDF2$SM_R1[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==2&inDF$year==j] <- covDF2$SM_R2[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==3&inDF$year==j] <- covDF2$SM_R3[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==4&inDF$year==j] <- covDF2$SM_R4[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==5&inDF$year==j] <- covDF2$SM_R5[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==6&inDF$year==j] <- covDF2$SM_R6[covDF2$Year==j]
-        
-    }
-    
     
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
@@ -70,7 +58,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_pretreatment"
-    modelt1 <- lmer(Value~Trt + Yrf + PreTrt + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -87,7 +75,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 2: interaction, year as factor, ring random factor, with pre-treatment
     int.m2 <- "interative_with_pretreatment"
-    modelt2 <- lmer(Value~Trt*Yrf+PreTrt + (1|Ring),data=tDF)
+    modelt2 <- lmer(Value~Trt*Yrf+Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m2.anova <- Anova(modelt2, test="F")

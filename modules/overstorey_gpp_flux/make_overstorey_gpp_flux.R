@@ -10,8 +10,8 @@ make_overstorey_gpp_flux <- function() {
     inDF$Ring <- gsub("R5","5", inDF$Ring)
     inDF$Ring <- gsub("R6","6", inDF$Ring)
     
-    outDF1 <- summaryBy(GPP.sum.550~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
-    outDF2 <- summaryBy(GPP.sum.400~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
+    outDF1 <- summaryBy(GPP.sum.400~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
+    outDF2 <- summaryBy(GPP.sum.550~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
     colnames(outDF1) <- colnames(outDF2) <- c("year", "Ring", "GPP")
     
     ### select only the real treatment data
@@ -20,13 +20,6 @@ make_overstorey_gpp_flux <- function() {
             outDF2$GPP[outDF2$Ring==i&outDF2$year==j] <- outDF1$GPP[outDF1$Ring==i&outDF1$year==j]
         }
     }
-    
-    ### add "pre-treatment" GPP data
-    #for (i in c(1,4,5)) {
-    #    for (j in 2013:2016) {
-    #        outDF2$preGPP[outDF2$Ring==i&outDF2$year==j] <- outDF1$GPP[outDF1$Ring==i&outDF1$year==j]
-    #    }
-    #}
     
     for (i in c(1,4,5)) {
         outDF2$PreTrt[outDF2$Ring==i] <- mean(outDF1$GPP[outDF1$Ring==i])

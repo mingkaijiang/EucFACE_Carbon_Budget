@@ -10,8 +10,8 @@ make_understorey_GPP_flux <- function() {
     inDF$Ring <- gsub("R5","5", inDF$Ring)
     inDF$Ring <- gsub("R6","6", inDF$Ring)
     
-    outDF1 <- summaryBy(GPP.sum.550~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
-    outDF2 <- summaryBy(GPP.sum.400~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
+    outDF1 <- summaryBy(GPP.sum.400~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
+    outDF2 <- summaryBy(GPP.sum.550~year+Ring, data=inDF, FUN=mean, keep.names=T, na.rm=T)
     colnames(outDF1) <- colnames(outDF2) <- c("year", "Ring", "GPP")
     
     ### select only the real treatment data

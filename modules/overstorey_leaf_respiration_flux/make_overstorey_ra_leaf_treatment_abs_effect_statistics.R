@@ -48,7 +48,7 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
     
     ### pass in covariate
     for (i in 1:6) {
-        tDF$Cov[tDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
+        tDF$Cov[tDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
     }
     
     ### Pass in covariate values (assuming 1 value for each ring)

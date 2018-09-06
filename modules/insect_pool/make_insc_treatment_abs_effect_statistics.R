@@ -12,7 +12,7 @@ make_insc_treatment_abs_effect_statistics <- function(inDF, var.cond,
 
     ### pass in covariate
     for (i in 1:6) {
-        inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
+        inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
     }
     
     ### Pass in covariate values (assuming 1 value for each ring)
@@ -131,7 +131,7 @@ make_insc_treatment_abs_effect_statistics <- function(inDF, var.cond,
                     diff = summ2,
                     eff = eff.size2,
                     conf = eff.conf2)
-    }  else if (stat.model == "interaction_with_covariate_and_covariate") {
+    }  else if (stat.model == "no_interaction_with_covariate_and_covariate") {
         out <- list(int.state=int.m3,
                     mod = modelt3, 
                     anova = m3.anova,
