@@ -1,5 +1,7 @@
 generate_stats_abs_covariate <- function(stat.model) {
     
+    ### remove pre-treatment data period for individual variables (e.g. leaf, wood, soil, mic, myc)
+    
     #### Work on each variable per time
     ### Soil C
     s.soilc <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
