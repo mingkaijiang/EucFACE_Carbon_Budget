@@ -36,9 +36,9 @@ generate_stats_abs_covariate <- function(stat.model) {
     
     ### Soil C
     s.soilc <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
-                                                      var.cond="pool", var.col=3,
-                                                      date.as.factor=T,
-                                                      stat.model="no_interaction_with_pretreatment")
+                                                          var.cond="pool", var.col=3,
+                                                          date.as.factor=T,
+                                                          stat.model="no_interaction_with_pretreatment")
     
     ### Leaf C
     s.leafc <- make_leafc_treatment_abs_effect_statistics(inDF=leaf_c_pool, 
@@ -65,68 +65,72 @@ generate_stats_abs_covariate <- function(stat.model) {
                                             stat.model="no_interaction_with_covariate")
     
     ### Understorey aboveground C pool
+    s.uac <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
+                                                      var.cond="pool", var.col=5,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction")
     
-    #s.uac <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
-    #                                     var.cond="pool", var.col=5,
-    #                                     date.as.factor=T,
-    #                                     stat.model="no_interaction_with_covariate")
-    #
-    #s.uac2 <- make_uac2_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
-    #                                     var.cond="pool", var.col=3,
-    #                                     date.as.factor=T,
-    #                                     stat.model="no_interaction_with_covariate")
+    s.uac2 <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+                                                        var.cond="pool", var.col=3,
+                                                        date.as.factor=T,
+                                                        stat.model="paired_t_test")
     
     ### Microbial C pool
-    s.micc <- treatment_effect_abs_statistics(inDF=microbial_c_pool, 
-                                          var.cond="pool", var.col=3,
-                                          date.as.factor=T)
+    s.micc <- make_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
+                                                        var.cond="pool", var.col=3,
+                                                        date.as.factor=T,
+                                                        stat.model="no_interaction_with_pretreatment")
     
     ### Mycorrhizal C pool
-    s.mycc <- treatment_effect_abs_statistics(inDF=mycorrhizal_c_pool, 
-                                             var.cond="pool", var.col=3,
-                                             date.as.factor=T)
+    s.mycc <- make_mycc_treatment_abs_effect_statistics(inDF=mycorrhizal_c_pool, 
+                                                        var.cond="pool", var.col=3,
+                                                        date.as.factor=T,
+                                                        stat.model="no_interaction_with_pretreatment")
     
     ### Standing dead C pool
-    s.sdc <- treatment_effect_abs_statistics(inDF=standing_dead_c_pool, 
-                                              var.cond="pool", var.col=3,
-                                              date.as.factor=T)
+    
     
     ### Leaf litter C pool
-    s.litc <- treatment_effect_abs_statistics(inDF=leaflitter_pool, 
-                                              var.cond="pool", var.col=6,
-                                              date.as.factor=T)
+    s.litc <- make_litc_treatment_abs_effect_statistics(inDF=leaflitter_pool, 
+                                                        var.cond="pool", var.col=6,
+                                                        date.as.factor=T,
+                                                        stat.model="no_interaction_with_covariate_and_covariate")
     
     ### Insect pool
-    s.insc <- treatment_effect_abs_statistics(inDF=insect_pool, 
-                                              var.cond="pool", var.col=3,
-                                              date.as.factor=T)
+    s.insc <- make_insc_treatment_abs_effect_abs_statistics(inDF=insect_pool, 
+                                                            var.cond="pool", var.col=3,
+                                                            date.as.factor=T,
+                                                            stat.model="no_interaction_with_covariate_and_covariate")
     
     ### Overstorey GPP
     s.o.gpp <- make_overstorey_gpp_treatment_abs_effect_statistics(inDF=overstorey_gpp_flux, 
-                                                               var.cond="ann.flux", var.col=3,
-                                                               date.as.factor=T,
-                                                               stat.model="no_interaction_with_pretreatment")
+                                                                   var.cond="ann.flux", var.col=3,
+                                                                   date.as.factor=T,
+                                                                   stat.model="no_interaction_with_pretreatment")
     
     ### Understorey GPP
     s.u.gpp <- make_understorey_gpp_treatment_abs_effect_statistics(inDF=understorey_gpp_flux, 
-                                                                var.cond="ann.flux", var.col=3,
-                                                                date.as.factor=T,
-                                                                stat.model="no_interaction_with_pretreatment")
+                                                                    var.cond="ann.flux", var.col=3,
+                                                                    date.as.factor=T,
+                                                                    stat.model="no_interaction_with_pretreatment")
     
     ### Overstorey Leaf respiration
-    s.rleaf <- treatment_effect_abs_statistics(inDF=overstorey_leaf_respiration_flux, 
-                                               var.cond="ann.flux", var.col=3,
-                                               date.as.factor=T)
+    #s.rleaf <- make_overstorey_ra_leaftreatment_abs_effect_statistics(inDF=overstorey_leaf_respiration_flux, 
+    #                                                                  var.cond="ann.flux", var.col=3,
+    #                                                                  date.as.factor=T,
+    #                                                                  stat.model="no_interaction_with_pretreatment")
     
-    ### Root respiration
+    ### Wood respiration
     s.rwood <- treatment_effect_abs_statistics(inDF=wood_respiration_flux, 
                                                var.cond="flux", var.col=5,
-                                               date.as.factor=T)
+                                               date.as.factor=T,
+                                               stat.model="no_interaction_with_covariate")
     
     ### Root respiration
-    s.rroot <- treatment_effect_abs_statistics(inDF=root_respiration_flux, 
-                                              var.cond="flux", var.col=5,
-                                              date.as.factor=T)
+    s.rroot <- make_ra_root_treatment_abs_effect_statistics(inDF=root_respiration_flux, 
+                                                            var.cond="flux", var.col=5,
+                                                            date.as.factor=T,
+                                                            stat.model="no_interaction_with_covariate")
     
     ### Understorey respiration
     s.rund <- treatment_effect_abs_statistics(inDF=understorey_respiration_flux, 

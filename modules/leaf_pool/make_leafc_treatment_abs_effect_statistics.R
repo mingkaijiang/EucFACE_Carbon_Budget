@@ -15,6 +15,20 @@ make_leafc_treatment_abs_effect_statistics <- function(inDF, var.cond,
         inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
     }
     
+    cov2 <- read.csv("R_other/VOC_met_data.csv")
+    cov2$Date <- as.Date(as.character(cov2$DateHour), format="%Y-%m-%d")
+    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Date, data=cov2, FUN=mean, keep.names=T, na.rm=T)
+    
+    for (j in unique(inDF$Date)) {
+        inDF$Cov2[inDF$Ring==1&inDF$Date==j] <- covDF2$SM_R1[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==2&inDF$Date==j] <- covDF2$SM_R2[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==3&inDF$Date==j] <- covDF2$SM_R3[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==4&inDF$Date==j] <- covDF2$SM_R4[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==5&inDF$Date==j] <- covDF2$SM_R5[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==6&inDF$Date==j] <- covDF2$SM_R6[covDF2$Date==j]
+        
+    }
+    
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
         if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {

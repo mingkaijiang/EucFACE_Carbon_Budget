@@ -1,6 +1,6 @@
-make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                            var.col, date.as.factor,
-                                                            stat.model) {
+make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+                                                                var.col, date.as.factor,
+                                                                stat.model) {
 
     ### Pass in covariate values (assuming 1 value for each ring)
     covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)

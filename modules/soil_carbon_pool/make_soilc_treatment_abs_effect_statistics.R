@@ -2,6 +2,28 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
                                                    var.col, date.as.factor,
                                                    stat.model) {
     
+    ### subset pre-treatment data
+    preDF <- subset(inDF, Date=="2012-06-17")
+    inDF <- subset(inDF, Date!="2012-06-17")
+    for (i in 1:6) {
+        inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
+    }
+    
+    ### Pass in covariate values (assuming 1 value for each ring)
+    cov2 <- read.csv("R_other/VOC_met_data.csv")
+    cov2$Date <- as.Date(as.character(cov2$DateHour), format="%Y-%m-%d")
+    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Date, data=cov2, FUN=mean, keep.names=T, na.rm=T)
+    
+    for (j in unique(inDF$Date)) {
+        inDF$Cov2[inDF$Ring==1&inDF$Date==j] <- covDF2$SM_R1[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==2&inDF$Date==j] <- covDF2$SM_R2[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==3&inDF$Date==j] <- covDF2$SM_R3[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==4&inDF$Date==j] <- covDF2$SM_R4[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==5&inDF$Date==j] <- covDF2$SM_R5[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==6&inDF$Date==j] <- covDF2$SM_R6[covDF2$Date==j]
+        
+    }
+    
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
         if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {
@@ -11,13 +33,6 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
         }
     }
     
-    ### subset pre-treatment data
-    preDF <- subset(inDF, Date=="2012-06-17")
-    inDF <- subset(inDF, Date!="2012-06-17")
-    for (i in 1:6) {
-        inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
-    }
-
     #### Assign factors
     inDF$Trt <- as.factor(inDF$Trt)
     inDF$Ring <- as.factor(inDF$Ring)
@@ -27,7 +42,7 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     colnames(inDF)[var.col] <- "Value"
     
     ## Get year list and ring list
-    tDF <- summaryBy(Value+PreTrt~Trt+Ring+Datef,data=inDF,FUN=mean, keep.names=T)
+    tDF <- summaryBy(Value+Cov2+PreTrt~Trt+Ring+Datef,data=inDF,FUN=mean, keep.names=T)
 
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
@@ -65,23 +80,23 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Analyse the variable model
     ## model 3: no interaction, year as factor, ?? covariate
-    #int.m3 <- "non-interative_with_pretreatment_and_covariate"
-    #modelt3 <- lmer(Value~Trt + Datef + PreTrt + Cov + (1|Ring),data=tDF)
+    int.m3 <- "non-interative_with_pretreatment_and_covariate"
+    modelt3 <- lmer(Value~Trt + Datef + PreTrt + Cov2 + (1|Ring),data=tDF)
 
-    ### anova
-    #m3.anova <- Anova(modelt3, test="F")
-    #
-    ### Check ele - amb diff
-    #summ3 <- summary(glht(modelt3, linfct = mcp(Trt = "Tukey")))
-    #
-    ### average effect size
-    #eff.size3 <- coef(modelt3)[[1]][1,2]
-    #
-    ### confidence interval 
-    #eff.conf3 <- confint(modelt3,"Trtele")
+    ## anova
+    m3.anova <- Anova(modelt3, test="F")
     
-    ### Analyse the variable model
-    ## model 4: no interaction, year as factor, paired t-test
+    ## Check ele - amb diff
+    summ3 <- summary(glht(modelt3, linfct = mcp(Trt = "Tukey")))
+    
+    ## average effect size
+    eff.size3 <- coef(modelt3)[[1]][1,2]
+    
+    ## confidence interval 
+    eff.conf3 <- confint(modelt3,"Trtele")
+    
+    ## Analyse the variable model
+    # model 4: no interaction, year as factor, paired t-test
     int.m4 <- "paired_t_test"
     modelt4 <- t.test(Value~Trt, data=tDF, paired=T)
     

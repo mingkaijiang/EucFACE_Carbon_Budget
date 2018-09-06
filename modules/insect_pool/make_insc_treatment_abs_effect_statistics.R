@@ -1,31 +1,34 @@
-make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                            var.col, date.as.factor,
-                                                            stat.model) {
-
-    ### Pass in covariate values (assuming 1 value for each ring)
-    covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
-    covDF$Ring <- as.numeric(covDF$Ring)
-    inDF$Ring <- as.numeric(inDF$Ring)
+make_insc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+                                                   var.col, date.as.factor,
+                                                   stat.model) {
     
+    ### Read initial basal area data
+    f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
+    f12$ba <- ((f12$X20.09.2012/2)^2) * pi
+    baDF <- summaryBy(ba~Ring, data=f12, FUN=sum, na.rm=T, keep.names=T)
+    
+    ### return in unit of cm2/m2, which is m2 ha-1
+    baDF$ba_ground_area <- baDF$ba / ring_area
+
+    ### pass in covariate
+    for (i in 1:6) {
+        inDF$Cov[inDF$Ring==i] <- baDF$ba_ground_area[covDF$Ring==i]
+    }
+    
+    ### Pass in covariate values (assuming 1 value for each ring)
     cov2 <- read.csv("R_other/VOC_met_data.csv")
     cov2$Date <- as.Date(as.character(cov2$DateHour), format="%Y-%m-%d")
-    cov2$Year <- year(cov2$Date)
-    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Year, data=cov2, FUN=mean, keep.names=T, na.rm=T)
-
-    for (i in 1:6) {
-        inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
-    }
+    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Date, data=cov2, FUN=mean, keep.names=T, na.rm=T)
     
-    for (j in 2013:2016) {
-        inDF$Cov2[inDF$Ring==1&inDF$year==j] <- covDF2$SM_R1[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==2&inDF$year==j] <- covDF2$SM_R2[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==3&inDF$year==j] <- covDF2$SM_R3[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==4&inDF$year==j] <- covDF2$SM_R4[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==5&inDF$year==j] <- covDF2$SM_R5[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==6&inDF$year==j] <- covDF2$SM_R6[covDF2$Year==j]
+    for (j in unique(inDF$Date)) {
+        inDF$Cov2[inDF$Ring==1&inDF$Date==j] <- covDF2$SM_R1[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==2&inDF$Date==j] <- covDF2$SM_R2[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==3&inDF$Date==j] <- covDF2$SM_R3[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==4&inDF$Date==j] <- covDF2$SM_R4[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==5&inDF$Date==j] <- covDF2$SM_R5[covDF2$Date==j]
+        inDF$Cov2[inDF$Ring==6&inDF$Date==j] <- covDF2$SM_R6[covDF2$Date==j]
         
     }
-    
     
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
@@ -38,39 +41,23 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     #### Assign factors
     inDF$Trt <- as.factor(inDF$Trt)
-    inDF$Yr <- year(inDF$Date)
     inDF$Ring <- as.factor(inDF$Ring)
     inDF$Datef <- as.factor(inDF$Date)
 
     #### Update variable name so that this function can be used across different variables
     colnames(inDF)[var.col] <- "Value"
     
-    #### dataframe with annual totals in g m-2 yr-1
-    ###------ Treatment interacting with date, or not
-    ###------ Ring random factor
-    ###------ Unit g m-2 yr-1
-    
-    ## Get year list and ring list
-    yr.list <- unique(inDF$Yr)
-    tDF <- summaryBy(Value+PreTrt+Cov+Cov2~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
-    tDF$Yrf <- as.factor(tDF$Yr)
-    
-    ### Loop through data, return annual flux in g m-2 yr-1
-    for (i in 1:6) {
-        for (j in yr.list) {
-            ### summed of all available data within a year
-            tDF[tDF$Ring == i & tDF$Yr == j, "Value"] <- inDF$Value[inDF$Ring == i & inDF$Yr == j]
-        }
-    }
+    #### dataframe 
+    tDF <- inDF
     
     ### Add psyllid attack event
     tDF$Psyllid <- "Before"
     tDF$Psyllid[tDF$Yr >= 2016] <- "After"
 
     ### Analyse the variable model
-    ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
-    int.m1 <- "non-interative_with_pretreatment"
-    modelt1 <- lmer(Value~Trt + Yrf + PreTrt + (1|Ring),data=tDF)
+    ## model 1: no interaction, year as factor, ring random factor
+    int.m1 <- "non-interative"
+    modelt1 <- lmer(Value~Trt + Datef + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -85,9 +72,9 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     eff.conf1 <- confint(modelt1,"Trtele")
     
     ### Analyse the variable model
-    ## model 2: interaction, year as factor, ring random factor, with pre-treatment
-    int.m2 <- "interative_with_pretreatment"
-    modelt2 <- lmer(Value~Trt*Yrf+PreTrt + (1|Ring),data=tDF)
+    ## model 2: interaction, year as factor, ring random factor,
+    int.m2 <- "interative"
+    modelt2 <- lmer(Value~Trt*Datef + (1|Ring),data=tDF)
     
     ## anova
     m2.anova <- Anova(modelt2, test="F")
@@ -102,10 +89,10 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     eff.conf2 <- confint(modelt2,"Trtele")
     
     ### Analyse the variable model
-    ## model 3: no interaction, year as factor, soil P as covariate
-    int.m3 <- "non-interative_with_pretreatment_and_covariate"
-    modelt3 <- lmer(Value~Trt + Yrf + PreTrt + Cov + (1|Ring),data=tDF)
-
+    ## model 3: no interaction, year as factor, two covariate
+    int.m3 <- "non-interative_with_covariate_and_covariate"
+    modelt3 <- lmer(Value~Trt + Datef + Cov + Cov2 + (1|Ring),data=tDF)
+    
     ## anova
     m3.anova <- Anova(modelt3, test="F")
     
@@ -130,28 +117,28 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     eff.conf4 <- cbind(as.numeric(-modelt4$conf.int[2]),as.numeric(-modelt4$conf.int[1]))
     
     ### conditional output
-    if (stat.model == "no_interaction_with_pretreatment") {
+    if (stat.model == "no_interaction_with_covariate") {
         out <- list(int.state=int.m1,
                     mod = modelt1, 
                     anova = m1.anova,
                     diff = summ1,
                     eff = eff.size1,
                     conf = eff.conf1)
-    } else if (stat.model == "interaction_with_pretreatment") {
+    } else if (stat.model == "interaction_with_covariate") {
         out <- list(int.state=int.m2,
                     mod = modelt2, 
                     anova = m2.anova,
                     diff = summ2,
                     eff = eff.size2,
                     conf = eff.conf2)
-    } else if (stat.model == "no_interaction_with_pretreatment_and_covariate") {
+    }  else if (stat.model == "interaction_with_covariate_and_covariate") {
         out <- list(int.state=int.m3,
                     mod = modelt3, 
                     anova = m3.anova,
                     diff = summ3,
                     eff = eff.size3,
                     conf = eff.conf3)
-    } else if (stat.model == "paired_t_test") {
+    }  else if (stat.model == "paired_t_test") {
         out <- list(int.state=int.m4,
                     mod = modelt4, 
                     anova = NA,

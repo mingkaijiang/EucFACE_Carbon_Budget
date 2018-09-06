@@ -1,29 +1,14 @@
-make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                            var.col, date.as.factor,
-                                                            stat.model) {
+make_ra_root_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+                                                         var.col, date.as.factor,
+                                                         stat.model) {
 
     ### Pass in covariate values (assuming 1 value for each ring)
     covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
     covDF$Ring <- as.numeric(covDF$Ring)
     inDF$Ring <- as.numeric(inDF$Ring)
     
-    cov2 <- read.csv("R_other/VOC_met_data.csv")
-    cov2$Date <- as.Date(as.character(cov2$DateHour), format="%Y-%m-%d")
-    cov2$Year <- year(cov2$Date)
-    covDF2 <- summaryBy(SM_R1+SM_R2+SM_R3+SM_R4+SM_R5+SM_R6~Year, data=cov2, FUN=mean, keep.names=T, na.rm=T)
-
     for (i in 1:6) {
         inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
-    }
-    
-    for (j in 2013:2016) {
-        inDF$Cov2[inDF$Ring==1&inDF$year==j] <- covDF2$SM_R1[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==2&inDF$year==j] <- covDF2$SM_R2[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==3&inDF$year==j] <- covDF2$SM_R3[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==4&inDF$year==j] <- covDF2$SM_R4[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==5&inDF$year==j] <- covDF2$SM_R5[covDF2$Year==j]
-        inDF$Cov2[inDF$Ring==6&inDF$year==j] <- covDF2$SM_R6[covDF2$Year==j]
-        
     }
     
     
@@ -51,9 +36,8 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ###------ Unit g m-2 yr-1
     
     ## Get year list and ring list
-    yr.list <- unique(inDF$Yr)
-    tDF <- summaryBy(Value+PreTrt+Cov+Cov2~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
-    tDF$Yrf <- as.factor(tDF$Yr)
+    tDF <- summaryBy(Value+Cov~Trt+Ring+Date,data=inDF,FUN=sum, keep.names=T)
+    tDF$Datef <- as.factor(tDF$Date)
     
     ### Loop through data, return annual flux in g m-2 yr-1
     for (i in 1:6) {
