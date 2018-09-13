@@ -11,6 +11,9 @@ source("R/make_treatment_effect_df_2.R")
 #### library
 require(grid)
 
+ring.col <- c("red","blue","blue","red","red","blue")
+
+
 #############################################################
 #### Plot C-related variables
 
@@ -24,6 +27,11 @@ leafc.tr <- make_treatment_effect_df(inDF=leaf_c_pool, v=3, cond=1)
 
 ## lai plot
 p1 <- ggplot(lai.tr, aes(Date))+
+    geom_rect(aes(xmin=as.Date("2012-09-01"), xmax=as.Date("2013-03-01"), ymin=0.0, ymax=2.5), 
+              fill="lightgrey", alpha=0.4)+   
+    geom_segment(aes(x=as.Date("2012-09-01"), xend=as.Date("2013-03-01"), y=2.5, yend=2.5))+
+    geom_segment(aes(x=as.Date("2012-09-01"), xend=as.Date("2012-09-01"), y=2.45, yend=2.55))+
+    geom_segment(aes(x=as.Date("2013-03-01"), xend=as.Date("2013-03-01"), y=2.45, yend=2.55))+
     geom_ribbon(data=lai.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
     geom_line(data=lai.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y="LAI")+
@@ -45,8 +53,11 @@ p1 <- ggplot(lai.tr, aes(Date))+
                  date_labels="%b-%Y",
                  limits = as.Date(c('2012-09-01','2016-12-31')))
 
+plot(p1)
 ## sla plot
 p2 <- ggplot(sla.tr, aes(Date))+
+    geom_rect(aes(xmin=as.Date("2012-09-01"), xmax=as.Date("2013-03-01"), ymin=0.0, ymax=80), 
+              fill="lightgrey", alpha=0.4)+  
     #geom_ribbon(data=sla.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
     geom_point(data=sla.tr, aes(y=avg, color=factor(Treatment)))+
     geom_segment(data=sla.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
@@ -71,6 +82,8 @@ p2 <- ggplot(sla.tr, aes(Date))+
 
 ## leaf c plot
 p3 <- ggplot(leafc.tr, aes(Date))+
+    geom_rect(aes(xmin=as.Date("2012-09-01"), xmax=as.Date("2013-03-01"), ymin=0.0, ymax=300), 
+              fill="lightgrey", alpha=0.4)+  
     geom_ribbon(data=leafc.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
     geom_line(data=leafc.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[leaf], " (g C ", m^-2, ")")))+
@@ -99,7 +112,7 @@ pdf("output/LAI_SLA_LeafC_time_series.pdf", width=10,height=8)
 grid.newpage()
 grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), 
                 ggplotGrob(p3), size="last"))
-grid.text(grid.labs,x = 0.1, y = c(0.95, 0.65, 0.36),
+grid.text(grid.labs,x = 0.09, y = c(0.96, 0.66, 0.37),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -297,15 +310,37 @@ p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as
     scale_fill_manual(name="Class", values = c("Dominant" = "green","Codominant" = "orange", 
                                               "Suppressed" = "brown"))
 
+### Time series of wood plot per ring
+woodc.ring <- summaryBy(Wood_Stock_t~Ring+Date, FUN=sum, data=wood.stock.sum, keep.names=T)
+
+p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)))+
+    geom_point()+
+    geom_smooth(mapping=aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)), method=lm)+
+    labs(x="Date", y=expression(paste(C[wood], " (t C ", ring^-1, ")")))+
+    theme_linedraw() + ylim(1, 4)+
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_color_manual(name="Ring", values = c("pink", "cyan", "blue", "red", "orange", "darkblue"),
+                      labels=c("Ring1", "Ring2", "Ring3", "Ring4", "Ring5", "Ring6"))
+
 
 #grid.labs <- c("(a)", "(b)", "(c)", "(d)")
 grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/Wood_C_time_series.pdf", width=9,height=7)
-plot_grid(p1, p4, labels="", ncol=1, align="v", axis = "b")
-grid.text(grid.labs,x = 0.12, y = c(0.97, 0.46),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
+pdf("output/Wood_C_time_series.pdf", width=6,height=6)
+plot_grid(p4, p5, labels="", ncol=1, align="v", axis = "b")
+grid.text(grid.labs,x = 0.15, y = c(0.96, 0.46),
+          gp=gpar(fontsize=14, col="black", fontface="bold"))
 dev.off()
 
 ###################---------------------######################
@@ -456,6 +491,54 @@ grid.text(grid.labs,x = 0.2, y = c(0.95, 0.46),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
+###################---------------------######################
+### Plot coarse root and fine root together for each ring
+frDF <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=mean, data=fineroot_c_pool,
+                  keep.names=T)
+
+frDF.sd <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=sd, data=fineroot_c_pool,
+                  keep.names=T)
+
+crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarse_root_c_pool_1, keep.names=T)
+crDF.sd <- summaryBy(coarse_root_pool~Ring, FUN=sd, data=coarse_root_c_pool_1, keep.names=T)
+
+plotDF <- data.frame(rep(1:6, 3), NA, NA, NA)
+colnames(plotDF) <- c("Ring", "Value", "Tissue", "Sd")
+plotDF$Tissue <- rep(c("fr0_10", "fr10_30", "cr"), each=6)
+
+plotDF$Value[plotDF$Tissue=="fr0_10"] <- frDF$fineroot_0_10_cm
+plotDF$Value[plotDF$Tissue=="fr10_30"] <- frDF$fineroot_10_30_cm
+plotDF$Value[plotDF$Tissue=="cr"] <- crDF$coarse_root_pool
+
+plotDF$Sd[plotDF$Tissue=="fr0_10"] <- frDF.sd$fineroot_0_10_cm
+plotDF$Sd[plotDF$Tissue=="fr10_30"] <- frDF.sd$fineroot_10_30_cm
+plotDF$Sd[plotDF$Tissue=="cr"] <- crDF.sd$coarse_root_pool
+
+
+p <- ggplot(plotDF, aes(x=Ring, y=Value, fill=Tissue))+
+    geom_bar(stat="identity", position="stack")+
+    labs(x="Treatment", y=expression(paste(C[root], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_fill_manual(limit=c("fr0_10", "fr10_30", "cr"),
+                      values=c("orange", "green", "brown"),
+                      labels=c(expression(C[fr1]), expression(C[fr2]), expression(C[cr])))
+
+plot(p)
+
+pdf("output/root_per_ring_summary.pdf", width=8, height=6)
+plot(p)
+dev.off()
+
+
 
 ###################---------------------######################
 ### Soil C pool, soil C content, Soil bulk density at different depths
@@ -473,6 +556,12 @@ soil.bk.tr <- soil.bk.tr[complete.cases(soil.bk.tr),]
 soilc.tr <- make_treatment_effect_df(inDF=soil_c_pool, v=3, cond=1)
 soilr.tr <- make_treatment_effect_df(inDF=soil_respiration_flux, v=5, cond=1)
 
+soilc.ring <- summaryBy(soil_carbon_pool~Ring, FUN=mean, data=soil_c_pool, keep.names=T)
+soilc.ring$Trt[soilc.ring$Ring%in%c(2,3,6)] <- "aCO2"
+soilc.ring$Trt[soilc.ring$Ring%in%c(1,4,5)] <- "eCO2"
+soilc.ring.sd <- summaryBy(soil_carbon_pool~Ring, FUN=sd, data=soil_c_pool, keep.names=T)
+soilc.ring$sd <- soilc.ring.sd$soil_carbon_pool
+names(soilc.ring)[4] <- "sd"
 
 ## plotting soil c pool
 p1 <- ggplot(soilc.tr, aes(Date))+
@@ -500,12 +589,12 @@ p1 <- ggplot(soilc.tr, aes(Date))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))
 
 ## bulk density
-p2 <- ggplot(soil.bk.tr, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+facet_grid(~ring, switch="x")+
+p2 <- ggplot(soil.bk.tr, aes(x=as.character(ring),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
+    geom_bar(stat="identity", position=position_dodge(width=0.95))+#facet_grid(~ring, switch="x")+
     labs(x="Ring", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
-    theme_linedraw() +
+    theme_linedraw() + 
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
+          axis.title.x = element_blank(), 
           axis.text.x = element_blank(),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
@@ -513,19 +602,131 @@ p2 <- ggplot(soil.bk.tr, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
           legend.position="right")+
-    scale_y_continuous(position="left")+
+    coord_cartesian(ylim = c(1000,2000)) +
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
                                                "20-30" = "brown"),
                       labels=c("0-10cm","10-20cm","20-30cm"))
 
+p3 <-  ggplot(soilc.ring)+
+    geom_bar(aes(x=as.character(Ring),y=soil_carbon_pool, fill=Trt),
+             stat="identity", position="stack")+
+    geom_errorbar(data=soilc.ring, mapping=aes(x=as.character(Ring),
+                      ymin=soil_carbon_pool-sd, ymax=soil_carbon_pool+sd),
+                  width=0.2, size=1, color="black")+
+    labs(x="Ring", y=expression(paste(C[soil], " (kg C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    coord_cartesian(ylim = c(2500,6000)) +
+    scale_fill_manual(name="Treatment", 
+                      values = c("aCO2" = "blue", "eCO2" = "red"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
 
-grid.labs <- c("(a)", "(b)")
+soilc.tr <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
+                                  return="by_depths")
+soilc.ph <- summaryBy(ph~Ring, FUN=mean, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.ph.sd <- summaryBy(ph~Ring, FUN=sd, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.ph$sd <- soilc.ph.sd$ph
+soilc.ph$Trt[soilc.ph$Ring%in%c(2,3,6)] <- "aCO2"
+soilc.ph$Trt[soilc.ph$Ring%in%c(1,4,5)] <- "eCO2"
+
+soilc.cn <- summaryBy(cn~Ring, FUN=mean, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.cn.sd <- summaryBy(cn~Ring, FUN=sd, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.cn$sd <- soilc.cn.sd$cn
+soilc.cn$Trt[soilc.cn$Ring%in%c(2,3,6)] <- "aCO2"
+soilc.cn$Trt[soilc.cn$Ring%in%c(1,4,5)] <- "eCO2"
+
+soilc.cp <- summaryBy(cp~Ring, FUN=mean, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.cp.sd <- summaryBy(cp~Ring, FUN=sd, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.cp$sd <- soilc.cp.sd$cp
+soilc.cp$Trt[soilc.cp$Ring%in%c(2,3,6)] <- "aCO2"
+soilc.cp$Trt[soilc.cp$Ring%in%c(1,4,5)] <- "eCO2"
+
+## ph
+p4 <- ggplot(soilc.ph)+
+    geom_bar(aes(x=as.character(Ring),y=ph, fill=Trt),
+             stat="identity", position="stack")+
+    geom_errorbar(data=soilc.ph, mapping=aes(x=as.character(Ring),
+                                               ymin=ph-sd, ymax=ph+sd),
+                  width=0.2, size=1, color="black")+
+    labs(x="Ring", y="Soil pH")+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    coord_cartesian(ylim = c(5,6)) +
+    scale_fill_manual(name="Treatment", 
+                      values = c("aCO2" = "blue", "eCO2" = "red"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+
+## soil CN 
+p5 <- ggplot(soilc.cn)+
+    geom_bar(aes(x=as.character(Ring),y=cn, fill=Trt),
+             stat="identity", position="stack")+
+    geom_errorbar(data=soilc.cn, mapping=aes(x=as.character(Ring),
+                                             ymin=cn-sd, ymax=cn+sd),
+                  width=0.2, size=1, color="black")+
+    labs(x="Ring", y="Soil CN")+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    coord_cartesian(ylim = c(10,20)) +
+    scale_fill_manual(name="Treatment", 
+                      values = c("aCO2" = "blue", "eCO2" = "red"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+
+## soil CP 
+p6 <- ggplot(soilc.cp)+
+    geom_bar(aes(x=as.character(Ring),y=cp, fill=Trt),
+             stat="identity", position="stack")+
+    geom_errorbar(data=soilc.cp, mapping=aes(x=as.character(Ring),
+                                             ymin=cp-sd, ymax=cp+sd),
+                  width=0.2, size=1, color="black")+
+    labs(x="Ring", y="Soil CP")+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    coord_cartesian(ylim = c(100,300)) +
+    scale_fill_manual(name="Treatment", 
+                      values = c("aCO2" = "blue", "eCO2" = "red"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+grid.labs <- c("(a)", "(b)", "(c)", "(d)", "(e)")
 
 ## plot 
-pdf("output/Soil_C_time_series.pdf", width=8,height=6)
-plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
-          rel_heights=c(1,0.8))
-grid.text(grid.labs,x = 0.135, y = c(0.95, 0.4),
+pdf("output/Soil_C_time_series.pdf", width=8,height=10)
+plot_grid(p2, p3, p4, p5, p6, labels="", ncol=1, align="v", axis = "l",
+          rel_heights = c(0.8, 0.8, 0.8, 0.8, 1))
+grid.text(grid.labs,x = 0.135, y = c(0.97, 0.79, 0.59, 0.4, 0.215),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 

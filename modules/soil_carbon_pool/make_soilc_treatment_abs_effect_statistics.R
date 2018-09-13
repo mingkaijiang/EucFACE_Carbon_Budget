@@ -4,7 +4,7 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### subset pre-treatment data
     preDF <- subset(inDF, Date=="2012-06-17")
-    inDF <- subset(inDF, Date!="2012-06-17")
+    inDF <- subset(inDF, Date>="2012-12-11")
     for (i in 1:6) {
         inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
     }
@@ -55,7 +55,7 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(Value~Trt + Datef + Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Datef + PreTrt + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")

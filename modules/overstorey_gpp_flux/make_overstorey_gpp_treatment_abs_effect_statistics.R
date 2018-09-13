@@ -18,11 +18,20 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### return in unit of cm2/m2, which is m2 ha-1
     baDF$ba_ground_area <- baDF$ba / ring_area
+    baDF2 <- data.frame(c(1:6), c(611, 835, 795, 896, 1019, 815))
+    colnames(baDF2) <- c("Ring", "BA")
+    
+    ### soil C pool
+    soil <- subset(soil_c_pool, Date=="2012-06-17")
+    soil <- subset(soil_c_pool, Date<="2013-01-01")
+    sDF <- summaryBy(soil_carbon_pool~Ring, data=soil, FUN=mean, keep.names=T)
     
     for (i in 1:6) {
         inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
         inDF$Cov2[inDF$Ring==i] <- covDF2$lai_variable[covDF2$Ring==i]
         inDF$Cov3[inDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
+        inDF$Cov4[inDF$Ring==i] <- sDF$soil_carbon_pool[sDF$Ring==i]
+        inDF$Cov5[inDF$Ring==i] <- baDF2$BA[baDF2$Ring==i]
     }
     
     #### Assign amb and ele factor
@@ -50,7 +59,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ## Get year list and ring list
     yr.list <- unique(inDF$Yr)
-    tDF <- summaryBy(Value+Cov+Cov2+Cov3~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
+    tDF <- summaryBy(Value+Cov+Cov2+Cov3+Cov4+Cov5~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
     tDF$Yrf <- as.factor(tDF$Yr)
     
     ### Loop through data, return annual flux in g m-2 yr-1

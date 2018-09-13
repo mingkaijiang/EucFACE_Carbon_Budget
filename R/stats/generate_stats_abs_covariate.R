@@ -88,7 +88,7 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                                       stat.model="no_interaction_with_covariate")
     
     ### Wood respiration
-    s.rwood <- treatment_effect_abs_statistics(inDF=wood_respiration_flux, 
+    s.rwood <- make_ra_wood_treatment_abs_effect_statistics(inDF=wood_respiration_flux, 
                                                var.cond="flux", var.col=5,
                                                date.as.factor=T,
                                                stat.model="no_interaction_with_covariate")
@@ -130,7 +130,7 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                            stat.model="no_interaction_with_covariate")
     
     ### soil respiration
-    s.rsoil <- make_rsoil_treatment_effect_abs_statistics(inDF=soil_respiration_flux, 
+    s.rsoil <- make_rsoil_treatment_abs_effect_statistics(inDF=soil_respiration_flux, 
                                                           var.cond="flux", var.col=5,
                                                           date.as.factor=T,
                                                           stat.model="no_interaction_with_covariate")
@@ -281,15 +281,16 @@ generate_stats_abs_covariate <- function(stat.model) {
     out[out$Variable=="over_leaf_respiration",2:17] <- assign_stats(s.var=s.rleaf)
     out[out$Variable=="understorey_gpp",2:17] <- assign_stats(s.var=s.u.gpp)
 
+    stat.model <- "no_interaction_with_covariate"
     
-    if (stat.model == "dynamic") {
-        write.csv(out, "R_other/treatment_statistics_abs_dynamic.csv", row.names=F)
-    } else if (stat.model == "no_interaction") {
-        write.csv(out, "R_other/treatment_statistics_abs_no_interaction.csv", row.names=F)
-    } else if (stat.model == "interaction") {
-        write.csv(out, "R_other/treatment_statistics_abs_interaction.csv", row.names=F)
+    if (stat.model == "no_interaction_with_covariate") {
+        write.csv(out, "R_other/treatment_statistics_abs_no_interaction_with_covariate.csv", row.names=F)
+    } else if (stat.model == "interaction_with_covariate") {
+        write.csv(out, "R_other/treatment_statistics_abs_interaction_with_covariate.csv", row.names=F)
+    } else if (stat.model == "no_interaction_with_covariate_and_covariate") {
+        write.csv(out, "R_other/treatment_statistics_abs_no_interaction_with_covariate_and_covariate.csv", row.names=F)
     } else {
-        write.csv(out, "R_other/treatment_statistics_abs_no_random_effect.csv", row.names=F)
+        write.csv(out, "R_other/treatment_statistics_abs_paired_t_test.csv", row.names=F)
     }
     
 }

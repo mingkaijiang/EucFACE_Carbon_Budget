@@ -589,7 +589,7 @@ A second dataset for microbial C and N pool is available from Laura and Yolima. 
 
 The mycorrhizal C pool is based on results of incubation. We assume it's top 30 cm soil, and 70% of soil is sand.
 ``` {r, echo=F, warning=F, message=F, fig.width = 7, fig.align="center"}
-    mycorrhizal_c_pool <- make_mycorrhizal_c_pool(soil_bulk_density_variable)
+    mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
 
     p <- ggplot(mycorrhizal_c_pool, aes(Date, mycorrhizal_c_pool, color=factor(Ring))) +
         geom_line() + geom_point(size=5) +
