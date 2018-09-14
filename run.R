@@ -335,8 +335,14 @@ make_eCO2_effect_on_GPP_plot2()
 
 
 ### To do list:
-### 1. Decide what GPP, understorey GPP to use in all statistical comparison plots
-### 2. Power analysis
+### 1. Update covariate with pre-treatment LAI as covariate
+### 2. Make change of pools - problem is that 6 data points available, insufficient for stats
+### 3. following Remko's code to standardize treatment effect (predict) according to mean LAI
+### 4. Update all figures and numbers with new predicted treatment effect
+### 5. Finish SM figure plotting and writing
+### 6. Fill the tables
+### 7. Revise the main text
+### 8. Add reference list
 
 
 ###### ---------------- End -------------------- ######

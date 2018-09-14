@@ -67,7 +67,7 @@ make_croot_prod_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor
-    int.m1 <- "non-interative"
+    int.m1 <- "non-interative_with_covariate"
     modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring), data=tDF)
     
     ## anova
@@ -84,7 +84,7 @@ make_croot_prod_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Analyse the variable model
     ## model 2: interaction, year as factor, ring random factor
-    int.m2 <- "interative"
+    int.m2 <- "interative_with_covariate"
     modelt2 <- lmer(Value~Trt*Yrf + Cov2 + (1|Ring),data=tDF)
     
     ## anova
@@ -101,7 +101,7 @@ make_croot_prod_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Analyse the variable model
     ## model 3: no interaction, year as factor, covariate
-    int.m3 <- "non-interative_with_covariate"
+    int.m3 <- "non-interative_with_covariate_and_covariate"
     modelt3 <- lmer(Value~Trt + Yrf + Cov + Cov2 + Cov3 + (1|Ring),data=tDF)
 
     ## anova

@@ -1,20 +1,29 @@
-make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+make_delta_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                    var.col, date.as.factor,
                                                    stat.model) {
     
     ### subset pre-treatment data
     preDF <- subset(inDF, Date=="2012-06-17")
-    inDF <- subset(inDF, Date>="2012-12-11")
-    for (i in 1:6) {
-        inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
-    }
+    inDF <- subset(inDF, Date>"2012-06-17")
+    
+    ### create delta DF
+    deltaDF <- data.frame(c(1:6), NA)
+    colnames(deltaDF) <- c("Ring", "delta_all")
+    
+    ### extract useful info
+    s.date <- min(inDF$Date)
+    e.date <- max(inDF$Date)
+    ndays <- as.numeric(e.date - s.date)
+    
+    ### calculate delta
+    deltaDF$delta_all <- inDF[inDF$Date==e.date, var.col] - inDF[inDF$Date==s.date, var.col]
+    
+    ### standardize to annual rate
+    deltaDF$delta_ann <- deltaDF$delta_all / ndays * 365
     
     ### Pass in covariate values (assuming 1 value for each ring)
     covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
-    covDF$Ring <- as.numeric(covDF$Ring)
-    inDF$Ring <- as.numeric(inDF$Ring)
     
-    #cov2 <- lai_variable[lai_variable$Date<="2013-01-01",]
     cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
     covDF2 <- summaryBy(lai_variable~Ring, data=cov2, FUN=mean, keep.names=T)
     
@@ -27,35 +36,27 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     baDF$ba_ground_area <- baDF$ba / ring_area
     
     for (i in 1:6) {
-        inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
-        inDF$Cov2[inDF$Ring==i] <- covDF2$lai_variable[covDF2$Ring==i]
-        inDF$Cov3[inDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
+        deltaDF$PreTrt[deltaDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
+        deltaDF$Cov[deltaDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
+        deltaDF$Cov2[deltaDF$Ring==i] <- covDF2$lai_variable[covDF2$Ring==i]
+        deltaDF$Cov3[deltaDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
     }
     
     #### Assign amb and ele factor
-    for (i in (1:length(inDF$Ring))) {
-        if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {
-            inDF$Trt[i] <- "amb"
-        } else {
-            inDF$Trt[i] <- "ele"
-        }
-    }
+    deltaDF$Trt[deltaDF$Ring%in%c(2,3,6)] <- "amb"
+    deltaDF$Trt[deltaDF$Ring%in%c(1,4,5)] <- "ele"
     
     #### Assign factors
-    inDF$Trt <- as.factor(inDF$Trt)
-    inDF$Ring <- as.factor(inDF$Ring)
-    inDF$Datef <- as.factor(inDF$Date)
-
-    #### Update variable name so that this function can be used across different variables
-    colnames(inDF)[var.col] <- "Value"
+    deltaDF$Trt <- as.factor(deltaDF$Trt)
+    deltaDF$Ring <- as.factor(deltaDF$Ring)
     
     ## Get year list and ring list
-    tDF <- summaryBy(Value+Cov2+Cov+Cov3+PreTrt~Trt+Ring+Datef,data=inDF,FUN=mean, keep.names=T)
-
+    tDF <- deltaDF
+    
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(Value~Trt + Datef + Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lm(delta_ann~Trt + Cov2 ,data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
