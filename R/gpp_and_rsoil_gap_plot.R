@@ -180,6 +180,23 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     aDF <- inDF$inout[, c("term", "aCO2", "aCO2_sd")]
     nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
     
+    ### Add change in soil pool into NPP df
+    sDF <- subset(soil_c_pool, Date>"2012-06-17")
+    delta.soil <- data.frame(c(1:6), NA)
+    colnames(delta.soil) <- c("Ring", "delta.soil.c")
+    s.date <- min(sDF$Date)
+    e.date <- max(sDF$Date)
+    ndays <- as.numeric(e.date - s.date)
+    delta.soil$delta.soil.c <- sDF[sDF$Date==e.date, "soil_carbon_pool"] - sDF[sDF$Date==s.date, "soil_carbon_pool"]
+    delta.soil$delta.soil.c.ann <- delta.soil$delta.soil.c / ndays * 365
+    t <- "Delta Soil"
+    v <- mean(delta.soil[delta.soil$Ring %in% c(2,3,6), "delta.soil.c.ann"])
+    sd <- sd(delta.soil[delta.soil$Ring %in% c(2,3,6), "delta.soil.c.ann"])
+    asoil <- cbind(t, v, sd)
+    colnames(asoil) <- c("term", "aCO2", "aCO2_sd")
+    nppDF <- rbind(nppDF, asoil)
+    
+    
     ### subsetting inout df
     temDF <- inDF$inout[,c("term", "aCO2", "aCO2_sd")]
     
@@ -193,8 +210,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
     
     ### convert unit from g C to kg C
-    plotDF$aCO2 <- plotDF$aCO2/1000
-    plotDF$aCO2_sd <- plotDF$aCO2_sd/1000
+    plotDF$aCO2 <- as.numeric(plotDF$aCO2)/1000
+    plotDF$aCO2_sd <- as.numeric(plotDF$aCO2_sd)/1000
     
     ### prepare error bar ranges
     errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA)
@@ -210,10 +227,10 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     var.labs2 <- c(expression(NPP[l]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
                   expression(NPP[ua]),expression(P[frass]), 
-                  expression(R[root]),expression(R[soil]))
+                  expression(R[root]),expression(Delta*C[soil]), expression(R[soil]))
     
     ### Prepare variable colors
-    col.list2 <- viridis(8)
+    col.list2 <- viridis(9)
     
     ### make the bar plot
     p3 <- ggplot(plotDF,
@@ -255,6 +272,13 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     aDF <- inDF$inout[, c("term", "eCO2", "eCO2_sd")]
     nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
     
+    ### Add change in soil pool into NPP df
+    v <- mean(delta.soil[delta.soil$Ring %in% c(1,4,5), "delta.soil.c.ann"])
+    sd <- sd(delta.soil[delta.soil$Ring %in% c(1,4,5), "delta.soil.c.ann"])
+    esoil <- cbind(t, v, sd)
+    colnames(esoil) <- c("term", "eCO2", "eCO2_sd")
+    nppDF <- rbind(nppDF, esoil)
+    
     ### subsetting inout df
     temDF <- inDF$inout[,c("term", "eCO2", "eCO2_sd")]
     
@@ -268,8 +292,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
     
     ### convert unit from g C to kg C
-    plotDF$eCO2 <- plotDF$eCO2/1000
-    plotDF$eCO2_sd <- plotDF$eCO2_sd/1000
+    plotDF$eCO2 <- as.numeric(plotDF$eCO2)/1000
+    plotDF$eCO2_sd <- as.numeric(plotDF$eCO2_sd)/1000
     
     ### prepare error bar ranges
     errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA)
