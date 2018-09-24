@@ -1,11 +1,7 @@
-make_delta_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
+make_delta_micc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                    var.col, date.as.factor,
                                                    stat.model) {
-    
-    ### subset pre-treatment data
-    preDF <- subset(inDF, Date=="2012-06-17")
-    inDF <- subset(inDF, Date>"2012-06-17")
-    
+
     ### create delta DF
     deltaDF <- make_yearly_delta_pool_function(inDF, var.col)
     
@@ -24,7 +20,6 @@ make_delta_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     baDF$ba_ground_area <- baDF$ba / ring_area
     
     for (i in 1:6) {
-        deltaDF$PreTrt[deltaDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
         deltaDF$Cov[deltaDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
         deltaDF$Cov2[deltaDF$Ring==i] <- covDF2$lai_variable[covDF2$Ring==i]
         deltaDF$Cov3[deltaDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
