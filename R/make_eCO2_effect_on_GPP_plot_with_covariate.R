@@ -373,9 +373,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
         #geom_hline(yintercept=-50, linetype="dashed", color="grey")+
         geom_bar(stat = "identity", aes(fill=Variable),
                  position="stack") +
-        geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=4, shape=21, fill="white")+
         geom_errorbar(data=confDF, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
                       width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=4, shape=21, fill="white")+
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("Influxes", 
                                   "NPP+R",
