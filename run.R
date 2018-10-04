@@ -84,7 +84,8 @@ make_gpp_over_soil_phosphate_conc(pDF=soil_phosphate_concentration)
 make_gpp_over_soil_p_pool(pDF=soil_p_pool)    
 
 ### soil respiration flux
-soil_respiration_flux <- make_soil_respiration_flux()
+#soil_respiration_flux <- make_soil_respiration_flux()
+soil_respiration_flux <- make_soil_respiration_flux_2()
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
@@ -317,6 +318,10 @@ generate_stats_abs(stat.model="no_interaction")
 source("R/stats/generate_stats_abs_change_in_pools.R")
 generate_stats_abs_change_in_pools(stat.model="no_interaction")
 
+### Generate abs on all variables, considering no interaction but with pre-treatment LAI as covariate
+source("R/stats/generate_stats_abs_covariate.R")
+generate_stats_abs_covariate(stat.model="no_interaction")
+
 ### Make some plots
 source("R/make_statistical_comparison_plots.R")
 make_statistical_comparison_plots()
@@ -327,22 +332,38 @@ make_eCO2_effect_on_GPP_plot()
 source("R/make_eCO2_effect_on_GPP_plot2.R")
 make_eCO2_effect_on_GPP_plot2()
 
-### Power analysis
+source("R/make_eCO2_effect_on_GPP_plot_with_covariate.R")
+make_eCO2_effect_on_GPP_plot_with_covariate()
+
+### Power analysis ???
 
 
 ### Plot individual variable figures
 #source("R/plot_figures.R")
 
 
-### To do list:
-### 1. Update covariate with pre-treatment LAI as covariate
-### 2. Make change of pools - problem is that 6 data points available, insufficient for stats
-### 3. following Remko's code to standardize treatment effect (predict) according to mean LAI
-### 4. Update all figures and numbers with new predicted treatment effect
-### 5. Finish SM figure plotting and writing
-### 6. Fill the tables
-### 7. Revise the main text
-### 8. Add reference list
+### Work orders
+### 1. Finish lai as a covariate for changes in pools
+### 2. Add a new script for extra C figure, with LAI as a covariate (predicted)
+### 3. Compare against the original figure:  Check if we could close the budget
+###    3.1 Recalculate Rsoil with Alexis's method
+###         3.1.1 Rh + Rroot don't equal to Rsoil, check why
+###         3.1.2 Alexis's method resulted in some negative Rsoil numbers, while John's method has lower eCO2 response that makes Rstem the biggest component
+###         3.1.3 Refine Alexis' Rsoil numbers to remove negative numbers
+###    3.2 Check with Nam Jin on Wood respiration numbers
+###    3.3 update all figures and tables with predicted numbers
+###         3.3.1 C extra figure - better color scheme
+###         3.3.2 Is it necessary to update C budget diagram figure,  Rsoil and GPP comparison figures, and NEP figure?
+### 4. Finish SM figures and writing
+### 5. Finish the tables, update main text figures
+### 6. Finish method section (ask individual contributions), upload all needed datat on HIEv (by Nov-20)
+### 7. Revise main text to reflect the new results, Paris Agreement, and finish reference section
+### 8. Cover letter!!! 
+### 9. Seek feedbacks 1st round: from Belinda, Martin, and David
+### 10. Seek feedbacks 2nd round: a short listed authors (+ John, Remko, Mark, Peter?)
+### 11. Seek feedbacks 3rd round on manuscript, authorship and affiliation, method, data availability: all co-authors (3 weeks)
+### 12. Finalize, clean the code, check the format and authorship (and affiliations), check data availability, and submit (Nov-30)
+### 13. Make a back-up plan - Nature -> Science -> Nature Climate Change -> Nature Geosciences -> PNAS -> Eco Lett
 
 
 ###### ---------------- End -------------------- ######

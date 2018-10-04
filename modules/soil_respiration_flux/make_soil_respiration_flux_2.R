@@ -26,7 +26,7 @@ make_soil_respiration_flux_2 <- function(){
     myDF2$R6<- myDF2$Rsoil_R6*60*30*1e-6*12.01*1000
     
     # generate daily Rsoil
-    myDF3 <- summaryBy(R1+R2+R3+R4+R5+R6~Date, FUN=sum, data=myDF2, keep.names=T)
+    myDF3 <- summaryBy(R1+R2+R3+R4+R5+R6~Date, FUN=sum, data=myDF2, keep.names=T, na.rm=T)
     
     # conver into long format
     myDF4 <- melt(myDF3, id.vars = c("Date"))
