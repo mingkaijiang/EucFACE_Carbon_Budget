@@ -238,6 +238,7 @@ understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=underst
                                                                   gpp=understorey_gpp_flux,
                                                                   assumption="cue")
 
+
 ###### ----------Make summary tables-------------- ######
 ### Generate overall summary table (ignoring rings and time)
 source("R/make_table.R")
@@ -251,8 +252,17 @@ tables_by_ring <- make_table_by_ring()
 source("R/make_table_by_year.R")
 tables_by_year <- make_EucFACE_table_by_year()
 
-###### ----------Check for C gaps-------------- ######
+### Generate abs on all variables, 
+### considering no interaction but with pre-treatment LAI as covariate
+### also output predicted values based on the stat model for all variables
+source("R/stats/generate_stats_abs_covariate.R")
+generate_stats_abs_covariate(stat.model="no_interaction")
 
+### Predict CO2 effect based on LAI, for all variables again
+### Note that all fluxes should be annual now. 
+
+
+###### ----------Check for C gaps-------------- ######
 ### GPP gaps
 source("R/gpp_gap_plot.R")
 gpp_gap_plot(inDF=tables_by_ring)
@@ -318,10 +328,6 @@ generate_stats_abs(stat.model="no_interaction")
 source("R/stats/generate_stats_abs_change_in_pools.R")
 generate_stats_abs_change_in_pools(stat.model="no_interaction")
 
-### Generate abs on all variables, considering no interaction but with pre-treatment LAI as covariate
-source("R/stats/generate_stats_abs_covariate.R")
-generate_stats_abs_covariate(stat.model="no_interaction")
-
 ### Make some plots
 source("R/make_statistical_comparison_plots.R")
 make_statistical_comparison_plots()
@@ -343,28 +349,19 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 
 
 ### Work orders
-### 1. Finish lai as a covariate for changes in pools
-### 2. Add a new script for extra C figure, with LAI as a covariate (predicted)
 ### 3. Compare against the original figure:  Check if we could close the budget
 ###    3.1 Recalculate Rsoil with Alexis's method
 ###         3.1.1 Rh + Rroot don't equal to Rsoil, check why
 ###         3.1.2 Alexis's method resulted in some negative Rsoil numbers, while John's method has lower eCO2 response that makes Rstem the biggest component
 ###         3.1.3 Refine Alexis' Rsoil numbers to remove negative numbers
 ###    3.2 Check with Nam Jin on Wood respiration numbers
+###         3.2.1 Update stem respiration with Roberto's data
 ###    3.3 update all figures and tables with predicted numbers
 ###         3.3.1 C extra figure - better color scheme
 ###         3.3.2 Is it necessary to update C budget diagram figure,  Rsoil and GPP comparison figures, and NEP figure?
 ### 4. Finish SM figures and writing
 ### 5. Finish the tables, update main text figures
 ### 6. Finish method section (ask individual contributions), upload all needed datat on HIEv (by Nov-20)
-### 7. Revise main text to reflect the new results, Paris Agreement, and finish reference section
-### 8. Cover letter!!! 
-### 9. Seek feedbacks 1st round: from Belinda, Martin, and David
-### 10. Seek feedbacks 2nd round: a short listed authors (+ John, Remko, Mark, Peter?)
-### 11. Seek feedbacks 3rd round on manuscript, authorship and affiliation, method, data availability: all co-authors (3 weeks)
-### 12. Finalize, clean the code, check the format and authorship (and affiliations), check data availability, and submit (Nov-30)
-### 13. Make a back-up plan - Nature -> Science -> Nature Climate Change -> Nature Geosciences -> PNAS -> Eco Lett
-
 
 ###### ---------------- End -------------------- ######
 options(warn=0)

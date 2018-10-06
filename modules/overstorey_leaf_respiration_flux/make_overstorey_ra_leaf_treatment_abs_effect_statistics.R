@@ -1,6 +1,6 @@
 make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                                 var.col, date.as.factor,
-                                                                stat.model) {
+                                                                stat.model, return.outcome) {
 
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
@@ -156,5 +156,15 @@ make_overstorey_ra_leaf_treatment_abs_effect_statistics <- function(inDF, var.co
                     conf = eff.conf4)
     }
 
-    return(out)
+    ### Predict the model with a standard LAI value
+    newDF <- tDF
+    newDF$Cov2 <- 1.14815  # initial LAI averages
+    newDF$predicted <- predict(out$mod, newdata=newDF)
+    
+    
+    if (return.outcome == "model") {
+        return(out)
+    } else if (return.outcome == "predicted") {
+        return(newDF)
+    }
 }
