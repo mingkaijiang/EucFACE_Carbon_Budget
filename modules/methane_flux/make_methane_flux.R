@@ -1,8 +1,6 @@
 #- Make the methane flux
 #### This is a simplified approach without gap-filling
-make_methane_flux <- function(return.decision="data",
-                              trt.effect="abs",
-                              stat.model="interaction") {
+make_methane_flux <- function() {
     #### returns methane flux (mg m-2 d-1)
     
     #### final flux data is the yearly aggregated data
@@ -62,46 +60,10 @@ make_methane_flux <- function(return.decision="data",
     
     # Only use data period 2012-2016
     myDF.out <- myDF.out[myDF.out$Date<="2016-12-31",]
-    
-    ### Compute statistical analyses
-    if (return.decision=="stats") {
-        if (trt.effect == "abs") {
-            if (stat.model == "dynamic") {
-                source("R/stats/treatment_effect_abs_statistics_dynamic.R")
-            } else if (stat.model == "no_interaction") {
-                source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
-            } else if (stat.model == "interaction") {
-                source("R/stats/treatment_effect_abs_statistics_interaction.R")
-            } else {
-                source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
-            }
-            
-            s.stats <- treatment_effect_abs_statistics(inDF=myDF, 
-                                                       var.cond="flux", var.col=5,
-                                                       date.as.factor=T)
-        } else if (trt.effect == "ratio") {
-            if (stat.model == "dynamic") {
-                source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
-            } else if (stat.model == "no_interaction") {
-                source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
-            } else if (stat.model == "interaction") {
-                source("R/stats/treatment_effect_ratio_statistics_interaction.R")
-            } else {
-                source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
-            }
-            
-            s.stats <- treatment_effect_ratio_statistics(inDF=myDF, 
-                                                         var.cond="flux", var.col=5,
-                                                         date.as.factor=T)
-        }
-    }
-
+ 
     
     ### Decision on what to return
-    if (return.decision == "data") {
         return(myDF.out)
-    } else if (return.decision == "stats") {
-        return(s.stats)
-    }
+
     
 }

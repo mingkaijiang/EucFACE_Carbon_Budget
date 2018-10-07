@@ -240,6 +240,8 @@ understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=underst
 
 
 ###### ----------Make summary tables-------------- ######
+###### This is a summary table of all raw data, without LAI as a covariate
+
 ### Generate overall summary table (ignoring rings and time)
 source("R/make_table.R")
 overall_tables <- make_EucFACE_table()
@@ -255,11 +257,251 @@ tables_by_year <- make_EucFACE_table_by_year()
 ### Generate abs on all variables, 
 ### considering no interaction but with pre-treatment LAI as covariate
 ### also output predicted values based on the stat model for all variables
+### All stats for fluxes are based on annual rate
 source("R/stats/generate_stats_abs_covariate.R")
 generate_stats_abs_covariate(stat.model="no_interaction")
 
-### Predict CO2 effect based on LAI, for all variables again
-### Note that all fluxes should be annual now. 
+
+###### ----------Add predicted values back onto all fluxes and pools-------------- ######
+###### Predict CO2 effect based on LAI, for all variables again
+###### Note that all fluxes are now annualized
+
+### overstorey gpp flux
+overstorey_gpp_flux_ann <- make_overstorey_gpp_treatment_abs_effect_statistics(inDF=overstorey_gpp_flux, 
+                                                                                     var.cond="ann.flux", var.col=3,
+                                                                                     date.as.factor=T,
+                                                                                     stat.model="no_interaction_with_covariate",
+                                                                                     return.outcome="predicted")
+
+### Understorey GPP
+understorey_gpp_flux_ann <- make_understorey_gpp_treatment_abs_effect_statistics(inDF=understorey_gpp_flux, 
+                                                                var.cond="ann.flux", var.col=3,
+                                                                date.as.factor=T,
+                                                                stat.model="no_interaction_with_covariate",
+                                                                return.outcome="predicted")
+
+### Overstorey Leaf respiration
+overstorey_leaf_respiration_flux_ann <- make_overstorey_ra_leaf_treatment_abs_effect_statistics(inDF=overstorey_leaf_respiration_flux, 
+                                                                   var.cond="ann.flux", var.col=3,
+                                                                   date.as.factor=T,
+                                                                   stat.model="no_interaction_with_covariate",
+                                                                   return.outcome="predicted")
+
+### Wood respiration
+wood_respiration_flux_ann <- make_ra_wood_treatment_abs_effect_statistics(inDF=wood_respiration_flux, 
+                                                        var.cond="flux", var.col=5,
+                                                        date.as.factor=T,
+                                                        stat.model="no_interaction_with_covariate",
+                                                        return.outcome="predicted")
+
+### Root respiration
+root_respiration_flux_ann <- make_ra_root_treatment_abs_effect_statistics(inDF=root_respiration_flux, 
+                                                        var.cond="flux", var.col=5,
+                                                        date.as.factor=T,
+                                                        stat.model="no_interaction_with_covariate",
+                                                        return.outcome="predicted")
+### Understorey respiration
+understorey_respiration_flux_ann <- make_ra_und_treatment_abs_effect_statistics(inDF=understorey_respiration_flux, 
+                                                      var.cond="flux", var.col=5,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction_with_covariate",
+                                                      return.outcome="predicted")
+
+### Frass production
+frass_production_flux_ann <- make_frass_treatment_abs_effect_statistics(inDF=frass_production_flux, 
+                                                     var.cond="flux", var.col=5,
+                                                     date.as.factor=T,
+                                                     stat.model="no_interaction_with_covariate",
+                                                     return.outcome="predicted")
+
+### herbivory leaf consumption flux
+herbivory_leaf_consumption_flux_ann <- make_hb_cons_treatment_abs_effect_statistics(inDF=herbivory_leaf_consumption_flux, 
+                                                          var.cond="flux", var.col=5,
+                                                          date.as.factor=T,
+                                                          stat.model="no_interaction_with_covariate",
+                                                          return.outcome="predicted")
+
+### Herbivory respiration
+herbivory_respiration_flux_ann <- make_r_hb_treatment_abs_effect_statistics(inDF=herbivory_respiration_flux, 
+                                                   var.cond="flux", var.col=5,
+                                                   date.as.factor=T,
+                                                   stat.model="no_interaction_with_covariate",
+                                                   return.outcome="predicted")
+
+### Lerp production
+lerp_production_flux_ann <- make_lp_treatment_abs_effect_statistics(inDF=lerp_production_flux, 
+                                                       var.cond="flux", var.col=5,
+                                                       date.as.factor=T,
+                                                       stat.model="no_interaction_with_covariate",
+                                                       return.outcome="predicted")
+
+### soil respiration
+soil_respiration_flux_ann <- make_rsoil_treatment_abs_effect_statistics(inDF=soil_respiration_flux, 
+                                                      var.cond="flux", var.col=5,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction_with_covariate",
+                                                      return.outcome="predicted")
+
+### DOC leaching
+doc_leaching_flux_ann <- make_doc_treatment_abs_effect_statistics(inDF=doc_leaching_flux, 
+                                                  var.cond="flux", var.col=5,
+                                                  date.as.factor=T,
+                                                  stat.model="no_interaction_with_covariate",
+                                                  return.outcome="predicted")
+
+### CH4 uptake - un-gap filled data
+methane_c_flux_ann <- make_ch4_treatment_abs_effect_statistics(inDF=methane_c_flux, 
+                                                  var.cond="flux", var.col=3,
+                                                  date.as.factor=T,
+                                                  stat.model="no_interaction_with_covariate",
+                                                  return.outcome="predicted")
+
+### Leaflitter flux
+leaflitter_flux_ann <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                               var.cond="flux", var.col=6,
+                                                               date.as.factor=T,
+                                                               stat.model="no_interaction_with_covariate",
+                                                               return.outcome="predicted")  
+
+### twig litter flux
+twiglitter_flux_ann <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                               var.cond="flux", var.col=3,
+                                                               date.as.factor=T,
+                                                               stat.model="no_interaction_with_covariate",
+                                                               return.outcome="predicted")
+
+### bark litter flux
+barklitter_flux_ann <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                               var.cond="flux", var.col=4,
+                                                               date.as.factor=T,
+                                                               stat.model="no_interaction_with_covariate",
+                                                               return.outcome="predicted") 
+
+### Seed litter flux
+seedlitter_flux_ann <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
+                                                               var.cond="flux", var.col=5,
+                                                               date.as.factor=T,
+                                                               stat.model="no_interaction_with_covariate",
+                                                               return.outcome="predicted")
+
+### Wood production flux
+wood_production_flux_ann <- make_wood_prod_treatment_abs_effect_statistics(inDF=wood_production_flux, 
+                                                              var.cond="flux", var.col=5,
+                                                              date.as.factor=T,
+                                                              stat.model="no_interaction_with_covariate",
+                                                              return.outcome="predicted") 
+
+### Fineroot production flux
+fineroot_production_flux_ann <- make_froot_prod_treatment_abs_effect_statistics(inDF=fineroot_production_flux, 
+                                                                var.cond="flux", var.col=5,
+                                                                date.as.factor=T,
+                                                                stat.model="no_interaction_with_covariate",
+                                                                return.outcome="predicted") 
+
+### Coarseroot production
+coarse_root_production_flux_ann <- make_croot_prod_treatment_abs_effect_statistics(inDF=coarse_root_production_flux_1, 
+                                                                var.cond="flux", var.col=5,
+                                                                date.as.factor=T,
+                                                                stat.model="no_interaction_with_covariate",
+                                                                return.outcome="predicted")
+
+### Understorey aboveground production
+understorey_aboveground_production_flux_ann <- make_und_prod_treatment_abs_effect_statistics(inDF=understorey_aboveground_production_flux, 
+                                                            var.cond="flux", var.col=5,
+                                                            date.as.factor=T,
+                                                            stat.model="no_interaction_with_covariate",
+                                                            return.outcome="predicted")
+
+### Rh respiration
+heterotrophic_respiration_flux_ann <- make_rh_treatment_abs_effect_statistics(inDF=heterotrophic_respiration_flux, 
+                                                var.cond="flux", var.col=5,
+                                                date.as.factor=T,
+                                                stat.model="no_interaction_with_covariate",
+                                                return.outcome="predicted")
+
+### Soil C
+soil_c_pool_ann <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
+                                                      var.cond="pool", var.col=3,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction_with_covariate",
+                                                      return.outcome="predicted")
+
+### Leaf C
+leaf_c_pool_ann <- make_leafc_treatment_abs_effect_statistics(inDF=leaf_c_pool, 
+                                                      var.cond="pool", var.col=3,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction_with_covariate",
+                                                      return.outcome="predicted")
+
+### Wood C pool
+wood_c_pool_ann <- make_woodc_treatment_abs_effect_statistics(inDF=wood_c_pool, 
+                                                      var.cond="pool", var.col=3,
+                                                      date.as.factor=T,
+                                                      stat.model="no_interaction_with_covariate",
+                                                      return.outcome="predicted") 
+
+### Fineroot C pool
+fineroot_c_pool_ann <- make_frootc_treatment_abs_effect_statistics(inDF=fineroot_c_pool, 
+                                                     var.cond="pool", var.col=3,
+                                                     date.as.factor=T,
+                                                     stat.model="no_interaction_with_covariate",
+                                                     return.outcome="predicted")
+
+### Coarseroot C pool
+coarse_root_c_pool_ann <- make_crootc_treatment_abs_effect_statistics(inDF=coarse_root_c_pool_1, 
+                                                     var.cond="pool", var.col=3,
+                                                     date.as.factor=T,
+                                                     stat.model="no_interaction_with_covariate",
+                                                     return.outcome="predicted")
+
+### Understorey aboveground C pool
+understorey_aboveground_c_pool_ann <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
+                                                  var.cond="pool", var.col=5,
+                                                  date.as.factor=T,
+                                                  stat.model="no_interaction_with_covariate",
+                                                  return.outcome="predicted")
+
+understorey_aboveground_c_pool_2_ann <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+                                                   var.cond="pool", var.col=3,
+                                                   date.as.factor=T,
+                                                   stat.model="no_interaction_with_covariate",
+                                                   return.outcome="predicted")
+
+### Microbial C pool
+microbial_c_pool_ann <- make_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
+                                                    var.cond="pool", var.col=3,
+                                                    date.as.factor=T,
+                                                    stat.model="no_interaction_with_covariate",
+                                                    return.outcome="predicted")
+
+### Mycorrhizal C pool
+mycorrhizal_c_pool_ann <- make_mycc_treatment_abs_effect_statistics(inDF=mycorrhizal_c_pool, 
+                                                    var.cond="pool", var.col=3,
+                                                    date.as.factor=T,
+                                                    stat.model="no_interaction_with_covariate",
+                                                    return.outcome="predicted")
+
+### Leaf litter C pool
+leaflitter_pool_ann <- make_litc_treatment_abs_effect_statistics(inDF=leaflitter_pool, 
+                                                    var.cond="pool", var.col=6,
+                                                    date.as.factor=T,
+                                                    stat.model="no_interaction_with_covariate",
+                                                    return.outcome="predicted")
+
+### Insect pool
+insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=insect_pool, 
+                                                    var.cond="pool", var.col=3,
+                                                    date.as.factor=T,
+                                                    stat.model="no_interaction_with_covariate",
+                                                    return.outcome="predicted")
+
+
+###### ----------Make summary tables-------------- ######
+###### This is a summary table of all predicted data
+
+### Generate ring-specific table (ignoring time variable)
+source("R/make_table_by_ring_predicted.R")
+tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 
 ###### ----------Check for C gaps-------------- ######

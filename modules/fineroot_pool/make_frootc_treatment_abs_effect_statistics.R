@@ -1,6 +1,6 @@
 make_frootc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
                                                    var.col, date.as.factor,
-                                                   stat.model) {
+                                                   stat.model, return.outcome) {
     
     ### Pass in covariate values (assuming 1 value for each ring)
     covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
@@ -142,5 +142,15 @@ make_frootc_treatment_abs_effect_statistics <- function(inDF, var.cond,
                     conf = eff.conf4)
     }
 
-    return(out)
+    ### Predict the model with a standard LAI value
+    newDF <- tDF
+    newDF$Cov2 <- 1.14815  # initial LAI averages
+    newDF$predicted <- predict(out$mod, newdata=newDF)
+    
+    
+    if (return.outcome == "model") {
+        return(out)
+    } else if (return.outcome == "predicted") {
+        return(newDF)
+    }
 }

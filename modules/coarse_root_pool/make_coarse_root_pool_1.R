@@ -1,7 +1,4 @@
-make_coarse_root_pool_1 <- function(c_frac, fr_pool,
-                                    return.decision="data",
-                                    trt.effect="abs",
-                                    stat.model="interaction") {
+make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
     ### Method 1 of making total root biomass pool
     ### Based on Snowdon et al., 2000. National Carbon accounting system:
     ### synthesis of allometrics, review of root biomass and design of future woody biomass sampling strategies.
@@ -101,46 +98,9 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool,
     
     # Only use data period 2012-2016
     cr_pool <- cr_pool[cr_pool$Date<="2016-12-31",]
-    
-    ### Compute statistical analyses
-    if (return.decision=="stats") {
-        if (trt.effect == "abs") {
-            if (stat.model == "dynamic") {
-                source("R/stats/treatment_effect_abs_statistics_dynamic.R")
-            } else if (stat.model == "no_interaction") {
-                source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
-            } else if (stat.model == "interaction") {
-                source("R/stats/treatment_effect_abs_statistics_interaction.R")
-            } else {
-                source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
-            }
-            
-            s.stats <- treatment_effect_abs_statistics(inDF=data, 
-                                                       var.cond="pool", var.col=13,
-                                                       date.as.factor=T)
-        } else if (trt.effect == "ratio") {
-            if (stat.model == "dynamic") {
-                source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
-            } else if (stat.model == "no_interaction") {
-                source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
-            } else if (stat.model == "interaction") {
-                source("R/stats/treatment_effect_ratio_statistics_interaction.R")
-            } else {
-                source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
-            }
-            
-            s.stats <- treatment_effect_ratio_statistics(inDF=data, 
-                                                         var.cond="pool", var.col=13,
-                                                         date.as.factor=T)
-        }
-    }
 
-    
     ### Decision on what to return
-    if (return.decision == "data") {
-        return(cr_pool)
-    } else if (return.decision == "stats") {
-        return(s.stats)
-    }
+    return(cr_pool)
+
     
 }
