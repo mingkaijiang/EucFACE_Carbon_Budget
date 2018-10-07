@@ -62,6 +62,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     names(plotDF2)[1] <- "Variable"
     plotDF2[6,"Variable"] <- "total_outflux"
     
+    ### Total of Ra and Rh and the conf. interval
     plotDF2[6,"effect_size"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"]+
         plotDF2$effect_size[plotDF2$Variable=="Ra"]
     
@@ -70,6 +71,24 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     
     plotDF2[6,"conf_high"] <- plotDF2$conf_high[plotDF2$Variable=="Outfluxes"]+
         plotDF2$conf_high[plotDF2$Variable=="Ra"]
+    
+    subDF <- plotDF2[plotDF2$Variable%in%c("Outfluxes","Ra"),]
+    
+    subDF$conf_low_radius <- with(subDF, effect_size - conf_low)
+    subDF$conf_high_radius <- with(subDF, conf_high - effect_size)
+    subDF$conf_low_radius_sq <- (subDF$conf_low_radius)^2
+    subDF$conf_high_radius_sq <- (subDF$conf_high_radius)^2
+    subDF$plot.cat2 <- "total_outflux"
+    
+    subDF2 <- summaryBy(conf_high_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=subDF, FUN=sum)
+    subDF3 <- summaryBy(conf_low_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=subDF, FUN=sum)
+    
+    subDF2$conf_high_radius <- sqrt(subDF2$conf_high_radius_sq)
+    subDF3$conf_low_radius <- sqrt(subDF3$conf_low_radius_sq)
+    
+    plotDF2[6,"conf_low"] <- plotDF2[6,"effect_size"] - subDF3$conf_low_radius
+    plotDF2[6,"conf_high"] <- plotDF2[6,"effect_size"] + subDF2$conf_high_radius
+    
     
     plotDF2$plot.cat <- c("total_change_in_pool", "total_influx", "total_npp", "total_rh", "total_ra", "total_outflux")
 
@@ -270,19 +289,19 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     library(viridis)
     
     ## gpp
-    colfunc.inf <- colorRampPalette(c("black", "grey"))
+    colfunc.inf <- colorRampPalette(c("purple", "yellow"))
     A.col.list <- colfunc.inf(2)
     
     # 2nd column bar - NPP + Ra 
-    colfunc.inf <- colorRampPalette(c("darkgreen", "darkred"))
+    colfunc.inf <- colorRampPalette(c("green", "red"))
     B.col.list <- colfunc.inf(2)
     
-    # 2nd column bar - Change in pools + all R
-    colfunc.inf <- colorRampPalette(c("red", "blue"))
+    # 3rd column bar - Change in pools + all R
+    colfunc.inf <- colorRampPalette(c("blue", "orange"))
     C.col.list <- colfunc.inf(2)
     
     ## NPP
-    colfunc.npp <- colorRampPalette(c("darkgreen", "yellow"))
+    colfunc.npp <- colorRampPalette(c("darkgreen", "lightgreen"))
     D.col.list <- colfunc.npp(9)
     
     ## R
@@ -312,17 +331,17 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                    "fineroot_prod"=D.col.list[7],           
                    "coarseroot_prod"=D.col.list[8],         
                    "understorey_prod"=D.col.list[9],           
-                   "over_leaf_respiration"=E.col.list[1],      
-                   "wood_respiration"=E.col.list[2],           
-                   "root_respiration"=E.col.list[3],           
-                   "understorey_respiration"=E.col.list[4],      
-                   "hetero_respiration"=E.col.list[5],            
+                   "over_leaf_respiration"=E.col.list[4],      
+                   "wood_respiration"=E.col.list[5],           
+                   "root_respiration"=E.col.list[1],           
+                   "understorey_respiration"=E.col.list[2],      
+                   "hetero_respiration"=E.col.list[3],            
                    "delta_wood_c"=F.col.list[2],        
                    "delta_fineroot_c"=F.col.list[3],    
                    "delta_coarseroot_c"=F.col.list[4],  
                    "delta_understorey_c"=F.col.list[5],    
-                   "delta_soil_c"=F.col.list[6],         
-                   "delta_litter_c"=F.col.list[7])       
+                   "delta_soil_c"=F.col.list[1],         
+                   "delta_litter_c"=F.col.list[6])       
     
     #col.list2 <- c("over_gpp"=v.list[1],                    
     #               "understorey_gpp"=v.list[2],  
@@ -407,7 +426,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("GPP", 
                                   expression(paste("NPP+", R[a])),
-                                  expression(paste(Delta*C[pools],"+R")),
+                                  expression(paste("R+",Delta*C[pools])),
                                   "NPP", 
                                   "R",
                                   expression(Delta*C[pools])))+
@@ -434,7 +453,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
         #                   breaks=c(-100, -75, -50, -25, 0, 50, 100, 150, 175, 200),
         #                   labels=c(-400, -200, -50, -25, 0, 50, 100, 150, 400, 650))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
-        guides(fill=guide_legend(ncol=5))
+        guides(fill=guide_legend(ncol=6))+
+        ylim(-500,1000)
         
      plot(p3)
 

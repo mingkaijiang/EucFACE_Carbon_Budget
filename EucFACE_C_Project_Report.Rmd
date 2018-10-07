@@ -1188,6 +1188,38 @@ Nevertheless, the biomass increment results are summarized below:
     biomass_increment_plot()
 ```
 <br/>
+
+### 6.5 Perform stats and regenerate summary table
+This is to use pre-existing LAI as a covariate to predict all pools and fluxes:
+
+#### Perform stats in the background
+``` {r, echo=FALSE, warning=FALSE, message=FALSE, fig.width = 7, fig.align="center", results="hide"}
+#    source("R/stats/generate_stats_abs_covariate.R")
+#    generate_stats_abs_covariate(stat.model="no_interaction")
+
+    
+```
+
+
+#### Method Pool
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+#    source("R/make_table_by_ring_predicted.R")
+#    tables_by_ring_predicted <- make_table_by_ring_predicted()
+#    kable(tables_by_ring_predicted$pool, digits=2)
+
+```
+
+#### Method In and out
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+#    kable(tables_by_ring_predicted$inout, digits=2)
+```
+
+#### Method NPP
+``` {r, echo = FALSE, warning=FALSE, message=FALSE} 
+#    kable(tables_by_ring_predicted$npp, digits=2)
+```
+
+
 <br/>
 
 # 7. Closing the C gaps
@@ -1196,16 +1228,16 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 ### GPP C gaps
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
-    source("R/gpp_gap_plot.R")
-    gpp_gap_plot(inDF=tables_by_ring)
+#    source("R/gpp_gap_plot.R")
+#    gpp_gap_plot(inDF=tables_by_ring)
     
 ```
 
 
 ### Rsoil C gaps
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
-    source("R/rsoil_gap_plot.R")
-    rsoil_gap_plot(inDF=tables_by_ring)
+#    source("R/rsoil_gap_plot.R")
+#    rsoil_gap_plot(inDF=tables_by_ring)
     
 ```
 
@@ -1213,8 +1245,8 @@ Here, I am going to make some bar plots to compare different ways of calculating
 
 #### Method in and out
 ``` {r, echo = FALSE, warning=FALSE, message=FALSE, results="hide"} 
-    source("R/nep_gap_plot.R")
-    nep_gap_plot(inDF=tables_by_ring)
+#    source("R/nep_gap_plot.R")
+#    nep_gap_plot(inDF=tables_by_ring)
     
 ```
 
@@ -1244,17 +1276,10 @@ Here, I am going to make some bar plots to compare different ways of calculating
 # 9. To-do list
 
     - VOC data
-    - Update Rsoil
-    - Update mycorrhizal biomass
-    - Estimate mycorrhizal production (possibly flower production)
+    - Estimate mycorrhizal production 
     - Root mortality and turnover 
     - MAESPA output (GPP, Ra for overstorey and understorey)
-    - C balance figure to show where the extra C ended up.
-    - C budget figure to close the balance
-    - C budget figure for NEP
     - power analysis
-    - Standardize response by something (e.g. wood biomass) to show a clearer response ratio
-    - Update summary tables here and in the manuscript
 
 <br/> 
 

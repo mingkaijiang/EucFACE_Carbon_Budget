@@ -595,22 +595,22 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 
 ### Work orders
 ### 3. Compare against the original figure:  Check if we could close the budget
-###    3.1 Recalculate Rsoil with Alexis's method
-###         3.1.1 Rh + Rroot don't equal to Rsoil, check why
-###         3.1.2 Alexis's method resulted in some negative Rsoil numbers, while John's method has lower eCO2 response that makes Rstem the biggest component
-###         3.1.3 Refine Alexis' Rsoil numbers to remove negative numbers
-###         3.1.4 John's soil respiration gives higher Rsoil estimates, but lower eCO2 effect
-###               and therefore, Rsoil no longer the largest explanation for extra C;
-###               Alexis's data and method gives lower Rsoil estimates, but higher eCO2 effect;
-###               and Alexis's method looks bad for C budget balancing, but provides interseting results
-###               for finding extra carbon.
-###    3.2 Check with Nam Jin on Wood respiration numbers
-###         3.2.1 Update stem respiration with Roberto's data
-###    3.3 update all figures and tables with predicted numbers
-###         3.3.1 C extra figure - better color scheme
-### 4. Finish SM figures and writing - use raw data or corrected data?
-### 5. Finish the tables, update main text figures
-### 6. Finish method section (ask individual contributions), upload all needed datat on HIEv (by Nov-20)
+###    3.1 More thoroughly compare Alexis's Rsoil with John's
+###        Alexis Rsoil resulted in positive NEP throughout, 
+###        but John's soil respiration gives higher Rsoil estimates, but lower eCO2 effect,
+###        and therefore, Rsoil no longer the largest explanation for extra C;
+###        Alexis's data and method gives lower Rsoil estimates, but higher eCO2 effect;
+###        hence also looks bad for C budget balancing.
+###    3.2 Need better stem respiration estimates!!!
+###    3.3 Need understorey GPP values
+
+### Write to Jim and ask for understorey GPP 
+### Incorporate stem respiration flux
+### Compare Rsoil and decide which to use
+### Finish main text, figures
+### Finish Method section
+### Finish SM figures, with corrected data
+### Finish method section (ask individual contributions), upload all needed datat on HIEv (by Nov-20)
 
 ###### ---------------- End -------------------- ######
 options(warn=0)
