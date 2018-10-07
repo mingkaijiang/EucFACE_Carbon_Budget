@@ -122,7 +122,8 @@ make_soil_carbon_pool <- function(bk_density, return){
         
     }
     
-    # Only use data period 2012-2016
+    # Only use data period 2012-2016    
+    #dat.s.m <- dat.s.m[dat.s.m$Date>"2012-06-17",]
     dat.s.m <- dat.s.m[dat.s.m$Date<="2016-12-31",]
     return(dat.s.m)
     #------

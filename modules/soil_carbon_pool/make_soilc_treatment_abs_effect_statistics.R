@@ -4,7 +4,7 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### subset pre-treatment data
     preDF <- subset(inDF, Date=="2012-06-17")
-    # inDF <- subset(inDF, Date>="2012-12-11")
+    inDF <- subset(inDF, Date>"2012-06-17")
     for (i in 1:6) {
         inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
     }

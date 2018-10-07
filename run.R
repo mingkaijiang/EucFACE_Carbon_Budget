@@ -84,8 +84,8 @@ make_gpp_over_soil_phosphate_conc(pDF=soil_phosphate_concentration)
 make_gpp_over_soil_p_pool(pDF=soil_p_pool)    
 
 ### soil respiration flux
-#soil_respiration_flux <- make_soil_respiration_flux()
-soil_respiration_flux <- make_soil_respiration_flux_2()
+soil_respiration_flux <- make_soil_respiration_flux()
+#soil_respiration_flux <- make_soil_respiration_flux_2()
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
@@ -506,33 +506,34 @@ tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 ###### ----------Check for C gaps-------------- ######
 ### GPP gaps
-source("R/gpp_gap_plot.R")
-gpp_gap_plot(inDF=tables_by_ring)
+#source("R/gpp_gap_plot.R")
+#gpp_gap_plot(inDF=tables_by_ring_predicted)
 
 ### Rsoil gaps
-source("R/rsoil_gap_plot.R")
-rsoil_gap_plot(inDF=tables_by_ring)
+#source("R/rsoil_gap_plot.R")
+#rsoil_gap_plot(inDF=tables_by_ring_predicted)
 
 ### Plot a combined gpp and rsoil gap plot
+### To plot, you need to go into the function
 source("R/gpp_and_rsoil_gap_plot.R")
-gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
+gpp_and_rsoil_gap_plot(inDF=tables_by_ring_predicted)
 
 
 ### NEP gaps   - Note the different input file!
 source("R/nep_gap_plot.R")
-nep_gap_plot(inDF=tables_by_ring)
+nep_gap_plot(inDF=tables_by_ring_predicted)
 
 ### Biomass increment
-source("R/biomass_increment_plot.R")
-biomass_increment_plot()
+#source("R/biomass_increment_plot.R")
+#biomass_increment_plot()
 
 ### NPP allocation
-source("R/make_npp_allocation_ratio.R")
-make_npp_allocation_ratio()
+#source("R/make_npp_allocation_ratio.R")
+#make_npp_allocation_ratio()
 
 #### TBCA
-source("R/make_belowground_c_flux_allocation.R")
-make_belowground_c_flux_allocation()
+#source("R/make_belowground_c_flux_allocation.R")
+#make_belowground_c_flux_allocation()
 
 ###### ----------Make comparison plots, etc. -------------- ######
 #source("R/change_in_wood_soil_pools.R")
@@ -542,8 +543,8 @@ make_belowground_c_flux_allocation()
 #                                       destDir = "R_other")
 
 
-source("R/understorey_production_check.R")
-understorey_production_check()
+#source("R/understorey_production_check.R")
+#understorey_production_check()
 
 #source("R/leaf_npp_and_lerp_production_plot.R")
 #pdf("R_other/leaf_npp_lerp_production.pdf")

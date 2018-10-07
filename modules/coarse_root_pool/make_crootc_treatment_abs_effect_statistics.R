@@ -145,6 +145,7 @@ make_crootc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     newDF <- tDF
     newDF$Cov2 <- 1.14815  # initial LAI averages
     newDF$predicted <- predict(out$mod, newdata=newDF)
+    newDF$Ring <- as.numeric(as.character(newDF$Ring))
     
     
     if (return.outcome == "model") {

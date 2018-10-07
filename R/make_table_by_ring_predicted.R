@@ -69,13 +69,13 @@ make_table_by_ring_predicted <- function() {
     for (i in Ring) {
         
         # GPP overstorey - already annual
-        inout[inout$term == "GPP overstorey", i+1] <- mean(overstorey_gpp_flux_ann$predicted[overstorey_gpp_flux$Ring == i])
+        inout[inout$term == "GPP overstorey", i+1] <- mean(overstorey_gpp_flux_ann$predicted[overstorey_gpp_flux_ann$Ring == i])
         
         # GPP understorey - already annual
-        inout[inout$term == "GPP understorey", i+1] <- mean(understorey_gpp_flux_ann$predicted[understorey_gpp_flux$Ring == i])
+        inout[inout$term == "GPP understorey", i+1] <- mean(understorey_gpp_flux_ann$predicted[understorey_gpp_flux_ann$Ring == i])
         
         # Ra leaf - already annual
-        inout[inout$term == "Ra leaf", i+1] <- mean(overstorey_leaf_respiration_flux_ann$predicted[overstorey_leaf_respiration_flux$Ring == i])
+        inout[inout$term == "Ra leaf", i+1] <- mean(overstorey_leaf_respiration_flux_ann$predicted[overstorey_leaf_respiration_flux_ann$Ring == i])
         
         # Ra root
         inout[inout$term == "Ra root", i+1] <- mean(root_respiration_flux_ann$predicted[root_respiration_flux_ann$Ring == i])

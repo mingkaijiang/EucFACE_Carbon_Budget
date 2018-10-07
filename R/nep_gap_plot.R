@@ -35,19 +35,29 @@ nep_gap_plot <- function(inDF) {
     }
 
     ### Change in pools
-    source("R/stats/change_in_pool/make_change_in_pool.R")
-    
+    delta_soil_c <- make_yearly_delta_pool_function_ann(inDF=soil_c_pool_ann, var.col=9)
+    delta_leaf_c <- make_yearly_delta_pool_function_ann(inDF=leaf_c_pool_ann, var.col=9)
+    delta_wood_c <- make_yearly_delta_pool_function_ann(inDF=wood_c_pool_ann, var.col=9)
+    delta_croot_c <- make_yearly_delta_pool_function_ann(inDF=coarse_root_c_pool_ann, var.col=9)
+    delta_froot_c <- make_yearly_delta_pool_function_ann(inDF=fineroot_c_pool_ann, var.col=9)
+    delta_ua_c <- make_yearly_delta_pool_function_ann(inDF=understorey_aboveground_c_pool_ann, var.col=9)
+    delta_mic_c <- make_yearly_delta_pool_function_ann(inDF=microbial_c_pool_ann, var.col=9)
+    delta_myc_c <- make_yearly_delta_pool_function_ann(inDF=mycorrhizal_c_pool_ann, var.col=9)
+    delta_ins_c <- make_yearly_delta_pool_function_ann(inDF=insect_pool_ann, var.col=9)
+    delta_lit_c <- make_yearly_delta_pool_function_ann(inDF=leaflitter_pool_ann, var.col=9)
+
+    #source("R/stats/change_in_pool/make_change_in_pool_ann.R")
     ### Compute changes in pool variables
-    delta_soil_c <- make_change_in_pool(mypool=soil_c_pool, var.col=3)
-    delta_leaf_c <- make_change_in_pool(mypool=leaf_c_pool, var.col=3)
-    delta_wood_c <- make_change_in_pool(mypool=wood_c_pool, var.col=3)
-    delta_croot_c <- make_change_in_pool(mypool=coarse_root_c_pool_1, var.col=3)
-    delta_froot_c <- make_change_in_pool(mypool=fineroot_c_pool, var.col=3)
-    delta_ua_c <- make_change_in_pool(mypool=understorey_aboveground_c_pool, var.col=5)
-    delta_mic_c <- make_change_in_pool(mypool=microbial_c_pool, var.col=3)
-    delta_myc_c <- make_change_in_pool(mypool=mycorrhizal_c_pool, var.col=3)
-    delta_ins_c <- make_change_in_pool(mypool=insect_pool, var.col=3)
-    delta_lit_c <- make_change_in_pool(mypool=leaflitter_pool, var.col=6)
+    #delta_soil_c <- make_change_in_pool_ann(mypool=soil_c_pool_ann)
+    #delta_leaf_c <- make_change_in_pool_ann(mypool=leaf_c_pool_ann)
+    #delta_wood_c <- make_change_in_pool_ann(mypool=wood_c_pool_ann)
+    #delta_croot_c <- make_change_in_pool_ann(mypool=coarse_root_c_pool_ann)
+    #delta_froot_c <- make_change_in_pool_ann(mypool=fineroot_c_pool_ann)
+    #delta_ua_c <- make_change_in_pool_ann(mypool=understorey_aboveground_c_pool_ann)
+    #delta_mic_c <- make_change_in_pool_ann(mypool=microbial_c_pool_ann)
+    #delta_myc_c <- make_change_in_pool_ann(mypool=mycorrhizal_c_pool_ann)
+    #delta_ins_c <- make_change_in_pool_ann(mypool=insect_pool_ann)
+    #delta_lit_c <- make_change_in_pool_ann(mypool=leaflitter_pool_ann)
 
     
     ### create df to store pools
@@ -72,17 +82,29 @@ nep_gap_plot <- function(inDF) {
     }
 
     ### assign values
-    poolDF[poolDF$Term=="soilc",2:7] <- calculate_variable_mean(delta_soil_c)$Value
-    poolDF[poolDF$Term=="leafc",2:7] <- calculate_variable_mean(delta_leaf_c)$Value
-    poolDF[poolDF$Term=="woodc",2:7] <- calculate_variable_mean(delta_wood_c)$Value
-    poolDF[poolDF$Term=="crootc",2:7] <- calculate_variable_mean(delta_croot_c)$Value
-    poolDF[poolDF$Term=="frootc",2:7] <- calculate_variable_mean(delta_froot_c)$Value
-    poolDF[poolDF$Term=="uac",2:7] <- calculate_variable_mean(delta_ua_c)$Value
-    poolDF[poolDF$Term=="micc",2:7] <- calculate_variable_mean(delta_mic_c)$Value
-    poolDF[poolDF$Term=="mycc",2:7] <- calculate_variable_mean(delta_myc_c)$Value
-    poolDF[poolDF$Term=="insect",2:7] <- calculate_variable_mean(delta_ins_c)$Value
+    #poolDF[poolDF$Term=="soilc",2:7] <- calculate_variable_mean(delta_soil_c)$Value
+    #poolDF[poolDF$Term=="leafc",2:7] <- calculate_variable_mean(delta_leaf_c)$Value
+    #poolDF[poolDF$Term=="woodc",2:7] <- calculate_variable_mean(delta_wood_c)$Value
+    #poolDF[poolDF$Term=="crootc",2:7] <- calculate_variable_mean(delta_croot_c)$Value
+    #poolDF[poolDF$Term=="frootc",2:7] <- calculate_variable_mean(delta_froot_c)$Value
+    #poolDF[poolDF$Term=="uac",2:7] <- calculate_variable_mean(delta_ua_c)$Value
+    #poolDF[poolDF$Term=="micc",2:7] <- calculate_variable_mean(delta_mic_c)$Value
+    #poolDF[poolDF$Term=="mycc",2:7] <- calculate_variable_mean(delta_myc_c)$Value
+    #poolDF[poolDF$Term=="insect",2:7] <- calculate_variable_mean(delta_ins_c)$Value
+    #poolDF[poolDF$Term=="cwd",2:7] <- 0.0
+    #poolDF[poolDF$Term=="litter",2:7] <- calculate_variable_mean(delta_lit_c)$Value
+    
+    poolDF[poolDF$Term=="soilc",2:7] <- summaryBy(delta~Ring,data=delta_soil_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="leafc",2:7] <- summaryBy(delta~Ring,data=delta_leaf_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="woodc",2:7] <- summaryBy(delta~Ring,data=delta_wood_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="crootc",2:7] <- summaryBy(delta~Ring,data=delta_croot_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="frootc",2:7] <- summaryBy(delta~Ring,data=delta_froot_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="uac",2:7] <- summaryBy(delta~Ring,data=delta_ua_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="micc",2:7] <- summaryBy(delta~Ring,data=delta_mic_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="mycc",2:7] <- summaryBy(delta~Ring,data=delta_myc_c,keep.names=T)$delta
+    poolDF[poolDF$Term=="insect",2:7] <- summaryBy(delta~Ring,data=delta_ins_c,keep.names=T)$delta
     poolDF[poolDF$Term=="cwd",2:7] <- 0.0
-    poolDF[poolDF$Term=="litter",2:7] <- calculate_variable_mean(delta_lit_c)$Value
+    poolDF[poolDF$Term=="litter",2:7] <- summaryBy(delta~Ring,data=delta_lit_c,keep.names=T)$delta
     
     ### NEP change in pools
     for (i in c(2:7)) {
@@ -128,9 +150,9 @@ nep_gap_plot <- function(inDF) {
     ### make the bar plot
     p1 <- ggplot(plotDF,
                 aes(Method, NEP)) + 
+        geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
         geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                       position = position_dodge(0.9), width=0.1) +
-        geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
         xlab("Method") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -144,7 +166,7 @@ nep_gap_plot <- function(inDF) {
               legend.position="bottom")+
         scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_colour_manual(name="", values = c("aCO2" = "blue", "eCO2" = "red"),
+        scale_colour_manual(name="", values = c("aCO2" = "black", "eCO2" = "black"),
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_x_discrete("",  
                          labels=c("In - Out",
@@ -152,9 +174,9 @@ nep_gap_plot <- function(inDF) {
                                   expression(Delta*C[pools])))+
         theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
     
-    # plot(p1)
+    plot(p1)
     
-    pdf("R_other/nep_gap.pdf", width=6, height=6)
+    pdf("R_other/nep_gap.pdf", width=8, height=8)
     plot(p1)
     dev.off()
     
