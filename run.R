@@ -84,8 +84,10 @@ make_gpp_over_soil_phosphate_conc(pDF=soil_phosphate_concentration)
 make_gpp_over_soil_p_pool(pDF=soil_p_pool)    
 
 ### soil respiration flux
-soil_respiration_flux <- make_soil_respiration_flux()
-#soil_respiration_flux <- make_soil_respiration_flux_2()
+### first method is John's
+### second is Alexis's
+#soil_respiration_flux <- make_soil_respiration_flux()
+soil_respiration_flux <- make_soil_respiration_flux_2()
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
@@ -560,26 +562,26 @@ nep_gap_plot(inDF=tables_by_ring_predicted)
 
 ###### ----------Make stats -------------- ######
 ### Generate ratio , considering no interaction
-source("R/stats/generate_stats_ratio.R")
-generate_stats_ratio(stat.model="no_interaction")
+#source("R/stats/generate_stats_ratio.R")
+#generate_stats_ratio(stat.model="no_interaction")
 
 ### Generate abs, considering no interaction
-source("R/stats/generate_stats_abs.R")
-generate_stats_abs(stat.model="no_interaction")
+#source("R/stats/generate_stats_abs.R")
+#generate_stats_abs(stat.model="no_interaction")
 
 ### Generate abs on changes in pools, considering no interaction
-source("R/stats/generate_stats_abs_change_in_pools.R")
-generate_stats_abs_change_in_pools(stat.model="no_interaction")
+#source("R/stats/generate_stats_abs_change_in_pools.R")
+#generate_stats_abs_change_in_pools(stat.model="no_interaction")
 
 ### Make some plots
 source("R/make_statistical_comparison_plots.R")
 make_statistical_comparison_plots()
 
-source("R/make_eCO2_effect_on_GPP_plot.R")
-make_eCO2_effect_on_GPP_plot()
+#source("R/make_eCO2_effect_on_GPP_plot.R")
+#make_eCO2_effect_on_GPP_plot()
 
-source("R/make_eCO2_effect_on_GPP_plot2.R")
-make_eCO2_effect_on_GPP_plot2()
+#source("R/make_eCO2_effect_on_GPP_plot2.R")
+#make_eCO2_effect_on_GPP_plot2()
 
 source("R/make_eCO2_effect_on_GPP_plot_with_covariate.R")
 make_eCO2_effect_on_GPP_plot_with_covariate()
@@ -597,12 +599,16 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###         3.1.1 Rh + Rroot don't equal to Rsoil, check why
 ###         3.1.2 Alexis's method resulted in some negative Rsoil numbers, while John's method has lower eCO2 response that makes Rstem the biggest component
 ###         3.1.3 Refine Alexis' Rsoil numbers to remove negative numbers
+###         3.1.4 John's soil respiration gives higher Rsoil estimates, but lower eCO2 effect
+###               and therefore, Rsoil no longer the largest explanation for extra C;
+###               Alexis's data and method gives lower Rsoil estimates, but higher eCO2 effect;
+###               and Alexis's method looks bad for C budget balancing, but provides interseting results
+###               for finding extra carbon.
 ###    3.2 Check with Nam Jin on Wood respiration numbers
 ###         3.2.1 Update stem respiration with Roberto's data
 ###    3.3 update all figures and tables with predicted numbers
 ###         3.3.1 C extra figure - better color scheme
-###         3.3.2 Is it necessary to update C budget diagram figure,  Rsoil and GPP comparison figures, and NEP figure?
-### 4. Finish SM figures and writing
+### 4. Finish SM figures and writing - use raw data or corrected data?
 ### 5. Finish the tables, update main text figures
 ### 6. Finish method section (ask individual contributions), upload all needed datat on HIEv (by Nov-20)
 

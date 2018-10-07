@@ -60,21 +60,32 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     ### Calculate totals of each plot.cat
     plotDF2 <- summaryBy(effect_size+conf_low+conf_high~plot.cat, data=plotDF1, FUN=sum, keep.names=T, na.rm=T)
     names(plotDF2)[1] <- "Variable"
-    plotDF2$plot.cat <- c("total_change_in_pool", "total_influx", "total_npp", "total_outflux", "total_ra")
+    plotDF2[6,"Variable"] <- "total_outflux"
     
+    plotDF2[6,"effect_size"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"]+
+        plotDF2$effect_size[plotDF2$Variable=="Ra"]
+    
+    plotDF2[6,"conf_low"] <- plotDF2$conf_low[plotDF2$Variable=="Outfluxes"]+
+        plotDF2$conf_low[plotDF2$Variable=="Ra"]
+    
+    plotDF2[6,"conf_high"] <- plotDF2$conf_high[plotDF2$Variable=="Outfluxes"]+
+        plotDF2$conf_high[plotDF2$Variable=="Ra"]
+    
+    plotDF2$plot.cat <- c("total_change_in_pool", "total_influx", "total_npp", "total_rh", "total_ra", "total_outflux")
+
     ### Combine the plots
-    plotDF <- rbind(plotDF1, plotDF2[c(1,3,4,5),])
+    plotDF <- rbind(plotDF1, plotDF2[c(1,3,5,6),])
     
     ### Assign plot cat 2
     plotDF$plot.cat2[plotDF$plot.cat=="Influxes"] <- "A"
     plotDF$plot.cat2[plotDF$plot.cat=="total_npp"] <- "B"
     plotDF$plot.cat2[plotDF$plot.cat=="total_ra"] <- "B"
-    plotDF$plot.cat2[plotDF$plot.cat=="total_outflux"] <- "B"
-    plotDF$plot.cat2[plotDF$plot.cat=="total_change_in_pool"] <- "B"
-    plotDF$plot.cat2[plotDF$plot.cat=="NPP"] <- "C"
-    plotDF$plot.cat2[plotDF$plot.cat=="Ra"] <- "D"
-    plotDF$plot.cat2[plotDF$plot.cat=="Outfluxes"] <- "D"
-    plotDF$plot.cat2[plotDF$plot.cat=="Change_in_pools"] <- "E"
+    plotDF$plot.cat2[plotDF$plot.cat=="total_outflux"] <- "C"
+    plotDF$plot.cat2[plotDF$plot.cat=="total_change_in_pool"] <- "C"
+    plotDF$plot.cat2[plotDF$plot.cat=="NPP"] <- "D"
+    plotDF$plot.cat2[plotDF$plot.cat=="Ra"] <- "E"
+    plotDF$plot.cat2[plotDF$plot.cat=="Outfluxes"] <- "E"
+    plotDF$plot.cat2[plotDF$plot.cat=="Change_in_pools"] <- "F"
 
     ### exclude variables with averaged CO2 effect < 1 g m-2 yr-1
     # plotDF <- subset(plotDF, effect_size >= 1)
@@ -107,7 +118,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                 "understorey_gpp"=expression(GPP[u]),             # 3
                 "Change_in_pools"=expression(Delta*C[pools]),
                 "NPP"="NPP",                                      # 4
-                "Outfluxes"=expression(R[other]),                 # 5
+                "total_outflux"="R",                                  # 5
                 "Ra"=expression(R[a]),                            # 6
                 "herb_consump"=expression(NPP[insect]),           # 7
                 "leaf_prod"=expression(NPP[leaf]),                # 8
@@ -137,52 +148,56 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     colfunc.inf <- colorRampPalette(c("black", "grey"))
     A.col.list <- colfunc.inf(3)
     
-    # 2nd column bar - NPP + Ra + Rother
-    colfunc.inf <- colorRampPalette(c("darkgreen", "darkred", "red", "blue"))
-    B.col.list <- colfunc.inf(4)
+    # 2nd column bar - NPP + Ra 
+    colfunc.inf <- colorRampPalette(c("darkgreen", "darkred"))
+    B.col.list <- colfunc.inf(2)
+    
+    # 2nd column bar - Change in pools + all R
+    colfunc.inf <- colorRampPalette(c("red", "blue"))
+    C.col.list <- colfunc.inf(2)
     
     ## NPP
     colfunc.npp <- colorRampPalette(c("darkgreen", "yellow"))
-    C.col.list <- colfunc.npp(9)
+    D.col.list <- colfunc.npp(9)
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
-    D.col.list <- colfunc.R(6)
+    E.col.list <- colfunc.R(6)
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    E.col.list <- colfunc.delta(7)
+    F.col.list <- colfunc.delta(7)
     
     ### Combine all color list
     col.list1 <- c("ch4"=A.col.list[1], 
                    "over_gpp"=A.col.list[2],                    
                    "understorey_gpp"=A.col.list[3], 
-                   "Change_in_pools"=B.col.list[4],   
+                   "Change_in_pools"=C.col.list[1],   
                    "NPP"=B.col.list[1],   
-                   "Outfluxes"=B.col.list[2],
-                   "Ra"=B.col.list[3],      
-                   "herb_consump"=C.col.list[1],           
-                   "leaf_prod"=C.col.list[2],                
-                   "twig_prod"=C.col.list[3],                
-                   "bark_prod"=C.col.list[4],                
-                   "seed_prod"=C.col.list[5],                
-                   "wood_prod"=C.col.list[6],               
-                   "fineroot_prod"=C.col.list[7],           
-                   "coarseroot_prod"=C.col.list[8],         
-                   "understorey_prod"=C.col.list[9],           
-                   "over_leaf_respiration"=D.col.list[1],      
-                   "wood_respiration"=D.col.list[2],           
-                   "root_respiration"=D.col.list[3],           
-                   "understorey_respiration"=D.col.list[4],      
-                   "hetero_respiration"=D.col.list[5],            
-                   "doc"=D.col.list[6],                        
-                   "delta_leaf_c"=E.col.list[1],         
-                   "delta_wood_c"=E.col.list[2],        
-                   "delta_fineroot_c"=E.col.list[3],    
-                   "delta_coarseroot_c"=E.col.list[4],  
-                   "delta_understorey_c"=E.col.list[5],    
-                   "delta_soil_c"=E.col.list[6],         
-                   "delta_litter_c"=E.col.list[7])                         
+                   "total_outflux"=C.col.list[2],
+                   "Ra"=B.col.list[2],      
+                   "herb_consump"=D.col.list[1],           
+                   "leaf_prod"=D.col.list[2],                
+                   "twig_prod"=D.col.list[3],                
+                   "bark_prod"=D.col.list[4],                
+                   "seed_prod"=D.col.list[5],                
+                   "wood_prod"=D.col.list[6],               
+                   "fineroot_prod"=D.col.list[7],           
+                   "coarseroot_prod"=D.col.list[8],         
+                   "understorey_prod"=D.col.list[9],           
+                   "over_leaf_respiration"=E.col.list[1],      
+                   "wood_respiration"=E.col.list[2],           
+                   "root_respiration"=E.col.list[3],           
+                   "understorey_respiration"=E.col.list[4],      
+                   "hetero_respiration"=E.col.list[5],            
+                   "doc"=E.col.list[6],                        
+                   "delta_leaf_c"=F.col.list[1],         
+                   "delta_wood_c"=F.col.list[2],        
+                   "delta_fineroot_c"=F.col.list[3],    
+                   "delta_coarseroot_c"=F.col.list[4],  
+                   "delta_understorey_c"=F.col.list[5],    
+                   "delta_soil_c"=F.col.list[6],         
+                   "delta_litter_c"=F.col.list[7])                         
     
     #### Plotting
     p1 <- ggplot(plotDF,
@@ -191,7 +206,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                  position="stack") +
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("Influxes", 
-                                  expression(paste("NPP+R+", Delta*C[pools])),
+                                  expression(paste("NPP+", R[a])),
+                                  expression(paste(Delta*C[pools], "+R")),
                                   "NPP", 
                                   "R",
                                   expression(Delta*C[pools])))+
@@ -200,7 +216,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                           values = col.list1,
                           labels=y.lab1) +
         theme_linedraw() +
-        ylim(-50,500)+
+        ylim(-500,1000)+
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
               axis.text.x = element_text(size=12),
@@ -220,7 +236,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
         geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=4, shape=21, fill="white")+
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("Influxes", 
-                                  expression(paste("NPP+R+", Delta*C[pools])),
+                                  expression(paste("NPP+", R[a])),
+                                  expression(paste(Delta*C[pools], "+R")),
                                   "NPP", 
                                   "R",
                                   expression(Delta*C[pools])))+
@@ -253,89 +270,93 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     library(viridis)
     
     ## gpp
-    colfunc.inf <- colorRampPalette(c("orange", "yellow"))
+    colfunc.inf <- colorRampPalette(c("black", "grey"))
     A.col.list <- colfunc.inf(2)
     
-    # 2nd column bar - NPP + Ra + Rother
-    colfunc.inf <- colorRampPalette(c("green", "darkred", "red", "blue"))
-    B.col.list <- colfunc.inf(4)
+    # 2nd column bar - NPP + Ra 
+    colfunc.inf <- colorRampPalette(c("darkgreen", "darkred"))
+    B.col.list <- colfunc.inf(2)
+    
+    # 2nd column bar - Change in pools + all R
+    colfunc.inf <- colorRampPalette(c("red", "blue"))
+    C.col.list <- colfunc.inf(2)
     
     ## NPP
-    colfunc.npp <- colorRampPalette(c("darkgreen", "green"))
-    C.col.list <- viridis(9) 
+    colfunc.npp <- colorRampPalette(c("darkgreen", "yellow"))
+    D.col.list <- colfunc.npp(9)
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
-    D.col.list <- colfunc.R(5)
+    E.col.list <- colfunc.R(5)
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    E.col.list <- colfunc.delta(6)
+    F.col.list <- colfunc.delta(6)
     
     v.list <- viridis(26)
     #v.list <- rainbow(26)
 
     ### Combine all color list
     col.list2 <- c("over_gpp"=A.col.list[1],                    
-                   "understorey_gpp"=A.col.list[2],    
-                   "Change_in_pools"=B.col.list[4],
+                   "understorey_gpp"=A.col.list[2], 
+                   "Change_in_pools"=C.col.list[1],   
                    "NPP"=B.col.list[1],   
-                   "Outfluxes"=B.col.list[2],
-                   "Ra"=B.col.list[3],      
-                   "herb_consump"=C.col.list[1],           
-                   "leaf_prod"=C.col.list[2],                
-                   "twig_prod"=C.col.list[3],                
-                   "bark_prod"=C.col.list[4],                
-                   "seed_prod"=C.col.list[5],                
-                   "wood_prod"=C.col.list[6],               
-                   "fineroot_prod"=C.col.list[7],    
-                   "coarseroot_prod"=C.col.list[8],
-                   "understorey_prod"=C.col.list[9], 
-                   "root_respiration"=D.col.list[1],           
-                   "understorey_respiration"=D.col.list[2],      
-                   "hetero_respiration"=D.col.list[3],            
-                   "over_leaf_respiration"=D.col.list[4],      
-                   "wood_respiration"=D.col.list[5],           
-                   "delta_soil_c"=E.col.list[1],         
-                   "delta_wood_c"=E.col.list[2],        
-                   "delta_fineroot_c"=E.col.list[3],
-                   "delta_coarseroot_c"=E.col.list[4],
-                   "delta_understorey_c"=E.col.list[5],
-                   "delta_litter_c"=E.col.list[6])      
+                   "total_outflux"=C.col.list[2],
+                   "Ra"=B.col.list[2],      
+                   "herb_consump"=D.col.list[1],           
+                   "leaf_prod"=D.col.list[2],                
+                   "twig_prod"=D.col.list[3],                
+                   "bark_prod"=D.col.list[4],                
+                   "seed_prod"=D.col.list[5],                
+                   "wood_prod"=D.col.list[6],               
+                   "fineroot_prod"=D.col.list[7],           
+                   "coarseroot_prod"=D.col.list[8],         
+                   "understorey_prod"=D.col.list[9],           
+                   "over_leaf_respiration"=E.col.list[1],      
+                   "wood_respiration"=E.col.list[2],           
+                   "root_respiration"=E.col.list[3],           
+                   "understorey_respiration"=E.col.list[4],      
+                   "hetero_respiration"=E.col.list[5],            
+                   "delta_wood_c"=F.col.list[2],        
+                   "delta_fineroot_c"=F.col.list[3],    
+                   "delta_coarseroot_c"=F.col.list[4],  
+                   "delta_understorey_c"=F.col.list[5],    
+                   "delta_soil_c"=F.col.list[6],         
+                   "delta_litter_c"=F.col.list[7])       
     
-    col.list2 <- c("over_gpp"=v.list[1],                    
-                   "understorey_gpp"=v.list[2],  
-                   "Change_in_pools"=v.list[3],
-                   "NPP"=v.list[4],   
-                   "Outfluxes"=v.list[5],
-                   "Ra"=v.list[6],      
-                   "herb_consump"=v.list[7],           
-                   "leaf_prod"=v.list[8],                
-                   "twig_prod"=v.list[9],                
-                   "bark_prod"=v.list[10],                
-                   "seed_prod"=v.list[11],                
-                   "wood_prod"=v.list[12],               
-                   "fineroot_prod"=v.list[13],   
-                   "coarseroot_prod"=v.list[14],
-                   "understorey_prod"=v.list[15], 
-                   "root_respiration"=v.list[16],           
-                   "understorey_respiration"=v.list[17],      
-                   "hetero_respiration"=v.list[18],            
-                   "over_leaf_respiration"=v.list[19],      
-                   "wood_respiration"=v.list[20],           
-                   "delta_soil_c"=v.list[21],         
-                   "delta_wood_c"=v.list[22],        
-                   "delta_fineroot_c"=v.list[23],
-                   "delta_coarseroot_c"=v.list[24],
-                   "delta_understorey_c"=v.list[25],
-                   "delta_litter_c"=v.list[26])       
+    #col.list2 <- c("over_gpp"=v.list[1],                    
+    #               "understorey_gpp"=v.list[2],  
+    #               "Change_in_pools"=v.list[3],
+    #               "NPP"=v.list[4],   
+    #               "total_outflux"=v.list[5],
+    #               "Ra"=v.list[6],      
+    #               "herb_consump"=v.list[7],           
+    #               "leaf_prod"=v.list[8],                
+    #               "twig_prod"=v.list[9],                
+    #               "bark_prod"=v.list[10],                
+    #               "seed_prod"=v.list[11],                
+    #               "wood_prod"=v.list[12],               
+    #               "fineroot_prod"=v.list[13],   
+    #               "coarseroot_prod"=v.list[14],
+    #               "understorey_prod"=v.list[15], 
+    #               "root_respiration"=v.list[16],           
+    #               "understorey_respiration"=v.list[17],      
+    #               "hetero_respiration"=v.list[18],            
+    #               "over_leaf_respiration"=v.list[19],      
+    #               "wood_respiration"=v.list[20],           
+    #               "delta_soil_c"=v.list[21],         
+    #               "delta_wood_c"=v.list[22],        
+    #               "delta_fineroot_c"=v.list[23],
+    #               "delta_coarseroot_c"=v.list[24],
+    #               "delta_understorey_c"=v.list[25],
+    #               "delta_litter_c"=v.list[26])       
     
     # y label
     y.lab2 <- c("over_gpp"=expression(GPP[o]),                    # 1
                 "understorey_gpp"=expression(GPP[u]),             # 2
                 "Change_in_pools"=expression(Delta*C[pools]),
                 "NPP"="NPP",                                      # 3
-                "Outfluxes"=expression(R[other]),                 # 4
+                "total_outflux"="R",                              # 4
                 "Ra"=expression(R[a]),                            # 5
                 "herb_consump"=expression(NPP[insect]),           # 6
                 "leaf_prod"=expression(NPP[leaf]),                # 7
@@ -384,8 +405,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                       width=0.1, size=1, color="grey") + 
         geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=4, shape=21, fill="white")+
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
-        scale_x_discrete(labels=c("Influxes", 
-                                  expression(paste("NPP+R+", Delta*C[pools])),
+        scale_x_discrete(labels=c("GPP", 
+                                  expression(paste("NPP+", R[a])),
+                                  expression(paste(Delta*C[pools],"+R")),
                                   "NPP", 
                                   "R",
                                   expression(Delta*C[pools])))+
@@ -404,13 +426,17 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
+        geom_vline(xintercept = 3.5, linetype="dashed", color="black")+
+        #geom_vline(xintercept = 4.5, linetype="dashed", color="black")+
+        #geom_vline(xintercept = 5.5, linetype="dashed", color="black")+
+        
         #scale_y_continuous(limits=c(-100, 200), 
         #                   breaks=c(-100, -75, -50, -25, 0, 50, 100, 150, 175, 200),
         #                   labels=c(-400, -200, -50, -25, 0, 50, 100, 150, 400, 650))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
         guides(fill=guide_legend(ncol=5))
         
-     #plot(p3)
+     plot(p3)
 
     ### Plotting
     pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate.pdf", width=8, height=6)

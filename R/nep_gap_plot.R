@@ -152,7 +152,9 @@ nep_gap_plot <- function(inDF) {
                 aes(Method, NEP)) + 
         geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
         geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
-                      position = position_dodge(0.9), width=0.1) +
+                      position = position_dodge(0.9), width=0.2, size=0.4) +
+        #geom_point(mapping=aes(x=Method, y=NEP, fill=Trt), 
+        #           size=4, shape=21,position = position_dodge(0.9))+
         xlab("Method") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -164,9 +166,9 @@ nep_gap_plot <- function(inDF) {
               legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom")+
-        scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
+        scale_fill_manual(name="", values = c("aCO2" = "grey", "eCO2" = "black"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_colour_manual(name="", values = c("aCO2" = "black", "eCO2" = "black"),
+        scale_colour_manual(name="", values = c("aCO2" = "grey", "eCO2" = "black"),
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_x_discrete("",  
                          labels=c("In - Out",
