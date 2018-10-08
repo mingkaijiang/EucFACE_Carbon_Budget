@@ -8,9 +8,7 @@ compare_Rsoil <- function(aDF, jDF) {
     ### He then use 6 parameter set to fill data gaps. Data gaps are broadly 50%. 
     ### So 50% of Alexis's dataset is actual data, 50% is modelled. 
     ### (result of 50% quality checked data, 50% model. n = 6 (3 for ambient, 3 for elevated), automated chambers)
-    
-    aDF <- soil_respiration_flux
-    jDF <- soil_respiration_flux1
+
     
     myDF <- merge(aDF, jDF, by=c("Date", "Ring"))
     myDF <- myDF[,c("Date", "Ring", "soil_respiration_flux.x", "soil_respiration_flux.y", "ndays.y")]

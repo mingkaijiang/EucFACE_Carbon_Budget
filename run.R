@@ -168,10 +168,12 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 ### Method 1 is Nam Jin's method
 ### Method 3 is based on Roberto's three month data
 ### Method 2 is an old method
-#wood_respiration_flux <- make_wood_respiration_flux()
+wood_respiration_flux_nj <- make_wood_respiration_flux()
 wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 
+compare_Rwood(nDF=wood_respiration_flux_nj, rDF=wood_respiration_flux)
+    
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
 
@@ -609,14 +611,23 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###        and therefore, Rsoil no longer the largest explanation for extra C;
 ###        Alexis's data and method gives lower Rsoil estimates, but higher eCO2 effect;
 ###        hence also looks bad for C budget balancing.
+###        Need to increase Rsoil or reduce Rroot. 
 ###    3.2 Need better stem respiration estimates!!!
 ###        3.2.1 Check how big an effect using Roberto's method has on C budget and eCO2 effect
 ###        3.2.2. Can also consider a scaling factor from stem efflux to stem respiration rate
 ###        3.2.3 It seems that stem respiration is higher than Nam Jim's estimates
 ###              Need to compare directly between the two
+###              They two compare similarly
+###              With correcting factor applied, see a reversal between a and e.
+###              Which resulted in negative eCO2 effect on stem respiration now.
+###              Checking Roberto's paper, it is a negative response, without the correction factor
+###              Therefore need to go back to the data and double check why it is a positive response in my raw data
+###              Still need to downsize Rwood, by a conversion factor as not all stem surface respired equally.
+###
 ###    3.3 Need understorey GPP values
 ###        3.3.1 Checking new understorey GPP data in the budget and eCO2 effect
 ###        3.3.2 Can also update understorey respiration
+###              done. based on this, can update understorey NPP, or understorey respiration based on the difference of GPP - NPP. 
 ###    3.4 Can adjust Rgrowth to balance GPP and NPP + Ra
 
 

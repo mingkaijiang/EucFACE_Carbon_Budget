@@ -50,9 +50,19 @@ make_wood_respiration_flux_3 <- function() {
     ### Convert unit from umol CO2 m-2 h-1 to mg C m-2 h-1
     hDF$Resp_mg <- hDF$Resp * 1e-6 * 12.01 * 1000
     
+    ### Add a scaling factor for aCO2 and eCO2
+    ### which acounts for relative contribution of wood efllux to total stem respiration
+    ### values taken from Roberto's paper (in review in GCB)
+    a.factor <- 1/mean(0.82, 0.96, 0.94)   
+    e.factor <- 1/mean(1.11, 1.02, 0.97)
+    hDF$scale_factor[hDF$Ring%in%c(2,3,6)] <- a.factor
+    hDF$scale_factor[hDF$Ring%in%c(1,4,5)] <- e.factor
+    
+    hDF$Resp_scaled <- hDF$Resp_mg * hDF$scale_factor
+    
     ### daily sums of stem respiration
     hDF$Date <- strptime(hDF$DateHour, format="%Y-%m-%d")
-    dDF <- summaryBy(Resp_mg~Date+Ring, data=hDF, FUN=sum, keep.names=T, na.rm=T)
+    dDF <- summaryBy(Resp_scaled~Date+Ring, data=hDF, FUN=sum, keep.names=T, na.rm=T)
     colnames(dDF) <- c("Date", "Ring", "wood_respiration")
     dDF$Date <- as.Date(as.character(dDF$Date))
     
