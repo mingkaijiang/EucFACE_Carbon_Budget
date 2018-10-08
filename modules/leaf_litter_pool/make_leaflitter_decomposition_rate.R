@@ -34,8 +34,8 @@ make_leaflitter_decomposition_rate <- function() {
     myDF$LogMassRemain <- log(myDF$MassRemain)
 
     ### Visual inspection
-    with(myDF, plot(MassLoss~Time_d))
-    with(myDF, plot(MassRemain~Time_d))
+    #with(myDF, plot(MassLoss~Time_d))
+    #with(myDF, plot(MassRemain~Time_d))
     
     ### Fit power model (y = ax^b) with mass loss
     for (i in 1:6) {
@@ -71,7 +71,7 @@ make_leaflitter_decomposition_rate <- function() {
                 
                 ### plot
                 myDF$Pred[myDF$Ring == i & myDF$Plot == j & myDF$Rep == k] <- exp(coefficients(mod)[[2]]*testDF$Time_d+coefficients(mod)[[1]])
-                with(myDF[myDF$Ring == i & myDF$Plot == j & myDF$Rep == k,], points(Pred~Time_d, type="l"))
+                #with(myDF[myDF$Ring == i & myDF$Plot == j & myDF$Rep == k,], points(Pred~Time_d, type="l"))
                 
             }
         }
@@ -85,7 +85,7 @@ make_leaflitter_decomposition_rate <- function() {
     outDF$int <- 4.605
     for (i in 1:6) {
         myDF$Pred2[myDF$Ring == i] <- exp(outDF$coef[outDF$Ring==i]*myDF$Time_d+outDF$int[outDF$Ring==i])
-        with(myDF[myDF$Ring == i,], points(Pred~Time_d, type="l", col="red"))
+        #with(myDF[myDF$Ring == i,], points(Pred~Time_d, type="l", col="red"))
     }
 
     return(outDF)

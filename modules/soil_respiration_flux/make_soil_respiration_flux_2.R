@@ -15,7 +15,7 @@ make_soil_respiration_flux_2 <- function(){
     
     # only include pre 2017 data
     myDF2 <- subset(myDF, Date < "2017-01-01")
-    myDF2 <- subset(myDF2, Date >"2012-09-06")
+    myDF2 <- subset(myDF2, Date >= "2013-01-01")
     
     # correct for unit from umol CO2 m-2 s-1 to mg C m-2 30 mins
     myDF2$R1<- myDF2$Rsoil_R1*60*30*1e-6*12.01*1000
@@ -42,7 +42,7 @@ make_soil_respiration_flux_2 <- function(){
     myDF4$End_date <- myDF4$Date
     myDF4$ndays <- as.numeric(myDF4$Date-myDF4$Start_date+1)
     myDF4 <- myDF4[,c("Start_date", "End_date", "Date", "Ring", "soil_respiration_flux", "ndays")]
-
+    
     ### Decision on what to return
     return(myDF4)
 

@@ -38,7 +38,7 @@ compare_Rsoil <- function(aDF, jDF) {
                           values = c("A" = "yellow", "J" = "blue"),
                           labels = c("Alexis", "John"))
     
-    plot(p1)
+    #plot(p1)
     
     annDF$Trt[annDF$Ring%in%c(1,4,5)] <- "eCO2"
     annDF$Trt[annDF$Ring%in%c(2,3,6)] <- "aCO2"

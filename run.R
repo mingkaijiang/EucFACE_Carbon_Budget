@@ -158,7 +158,7 @@ wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
 ### Second method for the wood pool.
 ### See R_other/compare_wood_pool_methods.R !
-wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
+#wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
 
 ### Standing dead C pool
 standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
@@ -166,8 +166,8 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 
 ### Wood respiration flux
 ### Method 1 is Nam Jin's method
-### Method 2 is based on Roberto's three month data
-### Method 3 is an old method
+### Method 3 is based on Roberto's three month data
+### Method 2 is an old method
 #wood_respiration_flux <- make_wood_respiration_flux()
 wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
@@ -236,15 +236,17 @@ heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respi
 overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 
 ### Understorey GPP
-understorey_gpp_flux <- make_understorey_GPP_flux()
-understorey_gpp_flux2 <- make_understorey_GPP_flux2()
+## method 1 is 0.4 * overstorey GPP
+### method 2 is based on MAESPA simulation
+understorey_gpp_flux2 <- make_understorey_GPP_flux()
+understorey_gpp_flux <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
 
 ### Understorey respiration
 ### assumes either a fixed or a function of temperature
 understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
                                                                   c_frac=c_fraction,
                                                                   gpp=understorey_gpp_flux,
-                                                                  assumption="cue")
+                                                                  assumption="maespa")
 
 
 ###### ----------Make summary tables-------------- ######
@@ -608,11 +610,16 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###        Alexis's data and method gives lower Rsoil estimates, but higher eCO2 effect;
 ###        hence also looks bad for C budget balancing.
 ###    3.2 Need better stem respiration estimates!!!
+###        3.2.1 Check how big an effect using Roberto's method has on C budget and eCO2 effect
+###        3.2.2. Can also consider a scaling factor from stem efflux to stem respiration rate
+###        3.2.3 It seems that stem respiration is higher than Nam Jim's estimates
+###              Need to compare directly between the two
 ###    3.3 Need understorey GPP values
+###        3.3.1 Checking new understorey GPP data in the budget and eCO2 effect
+###        3.3.2 Can also update understorey respiration
+###    3.4 Can adjust Rgrowth to balance GPP and NPP + Ra
 
-### Write to Jim and ask for understorey GPP 
-### Incorporate stem respiration flux
-### Compare Rsoil and decide which to use
+
 ### Finish main text, figures
 ### Finish Method section
 ### Finish SM figures, with corrected data

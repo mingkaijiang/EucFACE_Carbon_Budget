@@ -87,7 +87,10 @@ make_table_by_ring_predicted <- function() {
         inout[inout$term == "Rgrowth", i+1] <- ccost * (npp[npp$term == "Leaf NPP", i+1] + 
                                                         npp[npp$term == "Stem NPP", i+1] + 
                                                         npp[npp$term == "Fine Root NPP", i+1] +
-                                                        npp[npp$term == "Coarse Root NPP", i+1])
+                                                        npp[npp$term == "Coarse Root NPP", i+1] +
+                                                        npp[npp$term == "Understorey NPP", i+1] + 
+                                                        npp[npp$term == "Other NPP", i+1] +
+                                                        npp[npp$term == "Leaf consumption", i+1])
         
         # Rherbivore
         inout[inout$term == "Rherbivore", i+1] <- mean(herbivory_respiration_flux_ann$predicted[herbivory_respiration_flux_ann$Ring ==i])

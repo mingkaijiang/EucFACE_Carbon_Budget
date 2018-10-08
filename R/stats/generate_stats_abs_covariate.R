@@ -153,14 +153,14 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                           var.cond="flux", var.col=5,
                                                           date.as.factor=T,
                                                           stat.model="no_interaction_with_covariate",
-                                                          return.outcome="predicted")
+                                                          return.outcome="model")
  
     
     s.rsoil1 <- make_rsoil_treatment_abs_effect_statistics(inDF=soil_respiration_flux1, 
                                                           var.cond="flux", var.col=5,
                                                           date.as.factor=T,
                                                           stat.model="no_interaction_with_covariate",
-                                                          return.outcome="predicted")
+                                                          return.outcome="model")
     
     ### DOC leaching
     s.doc <- make_doc_treatment_abs_effect_statistics(inDF=doc_leaching_flux, 
