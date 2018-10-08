@@ -166,7 +166,7 @@ nep_gap_plot <- function(inDF) {
               legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom")+
-        scale_fill_manual(name="", values = c("aCO2" = "grey", "eCO2" = "black"),
+        scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_colour_manual(name="", values = c("aCO2" = "grey", "eCO2" = "black"),
                             labels=c(expression(aCO[2]), expression(eCO[2])))+

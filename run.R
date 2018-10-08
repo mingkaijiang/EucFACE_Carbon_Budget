@@ -86,8 +86,10 @@ make_gpp_over_soil_p_pool(pDF=soil_p_pool)
 ### soil respiration flux
 ### first method is John's
 ### second is Alexis's
-#soil_respiration_flux <- make_soil_respiration_flux()
+soil_respiration_flux1 <- make_soil_respiration_flux()
 soil_respiration_flux <- make_soil_respiration_flux_2()
+
+compare_Rsoil(aDF=soil_respiration_flux, jDF=soil_respiration_flux1)
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
@@ -163,7 +165,11 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
                                                   c_frac=c_fraction)
 
 ### Wood respiration flux
-wood_respiration_flux <- make_wood_respiration_flux()
+### Method 1 is Nam Jin's method
+### Method 2 is based on Roberto's three month data
+### Method 3 is an old method
+#wood_respiration_flux <- make_wood_respiration_flux()
+wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 
 ### understorey SLA

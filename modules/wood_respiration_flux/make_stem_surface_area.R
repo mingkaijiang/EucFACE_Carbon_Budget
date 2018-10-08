@@ -11,8 +11,10 @@ make_stem_surface_area <- function(ring_area){
         mutate(trunk_surfarea = trunk_surfarea / ring_area,
                Date = "2015-05-26",
                Ring = as.numeric(Ring)) %>%
-        rename(wood_surface_area = trunk_surfarea) %>%
-        dplyr::select(Date, Ring, wood_surface_area)
+        #rename(wood_surface_area = trunk_surfarea) %>%
+        dplyr::select(Date, Ring, trunk_surfarea)
+    
+    names(outDF)[3] <- "wood_surface_area"
     
     write.csv(outDF, "R_other/EucFACE_wood_surface_area.csv", row.names=F)
     
