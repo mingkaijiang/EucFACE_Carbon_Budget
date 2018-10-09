@@ -1,8 +1,5 @@
 #- Make the fineroot c production flux
-make_fineroot_production_flux <- function(c_frac,
-                                          return.decision="data",
-                                          trt.effect="abs",
-                                          stat.model="interaction"){
+make_fineroot_production_flux <- function(c_frac){
     
     # returns fine root production flux (mg m-2 d-1)
     # 5 time points, possibly measured at quarterly timesteps

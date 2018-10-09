@@ -24,7 +24,7 @@ make_wood_respiration_flux_3 <- function() {
 
     ### Only include pre-2017 data
     hDF <- hDF[hDF$Date <= "2016-12-31",]
-    hDF <- hDF[hDF$Date >= "2012-08-01",]
+    hDF <- hDF[hDF$Date >= "2013-01-01",]
     
     ### Add stem area data
     for (i in 1:6) {
@@ -43,9 +43,12 @@ make_wood_respiration_flux_3 <- function() {
         hDF$a[hDF$Ring==i] <- bDF$int[bDF$Ring==i]
         hDF$b[hDF$Ring==i] <- bDF$coef[bDF$Ring==i]
     }
+    
+    ### Calculate mean air temperature
+    hDF$AirT <- rowMeans(data.frame(hDF$AirTC_1_Avg, hDF$AirTC_2_Avg), na.rm=T)
 
     ### Calculate respiration rate (umol CO2 m-2 h-1)
-    hDF$Resp <- exp(hDF$a + hDF$b * hDF$AirTC_1_Avg) * hDF$SA * 3600
+    hDF$Resp <- exp(hDF$a + hDF$b * hDF$AirT) * hDF$SA * 3600
     
     ### Convert unit from umol CO2 m-2 h-1 to mg C m-2 h-1
     hDF$Resp_mg <- hDF$Resp * 1e-6 * 12.01 * 1000
@@ -53,18 +56,48 @@ make_wood_respiration_flux_3 <- function() {
     ### Add a scaling factor for aCO2 and eCO2
     ### which acounts for relative contribution of wood efllux to total stem respiration
     ### values taken from Roberto's paper (in review in GCB)
-    a.factor <- 1/mean(0.82, 0.96, 0.94)   
-    e.factor <- 1/mean(1.11, 1.02, 0.97)
-    hDF$scale_factor[hDF$Ring%in%c(2,3,6)] <- a.factor
-    hDF$scale_factor[hDF$Ring%in%c(1,4,5)] <- e.factor
+    #a.factor <- 1/mean(0.82, 0.96, 0.94)   
+    #e.factor <- 1/mean(1.11, 1.02, 0.97)
+    #hDF$scale_factor[hDF$Ring%in%c(2,3,6)] <- a.factor
+    #hDF$scale_factor[hDF$Ring%in%c(1,4,5)] <- e.factor
     
-    hDF$Resp_scaled <- hDF$Resp_mg * hDF$scale_factor
+    hDF$Resp_scaled <- hDF$Resp_mg #* hDF$scale_factor
     
-    ### daily sums of stem respiration
+    ### daily sums of stem respiration, in mg m-2 d-1
     hDF$Date <- strptime(hDF$DateHour, format="%Y-%m-%d")
     dDF <- summaryBy(Resp_scaled~Date+Ring, data=hDF, FUN=sum, keep.names=T, na.rm=T)
     colnames(dDF) <- c("Date", "Ring", "wood_respiration")
     dDF$Date <- as.Date(as.character(dDF$Date))
+    
+    
+    #test <- summaryBy(Resp_mg~Date+Ring, data=hDF, FUN=sum, keep.names=T, na.rm=T)
+    #colnames(test) <- c("Date", "Ring", "wood_respiration")
+    #test$Date <- as.Date(as.character(test$Date))
+    #
+    #testDF2 <- merge(dDF, test, by=c("Date", "Ring"))
+    #testDF2$Trt[testDF2$Ring%in%c(2,3,6)] <- "aCO2"
+    #testDF2$Trt[testDF2$Ring%in%c(1,4,5)] <- "eCO2"
+    #testDF2$year <- year(testDF2$Date)
+    #
+    #testDF3 <- summaryBy(wood_respiration.x+wood_respiration.y~Ring+year+Trt, FUN=sum, data=testDF2, keep.names=T)
+    #testDF3$wood_respiration.x <- testDF3$wood_respiration.x/1000
+    #testDF3$wood_respiration.y <- testDF3$wood_respiration.y/1000
+    #
+    #trtDF <- summaryBy(wood_respiration.x+wood_respiration.y~year+Trt, FUN=mean, data=testDF3, keep.names=T)
+    #
+    #p2 <- ggplot(trtDF)+
+    #    geom_point(data=trtDF[trtDF$Trt=="aCO2",], aes(x=year, y=wood_respiration.x, fill="corrected_aCO2"),shape=21, size=5)+
+    #    geom_point(data=trtDF[trtDF$Trt=="eCO2",], aes(x=year, y=wood_respiration.x, fill="corrected_eCO2"),shape=21, size=5)+
+    #    geom_point(data=trtDF[trtDF$Trt=="aCO2",], aes(x=year, y=wood_respiration.y, fill="uncorrected_aCO2"),shape=21, size=5)+
+    #    geom_point(data=trtDF[trtDF$Trt=="eCO2",], aes(x=year, y=wood_respiration.y, fill="uncorrected_eCO2"),shape=21, size=5)+
+    #    scale_fill_manual(name="Method", 
+    #                      values = c("corrected_aCO2" = "blue", "corrected_eCO2" = "darkblue",
+    #                                 "uncorrected_aCO2" = "yellow", "uncorrected_eCO2" = "orange"),
+    #                      labels = c("corrected_aCO2", "corrected_eCO2","uncorrected_aCO2", "uncorrected_eCO2"))
+    #
+    #pdf("R_other/Rwood_correction_check.pdf")
+    #plot(p2)
+    #dev.off()
     
     dDF$End_date <- dDF$Start_date <- dDF$Date
     dDF$ndays <- 1

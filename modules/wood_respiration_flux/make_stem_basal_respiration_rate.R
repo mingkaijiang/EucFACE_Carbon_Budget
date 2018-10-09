@@ -1,16 +1,23 @@
 make_stem_basal_respiration_rate <- function() {
+    
+    ### download the data
+    download_stem_basal_respiration_data()
 
     ### read files
-    myDF1 <- read.table("temp_files/stemCO2efflux_Dec2017.txt",header=T)
-    myDF2 <- read.table("temp_files/stemCO2efflux_Jan2018.txt",header=T)
-    myDF3 <- read.table("temp_files/stemCO2efflux_Feb2018.txt",header=T)
+    myDF1 <- read.table(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20171218-20171220.txt"),header=T)
+    myDF2 <- read.table(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20180115-20180117.txt"),header=T)
+    myDF3 <- read.table(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20180205-20180207.txt"),header=T)
     
     myDF <- rbind(myDF1, myDF2)
     myDF <- rbind(myDF, myDF3)
     
     
     ### Read stem temperature files
-    tDF <- read.table("temp_files/Xylem.CO2.Temp_20180211.txt",header=T)
+    tDF <- read.table(file.path(getToPath(), 
+                                "FACE_A0089_RA_XYLEMCO2_L1_20171216-20180211.txt"),header=T)
 
     ### Add Ring information based on tree number
     require(plyr)
@@ -70,7 +77,20 @@ make_stem_basal_respiration_rate <- function() {
     out$int[out$Ring==4] <- coefficients(mod4)[[1]]
     out$int[out$Ring==5] <- coefficients(mod5)[[1]]
     out$int[out$Ring==6] <- coefficients(mod6)[[1]]
-        
+    
+    
+    ggplot(myDF2, aes(x=Temp, flux_corrected, color=as.factor(Ring)))+
+        geom_point() +
+        geom_smooth(method="lm")
+    
+    with(myDF2, plot(ln_flux~Temp)) 
+    abline(b=out$coef[out$Ring==1],a=out$int[out$Ring==1])
+    abline(b=out$coef[out$Ring==2],a=out$int[out$Ring==2], col="red")
+    abline(b=out$coef[out$Ring==3],a=out$int[out$Ring==3], col="blue")
+    abline(b=out$coef[out$Ring==4],a=out$int[out$Ring==4], col="orange")
+    abline(b=out$coef[out$Ring==5],a=out$int[out$Ring==5], col="green")
+    abline(b=out$coef[out$Ring==6],a=out$int[out$Ring==6], col="yellow")
+    
     ### Q10
     ### Dec 1.52
     ### Jan 1.45

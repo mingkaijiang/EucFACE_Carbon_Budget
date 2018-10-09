@@ -168,7 +168,7 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 ### Method 1 is Nam Jin's method
 ### Method 3 is based on Roberto's three month data
 ### Method 2 is an old method
-wood_respiration_flux_nj <- make_wood_respiration_flux()
+#wood_respiration_flux_nj <- make_wood_respiration_flux()
 wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 
@@ -180,11 +180,15 @@ understorey_sla_variable <- make_understorey_sla_variable()
 
 ### Understorey aboveground C pool
 ### reads in c_fraction from constant
+### method 1 is based on harvest
+### method 2 is based on stereo camera
 understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction)
 understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction)
 
 ### Understorey production flux
+### Method 2 is not used because understorey vegetation fluctuate a lot, hence some production can be negative. 
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction)
+#understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux_2(understorey_aboveground_c_pool)
 
 ### Understorey LAI
 understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
@@ -617,19 +621,44 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###        3.2.2. Can also consider a scaling factor from stem efflux to stem respiration rate
 ###        3.2.3 It seems that stem respiration is higher than Nam Jim's estimates
 ###              Need to compare directly between the two
-###              They two compare similarly
+###              The two compare similarly
 ###              With correcting factor applied, see a reversal between a and e.
 ###              Which resulted in negative eCO2 effect on stem respiration now.
 ###              Checking Roberto's paper, it is a negative response, without the correction factor
 ###              Therefore need to go back to the data and double check why it is a positive response in my raw data
 ###              Still need to downsize Rwood, by a conversion factor as not all stem surface respired equally.
+###        3.2.4 Problem with Rwood now is that the linear model should probably not extend to lower temperature range,
+###              which makes the comparison the Roberto's result difficult, but good if we were to have a positive eCO2 effect.
+###              Using the scaling factor makes eCO2 effect negative, and the budget is not well balanced. 
+###              The continued problem is Rsoil and GPP (in particular understorey GPP)
+###              Need to increase GPP so that it matches with NPP + Ra (or lower Ra, but difficult)
+###              Need also to increase soil, or lower Rh,
+###              right now Rh is the difference between Rsoil and Rroot
+###              Rroot is basal rate scaled up with biomass (f + c)
+###              So to increase Rsoil, Rh is also increased.
+###              Hence, to balance Rsoil and NPP+Rh, we need to lower Rh,
+###              which means we need to increase Rroot,
+###              but increase Rroot is not helping GPP
+###        3.2.5 Decide to use uncorrected stem efflux to represent stem respiration 
+###              Therefore the result will be contradicting to that of Roberto's, in that:
+###              Roberto's uncorrected stem efflux is also higher under aCO2 condition (still don't know why the difference)
+###              Will need to check how much an effect this has on the C budget, and if stem respiration still ranks 2nd to explain the extra carbon.
+###              More importantly, if decide to use John's soil respiration, need to check if stem is still the second explanator. 
+###              Now revert back to use John's soil respiration
+###              Then try to lower Rroot, and increase GPP using 0.4 factor (and see if GPP = NPP + Ra + 0.5 Rfr)
+###              Also need to adjust Rgrowth, and add Rgrowth into the extra C stat model. 
 ###
 ###    3.3 Need understorey GPP values
 ###        3.3.1 Checking new understorey GPP data in the budget and eCO2 effect
 ###        3.3.2 Can also update understorey respiration
-###              done. based on this, can update understorey NPP, or understorey respiration based on the difference of GPP - NPP. 
+###              done. based on this, can update understorey NPP, 
+###              or understorey respiration based on the difference of GPP - NPP. 
+###        3.3.3 Can add calculation of understorey respiration based on Rd (per area) * LAI and a temperature function (overstorey)
+###              but need that temperature function
 ###    3.4 Can adjust Rgrowth to balance GPP and NPP + Ra
+###        But not a good idea at the moment
 
+###
 
 ### Finish main text, figures
 ### Finish Method section
