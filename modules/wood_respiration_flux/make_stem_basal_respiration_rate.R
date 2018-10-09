@@ -4,20 +4,20 @@ make_stem_basal_respiration_rate <- function() {
     download_stem_basal_respiration_data()
 
     ### read files
-    myDF1 <- read.table(file.path(getToPath(), 
-                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20171218-20171220.txt"),header=T)
-    myDF2 <- read.table(file.path(getToPath(), 
-                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20180115-20180117.txt"),header=T)
-    myDF3 <- read.table(file.path(getToPath(), 
-                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20180205-20180207.txt"),header=T)
+    myDF1 <- read.csv(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20171218-20171220.csv"))
+    myDF2 <- read.csv(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20180115-20180117.csv"))
+    myDF3 <- read.csv(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20180205-20180207.csv"))
     
     myDF <- rbind(myDF1, myDF2)
     myDF <- rbind(myDF, myDF3)
     
     
     ### Read stem temperature files
-    tDF <- read.table(file.path(getToPath(), 
-                                "FACE_A0089_RA_XYLEMCO2_L1_20171216-20180211.txt"),header=T)
+    tDF <- read.csv(file.path(getToPath(), 
+                                "FACE_A0089_RA_XYLEMCO2_L1_20171216-20180211.txt"))
 
     ### Add Ring information based on tree number
     require(plyr)

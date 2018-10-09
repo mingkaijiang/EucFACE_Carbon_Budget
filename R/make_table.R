@@ -107,8 +107,14 @@ make_EucFACE_table <- function() {
     npp$processing_notes[npp$term == "Understorey NPP"] <- "Harvest data"    
     
     ### Mycorrhizal production
-    npp$data_notes[npp$term == "Mycorrhizal production"] <- "Need data from Jeff"
-    npp$processing_notes[npp$term == "Mycorrhizal production"] <- ""  
+    myc_prod <- with(mycorrhizal_c_production_flux,
+                     sum(mycorrhizal_production*ndays)/sum(ndays)) * conv
+    npp$value[npp$term == "Mycorrhizal production"] <- myc_prod
+    npp$start_year[npp$term == "Mycorrhizal production"] <- min(year(mycorrhizal_c_production_flux$Start_date))
+    npp$end_year[npp$term == "Mycorrhizal production"] <- max(year(mycorrhizal_c_production_flux$End_date))
+    npp$timepoint[npp$term == "Mycorrhizal production"] <- length(unique(mycorrhizal_c_production_flux$Date))
+    npp$data_notes[npp$term == "Mycorrhizal production"] <- "Data not on HIEv"
+    npp$processing_notes[npp$term == "Mycorrhizal production"] <- "assumption based on cumulative biomass"  
     
     ### Flower production
     npp$data_notes[npp$term == "Flower production"] <- "No data yet"

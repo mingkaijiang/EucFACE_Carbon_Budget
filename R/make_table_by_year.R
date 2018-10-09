@@ -91,7 +91,11 @@ make_EucFACE_table_by_year <- function() {
     }
     
     ### MycorrhizalProduction
-    
+    mycorrhizal_c_production_flux$year <- year(mycorrhizal_c_production_flux$Date)
+    for(i in yr.list) {
+        myc_prod <- with(mycorrhizal_c_production_flux[mycorrhizal_c_production_flux$year == i, ],
+                           sum(mycorrhizal_production*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+    }
     
     ### FlowerProduction
     

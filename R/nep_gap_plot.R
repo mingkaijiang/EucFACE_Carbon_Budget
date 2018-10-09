@@ -28,9 +28,9 @@ nep_gap_plot <- function(inDF) {
             nppDF[nppDF$term == "Coarse Root NPP", i] +
             nppDF[nppDF$term == "Other NPP", i] +
             nppDF[nppDF$term == "Understorey NPP", i] +
-            nppDF[nppDF$term == "Leaf consumption", i] -
+            nppDF[nppDF$term == "Leaf consumption", i] +
+            nppDF[nppDF$term == "Mycorrhizal production", i] -
             nppDF[nppDF$term == "R hetero", i] 
-            #nppDF[nppDF$term == "Mycorrhizal production", i] +-
             #nppDF[nppDF$term == "Flower production", i] 
     }
 

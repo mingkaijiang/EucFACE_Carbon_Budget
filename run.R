@@ -209,8 +209,10 @@ microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
 ### Soil mycorrhizae pool
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
 
-mycorrhizal_c_pool_2 <- make_mycorrhizal_c_pool_2(soil_bulk_density_variable)
+#mycorrhizal_c_pool_2 <- make_mycorrhizal_c_pool_2(soil_bulk_density_variable)
 
+### Soil mycorrhizae production
+mycorrhizal_c_production_flux <- make_mycorrhizal_production_flux(soil_bulk_density_variable)
 
 ### Soil methane C flux
 ## This is a simplified version because we didn't fill the gaps
@@ -440,6 +442,13 @@ heterotrophic_respiration_flux_ann <- make_rh_treatment_abs_effect_statistics(in
                                                 stat.model="no_interaction_with_covariate",
                                                 return.outcome="predicted")
 
+### Mycorrhizal production
+mycorrhizal_c_production_flux_ann <- make_myc_production_treatment_abs_effect_statistics(inDF=mycorrhizal_c_production_flux, 
+                                                                              var.cond="flux", var.col=5,
+                                                                              date.as.factor=T,
+                                                                              stat.model="no_interaction_with_covariate",
+                                                                              return.outcome="predicted")
+
 ### Soil C
 soil_c_pool_ann <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
                                                       var.cond="pool", var.col=3,
@@ -660,9 +669,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###              or understorey respiration based on the difference of GPP - NPP. 
 ###        3.3.3 Can add calculation of understorey respiration based on Rd (per area) * LAI and a temperature function (overstorey)
 ###              but need that temperature function
-###    3.4 Can adjust Rgrowth to balance GPP and NPP + Ra
-###        But not a good idea at the moment
-
+###    3.4 Can adjust Rgrowth to balance GPP and NPP + Ra (removed NPP root)
+###    3.5 If Rsoil = litter + Rroot, then Rh = NPP, then the extra Rh is accounted for by the extra NPP. Then no mysterious exudation or mycorrhizae components.
+###        
 ###
 
 ### Finish main text, figures
