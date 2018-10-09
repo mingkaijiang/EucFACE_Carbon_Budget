@@ -86,10 +86,10 @@ make_gpp_over_soil_p_pool(pDF=soil_p_pool)
 ### soil respiration flux
 ### first method is John's
 ### second is Alexis's
-soil_respiration_flux1 <- make_soil_respiration_flux()
-soil_respiration_flux <- make_soil_respiration_flux_2()
+soil_respiration_flux <- make_soil_respiration_flux()
+#soil_respiration_flux2 <- make_soil_respiration_flux_2()
 
-compare_Rsoil(aDF=soil_respiration_flux, jDF=soil_respiration_flux1)
+#compare_Rsoil(aDF=soil_respiration_flux, jDF=soil_respiration_flux1)
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
@@ -171,8 +171,7 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 #wood_respiration_flux_nj <- make_wood_respiration_flux()
 wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
-
-compare_Rwood(nDF=wood_respiration_flux_nj, rDF=wood_respiration_flux)
+#compare_Rwood(nDF=wood_respiration_flux_nj, rDF=wood_respiration_flux)
     
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
@@ -186,14 +185,19 @@ understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction
 understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction)
 
 ### Understorey production flux
-### Method 2 is not used because understorey vegetation fluctuate a lot, hence some production can be negative. 
+### Method 2 is not used because understorey vegetation fluctuates a lot
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction)
 #understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux_2(understorey_aboveground_c_pool)
 
 ### Understorey LAI
+### method 1 based on harvesting data, live biomass only (hence the lowest LAI possible)
+### Method 2 based on stereo camera biomass
 understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
                                                           understorey_sla_variable)
 
+understorey_lai_variable <- make_understorey_lai_variable_2(understorey_aboveground_c_pool_2, 
+                                                          understorey_sla_variable,
+                                                          prDF=understorey_aboveground_c_pool)
 
 ### Soil microbial C pool
 ### top 10 cm only - Cat's data
@@ -230,6 +234,7 @@ coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_
 coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
 
 ### Root respiration flux
+### Can change T from 5cm to 20 or 30 cm (currently using 20 cm)
 root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool, coarse_root_c_pool_1)
 
 ### Rh C flux
@@ -244,8 +249,8 @@ overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 ### Understorey GPP
 ## method 1 is 0.4 * overstorey GPP
 ### method 2 is based on MAESPA simulation
-understorey_gpp_flux2 <- make_understorey_GPP_flux()
-understorey_gpp_flux <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
+understorey_gpp_flux <- make_understorey_GPP_flux()
+understorey_gpp_flux2 <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
 
 ### Understorey respiration
 ### assumes either a fixed or a function of temperature

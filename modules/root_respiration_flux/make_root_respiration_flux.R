@@ -13,7 +13,7 @@ make_root_respiration_flux <- function(fr_pool, cr_pool){
   tempDF$Date <- as.Date(tempDF$Date)
   
   ### only include period matches with Rsoil
-  tempDF <- subset(tempDF, Date >= "2012-09-07")
+  tempDF <- subset(tempDF, Date >= "2013-01-01")
   tempDF <- subset(tempDF, Date <= "2016-12-31")
   
   ### Get ring information
@@ -23,7 +23,7 @@ make_root_respiration_flux <- function(fr_pool, cr_pool){
   tempDF <- tempDF[order(tempDF$Date),]
   
   ### calculate mean soil temperature
-  tempDF$T5_avg <- rowMeans(tempDF[,c("T5cm_1_Avg", "T5cm_2_Avg")], na.rm=T)
+  tempDF$T5_avg <- rowMeans(tempDF[,c("T20cm_1_Avg", "T20cm_2_Avg")], na.rm=T)
   
   ### extract useful columns
   tempDF2 <- tempDF[,c("DateTime", "Date", "Ring", "T5_avg")]
