@@ -156,11 +156,11 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                           return.outcome="model")
  
     
-    s.myc.prod <- make_myc_production_treatment_abs_effect_statistics(inDF=mycorrhizal_c_production_flux, 
-                                                          var.cond="flux", var.col=5,
-                                                          date.as.factor=T,
-                                                          stat.model="no_interaction_with_covariate",
-                                                          return.outcome="model")
+    #s.myc.prod <- make_myc_production_treatment_abs_effect_statistics(inDF=mycorrhizal_c_production_flux, 
+    #                                                      var.cond="flux", var.col=5,
+    #                                                      date.as.factor=T,
+    #                                                      stat.model="no_interaction_with_covariate",
+    #                                                      return.outcome="model")
     
     ### DOC leaching
     s.doc <- make_doc_treatment_abs_effect_statistics(inDF=doc_leaching_flux, 
@@ -228,6 +228,13 @@ generate_stats_abs_covariate <- function(stat.model) {
     ### Understorey aboveground production
     s.und.prod <- make_und_prod_treatment_abs_effect_statistics(inDF=understorey_aboveground_production_flux, 
                                                                 var.cond="flux", var.col=5,
+                                                                date.as.factor=T,
+                                                                stat.model="no_interaction_with_covariate",
+                                                                return.outcome="model")
+    
+    ### Understory litter flux
+    s.und.lit <- make_und_prod_treatment_abs_effect_statistics(inDF=understorey_aboveground_production_flux, 
+                                                                var.cond="flux", var.col=6,
                                                                 date.as.factor=T,
                                                                 stat.model="no_interaction_with_covariate",
                                                                 return.outcome="model")
@@ -313,8 +320,8 @@ generate_stats_abs_covariate <- function(stat.model) {
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
                   "soil_respiration","doc","ch4","leaf_prod","twig_prod",
                   "bark_prod","seed_prod","wood_prod","fineroot_prod",
-                  "coarseroot_prod","understorey_prod","hetero_respiration",
-                  "over_gpp","over_leaf_respiration","wood_respiration","mycorrhizal_prod",
+                  "coarseroot_prod","understorey_prod","hetero_respiration","understorey_lit",
+                  "over_gpp","over_leaf_respiration","wood_respiration",#"mycorrhizal_prod",
                   "understorey_gpp","delta_soil_c","delta_leaf_c","delta_wood_c","delta_fineroot_c",
                   "delta_coarseroot_c","delta_understorey_c","delta_understorey_c_2",
                   "delta_microbial_c","delta_mycorrhizal_c","delta_litter_c","delta_insect_c")
@@ -383,14 +390,16 @@ generate_stats_abs_covariate <- function(stat.model) {
     out[out$Variable=="coarseroot_prod",2:17] <- assign_stats(s.var=s.croot.prod)
     out[out$Variable=="understorey_prod",2:17] <- assign_stats(s.var=s.und.prod)
     out[out$Variable=="hetero_respiration",2:17] <- assign_stats(s.var=s.rh)
+    out[out$Variable=="understorey_lit",2:17] <- assign_stats(s.var=s.und.lit)
+    
     out[out$Variable=="over_gpp",2:17] <- assign_stats(s.var=s.o.gpp)
     out[out$Variable=="over_leaf_respiration",2:17] <- assign_stats(s.var=s.rleaf)
-    out[out$Variable=="mycorrhizal_prod",2:17] <- c(s.myc.prod$int.state,
-                                                    NA,NA,NA,
-                                                    NA,NA,NA,
-                                                    NA,NA,NA,
-                                                    NA,NA,NA,
-                                                    s.myc.prod$eff,s.myc.prod$conf[1],s.myc.prod$conf[2])
+    #out[out$Variable=="mycorrhizal_prod",2:17] <- c(s.myc.prod$int.state,
+    #                                                NA,NA,NA,
+    #                                                NA,NA,NA,
+    #                                                NA,NA,NA,
+    #                                                NA,NA,NA,
+    #                                                s.myc.prod$eff,s.myc.prod$conf[1],s.myc.prod$conf[2])
     out[out$Variable=="understorey_gpp",2:17] <- assign_stats(s.var=s.u.gpp)
     out[out$Variable=="delta_soil_c",2:17] <- assign_stats(s.var=s.delta.soilc)
     out[out$Variable=="delta_leaf_c",2:17] <- assign_stats(s.var=s.delta.leafc)

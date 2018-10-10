@@ -1,7 +1,7 @@
 nep_gap_plot <- function(inDF) {
     
     ### subseting each method
-    inoutDF <- as.data.frame(inDF$inout[, 1:7])
+    inoutDF <- as.data.frame(inDF$inout[,1:7])
     nppDF <- as.data.frame(inDF$npp[,1:7])
     
     ### prepare output df
@@ -23,19 +23,21 @@ nep_gap_plot <- function(inDF) {
             inoutDF[inoutDF$term == "Rgrowth", i]) 
         
         out[out$Method=="NPP-Rh", i] <- nppDF[nppDF$term == "Leaf NPP", i] +
-            nppDF[nppDF$term == "Stem NPP", i] +
+            #nppDF[nppDF$term == "Stem NPP", i] +
             nppDF[nppDF$term == "Fine Root NPP", i] +
             nppDF[nppDF$term == "Coarse Root NPP", i] +
             nppDF[nppDF$term == "Other NPP", i] +
-            nppDF[nppDF$term == "Understorey NPP", i] +
-            nppDF[nppDF$term == "Leaf consumption", i] +
-            nppDF[nppDF$term == "Mycorrhizal production", i] -
+            nppDF[nppDF$term == "Understorey Litter", i] +
+            nppDF[nppDF$term == "Frass production", i] -
+            #nppDF[nppDF$term == "Leaf consumption", i] -
+            #nppDF[nppDF$term == "Mycorrhizal production", i] -
             nppDF[nppDF$term == "R hetero", i] 
             #nppDF[nppDF$term == "Flower production", i] 
     }
 
     ### Change in pools
-    delta_soil_c <- make_yearly_delta_pool_function_ann(inDF=soil_c_pool_ann, var.col=9)
+    #test <- subset(soil_c_pool_ann, Datef!="2012-09-03")
+    delta_soil_c <- make_soilc_yearly_delta_pool_function_ann(inDF=soil_c_pool_ann, var.col=9)
     delta_leaf_c <- make_yearly_delta_pool_function_ann(inDF=leaf_c_pool_ann, var.col=9)
     delta_wood_c <- make_yearly_delta_pool_function_ann(inDF=wood_c_pool_ann, var.col=9)
     delta_croot_c <- make_yearly_delta_pool_function_ann(inDF=coarse_root_c_pool_ann, var.col=9)
@@ -176,7 +178,7 @@ nep_gap_plot <- function(inDF) {
                                   expression(Delta*C[pools])))+
         theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
     
-    #plot(p1)
+    plot(p1)
     
     pdf("R_other/nep_gap.pdf", width=8, height=8)
     plot(p1)

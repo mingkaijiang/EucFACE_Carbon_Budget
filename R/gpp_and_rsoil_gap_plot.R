@@ -8,7 +8,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],temDF[temDF$term == "Stem NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
                    temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
-                   temDF[temDF$term == "Leaf consumption",], temDF[temDF$term == "Mycorrhizal production",])
+                   temDF[temDF$term == "Leaf consumption",])#, temDF[temDF$term == "Mycorrhizal production",])
     
     ### subsetting inout df
     temDF <- inDF$inout[,c("term", "aCO2", "aCO2_sd")]
@@ -53,7 +53,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                   expression(NPP[leaf]), expression(NPP[wood]),
                   expression(NPP[froot]), expression(NPP[croot]),
                   expression(NPP[other]), expression(NPP[ua]),
-                  expression(NPP[hb]), expression(NPP[myc]), 
+                  expression(NPP[hb]), #expression(NPP[myc]), 
                   expression(R[leaf]),
                   expression(R[wood]), expression(R[root]),
                   expression(R[ua]), #expression(R[hb]),
@@ -61,7 +61,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     ### Prepare variable colors
     require(viridis)
-    col.list1 <- viridis(15)
+    col.list1 <- viridis(14)
     
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
     
@@ -104,7 +104,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],temDF[temDF$term == "Stem NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
                    temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
-                   temDF[temDF$term == "Leaf consumption",], temDF[temDF$term == "Mycorrhizal production",])
+                   temDF[temDF$term == "Leaf consumption",])#, temDF[temDF$term == "Mycorrhizal production",])
     
     ### subsetting inout df
     temDF <- inDF$inout[,c("term", "eCO2", "eCO2_sd")]
@@ -176,8 +176,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ### only include plant NPP
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
-                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
-                   temDF[temDF$term == "Frass production",], temDF[temDF$term == "Mycorrhizal production",])
+                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey Litter",],
+                   temDF[temDF$term == "Frass production",])#, temDF[temDF$term == "Mycorrhizal production",])
     aDF <- inDF$inout[, c("term", "aCO2", "aCO2_sd")]
     nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
     
@@ -225,13 +225,13 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$aCO2[plotDF$cat=="Rsoil"])
     
     ### Prepare variable labels
-    var.labs2 <- c(expression(NPP[l]), expression(NPP[froot]),
+    var.labs2 <- c(expression(NPP[leaf]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
-                  expression(NPP[ua]),expression(P[frass]), expression(NPP[myc]), 
+                  expression(NPP[ua]),expression(P[frass]), #expression(NPP[myc]), 
                   expression(R[root]),expression(Delta*C[soil]), expression(R[soil]))
     
     ### Prepare variable colors
-    col.list2 <- viridis(10)
+    col.list2 <- viridis(9)
     
     ### make the bar plot
     p3 <- ggplot(plotDF,
@@ -268,8 +268,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ### only include plant NPP
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
-                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
-                   temDF[temDF$term == "Frass production",], temDF[temDF$term == "Mycorrhizal production",])
+                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey Litter",],
+                   temDF[temDF$term == "Frass production",])#, temDF[temDF$term == "Mycorrhizal production",])
     aDF <- inDF$inout[, c("term", "eCO2", "eCO2_sd")]
     nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
     

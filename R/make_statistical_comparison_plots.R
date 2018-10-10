@@ -708,14 +708,16 @@ make_statistical_comparison_plots <- function() {
                        rep("resp", 2), # 18 - 19
                        rep("prod", 9), # 20 - 28
                        rep("resp", 1), # 29
-                       rep("gpp", 1),  # 30
-                       rep("resp", 2), # 31 - 32
-                       rep("prod",1),  # 33
+                       rep("prod",1),  # 30
+                       rep("gpp", 1),  # 31
+                       rep("resp", 2), # 32 - 33
+                       #rep("prod",1),  # 33
                        rep("gpp", 1),  # 34
                        rep("change_in_pool", 11))   # 35 - 45
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
+    myDF <- subset(myDF, Variable != c("understorey_lit"))
     
     ### Drop CWD - confidence interval too large
     myDF <- subset(myDF, Variable != c("delta_cwd_c"))
@@ -799,7 +801,7 @@ make_statistical_comparison_plots <- function() {
                 "fineroot_prod"=expression(NPP[froot]),
                 "coarseroot_prod"=expression(NPP[croot]),
                 "understorey_prod"=expression(NPP[ua]),
-                "mycorrhizal_prod"=expression(NPP[myc]),
+                #"mycorrhizal_prod"=expression(NPP[myc]),
                 "ch4"=expression(U[CH[4]]))
     
     y.lab4 <- c("over_gpp"=expression(GPP[o]),

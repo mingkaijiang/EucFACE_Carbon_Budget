@@ -59,7 +59,11 @@ soil_bulk_density_variable <- make_soil_bulk_density()
 ### Soil C pool, using soil bulk density data
 ### output options are shallow and all_depths data
 soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
-                                     return="all_depths")
+                                     return="shallow")
+
+## return all depth and date
+soil_c_pool_all_depth <- make_soil_carbon_pool_all_depths(bk_density=soil_bulk_density_variable,
+                                               return="all_depths")
 
 
 ### Soil P pool
@@ -79,15 +83,15 @@ soil_p_mineralization <- make_soil_p_mineralization_flux(soil_bulk_density_varia
 
 
 ### GPP over P stuffs
-make_gpp_over_soil_p_conc(pDF=soil_p_concentration)
-make_gpp_over_soil_phosphate_conc(pDF=soil_phosphate_concentration)
-make_gpp_over_soil_p_pool(pDF=soil_p_pool)    
+#make_gpp_over_soil_p_conc(pDF=soil_p_concentration)
+#make_gpp_over_soil_phosphate_conc(pDF=soil_phosphate_concentration)
+#make_gpp_over_soil_p_pool(pDF=soil_p_pool)    
 
 ### soil respiration flux
 ### first method is John's
 ### second is Alexis's
-soil_respiration_flux <- make_soil_respiration_flux()
-#soil_respiration_flux2 <- make_soil_respiration_flux_2()
+#soil_respiration_flux <- make_soil_respiration_flux()
+soil_respiration_flux <- make_soil_respiration_flux_2()
 
 #compare_Rsoil(aDF=soil_respiration_flux2, jDF=soil_respiration_flux)
 
@@ -166,13 +170,25 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 
 ### Wood respiration flux
 ### Method 1 is Nam Jin's method
-### Method 3 is based on Roberto's three month data
-### Method 2 is an old method
+### Method 2 is a sapwood mass based method
+### Method 3 is based on Roberto's three month data, temperature function fitted to Jan and Feb only
+### Method 4 is based on Roberto's three month data, but with temperature function fitted to each campaign
 wood_respiration_flux <- make_wood_respiration_flux()
 #wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 #compare_Rwood(nDF=wood_respiration_flux_nj, rDF=wood_respiration_flux)
-    
+
+#wood_respiration_flux$Yr <- year(wood_respiration_flux$Date)
+#test <- summaryBy(wood_respiration~Ring+Yr, FUN=sum, data=wood_respiration_flux, keep.names=T)
+#test$wood_respiration <- test$wood_respiration / 1000
+#test$Trt[test$Ring%in%c(2,3,6)] <- "amb"
+#test$Trt[test$Ring%in%c(1,4,5)] <- "ele"
+#
+#pdf("R_other/Rstem_comparison_Jan_Feb_rate.pdf")
+#with(wood_respiration_flux_ann, boxplot(Value~Trt, ylim=c(200,600)))
+#with(test, boxplot(wood_respiration~Trt, ylim=c(200,600)))
+#dev.off()
+
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
 
@@ -195,9 +211,9 @@ understorey_aboveground_production_flux <- make_understorey_aboveground_producti
 understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
                                                           understorey_sla_variable)
 
-understorey_lai_variable <- make_understorey_lai_variable_2(understorey_aboveground_c_pool_2, 
-                                                          understorey_sla_variable,
-                                                          prDF=understorey_aboveground_c_pool)
+#understorey_lai_variable <- make_understorey_lai_variable_2(understorey_aboveground_c_pool_2, 
+#                                                          understorey_sla_variable,
+#                                                          prDF=understorey_aboveground_c_pool)
 
 ### Soil microbial C pool
 ### top 10 cm only - Cat's data
@@ -212,7 +228,7 @@ mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
 #mycorrhizal_c_pool_2 <- make_mycorrhizal_c_pool_2(soil_bulk_density_variable)
 
 ### Soil mycorrhizae production
-mycorrhizal_c_production_flux <- make_mycorrhizal_production_flux(soil_bulk_density_variable)
+#mycorrhizal_c_production_flux <- make_mycorrhizal_production_flux(soil_bulk_density_variable)
 
 ### Soil methane C flux
 ## This is a simplified version because we didn't fill the gaps
@@ -259,7 +275,7 @@ understorey_gpp_flux <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
 understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
                                                                   c_frac=c_fraction,
                                                                   gpp=understorey_gpp_flux,
-                                                                  assumption="maespa")
+                                                                  assumption="cue")
 
 
 ###### ----------Make summary tables-------------- ######
@@ -435,6 +451,12 @@ understorey_aboveground_production_flux_ann <- make_und_prod_treatment_abs_effec
                                                             stat.model="no_interaction_with_covariate",
                                                             return.outcome="predicted")
 
+### Understorey aboveground litter 
+understorey_litter_production_flux_ann <- make_und_prod_treatment_abs_effect_statistics(inDF=understorey_aboveground_production_flux, 
+                                                                                             var.cond="flux", var.col=6,
+                                                                                             date.as.factor=T,
+                                                                                             stat.model="no_interaction_with_covariate",
+                                                                                             return.outcome="predicted")
 ### Rh respiration
 heterotrophic_respiration_flux_ann <- make_rh_treatment_abs_effect_statistics(inDF=heterotrophic_respiration_flux, 
                                                 var.cond="flux", var.col=5,
@@ -443,11 +465,11 @@ heterotrophic_respiration_flux_ann <- make_rh_treatment_abs_effect_statistics(in
                                                 return.outcome="predicted")
 
 ### Mycorrhizal production
-mycorrhizal_c_production_flux_ann <- make_myc_production_treatment_abs_effect_statistics(inDF=mycorrhizal_c_production_flux, 
-                                                                              var.cond="flux", var.col=5,
-                                                                              date.as.factor=T,
-                                                                              stat.model="no_interaction_with_covariate",
-                                                                              return.outcome="predicted")
+#mycorrhizal_c_production_flux_ann <- make_myc_production_treatment_abs_effect_statistics(inDF=mycorrhizal_c_production_flux, 
+#                                                                              var.cond="flux", var.col=5,
+#                                                                              date.as.factor=T,
+#                                                                              stat.model="no_interaction_with_covariate",
+#                                                                              return.outcome="predicted")
 
 ### Soil C
 soil_c_pool_ann <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
@@ -674,6 +696,27 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###        
 ###
 
+### Take out mycorrhizal production because uncertainty is more than certainty.
+### This will lower GPP and Rsoil mass balance gaps.
+### Remained issues related to GPP: 
+###                                understorey GPP may be too large (proportion to overstorey GPP too large); 
+###                                understorey respiration may be too small (CUE small), 
+###                                can enlarge this by CUE method;
+###                                however, increase respiration will enlarge the GPP gap. 
+###                                but can just fill the mycorrhizal production gap, 
+###                                which means the mass balance is still acceptable for GPP.
+###                                We may also want to explore different growth respiration coefficient.
+###                                Rstem: check if the 3 month rate consistent with Nam JIn's rate.
+###                                       Use Nam Jin's rates and ask him to provide justification!
+### Need to use Alexis Rsoil, because it compares OK with Johns, 
+### but with more temporal coverage and slightly higher Rsoil estimates
+### Remaining issue with Rsoil mass balance:
+###                                 Rsoil still too small.
+###                                 Rroot remains the largest possibility to reduce the gap.
+###                                 NPPua should be just the dead fraction.
+###                                 The other possibility is NPPother. 
+
+### Add biological year and check mass balance
 ### Finish main text, figures
 ### Finish Method section
 ### Finish SM figures, with corrected data

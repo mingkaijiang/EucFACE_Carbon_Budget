@@ -21,14 +21,16 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                        rep("resp", 2), # 18 - 19
                        rep("prod", 9), # 20 - 28
                        rep("resp", 1), # 29
-                       rep("gpp", 1),  # 30
-                       rep("resp", 2), # 31 - 32
-                       rep("prod",1),  # 33
+                       rep("prod",1),  # 30
+                       rep("gpp", 1),  # 31
+                       rep("resp", 2), # 32 - 33
+                       #rep("prod",1),  # 33
                        rep("gpp", 1),  # 34
                        rep("change_in_pool", 11))   # 35 - 45
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
+    myDF <- subset(myDF, Variable != c("understorey_lit"))
     
     ### Drop CWD - confidence interval too large
     myDF <- subset(myDF, Variable != c("delta_cwd_c"))
@@ -37,7 +39,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     plotDF1 <- subset(myDF, Variable %in% c("over_gpp", "understorey_gpp", "ch4",
                                             "leaf_prod", "twig_prod", "bark_prod",
                                             "seed_prod", "wood_prod", "fineroot_prod",
-                                            "coarseroot_prod", "understorey_prod", "herb_consump", "mycorrhizal_prod",
+                                            "coarseroot_prod", "understorey_prod", "herb_consump", #"mycorrhizal_prod",
                                             "over_leaf_respiration", "wood_respiration", "root_respiration",
                                             "understorey_respiration", "hetero_respiration","doc",
                                             "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", 
@@ -149,7 +151,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                 "fineroot_prod"=expression(NPP[froot]),           # 13
                 "coarseroot_prod"=expression(NPP[croot]),         # 14
                 "understorey_prod"=expression(NPP[ua]),           # 15
-                "mycorrhizal_prod"=expression(NPP[myc]),           # 15
+                #"mycorrhizal_prod"=expression(NPP[myc]),           # 15
                 "root_respiration"=expression(R[root]),           # 16
                 "understorey_respiration"=expression(R[ua]),      # 17
                 "doc"=expression(R[doc]),                         # 18
@@ -179,7 +181,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     
     ## NPP
     colfunc.npp <- colorRampPalette(c("darkgreen", "yellow"))
-    D.col.list <- colfunc.npp(10)
+    D.col.list <- colfunc.npp(9)
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
@@ -206,7 +208,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                    "fineroot_prod"=D.col.list[7],           
                    "coarseroot_prod"=D.col.list[8],         
                    "understorey_prod"=D.col.list[9],   
-                   "mycorrhizal_prod"=D.col.list[10], 
+                   #"mycorrhizal_prod"=D.col.list[10], 
                    "over_leaf_respiration"=E.col.list[1],      
                    "wood_respiration"=E.col.list[2],           
                    "root_respiration"=E.col.list[3],           
@@ -305,7 +307,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
     
     ## NPP
     colfunc.npp <- colorRampPalette(c("darkgreen", "lightgreen"))
-    D.col.list <- colfunc.npp(10)
+    D.col.list <- colfunc.npp(9)
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
@@ -334,7 +336,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                    "fineroot_prod"=D.col.list[7],           
                    "coarseroot_prod"=D.col.list[8],         
                    "understorey_prod"=D.col.list[9], 
-                   "mycorrhizal_prod"=D.col.list[10],           
+                   #"mycorrhizal_prod"=D.col.list[10],           
                    
                    "over_leaf_respiration"=E.col.list[4],      
                    "wood_respiration"=E.col.list[5],           
@@ -391,7 +393,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
                 "fineroot_prod"=expression(NPP[froot]),           # 12
                 "coarseroot_prod"=expression(NPP[croot]),         # 13
                 "understorey_prod"=expression(NPP[ua]),           # 14
-                "mycorrhizal_prod"=expression(NPP[myc]),           # 14
+                #"mycorrhizal_prod"=expression(NPP[myc]),           # 14
                 
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16

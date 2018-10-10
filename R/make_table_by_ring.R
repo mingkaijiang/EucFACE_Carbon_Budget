@@ -56,8 +56,8 @@ make_table_by_ring <- function() {
                                                  sum(heterotrophic_respiration_flux*ndays)/sum(ndays)) * conv 
 
         # Mycorrhizal production
-        npp[npp$term == "Mycorrhizal production", i+1] <- with(mycorrhizal_c_production_flux[mycorrhizal_c_production_flux$Ring == i,],
-                                                 sum(mycorrhizal_production*ndays)/sum(ndays)) * conv 
+        #npp[npp$term == "Mycorrhizal production", i+1] <- with(mycorrhizal_c_production_flux[mycorrhizal_c_production_flux$Ring == i,],
+        #                                         sum(mycorrhizal_production*ndays)/sum(ndays)) * conv 
         # Flower Production
         
     }

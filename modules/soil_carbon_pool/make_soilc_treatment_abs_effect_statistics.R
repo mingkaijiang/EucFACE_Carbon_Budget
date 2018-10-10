@@ -3,11 +3,11 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
                                                    stat.model, return.outcome) {
     
     ### subset pre-treatment data
-    preDF <- subset(inDF, Date=="2012-06-17")
-    inDF <- subset(inDF, Date>"2012-06-17")
-    for (i in 1:6) {
-        inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
-    }
+    #preDF <- subset(inDF, Date=="2012-06-17")
+    #inDF <- subset(inDF, Date>"2012-06-17")
+    #for (i in 1:6) {
+    #    inDF$PreTrt[inDF$Ring==i] <- preDF$soil_carbon_pool[preDF$Ring==i]
+    #}
     
     ### Pass in covariate values (assuming 1 value for each ring)
     covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
@@ -50,7 +50,7 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     colnames(inDF)[var.col] <- "Value"
     
     ## Get year list and ring list
-    tDF <- summaryBy(Value+Cov2+Cov+Cov3+PreTrt~Trt+Ring+Datef,data=inDF,FUN=mean, keep.names=T)
+    tDF <- summaryBy(Value+Cov2+Cov+Cov3~Trt+Ring+Datef,data=inDF,FUN=mean, keep.names=T)
 
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
