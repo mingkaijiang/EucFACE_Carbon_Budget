@@ -4,15 +4,15 @@ make_stem_basal_respiration_rate <- function() {
     download_stem_basal_respiration_data()
 
     ### read files
-    myDF1 <- read.csv(file.path(getToPath(), 
-                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20171218-20171220.csv"))
+    #myDF1 <- read.csv(file.path(getToPath(), 
+    #                              "FACE_A0089_RA_STEMCO2EFLUX_L1_20171218-20171220.csv"))
     myDF2 <- read.csv(file.path(getToPath(), 
                                   "FACE_A0089_RA_STEMCO2EFLUX_L1_20180115-20180117.csv"))
     myDF3 <- read.csv(file.path(getToPath(), 
                                   "FACE_A0089_RA_STEMCO2EFLUX_L1_20180205-20180207.csv"))
     
-    myDF <- rbind(myDF1, myDF2)
-    myDF <- rbind(myDF, myDF3)
+    myDF <- rbind(myDF2, myDF3)
+    #myDF <- rbind(myDF, myDF1)
     
     
     ### Read stem temperature files
@@ -139,9 +139,9 @@ make_stem_basal_respiration_rate <- function() {
     myDF3 <- merge(myDF2, smc, by=c("Date"))
     myDF3$Campaign <- month(myDF3$Date)
     
-    with(myDF3, plot(flux_corrected~VWC, col=factor(Campaign)))
-    legend("topright", legend=c("DEC", "JAN", "FEB"),
-           col=c("red", "green", "black"), pch=1)
+    #with(myDF3, plot(flux_corrected~VWC, col=factor(Campaign)))
+    #legend("topright", legend=c("DEC", "JAN", "FEB"),
+    #       col=c("red", "green", "black"), pch=1)
     
     p <- ggplot(myDF3, aes(x=VWC, y=flux_corrected, color=factor(Campaign))) +
         geom_point()

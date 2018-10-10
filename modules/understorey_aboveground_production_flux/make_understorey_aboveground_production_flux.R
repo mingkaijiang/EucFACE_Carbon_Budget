@@ -53,7 +53,8 @@ make_understorey_aboveground_production_flux <- function(c_frac) {
                          Date = as.Date(outDF$Date, format = "%d/%m/%Y"),
                          Start_date = Date - ndays,
                          End_date = Date,
-                         understorey_production_flux = Total_g_C_m2 * g_to_mg / ndays)
+                         understorey_production_flux = Total_g_C_m2 * g_to_mg / ndays,
+                         understorey_litter_flux = Dead_g_C_m2 * g_to_mg / ndays)
     
     #- drop NA rows
     out <- out[complete.cases(out),]
@@ -62,7 +63,7 @@ make_understorey_aboveground_production_flux <- function(c_frac) {
     df$ndays <- as.numeric(df$End_date - df$Start_date) + 1
     
     #- format dataframe to return
-    out <-df[,c("Start_date", "End_date", "Date", "Ring","understorey_production_flux", "ndays")]
+    out <-df[,c("Start_date", "End_date", "Date", "Ring","understorey_production_flux", "understorey_litter_flux", "ndays")]
     
     # Only use data period 2012-2016
     out <- out[out$Date<="2016-12-31",]
