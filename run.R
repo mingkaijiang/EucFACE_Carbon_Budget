@@ -89,7 +89,7 @@ make_gpp_over_soil_p_pool(pDF=soil_p_pool)
 soil_respiration_flux <- make_soil_respiration_flux()
 #soil_respiration_flux2 <- make_soil_respiration_flux_2()
 
-#compare_Rsoil(aDF=soil_respiration_flux, jDF=soil_respiration_flux1)
+#compare_Rsoil(aDF=soil_respiration_flux2, jDF=soil_respiration_flux)
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
@@ -168,8 +168,8 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 ### Method 1 is Nam Jin's method
 ### Method 3 is based on Roberto's three month data
 ### Method 2 is an old method
-#wood_respiration_flux_nj <- make_wood_respiration_flux()
-wood_respiration_flux <- make_wood_respiration_flux_3()
+wood_respiration_flux <- make_wood_respiration_flux()
+#wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
 #compare_Rwood(nDF=wood_respiration_flux_nj, rDF=wood_respiration_flux)
     
@@ -251,8 +251,8 @@ overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 ### Understorey GPP
 ## method 1 is 0.4 * overstorey GPP
 ### method 2 is based on MAESPA simulation
-understorey_gpp_flux <- make_understorey_GPP_flux()
-understorey_gpp_flux2 <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
+#understorey_gpp_flux <- make_understorey_GPP_flux()
+understorey_gpp_flux <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
 
 ### Understorey respiration
 ### assumes either a fixed or a function of temperature

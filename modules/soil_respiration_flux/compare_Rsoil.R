@@ -23,8 +23,8 @@ compare_Rsoil <- function(aDF, jDF) {
     annDF <- summaryBy(soil_resp_a+soil_resp_j~Yr+Ring, data=myDF, keep.names=T, FUN=sum)
     for (i in 1:6) {
         for (j in unique(myDF$Yr)) {
-            annDF$soil_resp_a[annDF$Yr==j&annDF$Ring==i] <- sum(myDF$soil_resp_a[myDF$Yr==j&myDF$Ring==i])/sum(myDF$ndays[myDF$Yr==j&myDF$Ring==i])*365/1000
-            annDF$soil_resp_j[annDF$Yr==j&annDF$Ring==i] <- sum(myDF$soil_resp_j[myDF$Yr==j&myDF$Ring==i])/sum(myDF$ndays[myDF$Yr==j&myDF$Ring==i])*365/1000
+            annDF$soil_resp_a[annDF$Yr==j&annDF$Ring==i] <- sum(myDF$soil_resp_a[myDF$Yr==j&myDF$Ring==i]*myDF$ndays[myDF$Yr==j&myDF$Ring==i])/sum(myDF$ndays[myDF$Yr==j&myDF$Ring==i])*365/1000
+            annDF$soil_resp_j[annDF$Yr==j&annDF$Ring==i] <- sum(myDF$soil_resp_j[myDF$Yr==j&myDF$Ring==i]*myDF$ndays[myDF$Yr==j&myDF$Ring==i])/sum(myDF$ndays[myDF$Yr==j&myDF$Ring==i])*365/1000
             
         }
     }
@@ -59,4 +59,177 @@ compare_Rsoil <- function(aDF, jDF) {
     dev.off()
     
     
+    ### Investigate 2014 (by defining 2014 as 2013-09 - 2014-08)
+    
+    ### add new year information
+    myDF$Bio.year <- ifelse(myDF$Date <= "2013-09-05", "2013", 
+                            ifelse(myDF$Date <= "2014-09-05" & myDF$Date >= "2013-09-06", "2014",
+                                   ifelse(myDF$Date <= "2015-09-05" & myDF$Date >= "2014-09-06", "2015", NA)))
+    
+    myDF <- myDF[complete.cases(myDF$Bio.year),]
+    
+    annDF2 <- summaryBy(soil_resp_a+soil_resp_j~Ring+Bio.year+Trt, FUN=sum, data=myDF, keep.names=T)
+    annDF3 <- summaryBy(soil_resp_a+soil_resp_j~Trt+Bio.year, FUN=mean, data=annDF2, keep.names=T)
+    annDF3$soil_resp_a <- annDF3$soil_resp_a/1000
+    annDF3$soil_resp_j <- annDF3$soil_resp_j/1000
+    
+    ### Annual sum based on biological year
+    p3 <- ggplot(annDF3)+
+        geom_point(data=annDF3[annDF3$Trt=="aCO2",], aes(x=Bio.year, y=soil_resp_a, fill="A_aCO2"),shape=21, size=5) +
+        geom_point(data=annDF3[annDF3$Trt=="eCO2",], aes(x=Bio.year, y=soil_resp_a, fill="A_eCO2"),shape=21, size=5) +
+        geom_point(data=annDF3[annDF3$Trt=="aCO2",], aes(x=Bio.year, y=soil_resp_j, fill="J_aCO2"),shape=21, size=5)+
+        geom_point(data=annDF3[annDF3$Trt=="eCO2",], aes(x=Bio.year, y=soil_resp_j, fill="J_eCO2"),shape=21, size=5)+
+        scale_fill_manual(name="Method", 
+                          values = c("A_aCO2" = "yellow", "A_eCO2" = "orange", "J_aCO2" = "blue", "J_eCO2" = "darkblue"),
+                          labels = c("Alexis_aCO2", "Alexis_eCO2", "John_aCO2", "John_eCO2"))
+    
+    
+    ### Overlay John and Alexis data by year
+    myDF$DOY <- rep(rep(c(1:365), each=6), by=3)
+    p4 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2013",], aes(x=DOY, y=soil_resp_a, fill="A_2013"),shape=21, size=1) +
+        geom_point(data=myDF[myDF$Bio.year=="2014",], aes(x=DOY, y=soil_resp_a, fill="A_2014"),shape=21, size=2) +
+        geom_point(data=myDF[myDF$Bio.year=="2015",], aes(x=DOY, y=soil_resp_a, fill="A_2015"),shape=21, size=1)+
+        scale_fill_manual(name="Method", 
+                          values = c("A_2013" = "yellow", "A_2014" = "orange", "A_2015" = "lightblue"),
+                          labels = c("A2013", "A2014", "A2015"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p5 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2013",], aes(x=DOY, y=soil_resp_a, fill="A_2013"),shape=21, size=1) +
+        scale_fill_manual(name="Method", 
+                          values = c("A_2013" = "yellow"),
+                          labels = c("A2013"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p6 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2014",], aes(x=DOY, y=soil_resp_a, fill="A_2014"),shape=21, size=1) +
+        scale_fill_manual(name="Method", 
+                          values = c("A_2014" = "orange"),
+                          labels = c("A2014"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p7 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2015",], aes(x=DOY, y=soil_resp_a, fill="A_2015"),shape=21, size=1) +
+        scale_fill_manual(name="Method", 
+                          values = c("A_2015" = "lightblue"),
+                          labels = c("A2015"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p8 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2013",], aes(x=DOY, y=soil_resp_j, fill="J_2013"),shape=21, size=1) +
+        geom_point(data=myDF[myDF$Bio.year=="2014",], aes(x=DOY, y=soil_resp_j, fill="J_2014"),shape=21, size=2) +
+        geom_point(data=myDF[myDF$Bio.year=="2015",], aes(x=DOY, y=soil_resp_j, fill="J_2015"),shape=21, size=1)+
+        scale_fill_manual(name="Method", 
+                          values = c("J_2013" = "yellow", "J_2014" = "orange", "J_2015" = "lightblue"),
+                          labels = c("J2013", "J2014", "J2015"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p9 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2013",], aes(x=DOY, y=soil_resp_j, fill="J_2013"),shape=21, size=1) +
+        scale_fill_manual(name="Method", 
+                          values = c("J_2013" = "yellow"),
+                          labels = c("J2013"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p10 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2014",], aes(x=DOY, y=soil_resp_j, fill="J_2014"),shape=21, size=1) +
+        scale_fill_manual(name="Method", 
+                          values = c("J_2014" = "orange"),
+                          labels = c("J2014"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    p11 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2015",], aes(x=DOY, y=soil_resp_j, fill="J_2015"),shape=21, size=1) +
+        scale_fill_manual(name="Method", 
+                          values = c("J_2015" = "lightblue"),
+                          labels = c("J2015"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    
+    p12 <- ggplot(myDF)+
+        geom_point(data=myDF[myDF$Bio.year=="2014",], aes(x=DOY, y=soil_resp_j, fill="J_2014"),shape=21, size=1) +
+        geom_point(data=myDF[myDF$Bio.year=="2014",], aes(x=DOY, y=soil_resp_a, fill="A_2014"),shape=21, size=1)+
+        scale_fill_manual(name="Method", 
+                          values = c("A_2014" = "lightblue","J_2014" = "orange"),
+                          labels = c("A2014","J2014"))+
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)
+    
+    
+    pdf("R_other/Rsoil_comparison_extended.pdf")
+    plot(p3)
+    plot(p4)
+    plot(p5)
+    plot(p6)
+    plot(p7)
+    plot(p8)
+    plot(p9)
+    plot(p10)
+    plot(p11)
+    plot(p12)
+
+    dev.off()
+    
+    
+    ### Add moisture
+    smc <- readRDS("temp_files/facesoilwater.RDS")
+    myDF2 <- merge(myDF, smc, by=c("Date"))
+    
+    p13 <- ggplot(myDF2)+
+        geom_point(data=myDF2[myDF2$Bio.year=="2014",], aes(x=DOY, y=soil_resp_j, fill="J_2014"),shape=21, size=1) +
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)+
+        ylab("Rsoil_J_2014")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.text.align=0)
+    
+    p14 <- ggplot(myDF2)+
+        geom_point(data=myDF2[myDF2$Bio.year=="2014",], aes(x=DOY, y=soil_resp_a, fill="J_2014"),shape=21, size=1) +
+        geom_vline(aes(xintercept = 116))+
+        ylim(0,8500)+
+        ylab("Rsoil_A_2014")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.text.align=0)
+    
+    myDF3 <- subset(smc, Date>="2013-09-06" & Date <= "2014-09-05")
+    myDF3$DOY <- c(1:365)
+    
+    p15 <- ggplot(myDF3)+
+        geom_bar(mapping = aes(x = DOY, y = VWC), stat = "identity", fill = "grey") +
+        geom_vline(aes(xintercept = 116))
+
+    
+    require(grid)
+    require(cowplot)
+    
+    pdf("R_other/Rsoil_SWC.pdf")
+    plot_grid(p13, p14, p15, 
+              ncol=1, align="v", axis="l")
+    dev.off()
+
 }

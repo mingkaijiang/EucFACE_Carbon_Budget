@@ -15,7 +15,7 @@ make_soil_respiration_flux_2 <- function(){
     
     # only include pre 2017 data
     myDF2 <- subset(myDF, Date < "2017-01-01")
-    myDF2 <- subset(myDF2, Date >= "2013-01-01")
+    #myDF2 <- subset(myDF2, Date >= "2013-01-01")
     
     # correct for unit from umol CO2 m-2 s-1 to mg C m-2 30 mins
     myDF2$R1<- myDF2$Rsoil_R1*60*30*1e-6*12.01*1000
