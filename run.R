@@ -90,8 +90,8 @@ soil_p_mineralization <- make_soil_p_mineralization_flux(soil_bulk_density_varia
 ### soil respiration flux
 ### first method is John's
 ### second is Alexis's
-#soil_respiration_flux <- make_soil_respiration_flux()
-soil_respiration_flux <- make_soil_respiration_flux_2()
+soil_respiration_flux <- make_soil_respiration_flux()
+#soil_respiration_flux2 <- make_soil_respiration_flux_2()
 
 #compare_Rsoil(aDF=soil_respiration_flux2, jDF=soil_respiration_flux)
 
