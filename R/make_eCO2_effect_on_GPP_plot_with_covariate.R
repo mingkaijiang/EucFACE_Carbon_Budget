@@ -463,9 +463,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate <- function() {
         #                   labels=c(-400, -200, -50, -25, 0, 50, 100, 150, 400, 650))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
         guides(fill=guide_legend(ncol=6))+
-        ylim(-500,1000)
+        ylim(-500,1100)
         
-     plot(p3)
+     #plot(p3)
 
     ### Plotting
     pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate.pdf", width=8, height=6)

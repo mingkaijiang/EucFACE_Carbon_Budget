@@ -716,7 +716,19 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###                                 NPPua should be just the dead fraction.
 ###                                 The other possibility is NPPother. 
 
-### Add biological year and check mass balance
+
+### Solutions:
+### Maintain existing understorey GPP
+### Use CUE to calculate understorey respiration
+### Use shallow depth and September values for Soil C and incremental change in Soil C
+### Use Alexis's Rsoil
+### Use Nam Jin's stem respiration and needs his justification of his data
+### NPP understorey aboveground in Rsoil budget becomes NPP understory litter
+### NEP calculation based on NPP - Rh, considers frass production rather than leaf consumed. 
+### NEP calculation based on NPP - RH, considers NPP understory litter rather than NPP aboveground production
+
+### One last missing bit is VOC, but with a lot of flexibility to close the mass balance now.
+
 ### Finish main text, figures
 ### Finish Method section
 ### Finish SM figures, with corrected data

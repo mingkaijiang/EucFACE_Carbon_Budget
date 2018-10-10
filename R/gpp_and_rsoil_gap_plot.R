@@ -195,7 +195,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     sd <- sd(delta.soil[delta.soil$Ring %in% c(2,3,6), "delta.soil.c.ann"])
     asoil <- cbind(t, v, sd)
     colnames(asoil) <- c("term", "aCO2", "aCO2_sd")
-    nppDF <- rbind(nppDF, asoil)
+    #nppDF <- rbind(nppDF, asoil)
     
     
     ### subsetting inout df
@@ -228,10 +228,11 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     var.labs2 <- c(expression(NPP[leaf]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
                   expression(NPP[ua]),expression(P[frass]), #expression(NPP[myc]), 
-                  expression(R[root]),expression(Delta*C[soil]), expression(R[soil]))
+                  expression(R[root]),#expression(Delta*C[soil]), 
+                  expression(R[soil]))
     
     ### Prepare variable colors
-    col.list2 <- viridis(9)
+    col.list2 <- viridis(8)
     
     ### make the bar plot
     p3 <- ggplot(plotDF,
@@ -278,7 +279,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     sd <- sd(delta.soil[delta.soil$Ring %in% c(1,4,5), "delta.soil.c.ann"])
     esoil <- cbind(t, v, sd)
     colnames(esoil) <- c("term", "eCO2", "eCO2_sd")
-    nppDF <- rbind(nppDF, esoil)
+    #nppDF <- rbind(nppDF, esoil)
     
     ### subsetting inout df
     temDF <- inDF$inout[,c("term", "eCO2", "eCO2_sd")]
