@@ -176,7 +176,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ### only include plant NPP
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
-                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey Litter",],
+                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
                    temDF[temDF$term == "Frass production",])#, temDF[temDF$term == "Mycorrhizal production",])
     aDF <- inDF$inout[, c("term", "aCO2", "aCO2_sd")]
     nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
@@ -269,7 +269,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ### only include plant NPP
     nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
                    temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
-                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey Litter",],
+                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
                    temDF[temDF$term == "Frass production",])#, temDF[temDF$term == "Mycorrhizal production",])
     aDF <- inDF$inout[, c("term", "eCO2", "eCO2_sd")]
     nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])

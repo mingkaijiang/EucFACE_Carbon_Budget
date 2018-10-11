@@ -23,13 +23,12 @@ nep_gap_plot <- function(inDF) {
             inoutDF[inoutDF$term == "Rgrowth", i]) 
         
         out[out$Method=="NPP-Rh", i] <- nppDF[nppDF$term == "Leaf NPP", i] +
-            #nppDF[nppDF$term == "Stem NPP", i] +
+            nppDF[nppDF$term == "Stem NPP", i] +
             nppDF[nppDF$term == "Fine Root NPP", i] +
             nppDF[nppDF$term == "Coarse Root NPP", i] +
             nppDF[nppDF$term == "Other NPP", i] +
-            nppDF[nppDF$term == "Understorey Litter", i] +
-            nppDF[nppDF$term == "Frass production", i] -
-            #nppDF[nppDF$term == "Leaf consumption", i] -
+            nppDF[nppDF$term == "Understorey NPP", i] +
+            nppDF[nppDF$term == "Leaf consumption", i] -
             #nppDF[nppDF$term == "Mycorrhizal production", i] -
             nppDF[nppDF$term == "R hetero", i] 
             #nppDF[nppDF$term == "Flower production", i] 
@@ -116,19 +115,23 @@ nep_gap_plot <- function(inDF) {
     out$aCO2 <- rowMeans(subset(out, select=c(R2, R3, R6)), na.rm=T)
     out$eCO2 <- rowMeans(subset(out, select=c(R1, R4, R5)), na.rm=T)
     
+    require(sciplot)
+    
     aC <- data.frame(out$R2, out$R3, out$R6)
-    aCo <- transform(aC, SD = apply(aC, 1, sd, na.rm=T))
-    out$aCO2_sd <- aCo$SD
+    #aCo <- transform(aC, SD = apply(aC, 1, sd, na.rm=T))
+    aCo <- transform(aC, SE = apply(aC, 1, se, na.rm=T))
+    
+    out$aCO2_se <- aCo$SE
     
     eC <- data.frame(out$R1, out$R4, out$R5)
-    out$eCO2_sd <- transform(eC, SD = apply(eC, 1, sd, na.rm=T))$SD
+    out$eCO2_se <- transform(eC, SE = apply(eC, 1, se, na.rm=T))$SE
     
     write.csv(out, "R_other/NEP_method_comparison.csv", row.names=F)
     
     
     ### prepare plotDF
     plotDF <- data.frame(rep(c("In-out", "NPP-Rh", "Pool"), 2), NA, NA, NA)
-    colnames(plotDF) <- c("Method", "NEP", "NEP_sd", "Trt")
+    colnames(plotDF) <- c("Method", "NEP", "NEP_se", "Trt")
     plotDF$Trt <- rep(c("aCO2", "eCO2"), each=3)
     
     plotDF$NEP[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2[out$Method=="In-out"]
@@ -138,15 +141,15 @@ nep_gap_plot <- function(inDF) {
     plotDF$NEP[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="NPP-Rh"]
     plotDF$NEP[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="Pool"]
     
-    plotDF$NEP_sd[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="In-out"]
-    plotDF$NEP_sd[plotDF$Method=="NPP-Rh" & plotDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="NPP-Rh"]
-    plotDF$NEP_sd[plotDF$Method=="Pool" & plotDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="Pool"]
-    plotDF$NEP_sd[plotDF$Method=="In-out" & plotDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="In-out"]
-    plotDF$NEP_sd[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="NPP-Rh"]
-    plotDF$NEP_sd[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="Pool"]
+    plotDF$NEP_se[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="In-out"]
+    plotDF$NEP_se[plotDF$Method=="NPP-Rh" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="NPP-Rh"]
+    plotDF$NEP_se[plotDF$Method=="Pool" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="Pool"]
+    plotDF$NEP_se[plotDF$Method=="In-out" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="In-out"]
+    plotDF$NEP_se[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="NPP-Rh"]
+    plotDF$NEP_se[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="Pool"]
     
-    plotDF$pos <- plotDF$NEP + plotDF$NEP_sd
-    plotDF$neg <- plotDF$NEP - plotDF$NEP_sd
+    plotDF$pos <- plotDF$NEP + plotDF$NEP_se
+    plotDF$neg <- plotDF$NEP - plotDF$NEP_se
     
     ### make the bar plot
     p1 <- ggplot(plotDF,
@@ -169,7 +172,7 @@ nep_gap_plot <- function(inDF) {
               legend.position="bottom")+
         scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_colour_manual(name="", values = c("aCO2" = "grey", "eCO2" = "black"),
+        scale_colour_manual(name="", values = c("aCO2" = "black", "eCO2" = "black"),
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_x_discrete("",  
                          labels=c("In - Out",

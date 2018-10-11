@@ -643,92 +643,16 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 #source("R/plot_figures.R")
 
 
-### Work orders
-### 3. Compare against the original figure:  Check if we could close the budget
-###    3.1 More thoroughly compare Alexis's Rsoil with John's
-###        Alexis Rsoil resulted in positive NEP throughout, 
-###        but John's soil respiration gives higher Rsoil estimates, but lower eCO2 effect,
-###        and therefore, Rsoil no longer the largest explanation for extra C;
-###        Alexis's data and method gives lower Rsoil estimates, but higher eCO2 effect;
-###        hence also looks bad for C budget balancing.
-###        Need to increase Rsoil or reduce Rroot. 
-###    3.2 Need better stem respiration estimates!!!
-###        3.2.1 Check how big an effect using Roberto's method has on C budget and eCO2 effect
-###        3.2.2. Can also consider a scaling factor from stem efflux to stem respiration rate
-###        3.2.3 It seems that stem respiration is higher than Nam Jim's estimates
-###              Need to compare directly between the two
-###              The two compare similarly
-###              With correcting factor applied, see a reversal between a and e.
-###              Which resulted in negative eCO2 effect on stem respiration now.
-###              Checking Roberto's paper, it is a negative response, without the correction factor
-###              Therefore need to go back to the data and double check why it is a positive response in my raw data
-###              Still need to downsize Rwood, by a conversion factor as not all stem surface respired equally.
-###        3.2.4 Problem with Rwood now is that the linear model should probably not extend to lower temperature range,
-###              which makes the comparison the Roberto's result difficult, but good if we were to have a positive eCO2 effect.
-###              Using the scaling factor makes eCO2 effect negative, and the budget is not well balanced. 
-###              The continued problem is Rsoil and GPP (in particular understorey GPP)
-###              Need to increase GPP so that it matches with NPP + Ra (or lower Ra, but difficult)
-###              Need also to increase soil, or lower Rh,
-###              right now Rh is the difference between Rsoil and Rroot
-###              Rroot is basal rate scaled up with biomass (f + c)
-###              So to increase Rsoil, Rh is also increased.
-###              Hence, to balance Rsoil and NPP+Rh, we need to lower Rh,
-###              which means we need to increase Rroot,
-###              but increase Rroot is not helping GPP
-###        3.2.5 Decide to use uncorrected stem efflux to represent stem respiration 
-###              Therefore the result will be contradicting to that of Roberto's, in that:
-###              Roberto's uncorrected stem efflux is also higher under aCO2 condition (still don't know why the difference)
-###              Will need to check how much an effect this has on the C budget, and if stem respiration still ranks 2nd to explain the extra carbon.
-###              More importantly, if decide to use John's soil respiration, need to check if stem is still the second explanator. 
-###              Now revert back to use John's soil respiration
-###              Then try to lower Rroot, and increase GPP using 0.4 factor (and see if GPP = NPP + Ra + 0.5 Rfr)
-###              Also need to adjust Rgrowth, and add Rgrowth into the extra C stat model. 
-###
-###    3.3 Need understorey GPP values
-###        3.3.1 Checking new understorey GPP data in the budget and eCO2 effect
-###        3.3.2 Can also update understorey respiration
-###              done. based on this, can update understorey NPP, 
-###              or understorey respiration based on the difference of GPP - NPP. 
-###        3.3.3 Can add calculation of understorey respiration based on Rd (per area) * LAI and a temperature function (overstorey)
-###              but need that temperature function
-###    3.4 Can adjust Rgrowth to balance GPP and NPP + Ra (removed NPP root)
-###    3.5 If Rsoil = litter + Rroot, then Rh = NPP, then the extra Rh is accounted for by the extra NPP. Then no mysterious exudation or mycorrhizae components.
-###        
-###
-
-### Take out mycorrhizal production because uncertainty is more than certainty.
-### This will lower GPP and Rsoil mass balance gaps.
-### Remained issues related to GPP: 
-###                                understorey GPP may be too large (proportion to overstorey GPP too large); 
-###                                understorey respiration may be too small (CUE small), 
-###                                can enlarge this by CUE method;
-###                                however, increase respiration will enlarge the GPP gap. 
-###                                but can just fill the mycorrhizal production gap, 
-###                                which means the mass balance is still acceptable for GPP.
-###                                We may also want to explore different growth respiration coefficient.
-###                                Rstem: check if the 3 month rate consistent with Nam JIn's rate.
-###                                       Use Nam Jin's rates and ask him to provide justification!
-### Need to use Alexis Rsoil, because it compares OK with Johns, 
-### but with more temporal coverage and slightly higher Rsoil estimates
-### Remaining issue with Rsoil mass balance:
-###                                 Rsoil still too small.
-###                                 Rroot remains the largest possibility to reduce the gap.
-###                                 NPPua should be just the dead fraction.
-###                                 The other possibility is NPPother. 
-
-
 ### Solutions:
 ### Maintain existing understorey GPP
 ### Use CUE to calculate understorey respiration
 ### Use shallow depth and September values for Soil C and incremental change in Soil C
-### Use Alexis's Rsoil
+### Use John's Rsoil with updated fitted coefficients and EucFACE parameters
 ### Use Nam Jin's stem respiration and needs his justification of his data
-### NPP understorey aboveground in Rsoil budget becomes NPP understory litter
-### NEP calculation based on NPP - Rh, considers frass production rather than leaf consumed. 
-### NEP calculation based on NPP - RH, considers NPP understory litter rather than NPP aboveground production
 
 ### One last missing bit is VOC, but with a lot of flexibility to close the mass balance now.
-
+### Jim will continue working on understorey GPP
+### Need to use SE, not SD in the plot
 ### Finish main text, figures
 ### Finish Method section
 ### Finish SM figures, with corrected data
