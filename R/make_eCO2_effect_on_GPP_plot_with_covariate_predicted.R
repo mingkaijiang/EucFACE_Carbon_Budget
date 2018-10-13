@@ -1,13 +1,5 @@
 make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     
-    ######### read in individual predicted component
-    
-    
-    
-    
-    
-    
-    
     ######### Plot abs, no interactions, and change in pools
     ### read in the csv file to plot the treatment effect and confidence interval
     myDF <- read.csv("R_other/treatment_statistics_abs_no_interaction_with_covariate.csv")

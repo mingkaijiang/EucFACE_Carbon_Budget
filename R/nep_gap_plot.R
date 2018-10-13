@@ -45,21 +45,18 @@ nep_gap_plot <- function(inDF) {
     delta_myc_c <- make_yearly_delta_pool_function_ann(inDF=mycorrhizal_c_pool_ann, var.col=9)
     delta_ins_c <- make_yearly_delta_pool_function_ann(inDF=insect_pool_ann, var.col=9)
     delta_lit_c <- make_yearly_delta_pool_function_ann(inDF=leaflitter_pool_ann, var.col=9)
-
-    #source("R/stats/change_in_pool/make_change_in_pool_ann.R")
-    ### Compute changes in pool variables
-    #delta_soil_c <- make_change_in_pool_ann(mypool=soil_c_pool_ann)
-    #delta_leaf_c <- make_change_in_pool_ann(mypool=leaf_c_pool_ann)
-    #delta_wood_c <- make_change_in_pool_ann(mypool=wood_c_pool_ann)
-    #delta_croot_c <- make_change_in_pool_ann(mypool=coarse_root_c_pool_ann)
-    #delta_froot_c <- make_change_in_pool_ann(mypool=fineroot_c_pool_ann)
-    #delta_ua_c <- make_change_in_pool_ann(mypool=understorey_aboveground_c_pool_ann)
-    #delta_mic_c <- make_change_in_pool_ann(mypool=microbial_c_pool_ann)
-    #delta_myc_c <- make_change_in_pool_ann(mypool=mycorrhizal_c_pool_ann)
-    #delta_ins_c <- make_change_in_pool_ann(mypool=insect_pool_ann)
-    #delta_lit_c <- make_change_in_pool_ann(mypool=leaflitter_pool_ann)
-
     
+    #delta_soil_c <- delta_soil_c_pool_ann
+    #delta_leaf_c <- delta_leaf_c_pool_ann
+    #delta_wood_c <- delta_wood_c_pool_ann
+    #delta_croot_c <- delta_coarse_root_c_pool_ann
+    #delta_froot_c <- delta_fineroot_c_pool_ann
+    #delta_ua_c <- delta_understorey_aboveground_c_pool_ann
+    #delta_mic_c <- delta_microbial_c_pool_ann
+    #delta_myc_c <- delta_mycorrhizal_c_pool_ann
+    #delta_ins_c <- delta_insect_pool_ann
+    #delta_lit_c <- delta_leaflitter_pool_ann
+
     ### create df to store pools
     pool.list <- c("soilc", "leafc", "woodc", "crootc", "frootc", "uac",
                    "micc", "mycc", "litter", "cwd", "insect")
@@ -82,18 +79,6 @@ nep_gap_plot <- function(inDF) {
     }
 
     ### assign values
-    #poolDF[poolDF$Term=="soilc",2:7] <- calculate_variable_mean(delta_soil_c)$Value
-    #poolDF[poolDF$Term=="leafc",2:7] <- calculate_variable_mean(delta_leaf_c)$Value
-    #poolDF[poolDF$Term=="woodc",2:7] <- calculate_variable_mean(delta_wood_c)$Value
-    #poolDF[poolDF$Term=="crootc",2:7] <- calculate_variable_mean(delta_croot_c)$Value
-    #poolDF[poolDF$Term=="frootc",2:7] <- calculate_variable_mean(delta_froot_c)$Value
-    #poolDF[poolDF$Term=="uac",2:7] <- calculate_variable_mean(delta_ua_c)$Value
-    #poolDF[poolDF$Term=="micc",2:7] <- calculate_variable_mean(delta_mic_c)$Value
-    #poolDF[poolDF$Term=="mycc",2:7] <- calculate_variable_mean(delta_myc_c)$Value
-    #poolDF[poolDF$Term=="insect",2:7] <- calculate_variable_mean(delta_ins_c)$Value
-    #poolDF[poolDF$Term=="cwd",2:7] <- 0.0
-    #poolDF[poolDF$Term=="litter",2:7] <- calculate_variable_mean(delta_lit_c)$Value
-    
     poolDF[poolDF$Term=="soilc",2:7] <- summaryBy(delta~Ring,data=delta_soil_c,keep.names=T)$delta
     poolDF[poolDF$Term=="leafc",2:7] <- summaryBy(delta~Ring,data=delta_leaf_c,keep.names=T)$delta
     poolDF[poolDF$Term=="woodc",2:7] <- summaryBy(delta~Ring,data=delta_wood_c,keep.names=T)$delta
@@ -105,6 +90,19 @@ nep_gap_plot <- function(inDF) {
     poolDF[poolDF$Term=="insect",2:7] <- summaryBy(delta~Ring,data=delta_ins_c,keep.names=T)$delta
     poolDF[poolDF$Term=="cwd",2:7] <- 0.0
     poolDF[poolDF$Term=="litter",2:7] <- summaryBy(delta~Ring,data=delta_lit_c,keep.names=T)$delta
+    
+    #poolDF[poolDF$Term=="soilc",2:7] <- summaryBy(predicted~Ring,data=delta_soil_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="leafc",2:7] <- summaryBy(predicted~Ring,data=delta_leaf_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="woodc",2:7] <- summaryBy(predicted~Ring,data=delta_wood_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="crootc",2:7] <- summaryBy(predicted~Ring,data=delta_croot_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="frootc",2:7] <- summaryBy(predicted~Ring,data=delta_froot_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="uac",2:7] <- summaryBy(predicted~Ring,data=delta_ua_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="micc",2:7] <- summaryBy(predicted~Ring,data=delta_mic_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="mycc",2:7] <- summaryBy(predicted~Ring,data=delta_myc_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="insect",2:7] <- summaryBy(predicted~Ring,data=delta_ins_c,keep.names=T)$predicted
+    #poolDF[poolDF$Term=="cwd",2:7] <- 0.0
+    #poolDF[poolDF$Term=="litter",2:7] <- summaryBy(predicted~Ring,data=delta_lit_c,keep.names=T)$predicted
+    
     
     ### NEP change in pools
     for (i in c(2:7)) {
