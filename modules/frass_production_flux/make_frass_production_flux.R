@@ -52,8 +52,32 @@ make_frass_production_flux <- function(return.decision="data",
                          End_date = Date,
                          frass_production_flux = frass_production * g_to_mg / ndays)
     
+    ### calculate ring means
+    ring.means <- summaryBy(frass_production_flux~RING, FUN=mean, data=out, na.rm=T, keep.names=T)
+    
+    ### subset all rings
+    r1 <- subset(out, RING==1)
+    r1$frass_production_flux[is.na(r1$frass_production_flux)] <- ring.means$frass_production[ring.means$RING==1]
+    
+    r2 <- subset(out, RING==2)
+    r2$frass_production_flux[is.na(r2$frass_production_flux)] <- ring.means$frass_production[ring.means$RING==2]
+    
+    r3 <- subset(out, RING==3)
+    r3$frass_production_flux[is.na(r3$frass_production_flux)] <- ring.means$frass_production[ring.means$RING==3]
+    
+    r4 <- subset(out, RING==4)
+    r4$frass_production_flux[is.na(r4$frass_production_flux)] <- ring.means$frass_production[ring.means$RING==4]
+    
+    r5 <- subset(out, RING==5)
+    r5$frass_production_flux[is.na(r5$frass_production_flux)] <- ring.means$frass_production[ring.means$RING==5]
+    
+    r6 <- subset(out, RING==6)
+    r6$frass_production_flux[is.na(r6$frass_production_flux)] <- ring.means$frass_production[ring.means$RING==6]
+    
+    out <- rbind(r1, r2, r3, r4, r5, r6)
+    
     #- drop NA rows
-    out <- out[complete.cases(out),]
+    out <- out[complete.cases(out$frass_production_flux),]
     
     #- format dataframe to return
     out <- out[,c("Start_date", "End_date", "DATE", "RING","frass_production_flux", "ndays")]

@@ -28,9 +28,9 @@ make_treatment_effect_df <- function(inDF, v, cond) {
         tr$avg <- rowSums(tr[,2:4], na.rm=T)/3
         tr$max <- apply(tr[, 2:4], 1, max, na.rm=T)
         tr$min <- apply(tr[, 2:4], 1, min, na.rm=T)
-        tr$sd <- apply(tr[, 2:4], 1, sd, na.rm=T)
-        tr$pos <- tr$avg + tr$sd
-        tr$neg <- tr$avg - tr$sd
+        tr$se <- apply(tr[, 2:4], 1, se, na.rm=T)
+        tr$pos <- tr$avg + tr$se
+        tr$neg <- tr$avg - tr$se
         
     } else if (cond == 2) {
         ### Process data by treatment
@@ -54,10 +54,10 @@ make_treatment_effect_df <- function(inDF, v, cond) {
         tr$avg <- rowSums(tr[,2:4], na.rm=T)/3
         tr$max <- apply(tr[, 2:4], 1, max, na.rm=T)
         tr$min <- apply(tr[, 2:4], 1, min, na.rm=T)
-        tr$sd <- apply(tr[, 2:4], 1, sd, na.rm=T)
-        tr$sd[is.na(tr$sd)] <- 0
-        tr$pos <- tr$avg + tr$sd
-        tr$neg <- tr$avg - tr$sd
+        tr$se <- apply(tr[, 2:4], 1, se, na.rm=T)
+        tr$se[is.na(tr$se)] <- 0
+        tr$pos <- tr$avg + tr$se
+        tr$neg <- tr$avg - tr$se
         tr$Date <- as.Date(paste0(as.character(tr$Date), "-01"), format="%Y-%m-%d")
     }
     

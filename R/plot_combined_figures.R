@@ -32,7 +32,7 @@ p1 <- ggplot(lai.tr, aes(Date))+
     geom_segment(aes(x=as.Date("2012-09-01"), xend=as.Date("2013-03-01"), y=2.5, yend=2.5))+
     geom_segment(aes(x=as.Date("2012-09-01"), xend=as.Date("2012-09-01"), y=2.45, yend=2.55))+
     geom_segment(aes(x=as.Date("2013-03-01"), xend=as.Date("2013-03-01"), y=2.45, yend=2.55))+
-    geom_ribbon(data=lai.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=lai.tr,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(data=lai.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y="LAI")+
     theme_linedraw() +
@@ -53,14 +53,14 @@ p1 <- ggplot(lai.tr, aes(Date))+
                  date_labels="%b-%Y",
                  limits = as.Date(c('2012-09-01','2016-12-31')))
 
-plot(p1)
+#plot(p1)
 ## sla plot
 p2 <- ggplot(sla.tr, aes(Date))+
     geom_rect(aes(xmin=as.Date("2012-09-01"), xmax=as.Date("2013-03-01"), ymin=0.0, ymax=80), 
               fill="lightgrey", alpha=0.4)+  
     #geom_ribbon(data=sla.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
     geom_point(data=sla.tr, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=sla.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    geom_segment(data=sla.tr, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste("SLA (cm2 ", g^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -84,7 +84,7 @@ p2 <- ggplot(sla.tr, aes(Date))+
 p3 <- ggplot(leafc.tr, aes(Date))+
     geom_rect(aes(xmin=as.Date("2012-09-01"), xmax=as.Date("2013-03-01"), ymin=0.0, ymax=300), 
               fill="lightgrey", alpha=0.4)+  
-    geom_ribbon(data=leafc.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=leafc.tr,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(data=leafc.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[leaf], " (g C ", m^-2, ")")))+
     theme_linedraw() +
@@ -118,99 +118,99 @@ dev.off()
 
 ###################---------------------######################
 ### Understorey C, compare two methods
-uac1.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=5, cond=1)
-uac1.live.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=3, cond=1)
-uac1.dead.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=4, cond=1)
-uac2.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool_2, v=3, cond=1)
-
-uac1.live.tr$Class <- "Live"
-uac1.dead.tr$Class <- "Dead"
-uac1.class.tr <- rbind(uac1.live.tr, uac1.dead.tr)
-
-## uac1 plot
-p1 <- ggplot(uac1.tr, aes(Date))+
-    #geom_ribbon(data=uac1.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-    geom_segment(data=uac1.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
-    geom_point(data=uac1.tr, aes(y=avg, color=factor(Treatment)))+
-    #geom_smooth(method="loess", aes(y=Total_g_C_m2, color=factor(Ring)))+
-    labs(x="Date", y=expression(paste(C[ua1], " (g C ", m^-2, ")")))+
-    scale_x_date(date_breaks = "6 month", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2015-01-01','2017-05-01')))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
-
-## uac2 plot
-p2 <- ggplot(uac2.tr, aes(Date))+
-    #geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-    #geom_segment(data=uac2.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
-    geom_smooth(method="loess", aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
-    geom_point(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
-    scale_x_date(date_breaks = "6 month", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2015-01-01','2017-05-01')))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
-
-## uac1 live and dead bar plot
-p3 <- ggplot(uac1.class.tr, aes(x=Date, y=avg, fill=Class))+
-    geom_bar(stat="identity", position="stack")+facet_grid(~Treatment)+
-    labs(x="Date", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Vegetation", values = c("Live" = "green", "Dead" = "orange"),
-                      labels=c("Live","Dead"))
-
-grid.labs <- c("(a)", "(b)", "(c)", "(d)")
-
-require(cowplot)
-
-## plot 
-pdf("output/Understorey_C_pool_time_series.pdf", width=10,height=8)
-plot_grid(p1, p2, p3, labels="", ncol=1, align="v", axis = "l")
-
-#grid.newpage()
-#grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), ggplotGrob(p3),
-#                size="last"))
-grid.text(grid.labs,x = c(0.1,0.1,0.1,0.5), y = c(0.95, 0.62, 0.28, 0.28),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
-dev.off()
-
+#uac1.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=5, cond=1)
+#uac1.live.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=3, cond=1)
+#uac1.dead.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=4, cond=1)
+#uac2.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool_2, v=3, cond=1)
+#
+#uac1.live.tr$Class <- "Live"
+#uac1.dead.tr$Class <- "Dead"
+#uac1.class.tr <- rbind(uac1.live.tr, uac1.dead.tr)
+#
+### uac1 plot
+#p1 <- ggplot(uac1.tr, aes(Date))+
+#    #geom_ribbon(data=uac1.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+#    geom_segment(data=uac1.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
+#    geom_point(data=uac1.tr, aes(y=avg, color=factor(Treatment)))+
+#    #geom_smooth(method="loess", aes(y=Total_g_C_m2, color=factor(Ring)))+
+#    labs(x="Date", y=expression(paste(C[ua1], " (g C ", m^-2, ")")))+
+#    scale_x_date(date_breaks = "6 month", 
+#                 date_labels="%b-%Y",
+#                 limits = as.Date(c('2015-01-01','2017-05-01')))+
+#    theme_linedraw() +
+#    theme(panel.grid.minor=element_blank(),
+#          axis.title.x = element_blank(), 
+#          axis.text.x = element_blank(),
+#          axis.text.y=element_text(size=12),
+#          axis.title.y=element_text(size=14),
+#          legend.text=element_text(size=12),
+#          legend.title=element_text(size=14),
+#          panel.grid.major=element_line(color="grey"),
+#          legend.position="right")+
+#    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+#                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+#    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+#                      labels=c(expression(aCO[2]), expression(eCO[2])))
+#
+### uac2 plot
+#p2 <- ggplot(uac2.tr, aes(Date))+
+#    #geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+#    #geom_segment(data=uac2.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
+#    geom_smooth(method="loess", aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
+#    geom_point(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
+#    labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
+#    scale_x_date(date_breaks = "6 month", 
+#                 date_labels="%b-%Y",
+#                 limits = as.Date(c('2015-01-01','2017-05-01')))+
+#    theme_linedraw() +
+#    theme(panel.grid.minor=element_blank(),
+#          axis.title.x = element_text(size=14), 
+#          axis.text.x = element_text(size=12),
+#          axis.text.y=element_text(size=12),
+#          axis.title.y=element_text(size=14),
+#          legend.text=element_text(size=12),
+#          legend.title=element_text(size=14),
+#          panel.grid.major=element_line(color="grey"),
+#          legend.position="right")+
+#    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+#                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+#    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+#                      labels=c(expression(aCO[2]), expression(eCO[2])))
+#
+### uac1 live and dead bar plot
+#p3 <- ggplot(uac1.class.tr, aes(x=Date, y=avg, fill=Class))+
+#    geom_bar(stat="identity", position="stack")+facet_grid(~Treatment)+
+#    labs(x="Date", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
+#    theme_linedraw() +
+#    theme(panel.grid.minor=element_blank(),
+#          axis.title.x = element_text(size=14), 
+#          axis.text.x = element_text(size=12),
+#          axis.text.y=element_text(size=12),
+#          axis.title.y=element_text(size=14),
+#          legend.text=element_text(size=12),
+#          legend.title=element_text(size=14),
+#          panel.grid.major=element_line(color="grey"),
+#          legend.position="right")+
+#    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+#                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+#    scale_fill_manual(name="Vegetation", values = c("Live" = "green", "Dead" = "orange"),
+#                      labels=c("Live","Dead"))
+#
+#grid.labs <- c("(a)", "(b)", "(c)", "(d)")
+#
+#require(cowplot)
+#
+### plot 
+#pdf("output/Understorey_C_pool_time_series.pdf", width=10,height=8)
+#plot_grid(p1, p2, p3, labels="", ncol=1, align="v", axis = "l")
+#
+##grid.newpage()
+##grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), ggplotGrob(p3),
+##                size="last"))
+#grid.text(grid.labs,x = c(0.1,0.1,0.1,0.5), y = c(0.95, 0.62, 0.28, 0.28),
+#          gp=gpar(fontsize=16, col="black", fontface="bold"))
+#dev.off()
+#
 
 ###################---------------------######################
 ### Wood C pool
@@ -424,6 +424,78 @@ dev.off()
 #                    surface=F, type="h"))
 
 ###################---------------------######################
+### Understorey C, Harvest data
+uac1.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=5, cond=1)
+uac1.live.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=3, cond=1)
+uac1.dead.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=4, cond=1)
+
+uac1.live.tr$Class <- "Live"
+uac1.dead.tr$Class <- "Dead"
+uac1.class.tr <- rbind(uac1.live.tr, uac1.dead.tr)
+
+## uac1 plot
+p1 <- ggplot(uac1.tr, aes(as.character(Date), avg))+
+    #geom_errorbar(data=uac1.tr, mapping=aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+    #               width=0.6, size=0.4) +    
+    #geom_point(data=uac1.tr, aes(y=avg, color=factor(Treatment)),size=4, shape=21, fill="white")+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="Date", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
+    #scale_x_date(date_breaks = "6 month", 
+    #             date_labels="%b-%Y",
+    #             limits = as.Date(c('2015-01-01','2016-12-01')))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+
+## uac1 live and dead bar plot
+p2 <- ggplot(uac1.class.tr, aes(Class, avg, color=as.factor(Treatment)))+
+    geom_boxplot()+
+    labs(x="Vegetation class", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+    #scale_fill_manual(name="Vegetation", values = c("Live" = "green", "Dead" = "orange"),
+    #                  labels=c("Live","Dead"))
+
+plot(p2)
+
+grid.labs <- c("(a)", "(b)")
+
+require(cowplot)
+
+## plot 
+pdf("output/Understorey_C_pool_time_series.pdf", width=10,height=8)
+plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l")
+
+grid.text(grid.labs,x = c(0.1,0.1), y = c(0.95, 0.45),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+
+###################---------------------######################
 ### Coarse root C pool
 ##  generate treatment effect df for each variable
 crc1.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_1)
@@ -496,28 +568,28 @@ dev.off()
 frDF <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=mean, data=fineroot_c_pool,
                   keep.names=T)
 
-frDF.sd <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=sd, data=fineroot_c_pool,
+frDF.se <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=se, data=fineroot_c_pool,
                   keep.names=T)
 
 crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarse_root_c_pool_1, keep.names=T)
-crDF.sd <- summaryBy(coarse_root_pool~Ring, FUN=sd, data=coarse_root_c_pool_1, keep.names=T)
+crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarse_root_c_pool_1, keep.names=T)
 
 plotDF <- data.frame(rep(1:6, 3), NA, NA, NA)
 colnames(plotDF) <- c("Ring", "Value", "Tissue", "Sd")
-plotDF$Tissue <- rep(c("fr0_10", "fr10_30", "cr"), each=6)
+plotDF$Component <- rep(c("fr0_10", "fr10_30", "cr"), each=6)
 
-plotDF$Value[plotDF$Tissue=="fr0_10"] <- frDF$fineroot_0_10_cm
-plotDF$Value[plotDF$Tissue=="fr10_30"] <- frDF$fineroot_10_30_cm
-plotDF$Value[plotDF$Tissue=="cr"] <- crDF$coarse_root_pool
+plotDF$Value[plotDF$Component=="fr0_10"] <- frDF$fineroot_0_10_cm
+plotDF$Value[plotDF$Component=="fr10_30"] <- frDF$fineroot_10_30_cm
+plotDF$Value[plotDF$Component=="cr"] <- crDF$coarse_root_pool
 
-plotDF$Sd[plotDF$Tissue=="fr0_10"] <- frDF.sd$fineroot_0_10_cm
-plotDF$Sd[plotDF$Tissue=="fr10_30"] <- frDF.sd$fineroot_10_30_cm
-plotDF$Sd[plotDF$Tissue=="cr"] <- crDF.sd$coarse_root_pool
+plotDF$Se[plotDF$Component=="fr0_10"] <- frDF.se$fineroot_0_10_cm
+plotDF$Se[plotDF$Component=="fr10_30"] <- frDF.se$fineroot_10_30_cm
+plotDF$Se[plotDF$Component=="cr"] <- crDF.se$coarse_root_pool
 
 
-p <- ggplot(plotDF, aes(x=Ring, y=Value, fill=Tissue))+
+p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Treatment", y=expression(paste(C[root], " (g C ", m^-2, ")")))+
+    labs(x="Ring", y=expression(paste(C[root], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -530,9 +602,9 @@ p <- ggplot(plotDF, aes(x=Ring, y=Value, fill=Tissue))+
           legend.position="right")+
     scale_fill_manual(limit=c("fr0_10", "fr10_30", "cr"),
                       values=c("orange", "green", "brown"),
-                      labels=c(expression(C[fr1]), expression(C[fr2]), expression(C[cr])))
+                      labels=c(expression(C[fr0_10]), expression(C[fr10_30]), expression(C[croot])))
 
-plot(p)
+#plot(p)
 
 pdf("output/root_per_ring_summary.pdf", width=8, height=6)
 plot(p)
@@ -559,9 +631,9 @@ soilr.tr <- make_treatment_effect_df(inDF=soil_respiration_flux, v=5, cond=1)
 soilc.ring <- summaryBy(soil_carbon_pool~Ring, FUN=mean, data=soil_c_pool, keep.names=T)
 soilc.ring$Trt[soilc.ring$Ring%in%c(2,3,6)] <- "aCO2"
 soilc.ring$Trt[soilc.ring$Ring%in%c(1,4,5)] <- "eCO2"
-soilc.ring.sd <- summaryBy(soil_carbon_pool~Ring, FUN=sd, data=soil_c_pool, keep.names=T)
-soilc.ring$sd <- soilc.ring.sd$soil_carbon_pool
-names(soilc.ring)[4] <- "sd"
+soilc.ring.se <- summaryBy(soil_carbon_pool~Ring, FUN=se, data=soil_c_pool, keep.names=T)
+soilc.ring$se <- soilc.ring.se$soil_carbon_pool
+names(soilc.ring)[4] <- "se"
 
 ## plotting soil c pool
 p1 <- ggplot(soilc.tr, aes(Date))+
@@ -611,9 +683,9 @@ p3 <-  ggplot(soilc.ring)+
     geom_bar(aes(x=as.character(Ring),y=soil_carbon_pool, fill=Trt),
              stat="identity", position="stack")+
     geom_errorbar(data=soilc.ring, mapping=aes(x=as.character(Ring),
-                      ymin=soil_carbon_pool-sd, ymax=soil_carbon_pool+sd),
+                      ymin=soil_carbon_pool-se, ymax=soil_carbon_pool+se),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y=expression(paste(C[soil], " (kg C ", m^-2, ")")))+
+    labs(x="Ring", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -624,7 +696,7 @@ p3 <-  ggplot(soilc.ring)+
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
           legend.position="right")+
-    coord_cartesian(ylim = c(2500,6000)) +
+    coord_cartesian(ylim = c(1000,3000)) +
     scale_fill_manual(name="Treatment", 
                       values = c("aCO2" = "blue", "eCO2" = "red"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -632,20 +704,20 @@ p3 <-  ggplot(soilc.ring)+
 soilc.tr <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
                                   return="by_depths")
 soilc.ph <- summaryBy(ph~Ring, FUN=mean, data=soilc.tr, keep.names=T, na.rm=T)
-soilc.ph.sd <- summaryBy(ph~Ring, FUN=sd, data=soilc.tr, keep.names=T, na.rm=T)
-soilc.ph$sd <- soilc.ph.sd$ph
+soilc.ph.se <- summaryBy(ph~Ring, FUN=se, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.ph$se <- soilc.ph.se$ph
 soilc.ph$Trt[soilc.ph$Ring%in%c(2,3,6)] <- "aCO2"
 soilc.ph$Trt[soilc.ph$Ring%in%c(1,4,5)] <- "eCO2"
 
 soilc.cn <- summaryBy(cn~Ring, FUN=mean, data=soilc.tr, keep.names=T, na.rm=T)
-soilc.cn.sd <- summaryBy(cn~Ring, FUN=sd, data=soilc.tr, keep.names=T, na.rm=T)
-soilc.cn$sd <- soilc.cn.sd$cn
+soilc.cn.se <- summaryBy(cn~Ring, FUN=se, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.cn$se <- soilc.cn.se$cn
 soilc.cn$Trt[soilc.cn$Ring%in%c(2,3,6)] <- "aCO2"
 soilc.cn$Trt[soilc.cn$Ring%in%c(1,4,5)] <- "eCO2"
 
 soilc.cp <- summaryBy(cp~Ring, FUN=mean, data=soilc.tr, keep.names=T, na.rm=T)
-soilc.cp.sd <- summaryBy(cp~Ring, FUN=sd, data=soilc.tr, keep.names=T, na.rm=T)
-soilc.cp$sd <- soilc.cp.sd$cp
+soilc.cp.se <- summaryBy(cp~Ring, FUN=se, data=soilc.tr, keep.names=T, na.rm=T)
+soilc.cp$se <- soilc.cp.se$cp
 soilc.cp$Trt[soilc.cp$Ring%in%c(2,3,6)] <- "aCO2"
 soilc.cp$Trt[soilc.cp$Ring%in%c(1,4,5)] <- "eCO2"
 
@@ -654,7 +726,7 @@ p4 <- ggplot(soilc.ph)+
     geom_bar(aes(x=as.character(Ring),y=ph, fill=Trt),
              stat="identity", position="stack")+
     geom_errorbar(data=soilc.ph, mapping=aes(x=as.character(Ring),
-                                               ymin=ph-sd, ymax=ph+sd),
+                                               ymin=ph-se, ymax=ph+se),
                   width=0.2, size=1, color="black")+
     labs(x="Ring", y="Soil pH")+
     theme_linedraw() +
@@ -678,7 +750,7 @@ p5 <- ggplot(soilc.cn)+
     geom_bar(aes(x=as.character(Ring),y=cn, fill=Trt),
              stat="identity", position="stack")+
     geom_errorbar(data=soilc.cn, mapping=aes(x=as.character(Ring),
-                                             ymin=cn-sd, ymax=cn+sd),
+                                             ymin=cn-se, ymax=cn+se),
                   width=0.2, size=1, color="black")+
     labs(x="Ring", y="Soil CN")+
     theme_linedraw() +
@@ -702,7 +774,7 @@ p6 <- ggplot(soilc.cp)+
     geom_bar(aes(x=as.character(Ring),y=cp, fill=Trt),
              stat="identity", position="stack")+
     geom_errorbar(data=soilc.cp, mapping=aes(x=as.character(Ring),
-                                             ymin=cp-sd, ymax=cp+sd),
+                                             ymin=cp-se, ymax=cp+se),
                   width=0.2, size=1, color="black")+
     labs(x="Ring", y="Soil CP")+
     theme_linedraw() +
@@ -1221,7 +1293,7 @@ plotDF2 <- make_treatment_effect_df(inDF=soilc.tr, v=5, cond=2)
 ## ph
 p2 <- ggplot(plotDF2, aes(x=Date))+
     geom_point(data=plotDF2, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=plotDF2, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    geom_segment(data=plotDF2, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
     labs(x="Treatment", y="pH")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1247,7 +1319,7 @@ plotDF3 <- make_treatment_effect_df(inDF=soilc.tr, v=6, cond=2)
 plotDF3 <- plotDF3[complete.cases(plotDF3),]
 p3 <- ggplot(plotDF3, aes(x=Date))+
     geom_point(data=plotDF3, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=plotDF3, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    geom_segment(data=plotDF3, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
     labs(x="Treatment", y="CN ratio")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1273,7 +1345,7 @@ plotDF4 <- plotDF4[complete.cases(plotDF4),]
 
 p4 <- ggplot(plotDF4, aes(x=Date))+
     geom_point(data=plotDF4, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=plotDF4, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    geom_segment(data=plotDF4, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
     labs(x="Date", y="CP ratio")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1319,7 +1391,7 @@ colnames(myc.prop) <- c("Ring", "myc.prop", "Trt")
 ## Plot microbial
 p1 <- ggplot(mic.tr, aes(x=Date))+
     geom_point(data=mic.tr, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=mic.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    geom_segment(data=mic.tr, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[mic], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1337,11 +1409,12 @@ p1 <- ggplot(mic.tr, aes(x=Date))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_x_date(date_breaks = "6 months", 
                  date_labels="%b-%Y",
-                 limits = as.Date(c('2012-07-01','2016-02-28')))
+                 limits = as.Date(c('2012-07-01','2016-02-28')))+
+    ylim(0, 200)
 
 p2 <- ggplot(myc.tr, aes(x=Date))+
     geom_point(data=myc.tr, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=myc.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
+    geom_segment(data=myc.tr, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[myc], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1378,7 +1451,7 @@ p3 <- ggplot(myc.prop, aes(x=as.character(Ring), y=myc.prop*100, fill=factor(Trt
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
-plot(p3)
+#plot(p3)
 
 grid.labs <- c("(a)", "(b)")
 
@@ -1446,7 +1519,7 @@ p2 <- ggplot(lit.prod.tr, aes(x=Treatment,y=leaf_flux,fill=Treatment))+
 p3 <- ggplot(lit.tr, aes(x=Date))+
     #geom_point(data=lit.tr, aes(y=avg, color=factor(Treatment)))+
     #geom_segment(data=lit.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
-    geom_ribbon(data=lit.tr,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=lit.tr,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(data=lit.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[lit], " (g C ", m^-2, ")")))+
     theme_linedraw() +
@@ -1485,14 +1558,19 @@ insDF[insDF$Ring== 2|insDF$Ring==3|insDF$Ring==6,"Treatment"] <- "aCO2"
 insDF[insDF$Ring== 1|insDF$Ring==4|insDF$Ring==5,"Treatment"] <- "eCO2"
 
 plotDF1 <- summaryBy(insect_pool~Treatment, data=insDF, FUN=mean, na.rm=T, keep.names=T)
-plotDF2 <- summaryBy(insect_pool~Treatment, data=insDF, FUN=sd, na.rm=T, keep.names=T)
-plotDF1$sd <- plotDF2$insect_pool
+plotDF2 <- summaryBy(insect_pool~Treatment, data=insDF, FUN=se, na.rm=T, keep.names=T)
+plotDF1$se <- plotDF2$insect_pool
+plotDF1$pos <- plotDF1$insect_pool + plotDF1$se
+plotDF1$neg <- plotDF1$insect_pool - plotDF1$se
 
 ### Plot 
-p1 <- ggplot(plotDF1)+
-    geom_point(aes(x=Treatment, y=insect_pool, color=Treatment), size=1.5)+
-    geom_segment(data=plotDF1, aes(x=Treatment, y=insect_pool-sd, 
-                                   xend=Treatment, yend=insect_pool+sd, color=factor(Treatment)))+
+p1 <- ggplot(plotDF1, aes(Treatment, insect_pool))+
+    #geom_point(aes(x=Treatment, y=insect_pool, color=Treatment), size=1.5)+
+    #geom_errorbar(data=plotDF1, aes(x=Treatment, y=insect_pool-se, 
+    #                               xend=Treatment, yend=insect_pool+se, color=factor(Treatment)))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
     labs(x="", y=expression(paste(C[ins], " (g C", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1517,6 +1595,62 @@ plot(p1)
 dev.off()
 
 ###################---------------------######################
+### Overstorey GPP and understorey GPP
+o.gpp.tr <- overstorey_gpp_flux
+u.gpp.tr <- understorey_gpp_flux
+
+### Plot
+p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
+    geom_bar(stat = "identity", aes(fill=Ring), position="dodge")+
+    labs(x="Year", y=expression(paste(GPP[o], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
+                                              "3" = "cyan", "4" = "pink",
+                                              "5" = "orange", "6" = "darkblue"),
+                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+
+p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
+    geom_bar(stat = "identity", aes(fill=as.factor(Ring)), position="dodge")+
+    labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
+                                              "3" = "cyan", "4" = "pink",
+                                              "5" = "orange", "6" = "darkblue"),
+                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+
+
+grid.labs <- c("(a)", "(b)")
+
+## plot 
+pdf("output/gpp_fluxes.pdf", width=9,height=6)
+plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
+          rel_heights=c(0.7, 1))
+grid.text(grid.labs, x = 0.14, y = c(0.95, 0.55),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+
+###################---------------------######################
 ### NPP leaf, twigs, bark and seed
 lit.prod.tr <- leaflitter_flux
 lit.prod.tr[lit.prod.tr$Ring== 2|lit.prod.tr$Ring==3|lit.prod.tr$Ring==6,"Treatment"] <- "aCO2"
@@ -1530,7 +1664,7 @@ twig.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=3, cond=1)
 
 ### plot
 p1 <- ggplot(leaf.lit, aes(x=Date))+
-    geom_ribbon(data=leaf.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=leaf.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
     labs(x="", y=expression(paste(NPP[ol], " (mg C ", m^-2, d^-1, ")")))+
     theme_linedraw() +
@@ -1550,7 +1684,7 @@ p1 <- ggplot(leaf.lit, aes(x=Date))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))
 
 p2 <- ggplot(twig.lit, aes(x=Date))+
-    geom_ribbon(data=twig.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=twig.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
     labs(x="", y=expression(paste(NPP[twig], " (mg C ", m^-2, d^-1, ")")))+
     theme_linedraw() +
@@ -1570,7 +1704,7 @@ p2 <- ggplot(twig.lit, aes(x=Date))+
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
 p3 <- ggplot(bark.lit, aes(x=Date))+
-    geom_ribbon(data=bark.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=bark.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
     labs(x="", y=expression(paste(NPP[bark], " (mg C ", m^-2, d^-1, ")")))+
     theme_linedraw() +
@@ -1590,7 +1724,7 @@ p3 <- ggplot(bark.lit, aes(x=Date))+
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
 p4 <- ggplot(seed.lit, aes(x=Date))+
-    geom_ribbon(data=seed.lit,aes(ymin=avg-sd,ymax=avg+sd, fill=factor(Treatment)))+
+    geom_ribbon(data=seed.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
     labs(x="Date", y=expression(paste(NPP[seed], " (mg C ", m^-2, d^-1, ")")))+
     theme_linedraw() +
@@ -1621,3 +1755,782 @@ plot_grid(p1, p2,
 grid.text(grid.labs,x = 0.15, y = c(0.97, 0.74, 0.5, 0.29),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
+
+
+###################---------------------######################
+### NPP wood and coarseroot
+wood.prod <- make_treatment_effect_df(inDF=wood_production_flux, v=5, cond=1)
+croot.prod <- make_treatment_effect_df(inDF=coarse_root_production_flux_1, v=5, cond=1)
+
+wood.prod$avg <- wood.prod$avg * 365 / 1000
+wood.prod$pos <- wood.prod$pos * 365 / 1000
+wood.prod$neg <- wood.prod$neg * 365 / 1000
+
+croot.prod$avg <- croot.prod$avg * 365 / 1000
+croot.prod$pos <- croot.prod$pos * 365 / 1000
+croot.prod$neg <- croot.prod$neg * 365 / 1000
+
+wood.prod$Yr <- year(wood.prod$Date)
+croot.prod$Yr <- year(croot.prod$Date)
+
+### plot
+p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[wood], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p2 <- ggplot(croot.prod, aes(x=as.character(Yr), y=avg))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[croot], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+grid.labs <- c("(a)", "(b)")
+
+## plot 
+pdf("output/NPP_wood_croot.pdf", width=8,height=6)
+plot_grid(p1, p2, 
+          labels="", ncol=1, align="v", axis = "l", 
+          rel_heights=c(0.7, 1))
+grid.text(grid.labs,x = 0.12, y = c(0.97,0.55),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+
+###################---------------------######################
+### NPP wood
+wood.prod <- make_treatment_effect_df(inDF=wood_production_flux, v=5, cond=1)
+
+wood.prod$avg <- wood.prod$avg * 365 / 1000
+wood.prod$pos <- wood.prod$pos * 365 / 1000
+wood.prod$neg <- wood.prod$neg * 365 / 1000
+
+wood.prod$Yr <- year(wood.prod$Date)
+
+### plot
+p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[wood], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+## plot 
+pdf("output/NPP_wood.pdf", width=6,height=4)
+plot(p1)
+dev.off()
+
+###################---------------------######################
+### NPP for fineroot and coarseroot
+
+### Coarseroot
+croot.prod <- coarse_root_production_flux_1
+croot.prod$Yr <- year(croot.prod$Date)
+y.list <- unique(croot.prod$Yr)
+croot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(croot.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        croot.ann$value[croot.ann$Ring==i&croot.ann$Yr==j] <- with(croot.prod[croot.prod$Yr==j&croot.prod$Ring==i, ],
+                                                                 sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+croot.ann$Trt[croot.ann$Ring%in%c(2,3,6)] <- "aCO2"
+croot.ann$Trt[croot.ann$Ring%in%c(1,4,5)] <- "eCO2"
+croot.avg <- summaryBy(value~Trt, FUN=mean, data=croot.ann, keep.names=T, na.rm=T)
+croot.se <- summaryBy(value~Trt, FUN=se, data=croot.ann, keep.names=T, na.rm=T)
+croot.avg$se <- croot.se$value
+croot.avg$component <- "coarseroot"
+
+### fineroot
+froot.prod <- fineroot_production_flux
+froot.prod$Yr <- year(froot.prod$Date)
+y.list <- unique(froot.prod$Yr)
+froot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(froot.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        froot.ann$value[froot.ann$Ring==i&froot.ann$Yr==j] <- with(froot.prod[froot.prod$Yr==j&froot.prod$Ring==i, ],
+                                                                   sum(fineroot_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+froot.ann$Trt[froot.ann$Ring%in%c(2,3,6)] <- "aCO2"
+froot.ann$Trt[froot.ann$Ring%in%c(1,4,5)] <- "eCO2"
+froot.avg <- summaryBy(value~Trt, FUN=mean, data=froot.ann, keep.names=T, na.rm=T)
+froot.se <- summaryBy(value~Trt, FUN=se, data=froot.ann, keep.names=T, na.rm=T)
+froot.avg$se <- froot.se$value
+froot.avg$component <- "fineroot"
+
+root.plot <- rbind(croot.avg, froot.avg)
+root.plot$pos <- with(root.plot, value + se)
+root.plot$neg <- with(root.plot, value - se)
+
+### Plot
+p1 <- ggplot(root.plot, aes(x=component, y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[root], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+pdf("output/NPP_croot_froot.pdf", width=6,height=4)
+plot(p1)
+dev.off()
+
+
+###################---------------------######################
+### NPP for understorey production
+und.prod <- understorey_aboveground_production_flux
+und.prod$Yr <- year(und.prod$Date)
+y.list <- unique(und.prod$Yr)
+und.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(und.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        und.ann$value[und.ann$Ring==i&und.ann$Yr==j] <- with(und.prod[und.prod$Yr==j&und.prod$Ring==i, ],
+                                                                   sum(understorey_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+und.ann$Trt[und.ann$Ring%in%c(2,3,6)] <- "aCO2"
+und.ann$Trt[und.ann$Ring%in%c(1,4,5)] <- "eCO2"
+und.avg <- summaryBy(value~Trt+Yr, FUN=mean, data=und.ann, keep.names=T, na.rm=T)
+und.se <- summaryBy(value~Trt+Yr, FUN=se, data=und.ann, keep.names=T, na.rm=T)
+und.avg$se <- und.se$value
+und.avg$pos <- with(und.avg, value + se)
+und.avg$neg <- with(und.avg, value - se)
+
+### Plot
+p1 <- ggplot(und.avg, aes(x=as.character(Yr), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[hb], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+pdf("output/NPP_understorey_aboveground.pdf", width=6,height=4)
+plot(p1)
+dev.off()
+
+
+###################---------------------######################
+### NPP leaf consumed by herbivory, frass production, and herbivory respiration flux
+
+## NPP leaf consumed
+hb.prod <- herbivory_leaf_consumption_flux
+hb.prod$Yr <- year(hb.prod$Date)
+y.list <- unique(hb.prod$Yr)
+hb.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(hb.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        hb.ann$value[hb.ann$Ring==i&hb.ann$Yr==j] <- with(hb.prod[hb.prod$Yr==j&hb.prod$Ring==i, ],
+                                                             sum(herbivory_leaf_consumption_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+hb.ann$Trt[hb.ann$Ring%in%c(2,3,6)] <- "aCO2"
+hb.ann$Trt[hb.ann$Ring%in%c(1,4,5)] <- "eCO2"
+hb.avg <- summaryBy(value~Trt+Yr, FUN=mean, data=hb.ann, keep.names=T, na.rm=T)
+hb.se <- summaryBy(value~Trt+Yr, FUN=se, data=hb.ann, keep.names=T, na.rm=T)
+hb.avg$se <- hb.se$value
+hb.avg$pos <- with(hb.avg, value + se)
+hb.avg$neg <- with(hb.avg, value - se)
+
+### Rhb
+hb.resp <- herbivory_respiration_flux
+hb.resp$Yr <- year(hb.resp$Date)
+y.list <- unique(hb.resp$Yr)
+hb.resp.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(hb.resp.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        hb.resp.ann$value[hb.resp.ann$Ring==i&hb.resp.ann$Yr==j] <- with(hb.resp[hb.resp$Yr==j&hb.resp$Ring==i, ],
+                                                          sum(respiration_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+hb.resp.ann$Trt[hb.resp.ann$Ring%in%c(2,3,6)] <- "aCO2"
+hb.resp.ann$Trt[hb.resp.ann$Ring%in%c(1,4,5)] <- "eCO2"
+hb.resp.avg <- summaryBy(value~Trt+Yr, FUN=mean, data=hb.resp.ann, keep.names=T, na.rm=T)
+hb.resp.se <- summaryBy(value~Trt+Yr, FUN=se, data=hb.resp.ann, keep.names=T, na.rm=T)
+hb.resp.avg$se <- hb.resp.se$value
+hb.resp.avg$pos <- with(hb.resp.avg, value + se)
+hb.resp.avg$neg <- with(hb.resp.avg, value - se)
+
+
+### Frass production
+frass.prod <- frass_production_flux
+frass.prod$Yr <- year(frass.prod$Date)
+y.list <- unique(frass.prod$Yr)
+frass.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(frass.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        frass.ann$value[frass.ann$Ring==i&frass.ann$Yr==j] <- with(frass.prod[frass.prod$Yr==j&frass.prod$Ring==i, ],
+                                                          sum(frass_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+frass.ann$Trt[frass.ann$Ring%in%c(2,3,6)] <- "aCO2"
+frass.ann$Trt[frass.ann$Ring%in%c(1,4,5)] <- "eCO2"
+frass.avg <- summaryBy(value~Trt+Yr, FUN=mean, data=frass.ann, keep.names=T, na.rm=T)
+frass.se <- summaryBy(value~Trt+Yr, FUN=se, data=frass.ann, keep.names=T, na.rm=T)
+frass.avg$se <- frass.se$value
+frass.avg$pos <- with(frass.avg, value + se)
+frass.avg$neg <- with(frass.avg, value - se)
+
+### Plot
+p1 <- ggplot(hb.avg, aes(x=as.character(Yr), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[hb], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    ylim(0,50)+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p2 <- ggplot(hb.resp.avg, aes(x=as.character(Yr), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[hb], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    ylim(0,50)+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p3 <- ggplot(frass.avg, aes(x=as.character(Yr), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(P[frass], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    ylim(0,50)+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+
+grid.labs <- c("(a)", "(b)", "(c)")
+
+
+pdf("output/NPP_hb_leaf_consumption.pdf", width=6,height=8)
+plot_grid(p1, p2, p3, labels="", ncol=1, align="v", axis = "l",
+          rel_heights=c(0.7, 0.7, 1))
+grid.text(grid.labs, x = 0.14, y = c(0.96, 0.675, 0.38),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+###################---------------------######################
+### Autotrophic respiration
+
+## overstorey leaf respiration
+o.leaf.resp <- overstorey_leaf_respiration_flux
+o.leaf.resp$Trt[o.leaf.resp$Ring%in%c(2,3,6)] <- "aCO2"
+o.leaf.resp$Trt[o.leaf.resp$Ring%in%c(1,4,5)] <- "eCO2"
+o.leaf.resp.avg <- summaryBy(Rfoliage~Trt+year, FUN=mean, data=o.leaf.resp, keep.names=T, na.rm=T)
+o.leaf.resp.se <- summaryBy(Rfoliage~Trt+year, FUN=se, data=o.leaf.resp, keep.names=T, na.rm=T)
+o.leaf.resp.avg$se <- o.leaf.resp.se$Rfoliage
+o.leaf.resp.avg$pos <- with(o.leaf.resp.avg, Rfoliage + se)
+o.leaf.resp.avg$neg <- with(o.leaf.resp.avg, Rfoliage - se)
+o.leaf.resp.avg$component <- "overstorey leaf"
+
+## overstorey wood respiration
+wood.resp <- wood_respiration_flux
+wood.resp$year <- year(wood.resp$Date)
+y.list <- unique(wood.resp$year)
+wood.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(wood.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        wood.ann$value[wood.ann$Ring==i&wood.ann$year==j] <- with(wood.resp[wood.resp$year==j&wood.resp$Ring==i, ],
+                                                          sum(wood_respiration*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+wood.ann$Trt[wood.ann$Ring%in%c(2,3,6)] <- "aCO2"
+wood.ann$Trt[wood.ann$Ring%in%c(1,4,5)] <- "eCO2"
+wood.avg <- summaryBy(value~Trt+year, FUN=mean, data=wood.ann, keep.names=T, na.rm=T)
+wood.se <- summaryBy(value~Trt+year, FUN=se, data=wood.ann, keep.names=T, na.rm=T)
+wood.avg$se <- wood.se$value
+wood.avg$pos <- with(wood.avg, value + se)
+wood.avg$neg <- with(wood.avg, value - se)
+wood.resp.avg <- subset(wood.avg, year > 2012)
+wood.resp.avg$component <- "wood"
+
+## understorey aboveground respiration
+und.resp <- understorey_respiration_flux
+und.resp$year <- year(und.resp$Date)
+y.list <- unique(und.resp$year)
+und.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(und.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        und.ann$value[und.ann$Ring==i&und.ann$year==j] <- with(und.resp[und.resp$year==j&und.resp$Ring==i, ],
+                                                                  sum(respiration*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+und.ann$Trt[und.ann$Ring%in%c(2,3,6)] <- "aCO2"
+und.ann$Trt[und.ann$Ring%in%c(1,4,5)] <- "eCO2"
+und.avg <- summaryBy(value~Trt+year, FUN=mean, data=und.ann, keep.names=T, na.rm=T)
+und.se <- summaryBy(value~Trt+year, FUN=se, data=und.ann, keep.names=T, na.rm=T)
+und.avg$se <- und.se$value
+und.avg$pos <- with(und.avg, value + se)
+und.avg$neg <- with(und.avg, value - se)
+und.resp.avg <- subset(und.avg, year > 2012)
+und.resp.avg$component <- "understorey aboveground"
+
+## root respiration
+root.resp <- root_respiration_flux
+root.resp$year <- year(root.resp$Date)
+y.list <- unique(root.resp$year)
+root.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(root.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        root.ann$value[root.ann$Ring==i&root.ann$year==j] <- with(root.resp[root.resp$year==j&root.resp$Ring==i, ],
+                                                               sum(root_respiration_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+root.ann$Trt[root.ann$Ring%in%c(2,3,6)] <- "aCO2"
+root.ann$Trt[root.ann$Ring%in%c(1,4,5)] <- "eCO2"
+root.avg <- summaryBy(value~Trt+year, FUN=mean, data=root.ann, keep.names=T, na.rm=T)
+root.se <- summaryBy(value~Trt+year, FUN=se, data=root.ann, keep.names=T, na.rm=T)
+root.avg$se <- root.se$value
+root.avg$pos <- with(root.avg, value + se)
+root.avg$neg <- with(root.avg, value - se)
+root.resp.avg <- subset(root.avg, year > 2012)
+root.resp.avg$component <- "root"
+
+
+### Plot
+p1 <- ggplot(o.leaf.resp.avg, aes(x=as.character(year), y=Rfoliage))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[ol], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    ylim(0, 600)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p2 <- ggplot(wood.resp.avg, aes(x=as.character(year), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[wood], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    ylim(0, 600)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p3 <- ggplot(und.resp.avg, aes(x=as.character(year), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[ua], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    ylim(0, 600)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p4 <- ggplot(root.resp.avg, aes(x=as.character(year), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[root], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    ylim(0, 600)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+grid.labs <- c("(a)", "(b)", "(c)", "(d)")
+
+## plot 
+pdf("output/Ra_flux.pdf", width=8,height=12)
+plot_grid(p1, p2, 
+          p3, p4, 
+          labels="", ncol=1, align="v", axis = "l", 
+          rel_heights=c(0.7, 0.7, 0.7, 1))
+grid.text(grid.labs,x = 0.15, y = c(0.97, 0.74, 0.5, 0.29),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+###################---------------------######################
+### Growth respiration
+g.resp <- data.frame(c("aCO2", "eCO2"), NA, NA)
+colnames(g.resp) <- c("Trt", "value", "se")
+
+inout <- tables_by_ring$inout
+g.resp$value[g.resp$Trt=="aCO2"] <- inout$aCO2[inout$term=="Rgrowth"]
+g.resp$value[g.resp$Trt=="eCO2"] <- inout$eCO2[inout$term=="Rgrowth"]
+g.resp$se[g.resp$Trt=="aCO2"] <- inout$aCO2_se[inout$term=="Rgrowth"]
+g.resp$se[g.resp$Trt=="eCO2"] <- inout$eCO2_se[inout$term=="Rgrowth"]
+g.resp$pos <- with(g.resp, value + se)
+g.resp$neg <- with(g.resp, value - se)
+
+### Plot
+p1 <- ggplot(g.resp, aes(x=as.character(Trt), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[growth], " (g C ", m^-2, " ", yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+pdf("output/Rgrowth_flux.pdf", width=4,height=4)
+plot(p1)
+dev.off()
+
+
+###################---------------------######################
+### Rsoil and Rh
+
+## Rsoil
+soil.resp <- soil_respiration_flux
+soil.resp$year <- year(soil.resp$Date)
+y.list <- unique(soil.resp$year)
+soil.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(soil.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        soil.ann$value[soil.ann$Ring==i&soil.ann$year==j] <- with(soil.resp[soil.resp$year==j&soil.resp$Ring==i, ],
+                                                                  sum(soil_respiration_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+soil.ann$Trt[soil.ann$Ring%in%c(2,3,6)] <- "aCO2"
+soil.ann$Trt[soil.ann$Ring%in%c(1,4,5)] <- "eCO2"
+soil.avg <- summaryBy(value~Trt+year, FUN=mean, data=soil.ann, keep.names=T, na.rm=T)
+soil.se <- summaryBy(value~Trt+year, FUN=se, data=soil.ann, keep.names=T, na.rm=T)
+soil.avg$se <- soil.se$value
+soil.avg$pos <- with(soil.avg, value + se)
+soil.avg$neg <- with(soil.avg, value - se)
+soil.resp.avg <- subset(soil.avg, year > 2012)
+soil.resp.avg$component <- "soil"
+
+
+## heterotrophic respiration
+rh.resp <- heterotrophic_respiration_flux
+rh.resp$year <- year(rh.resp$Date)
+y.list <- unique(rh.resp$year)
+rh.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(rh.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        rh.ann$value[rh.ann$Ring==i&rh.ann$year==j] <- with(rh.resp[rh.resp$year==j&rh.resp$Ring==i, ],
+                                                                  sum(heterotrophic_respiration_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+rh.ann$Trt[rh.ann$Ring%in%c(2,3,6)] <- "aCO2"
+rh.ann$Trt[rh.ann$Ring%in%c(1,4,5)] <- "eCO2"
+rh.avg <- summaryBy(value~Trt+year, FUN=mean, data=rh.ann, keep.names=T, na.rm=T)
+rh.se <- summaryBy(value~Trt+year, FUN=se, data=rh.ann, keep.names=T, na.rm=T)
+rh.avg$se <- rh.se$value
+rh.avg$pos <- with(rh.avg, value + se)
+rh.avg$neg <- with(rh.avg, value - se)
+rh.resp.avg <- subset(rh.avg, year > 2012)
+rh.resp.avg$component <- "rh"
+
+
+### Plot
+p1 <- ggplot(soil.resp.avg, aes(x=as.character(year), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[soil], " (g C ", m^-2," ", yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    ylim(0, 1500)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p2 <- ggplot(rh.resp.avg, aes(x=as.character(year), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(R[h], " (g C ", m^-2, " ", yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    ylim(0, 1500)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+grid.labs <- c("(a)", "(b)")
+
+## plot 
+pdf("output/Rsoil_and_Rh_flux.pdf", width=8,height=6)
+plot_grid(p1, p2, 
+          labels="", ncol=1, align="v", axis = "l", 
+          rel_heights=c(0.7, 1))
+grid.text(grid.labs,x = 0.15, y = c(0.95, 0.55),
+          gp=gpar(fontsize=16, col="black", fontface="bold"))
+dev.off()
+
+
+
+###################---------------------######################
+### CH4 and DOC and VOC
+
+## CH4
+ch4.flux <- methane_c_flux
+ch4.flux$year <- year(ch4.flux$Date)
+y.list <- unique(ch4.flux$year)
+ch4.flux.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(ch4.flux.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        ch4.flux.ann$value[ch4.flux.ann$Ring==i&ch4.flux.ann$year==j] <- with(ch4.flux[ch4.flux$year==j&ch4.flux$Ring==i, ],
+                                                                  sum(methane_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+ch4.flux.ann$Trt[ch4.flux.ann$Ring%in%c(2,3,6)] <- "aCO2"
+ch4.flux.ann$Trt[ch4.flux.ann$Ring%in%c(1,4,5)] <- "eCO2"
+ch4.flux.ann$value <- -ch4.flux.ann$value
+ch4.flux.avg <- summaryBy(value~Trt, FUN=mean, data=ch4.flux.ann, keep.names=T, na.rm=T)
+ch4.flux.se <- summaryBy(value~Trt, FUN=se, data=ch4.flux.ann, keep.names=T, na.rm=T)
+ch4.flux.avg$se <- ch4.flux.se$value
+ch4.flux.avg$pos <- with(ch4.flux.avg, value + se)
+ch4.flux.avg$neg <- with(ch4.flux.avg, value - se)
+ch4.flux.avg$component <- "ch4"
+
+## DOC
+doc.flux <- doc_leaching_flux
+doc.flux$year <- year(doc.flux$Date)
+y.list <- unique(doc.flux$year)
+doc.flux.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(doc.flux.ann) <- c("Ring", "year", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        doc.flux.ann$value[doc.flux.ann$Ring==i&doc.flux.ann$year==j] <- with(doc.flux[doc.flux$year==j&doc.flux$Ring==i, ],
+                                                            sum(doc_leaching_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+doc.flux.ann$Trt[doc.flux.ann$Ring%in%c(2,3,6)] <- "aCO2"
+doc.flux.ann$Trt[doc.flux.ann$Ring%in%c(1,4,5)] <- "eCO2"
+doc.flux.avg <- summaryBy(value~Trt, FUN=mean, data=doc.flux.ann, keep.names=T, na.rm=T)
+doc.flux.se <- summaryBy(value~Trt, FUN=se, data=doc.flux.ann, keep.names=T, na.rm=T)
+doc.flux.avg$se <- doc.flux.se$value
+doc.flux.avg$pos <- with(doc.flux.avg, value + se)
+doc.flux.avg$neg <- with(doc.flux.avg, value - se)
+doc.flux.avg$component <- "doc"
+
+plot.df <- rbind(ch4.flux.avg, doc.flux.avg)
+
+### Plot
+p1 <- ggplot(plot.df, aes(x=as.character(component), y=value))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(Flux, " (g C ", m^-2," ", yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="right")+
+    ylim(0, 0.3)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_discrete("",  
+                     labels=c(expression(CH[4]),
+                              expression(DOC)))
+
+## plot 
+pdf("output/DOC_CH4_flux.pdf", width=6,height=4)
+plot(p1)
+dev.off()
+
+
+

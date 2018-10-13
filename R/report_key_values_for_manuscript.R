@@ -1,4 +1,6 @@
-nep_gap_plot <- function(inDF) {
+report_key_values_for_manuscript <- function() {
+    ##### All values reported below are based on predicted CO2 effect
+    
     
     ### subseting each method
     inoutDF <- as.data.frame(inDF$inout[,1:7])
@@ -7,20 +9,20 @@ nep_gap_plot <- function(inDF) {
     ### prepare output df
     out <- data.frame(c("In-out", "NPP-Rh", "Pool"), NA, NA, NA, NA, NA, NA)
     colnames(out) <- c("Method", "R1", "R2", "R3", "R4", "R5", "R6")
-
+    
     ### calculate NEP based on each method
     for (i in c(2:7)) {
         out[out$Method=="In-out", i] <- (inoutDF[inoutDF$term == "GPP overstorey", i] + 
-            inoutDF[inoutDF$term == "GPP understorey", i] -
-            inoutDF[inoutDF$term == "CH4 efflux", i] -
-            inoutDF[inoutDF$term == "Ra leaf", i] -
-            inoutDF[inoutDF$term == "Ra stem", i] -
-            inoutDF[inoutDF$term == "Ra understorey", i] -
-            #inoutDF[inoutDF$term == "VOC", i] -
-            inoutDF[inoutDF$term == "Rherbivore", i] -
-            inoutDF[inoutDF$term == "DOC loss", i] -
-            inoutDF[inoutDF$term == "Rsoil", i] -
-            inoutDF[inoutDF$term == "Rgrowth", i]) 
+                                             inoutDF[inoutDF$term == "GPP understorey", i] -
+                                             inoutDF[inoutDF$term == "CH4 efflux", i] -
+                                             inoutDF[inoutDF$term == "Ra leaf", i] -
+                                             inoutDF[inoutDF$term == "Ra stem", i] -
+                                             inoutDF[inoutDF$term == "Ra understorey", i] -
+                                             #inoutDF[inoutDF$term == "VOC", i] -
+                                             inoutDF[inoutDF$term == "Rherbivore", i] -
+                                             inoutDF[inoutDF$term == "DOC loss", i] -
+                                             inoutDF[inoutDF$term == "Rsoil", i] -
+                                             inoutDF[inoutDF$term == "Rgrowth", i]) 
         
         out[out$Method=="NPP-Rh", i] <- nppDF[nppDF$term == "Leaf NPP", i] +
             nppDF[nppDF$term == "Stem NPP", i] +
@@ -31,9 +33,9 @@ nep_gap_plot <- function(inDF) {
             nppDF[nppDF$term == "Leaf consumption", i] -
             #nppDF[nppDF$term == "Mycorrhizal production", i] -
             nppDF[nppDF$term == "R hetero", i] 
-            #nppDF[nppDF$term == "Flower production", i] 
+        #nppDF[nppDF$term == "Flower production", i] 
     }
-
+    
     ### Change in pools
     delta_soil_c <- make_yearly_delta_pool_function_ann(inDF=soil_c_pool_ann, var.col=9)
     delta_leaf_c <- make_yearly_delta_pool_function_ann(inDF=leaf_c_pool_ann, var.col=9)
@@ -45,20 +47,6 @@ nep_gap_plot <- function(inDF) {
     delta_myc_c <- make_yearly_delta_pool_function_ann(inDF=mycorrhizal_c_pool_ann, var.col=9)
     delta_ins_c <- make_yearly_delta_pool_function_ann(inDF=insect_pool_ann, var.col=9)
     delta_lit_c <- make_yearly_delta_pool_function_ann(inDF=leaflitter_pool_ann, var.col=9)
-
-    #source("R/stats/change_in_pool/make_change_in_pool_ann.R")
-    ### Compute changes in pool variables
-    #delta_soil_c <- make_change_in_pool_ann(mypool=soil_c_pool_ann)
-    #delta_leaf_c <- make_change_in_pool_ann(mypool=leaf_c_pool_ann)
-    #delta_wood_c <- make_change_in_pool_ann(mypool=wood_c_pool_ann)
-    #delta_croot_c <- make_change_in_pool_ann(mypool=coarse_root_c_pool_ann)
-    #delta_froot_c <- make_change_in_pool_ann(mypool=fineroot_c_pool_ann)
-    #delta_ua_c <- make_change_in_pool_ann(mypool=understorey_aboveground_c_pool_ann)
-    #delta_mic_c <- make_change_in_pool_ann(mypool=microbial_c_pool_ann)
-    #delta_myc_c <- make_change_in_pool_ann(mypool=mycorrhizal_c_pool_ann)
-    #delta_ins_c <- make_change_in_pool_ann(mypool=insect_pool_ann)
-    #delta_lit_c <- make_change_in_pool_ann(mypool=leaflitter_pool_ann)
-
     
     ### create df to store pools
     pool.list <- c("soilc", "leafc", "woodc", "crootc", "frootc", "uac",
@@ -80,7 +68,7 @@ nep_gap_plot <- function(inDF) {
         
         return(temp)
     }
-
+    
     ### assign values
     #poolDF[poolDF$Term=="soilc",2:7] <- calculate_variable_mean(delta_soil_c)$Value
     #poolDF[poolDF$Term=="leafc",2:7] <- calculate_variable_mean(delta_leaf_c)$Value
@@ -129,63 +117,20 @@ nep_gap_plot <- function(inDF) {
     write.csv(out, "R_other/NEP_method_comparison.csv", row.names=F)
     
     
-    ### prepare plotDF
-    plotDF <- data.frame(rep(c("In-out", "NPP-Rh", "Pool"), 2), NA, NA, NA)
-    colnames(plotDF) <- c("Method", "NEP", "NEP_se", "Trt")
-    plotDF$Trt <- rep(c("aCO2", "eCO2"), each=3)
+    ### increase and percent increase in gross ecosystem carbon uptake
     
-    plotDF$NEP[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2[out$Method=="In-out"]
-    plotDF$NEP[plotDF$Method=="NPP-Rh" & plotDF$Trt=="aCO2"] <- out$aCO2[out$Method=="NPP-Rh"]
-    plotDF$NEP[plotDF$Method=="Pool" & plotDF$Trt=="aCO2"] <- out$aCO2[out$Method=="Pool"]
-    plotDF$NEP[plotDF$Method=="In-out" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="In-out"]
-    plotDF$NEP[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="NPP-Rh"]
-    plotDF$NEP[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="Pool"]
     
-    plotDF$NEP_se[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="In-out"]
-    plotDF$NEP_se[plotDF$Method=="NPP-Rh" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="NPP-Rh"]
-    plotDF$NEP_se[plotDF$Method=="Pool" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="Pool"]
-    plotDF$NEP_se[plotDF$Method=="In-out" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="In-out"]
-    plotDF$NEP_se[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="NPP-Rh"]
-    plotDF$NEP_se[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="Pool"]
+    ### increase and percent increase in Rsoil
     
-    plotDF$pos <- plotDF$NEP + plotDF$NEP_se
-    plotDF$neg <- plotDF$NEP - plotDF$NEP_se
+    ### increase and percent increase in Rwood
     
-    write.csv(plotDF, "R_other/nep_summary.csv", row.names=F)
+    ### increase and percent increase in Rua
     
-    ### make the bar plot
-    p1 <- ggplot(plotDF,
-                aes(Method, NEP)) + 
-        geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
-        geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
-                      position = position_dodge(0.9), width=0.2, size=0.4) +
-        #geom_point(mapping=aes(x=Method, y=NEP, fill=Trt), 
-        #           size=4, shape=21,position = position_dodge(0.9))+
-        xlab("Method") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
-        theme_linedraw() +
-        theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=14),
-              axis.text.y=element_text(size=14),
-              axis.title.y=element_text(size=16),
-              legend.text=element_text(size=14),
-              legend.title=element_text(size=16),
-              panel.grid.major=element_blank(),
-              legend.position="bottom")+
-        scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
-                          labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_colour_manual(name="", values = c("aCO2" = "black", "eCO2" = "black"),
-                            labels=c(expression(aCO[2]), expression(eCO[2])))+
-        scale_x_discrete("",  
-                         labels=c("In - Out",
-                                  expression(paste("NPP - ", R[h])),
-                                  expression(Delta*C[pools])))+
-        theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
+    ### Increase in NPP
     
-    #plot(p1)
+    ### increase in incremental change 
     
-    pdf("R_other/nep_gap.pdf", width=8, height=8)
-    plot(p1)
-    dev.off()
+    ### NEP values
+    nep <- read.csv("R_other/nep_summary.csv")
     
 }

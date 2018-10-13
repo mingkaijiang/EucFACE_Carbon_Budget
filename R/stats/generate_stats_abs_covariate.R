@@ -250,67 +250,78 @@ generate_stats_abs_covariate <- function(stat.model) {
     s.delta.soilc <- make_delta_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
                                                           var.cond="pool", var.col=3,
                                                           date.as.factor=T,
-                                                          stat.model="no_interaction_with_covariate")
+                                                          stat.model="no_interaction_with_covariate",
+                                                          return.outcome="model")
     
     ### Delta Leaf C
     s.delta.leafc <- make_delta_leafc_treatment_abs_effect_statistics(inDF=leaf_c_pool, 
                                                           var.cond="pool", var.col=3,
                                                           date.as.factor=T,
-                                                          stat.model="no_interaction_with_covariate")
+                                                          stat.model="no_interaction_with_covariate",
+                                                          return.outcome="model")
     
     ### Delta Wood C pool
     s.delta.woodc <- make_delta_woodc_treatment_abs_effect_statistics(inDF=wood_c_pool, 
                                                           var.cond="pool", var.col=3,
                                                           date.as.factor=T,
-                                                          stat.model="no_interaction_with_covariate") 
+                                                          stat.model="no_interaction_with_covariate",
+                                                          return.outcome="model") 
     
     ### Delta Fineroot C pool
     s.delta.frc <- make_delta_frootc_treatment_abs_effect_statistics(inDF=fineroot_c_pool, 
                                                          var.cond="pool", var.col=3,
                                                          date.as.factor=T,
-                                                         stat.model="no_interaction_with_covariate")
+                                                         stat.model="no_interaction_with_covariate",
+                                                         return.outcome="model")
     
     ### Delta Coarseroot C pool
     s.delta.crc <- make_delta_crootc_treatment_abs_effect_statistics(inDF=coarse_root_c_pool_1, 
                                                          var.cond="pool", var.col=3,
                                                          date.as.factor=T,
-                                                         stat.model="no_interaction_with_covariate")
+                                                         stat.model="no_interaction_with_covariate",
+                                                         return.outcome="model")
     
     ### Delta Understorey aboveground C pool
     s.delta.uac <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
                                                       var.cond="pool", var.col=5,
                                                       date.as.factor=T,
-                                                      stat.model="no_interaction_with_covariate")
+                                                      stat.model="no_interaction_with_covariate",
+                                                      return.outcome="model")
     
     s.delta.uac2 <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
                                                        var.cond="pool", var.col=3,
                                                        date.as.factor=T,
-                                                       stat.model="no_interaction_with_covariate")
+                                                       stat.model="no_interaction_with_covariate",
+                                                       return.outcome="model")
     
     ### Delta Microbial C pool
     s.delta.micc <- make_delta_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
                                                         var.cond="pool", var.col=3,
                                                         date.as.factor=T,
-                                                        stat.model="no_interaction_with_covariate")
+                                                        stat.model="no_interaction_with_covariate",
+                                                        return.outcome="model")
     
     ### Delta Mycorrhizal C pool
     s.delta.mycc <- make_delta_mycc_treatment_abs_effect_statistics(inDF=mycorrhizal_c_pool, 
                                                         var.cond="pool", var.col=3,
                                                         date.as.factor=T,
-                                                        stat.model="no_interaction_with_covariate")
+                                                        stat.model="no_interaction_with_covariate",
+                                                        return.outcome="model")
     
     
     ### Delta Leaf litter C pool
     s.delta.litc <- make_delta_litc_treatment_abs_effect_statistics(inDF=leaflitter_pool, 
                                                         var.cond="pool", var.col=6,
                                                         date.as.factor=T,
-                                                        stat.model="no_interaction_with_covariate")
+                                                        stat.model="no_interaction_with_covariate"
+                                                        ,return.outcome="model")
     
     ### Delta Insect pool
     s.delta.insc <- make_delta_insc_treatment_abs_effect_statistics(inDF=insect_pool, 
                                                         var.cond="pool", var.col=3,
                                                         date.as.factor=T,
-                                                        stat.model="no_interaction_with_covariate")
+                                                        stat.model="no_interaction_with_covariate",
+                                                        return.outcome="model")
     
     #### Create a output table to store all stats
     var.list <- c("soil_c","leaf_c","wood_c","fineroot_c",

@@ -56,8 +56,8 @@ make_wood_respiration_flux_3 <- function() {
     ### Add a scaling factor for aCO2 and eCO2
     ### which acounts for relative contribution of wood efllux to total stem respiration
     ### values taken from Roberto's paper (in review in GCB)
-    #a.factor <- 1/mean(0.82, 0.96, 0.94)   
-    #e.factor <- 1/mean(1.11, 1.02, 0.97)
+    #a.factor <- 1/mean(c(0.82, 0.96, 0.94))  
+    #e.factor <- 1/mean(c(1.11, 1.02, 0.97))
     #hDF$scale_factor[hDF$Ring%in%c(2,3,6)] <- a.factor
     #hDF$scale_factor[hDF$Ring%in%c(1,4,5)] <- e.factor
     
