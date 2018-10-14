@@ -726,7 +726,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate()
 ###source("R/plot_combined_figures.R")
 
 ### make a summary table for all key values used in the manuscript
-report_key_values_for_manuscript()
+#report_key_values_for_manuscript()
 
 ### Power analysis ???
 
