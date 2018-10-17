@@ -298,7 +298,7 @@ tables_by_year <- make_EucFACE_table_by_year()
 ### also output predicted values based on the stat model for all variables
 ### All stats for fluxes are based on annual rate
 source("R/stats/generate_stats_abs_covariate.R")
-generate_stats_abs_covariate(stat.model="no_interaction")
+generate_stats_abs_covariate(stat.model="no_interaction_with_covariate")
 
 ### Make some plots
 source("R/make_statistical_comparison_plots.R")

@@ -84,21 +84,24 @@ make_litc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     eff.conf2 <- confint(modelt2,"Trtele")
     
     ### Analyse the variable model
-    ## model 3: no interaction, year as factor, two covariate
-    int.m3 <- "non-interative_with_covariate_and_covariate"
-    modelt3 <- lmer(Value~Trt + Datef + Cov + Cov2 + Cov3 + (1|Ring),data=tDF)
+    ## model 3: no interaction, year as factor, covariate, linear model only
+    int.m3 <- "non-interative_with_linear_covariate"
+    modelt3 <- lm(Value~Trt + Datef + Cov2,data=tDF)
     
     ## anova
     m3.anova <- Anova(modelt3, test="F")
     
     ## Check ele - amb diff
-    summ3 <- summary(glht(modelt3, linfct = mcp(Trt = "Tukey")))
+    summ3 <- summary(modelt3)
     
     ## average effect size
-    eff.size3 <- coef(modelt3)[[1]][1,2]
+    eff.size3 <- coef(modelt3)[[2]]
     
-    ## confidence interval 
+    ### confidence interval
     eff.conf3 <- confint(modelt3,"Trtele")
+    
+    ## standard error of treatment
+    eff.se3 <-sqrt(diag(vcov(modelt3)))[[2]]
     
     ### Analyse the variable model
     ## model 4: no interaction, year as factor, paired t-test
@@ -126,14 +129,15 @@ make_litc_treatment_abs_effect_statistics <- function(inDF, var.cond,
                     diff = summ2,
                     eff = eff.size2,
                     conf = eff.conf2)
-    }  else if (stat.model == "no_interaction_with_covariate_and_covariate") {
+    } else if (stat.model == "no_interaction_with_linear_covariate") {
         out <- list(int.state=int.m3,
                     mod = modelt3, 
                     anova = m3.anova,
                     diff = summ3,
+                    se = eff.se3,
                     eff = eff.size3,
                     conf = eff.conf3)
-    }  else if (stat.model == "paired_t_test") {
+    } else if (stat.model == "paired_t_test") {
         out <- list(int.state=int.m4,
                     mod = modelt4, 
                     anova = NA,
@@ -141,7 +145,7 @@ make_litc_treatment_abs_effect_statistics <- function(inDF, var.cond,
                     eff = eff.size4,
                     conf = eff.conf4)
     }
-
+    
     ### Predict the model with a standard LAI value
     newDF <- tDF
     newDF$Cov2 <- 1.14815  # initial LAI averages
