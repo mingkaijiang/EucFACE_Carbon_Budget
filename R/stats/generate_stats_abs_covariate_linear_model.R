@@ -1,7 +1,7 @@
-generate_stats_abs_covariate <- function(stat.model) {
+generate_stats_abs_linear_covariate <- function(stat.model) {
     
     
-    stat.model <- "no_interaction_with_covariate"
+    stat.model <- "no_interaction_with_linear_covariate"
     ### remove pre-treatment data period for individual variables (e.g. leaf, wood, soil, mic, myc)
     
     #### Work on each variable per time
@@ -338,14 +338,13 @@ generate_stats_abs_covariate <- function(stat.model) {
                   "understorey_gpp","delta_soil_c","delta_leaf_c","delta_wood_c","delta_fineroot_c",
                   "delta_coarseroot_c","delta_understorey_c","delta_understorey_c_2",
                   "delta_microbial_c","delta_mycorrhizal_c","delta_litter_c","delta_insect_c")
-    out <- data.frame(var.list, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
-                      NA,NA,NA,NA,NA,NA)
+    out <- data.frame(var.list, NA, NA, NA, NA, NA, NA, NA, NA, 
+                      NA,NA,NA,NA,NA,NA,NA)
     colnames(out) <- c("Variable", "interactive_state",
                        "Trt_F", "Date_F", "Cov_F", 
-                       "Trt_Df", "Date_Df","Cov_Df",
-                       "Trt_Df.res", "Date_Df.res","Cov_Df.res",
+                       "Trt_Df", "Date_Df","Cov_Df", "Resid_Df",
                        "Trt_Pr", "Date_Pr", "Cov_Pr",
-                       "effect_size", "conf_low", "conf_high")
+                       "effect_size", "conf_low", "conf_high", "se")
     
     #### Create a function to ease life
     assign_stats <- function(s.var) {
@@ -354,79 +353,68 @@ generate_stats_abs_covariate <- function(stat.model) {
         #### Assign values to out
         temp <- c(s.var$int.state,
                   s.var$anova$F[1],s.var$anova$F[2],s.var$anova$F[3],
-                  s.var$anova$Df[1],s.var$anova$Df[2],s.var$anova$Df[3],
-                  s.var$anova$Df.res[1],s.var$anova$Df.res[2],s.var$anova$Df.res[3],
+                  s.var$anova$Df[1],s.var$anova$Df[2],s.var$anova$Df[3],s.var$anova$Df[4],
                   s.var$anova$`Pr(>F)`[1],s.var$anova$`Pr(>F)`[2],s.var$anova$`Pr(>F)`[3],
-                  s.var$eff,s.var$conf[1],s.var$conf[2])
-        
+                  s.var$eff,s.var$conf[1],s.var$conf[2],s.var$se[1])
         
         return(temp)
     }
     
     #### Assign value to out
-    out[out$Variable=="soil_c",2:17] <- assign_stats(s.var=s.soilc)
-    out[out$Variable=="leaf_c",2:17] <- assign_stats(s.var=s.leafc)
-    out[out$Variable=="wood_c",2:17] <- assign_stats(s.var=s.woodc)
-    out[out$Variable=="fineroot_c",2:17] <- assign_stats(s.var=s.frc)
-    out[out$Variable=="coarseroot_c",2:17] <- assign_stats(s.var=s.crc)
-    out[out$Variable=="understorey_c",2:17] <- assign_stats(s.var=s.uac)
-    out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
-    out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
-    out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
-    out[out$Variable=="litter_c",2:17] <- assign_stats(s.var=s.litc)
-    out[out$Variable=="insect_c",2:17] <- assign_stats(s.var=s.insc)
-    out[out$Variable=="wood_respiration",2:17] <- assign_stats(s.var=s.rwood)
-    out[out$Variable=="root_respiration",2:17] <- assign_stats(s.var=s.rroot)
-    out[out$Variable=="understorey_respiration",2:17] <- assign_stats(s.var=s.rund)
-    out[out$Variable=="frass_prod",2:17] <- assign_stats(s.var=s.fras)
-    out[out$Variable=="herb_consump",2:17] <- assign_stats(s.var=s.hb.cons)
-    out[out$Variable=="herb_respiration",2:17] <- assign_stats(s.var=s.rhb)
-    out[out$Variable=="lerp_prod",2:17] <- assign_stats(s.var=s.lerp.prod)
-    out[out$Variable=="soil_respiration",2:17] <- assign_stats(s.var=s.rsoil)
-    out[out$Variable=="doc",2:17] <- assign_stats(s.var=s.doc)
-    out[out$Variable=="ch4",2:17] <- assign_stats(s.var=s.ch4)
-    out[out$Variable=="leaf_prod",2:17] <- assign_stats(s.var=s.lit.leaf)
-    out[out$Variable=="twig_prod",2:17] <- assign_stats(s.var=s.lit.twig)
-    out[out$Variable=="bark_prod",2:17] <- assign_stats(s.var=s.lit.bark)
-    out[out$Variable=="seed_prod",2:17] <- assign_stats(s.var=s.lit.seed)
-    out[out$Variable=="wood_prod",2:17] <- assign_stats(s.var=s.wood.prod)
-    out[out$Variable=="fineroot_prod",2:17] <- assign_stats(s.var=s.froot.prod)
-    out[out$Variable=="coarseroot_prod",2:17] <- assign_stats(s.var=s.croot.prod)
-    out[out$Variable=="understorey_prod",2:17] <- assign_stats(s.var=s.und.prod)
-    out[out$Variable=="hetero_respiration",2:17] <- assign_stats(s.var=s.rh)
-    out[out$Variable=="understorey_lit",2:17] <- assign_stats(s.var=s.und.lit)
+    out[out$Variable=="soil_c",2:16] <- assign_stats(s.var=s.soilc)
+    out[out$Variable=="leaf_c",2:16] <- assign_stats(s.var=s.leafc)
+    out[out$Variable=="wood_c",2:16] <- assign_stats(s.var=s.woodc)
+    out[out$Variable=="fineroot_c",2:16] <- assign_stats(s.var=s.frc)
+    out[out$Variable=="coarseroot_c",2:16] <- assign_stats(s.var=s.crc)
+    out[out$Variable=="understorey_c",2:16] <- assign_stats(s.var=s.uac)
+    out[out$Variable=="understorey_c_2",2:16] <- assign_stats(s.var=s.uac2)
+    out[out$Variable=="microbial_c",2:16] <- assign_stats(s.var=s.micc)
+    out[out$Variable=="mycorrhizal_c",2:16] <- assign_stats(s.var=s.mycc)
+    out[out$Variable=="litter_c",2:16] <- assign_stats(s.var=s.litc)
+    out[out$Variable=="insect_c",2:16] <- assign_stats(s.var=s.insc)
+    out[out$Variable=="wood_respiration",2:16] <- assign_stats(s.var=s.rwood)
+    out[out$Variable=="root_respiration",2:16] <- assign_stats(s.var=s.rroot)
+    out[out$Variable=="understorey_respiration",2:16] <- assign_stats(s.var=s.rund)
+    out[out$Variable=="frass_prod",2:16] <- assign_stats(s.var=s.fras)
+    out[out$Variable=="herb_consump",2:16] <- assign_stats(s.var=s.hb.cons)
+    out[out$Variable=="herb_respiration",2:16] <- assign_stats(s.var=s.rhb)
+    out[out$Variable=="lerp_prod",2:16] <- assign_stats(s.var=s.lerp.prod)
+    out[out$Variable=="soil_respiration",2:16] <- assign_stats(s.var=s.rsoil)
+    out[out$Variable=="doc",2:16] <- assign_stats(s.var=s.doc)
+    out[out$Variable=="ch4",2:16] <- assign_stats(s.var=s.ch4)
+    out[out$Variable=="leaf_prod",2:16] <- assign_stats(s.var=s.lit.leaf)
+    out[out$Variable=="twig_prod",2:16] <- assign_stats(s.var=s.lit.twig)
+    out[out$Variable=="bark_prod",2:16] <- assign_stats(s.var=s.lit.bark)
+    out[out$Variable=="seed_prod",2:16] <- assign_stats(s.var=s.lit.seed)
+    out[out$Variable=="wood_prod",2:16] <- assign_stats(s.var=s.wood.prod)
+    out[out$Variable=="fineroot_prod",2:16] <- assign_stats(s.var=s.froot.prod)
+    out[out$Variable=="coarseroot_prod",2:16] <- assign_stats(s.var=s.croot.prod)
+    out[out$Variable=="understorey_prod",2:16] <- assign_stats(s.var=s.und.prod)
+    out[out$Variable=="hetero_respiration",2:16] <- assign_stats(s.var=s.rh)
+    out[out$Variable=="understorey_lit",2:16] <- assign_stats(s.var=s.und.lit)
     
-    out[out$Variable=="over_gpp",2:17] <- assign_stats(s.var=s.o.gpp)
-    out[out$Variable=="over_leaf_respiration",2:17] <- assign_stats(s.var=s.rleaf)
-    #out[out$Variable=="mycorrhizal_prod",2:17] <- c(s.myc.prod$int.state,
+    out[out$Variable=="over_gpp",2:16] <- assign_stats(s.var=s.o.gpp)
+    out[out$Variable=="over_leaf_respiration",2:16] <- assign_stats(s.var=s.rleaf)
+    #out[out$Variable=="mycorrhizal_prod",2:16] <- c(s.myc.prod$int.state,
     #                                                NA,NA,NA,
     #                                                NA,NA,NA,
     #                                                NA,NA,NA,
     #                                                NA,NA,NA,
     #                                                s.myc.prod$eff,s.myc.prod$conf[1],s.myc.prod$conf[2])
-    out[out$Variable=="understorey_gpp",2:17] <- assign_stats(s.var=s.u.gpp)
-    out[out$Variable=="delta_soil_c",2:17] <- assign_stats(s.var=s.delta.soilc)
-    out[out$Variable=="delta_leaf_c",2:17] <- assign_stats(s.var=s.delta.leafc)
-    out[out$Variable=="delta_wood_c",2:17] <- assign_stats(s.var=s.delta.woodc)
-    out[out$Variable=="delta_fineroot_c",2:17] <- assign_stats(s.var=s.delta.frc)
-    out[out$Variable=="delta_coarseroot_c",2:17] <- assign_stats(s.var=s.delta.crc)
-    out[out$Variable=="delta_understorey_c",2:17] <- assign_stats(s.var=s.delta.uac)
-    out[out$Variable=="delta_understorey_c_2",2:17] <- assign_stats(s.var=s.delta.uac2)
-    out[out$Variable=="delta_microbial_c",2:17] <- assign_stats(s.var=s.delta.micc)
-    out[out$Variable=="delta_mycorrhizal_c",2:17] <- assign_stats(s.var=s.delta.mycc)
-    out[out$Variable=="delta_litter_c",2:17] <- assign_stats(s.var=s.delta.litc)
-    out[out$Variable=="delta_insect_c",2:17] <- assign_stats(s.var=s.delta.insc)
+    out[out$Variable=="understorey_gpp",2:16] <- assign_stats(s.var=s.u.gpp)
+    out[out$Variable=="delta_soil_c",2:16] <- assign_stats(s.var=s.delta.soilc)
+    out[out$Variable=="delta_leaf_c",2:16] <- assign_stats(s.var=s.delta.leafc)
+    out[out$Variable=="delta_wood_c",2:16] <- assign_stats(s.var=s.delta.woodc)
+    out[out$Variable=="delta_fineroot_c",2:16] <- assign_stats(s.var=s.delta.frc)
+    out[out$Variable=="delta_coarseroot_c",2:16] <- assign_stats(s.var=s.delta.crc)
+    out[out$Variable=="delta_understorey_c",2:16] <- assign_stats(s.var=s.delta.uac)
+    out[out$Variable=="delta_understorey_c_2",2:16] <- assign_stats(s.var=s.delta.uac2)
+    out[out$Variable=="delta_microbial_c",2:16] <- assign_stats(s.var=s.delta.micc)
+    out[out$Variable=="delta_mycorrhizal_c",2:16] <- assign_stats(s.var=s.delta.mycc)
+    out[out$Variable=="delta_litter_c",2:16] <- assign_stats(s.var=s.delta.litc)
+    out[out$Variable=="delta_insect_c",2:16] <- assign_stats(s.var=s.delta.insc)
+ 
+    write.csv(out, "R_other/treatment_statistics_abs_no_interaction_with_linear_covariate.csv", row.names=F)
 
-    stat.model <- "no_interaction_with_covariate"
-    
-    if (stat.model == "no_interaction_with_covariate") {
-        write.csv(out, "R_other/treatment_statistics_abs_no_interaction_with_covariate.csv", row.names=F)
-    } else if (stat.model == "interaction_with_covariate") {
-        write.csv(out, "R_other/treatment_statistics_abs_interaction_with_covariate.csv", row.names=F)
-    } else if (stat.model == "no_interaction_with_covariate_and_covariate") {
-        write.csv(out, "R_other/treatment_statistics_abs_no_interaction_with_covariate_and_covariate.csv", row.names=F)
-    } else {
-        write.csv(out, "R_other/treatment_statistics_abs_paired_t_test.csv", row.names=F)
-    }
     
 }

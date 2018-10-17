@@ -1,8 +1,8 @@
-make_statistical_comparison_plots <- function() {
+make_statistical_comparison_linear_covariate_plots <- function() {
   
     ######### 7. Plot abs, no interactions, and change in pools, with covariates
     ### read in the csv file to plot the treatment effect and confidence interval
-    myDF <- read.csv("R_other/treatment_statistics_abs_no_interaction_with_covariate.csv")
+    myDF <- read.csv("R_other/treatment_statistics_abs_no_interaction_with_linear_covariate.csv")
 
     #### assign color scheme according to treatment p-value
     myDF$trt_sig[myDF$Trt_Pr > 0.1] <- "non-sig"
@@ -51,7 +51,7 @@ make_statistical_comparison_plots <- function() {
         }
     }
     
-    xticks.brk <- xticks <- c(-400, -200, -50, -25, 0, 25, 50, 150, 300, 600)
+    xticks.brk <- xticks <- c(-600, -200, -50, -25, 0, 25, 50, 150, 300, 700)
     
     #Transform the data onto the display scale
     for (i in 1:length(plotDF1$Variable)) {
@@ -253,7 +253,7 @@ make_statistical_comparison_plots <- function() {
     #          gp=gpar(fontsize=16, col="black", fontface="bold"))
     #dev.off()
     
-    pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool_with_covariate.pdf", width=8, height=12)
+    pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool_with_linear_covariate.pdf", width=8, height=12)
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 

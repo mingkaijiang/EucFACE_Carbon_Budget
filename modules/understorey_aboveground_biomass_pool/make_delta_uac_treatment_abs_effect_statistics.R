@@ -74,7 +74,7 @@ make_delta_uac_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 3: no interaction, year as factor, covariate, linear model only
     int.m3 <- "non-interative_with_linear_covariate"
-    modelt3 <- lm(Value~Trt + Datef + Cov2,data=tDF)
+    modelt3 <- lm(delta~Trt + Datef + Cov2,data=tDF)
     
     ## anova
     m3.anova <- Anova(modelt3, test="F")
@@ -94,7 +94,7 @@ make_delta_uac_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 4: no interaction, year as factor, paired t-test
     int.m4 <- "paired_t_test"
-    modelt4 <- t.test(Value~Trt, data=tDF, paired=T)
+    modelt4 <- t.test(delta~Trt, data=tDF, paired=T)
     
     ## average effect size
     eff.size4 <- -modelt4$estimate[[1]]
