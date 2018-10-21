@@ -64,7 +64,7 @@ make_understorey_respiration_flux <- function(c_pool,
         out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date)) + 1
         
         
-    } else if (assumption == "maespa") {
+    } else if (assumption == "maespa_partial") {
         ### use MAESPA simulated respiration rate
         
         myDF <- read.csv("data/underS_species2.gpp.csv")
@@ -101,6 +101,23 @@ make_understorey_respiration_flux <- function(c_pool,
         gpp$respiration_mg_m2_d <- gpp$respiration / 365 * 1000
         
         out <- gpp[,c("Start_date", "End_date", "Date", "Ring", "respiration_mg_m2_d")]
+        colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "respiration")
+        out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date)) + 1
+        
+    } else if (assumption == "maespa_all") {
+        ### use MAESPA simulated respiration rate
+        
+        myDF <- read.csv("data/underS_species2.gpp_2.csv")
+        myDF <- subset(myDF, Species == 2)
+        myDF$Ring <- gsub("R","", myDF$Ring)
+        myDF$Ring <- as.numeric(myDF$Ring)
+        myDF <- myDF[,c("year", "Ring", "Ra.sum")]
+        myDF$Start_date <- paste0(myDF$year, "-01-01")
+        myDF$End_date <- paste0(myDF$year, "-12-31")
+        myDF$Date <- myDF$End_date
+        myDF$respiration_mg_m2_d <- myDF$Ra.sum / 365 * 1000
+   
+        out <- myDF[,c("Start_date", "End_date", "Date", "Ring", "respiration_mg_m2_d")]
         colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "respiration")
         out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date)) + 1
         

@@ -268,14 +268,15 @@ overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 ## method 1 is 0.4 * overstorey GPP
 ### method 2 is based on MAESPA simulation
 #understorey_gpp_flux <- make_understorey_GPP_flux()
-understorey_gpp_flux <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
+understorey_gpp_flux2 <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
+understorey_gpp_flux <- make_understorey_GPP_flux3()
 
 ### Understorey respiration
 ### assumes either a fixed or a function of temperature
 understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
                                                                   c_frac=c_fraction,
                                                                   gpp=understorey_gpp_flux,
-                                                                  assumption="cue")
+                                                                  assumption="maespa_all")
 
 
 ###### ----------Make summary tables-------------- ######
