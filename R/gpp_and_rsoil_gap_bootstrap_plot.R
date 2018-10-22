@@ -32,43 +32,47 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     plotDF$aCO2 <- plotDF$aCO2/1000
     plotDF$aCO2_sd <- plotDF$aCO2_sd/1000
     
+    
+    ### set number of bootstrapping
+    n.b <- 1000
+    
     ### perform bootstrapping for each category sum (i.e. cat == MAESPA and NPP+Ra)
     set.seed(1234)
-    bDF1 <- data.frame(c(1:1000), NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA)
     colnames(bDF1) <- c("bootID", "GPP_overstorey", "GPP_understorey", "sum")
-    bDF1$GPP_overstorey <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="GPP overstorey"],
+    bDF1$GPP_overstorey <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="GPP overstorey"],
                                  sd=plotDF$aCO2_sd[plotDF$term=="GPP overstorey"])
-    bDF1$GPP_understorey <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="GPP understorey"],
+    bDF1$GPP_understorey <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="GPP understorey"],
                                   sd=plotDF$aCO2_sd[plotDF$term=="GPP understorey"])
     bDF1$sum <- with(bDF1, GPP_overstorey + GPP_understorey)
     
-    bDF2 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA)
+    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA)
     colnames(bDF2) <- c("bootID", "Leaf_NPP", "Stem_NPP", "Fine_Root_NPP", "Coarse_Root_NPP", 
                         "Other_NPP", "Understorey_NPP", "Leaf_consumption", "Ra_leaf", 
                         "Ra_stem", "Ra_root", "Ra_understorey", "Rgrowth", "sum")
-    bDF2$Leaf_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Leaf NPP"],
+    bDF2$Leaf_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Leaf NPP"],
                                  sd=plotDF$aCO2_sd[plotDF$term=="Leaf NPP"])
-    bDF2$Stem_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Stem NPP"],
+    bDF2$Stem_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Stem NPP"],
                                   sd=plotDF$aCO2_sd[plotDF$term=="Stem NPP"])
-    bDF2$Fine_Root_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Fine Root NPP"],
+    bDF2$Fine_Root_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Fine Root NPP"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Fine Root NPP"])
-    bDF2$Coarse_Root_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Coarse Root NPP"],
+    bDF2$Coarse_Root_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Coarse Root NPP"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Coarse Root NPP"])
-    bDF2$Other_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Other NPP"],
+    bDF2$Other_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Other NPP"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Other NPP"])
-    bDF2$Understorey_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Understorey NPP"],
+    bDF2$Understorey_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Understorey NPP"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Understorey NPP"])
-    bDF2$Leaf_consumption <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Leaf consumption"],
+    bDF2$Leaf_consumption <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Leaf consumption"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Leaf consumption"])
-    bDF2$Ra_leaf <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Ra leaf"],
+    bDF2$Ra_leaf <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Ra leaf"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Ra leaf"])
-    bDF2$Ra_stem <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Ra stem"],
+    bDF2$Ra_stem <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Ra stem"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Ra stem"])
-    bDF2$Ra_root <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Ra root"],
+    bDF2$Ra_root <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Ra root"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Ra root"])
-    bDF2$Ra_understorey <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Ra understorey"],
+    bDF2$Ra_understorey <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Ra understorey"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Ra understorey"])
-    bDF2$Rgrowth <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Rgrowth"],
+    bDF2$Rgrowth <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Rgrowth"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Rgrowth"])
 
     
@@ -78,14 +82,19 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     ### prepare error bar ranges
     errDF <- data.frame(c("NPP+Ra", "MAESPA"), NA, NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg", "sum")
-    errDF$sum[errDF$cat=="NPP+Ra"] <- mean(bDF2$sum)
-    errDF$sum[errDF$cat=="MAESPA"] <- mean(bDF1$sum)
+    errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])
+    errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])
     
-    errDF$pos[errDF$cat=="NPP+Ra"] <- quantile(bDF2$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="NPP+Ra"] <- quantile(bDF2$sum, probs = c(0.025))
-    errDF$pos[errDF$cat=="MAESPA"] <- quantile(bDF1$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="MAESPA"] <- quantile(bDF1$sum, probs = c(0.025))
-
+    errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
+    errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
+    
+    errDF$conf[errDF$cat=="NPP+Ra"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="NPP+Ra"]
+    errDF$conf[errDF$cat=="MAESPA"] <- qt(0.95/2 + .5, length(bDF1$sum)-1) * errDF$se[errDF$cat=="MAESPA"]
+    
+    errDF$pos[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] + errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.975))
+    errDF$neg[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] - errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.025))
+    errDF$pos[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] + errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.975))
+    errDF$neg[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] - errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.025))
     
     ### Prepare variable labels
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
@@ -167,41 +176,41 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     plotDF$eCO2 <- plotDF$eCO2/1000
     plotDF$eCO2_sd <- plotDF$eCO2_sd/1000
     
-    bDF1 <- data.frame(c(1:1000), NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA)
     colnames(bDF1) <- c("bootID", "GPP_overstorey", "GPP_understorey", "sum")
-    bDF1$GPP_overstorey <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="GPP overstorey"],
+    bDF1$GPP_overstorey <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="GPP overstorey"],
                                  sd=plotDF$eCO2_sd[plotDF$term=="GPP overstorey"])
-    bDF1$GPP_understorey <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="GPP understorey"],
+    bDF1$GPP_understorey <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="GPP understorey"],
                                   sd=plotDF$eCO2_sd[plotDF$term=="GPP understorey"])
     bDF1$sum <- with(bDF1, GPP_overstorey + GPP_understorey)
     
-    bDF2 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA)
+    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA)
     colnames(bDF2) <- c("bootID", "Leaf_NPP", "Stem_NPP", "Fine_Root_NPP", "Coarse_Root_NPP", 
                         "Other_NPP", "Understorey_NPP", "Leaf_consumption", "Ra_leaf", 
                         "Ra_stem", "Ra_root", "Ra_understorey", "Rgrowth", "sum")
-    bDF2$Leaf_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Leaf NPP"],
+    bDF2$Leaf_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Leaf NPP"],
                            sd=plotDF$eCO2_sd[plotDF$term=="Leaf NPP"])
-    bDF2$Stem_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Stem NPP"],
+    bDF2$Stem_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Stem NPP"],
                            sd=plotDF$eCO2_sd[plotDF$term=="Stem NPP"])
-    bDF2$Fine_Root_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Fine Root NPP"],
+    bDF2$Fine_Root_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Fine Root NPP"],
                                 sd=plotDF$eCO2_sd[plotDF$term=="Fine Root NPP"])
-    bDF2$Coarse_Root_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Coarse Root NPP"],
+    bDF2$Coarse_Root_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Coarse Root NPP"],
                                   sd=plotDF$eCO2_sd[plotDF$term=="Coarse Root NPP"])
-    bDF2$Other_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Other NPP"],
+    bDF2$Other_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Other NPP"],
                             sd=plotDF$eCO2_sd[plotDF$term=="Other NPP"])
-    bDF2$Understorey_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Understorey NPP"],
+    bDF2$Understorey_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Understorey NPP"],
                                   sd=plotDF$eCO2_sd[plotDF$term=="Understorey NPP"])
-    bDF2$Leaf_consumption <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Leaf consumption"],
+    bDF2$Leaf_consumption <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Leaf consumption"],
                                    sd=plotDF$eCO2_sd[plotDF$term=="Leaf consumption"])
-    bDF2$Ra_leaf <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Ra leaf"],
+    bDF2$Ra_leaf <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Ra leaf"],
                           sd=plotDF$eCO2_sd[plotDF$term=="Ra leaf"])
-    bDF2$Ra_stem <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Ra stem"],
+    bDF2$Ra_stem <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Ra stem"],
                           sd=plotDF$eCO2_sd[plotDF$term=="Ra stem"])
-    bDF2$Ra_root <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Ra root"],
+    bDF2$Ra_root <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Ra root"],
                           sd=plotDF$eCO2_sd[plotDF$term=="Ra root"])
-    bDF2$Ra_understorey <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Ra understorey"],
+    bDF2$Ra_understorey <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Ra understorey"],
                                  sd=plotDF$eCO2_sd[plotDF$term=="Ra understorey"])
-    bDF2$Rgrowth <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Rgrowth"],
+    bDF2$Rgrowth <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Rgrowth"],
                           sd=plotDF$eCO2_sd[plotDF$term=="Rgrowth"])
     
     
@@ -211,13 +220,19 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     ### prepare error bar ranges
     errDF <- data.frame(c("NPP+Ra", "MAESPA"), NA, NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg", "sum")
-    errDF$sum[errDF$cat=="NPP+Ra"] <- mean(bDF2$sum)
-    errDF$sum[errDF$cat=="MAESPA"] <- mean(bDF1$sum)
+    errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$eCO2[plotDF$cat=="NPP+Ra"])
+    errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$eCO2[plotDF$cat=="MAESPA"])
     
-    errDF$pos[errDF$cat=="NPP+Ra"] <- quantile(bDF2$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="NPP+Ra"] <- quantile(bDF2$sum, probs = c(0.025))
-    errDF$pos[errDF$cat=="MAESPA"] <- quantile(bDF1$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="MAESPA"] <- quantile(bDF1$sum, probs = c(0.025))
+    errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
+    errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
+    
+    errDF$conf[errDF$cat=="NPP+Ra"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="NPP+Ra"]
+    errDF$conf[errDF$cat=="MAESPA"] <- qt(0.95/2 + .5, length(bDF1$sum)-1) * errDF$se[errDF$cat=="MAESPA"]
+    
+    errDF$pos[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] + errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.975))
+    errDF$neg[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] - errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.025))
+    errDF$pos[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] + errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.975))
+    errDF$neg[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] - errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.025))
     
     
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
@@ -284,43 +299,51 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     plotDF$aCO2_sd <- as.numeric(plotDF$aCO2_sd)/1000
     
     ### prepare bootstrap
-    bDF1 <- data.frame(c(1:1000), NA)
+    bDF1 <- data.frame(c(1:n.b), NA)
     colnames(bDF1) <- c("bootID", "Rsoil")
-    bDF1$Rsoil <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Rsoil"],
+    bDF1$Rsoil <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Rsoil"],
                                  sd=plotDF$aCO2_sd[plotDF$term=="Rsoil"])
 
     
-    bDF2 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA)
+    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(bDF2) <- c("bootID", "Leaf_NPP", "Fine_Root_NPP", "Coarse_Root_NPP", 
                         "Other_NPP", "Understorey_NPP", "Frass_production", "Ra_root", "sum")
-    bDF2$Leaf_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Leaf NPP"],
+    bDF2$Leaf_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Leaf NPP"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Leaf NPP"])
-    bDF2$Fine_Root_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Fine Root NPP"],
+    bDF2$Fine_Root_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Fine Root NPP"],
                                 sd=plotDF$aCO2_sd[plotDF$term=="Fine Root NPP"])
-    bDF2$Coarse_Root_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Coarse Root NPP"],
+    bDF2$Coarse_Root_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Coarse Root NPP"],
                                   sd=plotDF$aCO2_sd[plotDF$term=="Coarse Root NPP"])
-    bDF2$Other_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Other NPP"],
+    bDF2$Other_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Other NPP"],
                             sd=plotDF$aCO2_sd[plotDF$term=="Other NPP"])
-    bDF2$Understorey_NPP <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Understorey NPP"],
+    bDF2$Understorey_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Understorey NPP"],
                                   sd=plotDF$aCO2_sd[plotDF$term=="Understorey NPP"])
-    bDF2$Frass_production <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Frass production"],
+    bDF2$Frass_production <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Frass production"],
                                    sd=plotDF$aCO2_sd[plotDF$term=="Frass production"])
-    bDF2$Ra_root <- rnorm(1000, mean=plotDF$aCO2[plotDF$term=="Ra root"],
+    bDF2$Ra_root <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Ra root"],
                           sd=plotDF$aCO2_sd[plotDF$term=="Ra root"])
     
     bDF2$sum <- rowSums(bDF2[,2:8])
     
     
+    
     ### prepare error bar ranges
     errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg", "sum")
-    errDF$sum[errDF$cat=="Litter+Rroot"] <- mean(bDF2$sum)
-    errDF$sum[errDF$cat=="Rsoil"] <- mean(bDF1$Rsoil)
+    errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$aCO2[plotDF$cat=="Litter+Rroot"])
+    errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$aCO2[plotDF$cat=="Rsoil"])
     
-    errDF$pos[errDF$cat=="Litter+Rroot"] <- quantile(bDF2$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="Litter+Rroot"] <- quantile(bDF2$sum, probs = c(0.025))
-    errDF$pos[errDF$cat=="Rsoil"] <- quantile(bDF1$Rsoil, probs = c(0.975))
-    errDF$neg[errDF$cat=="Rsoil"] <- quantile(bDF1$Rsoil, probs = c(0.025))
+    errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
+    errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
+    
+    errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
+    errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
+    
+    errDF$pos[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] + errDF$conf[errDF$cat=="Litter+Rroot"] 
+    errDF$neg[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] - errDF$conf[errDF$cat=="Litter+Rroot"] 
+    errDF$pos[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] + errDF$conf[errDF$cat=="Rsoil"] 
+    errDF$neg[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] - errDF$conf[errDF$cat=="Rsoil"]
+    
     
     ### Prepare variable labels
     var.labs2 <- c(expression(NPP[leaf]), expression(NPP[froot]),
@@ -393,43 +416,51 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     plotDF$eCO2_sd <- as.numeric(plotDF$eCO2_sd)/1000
     
     ### prepare bootstrap
-    bDF1 <- data.frame(c(1:1000), NA)
+    bDF1 <- data.frame(c(1:n.b), NA)
     colnames(bDF1) <- c("bootID", "Rsoil")
-    bDF1$Rsoil <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Rsoil"],
+    bDF1$Rsoil <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Rsoil"],
                         sd=plotDF$eCO2_sd[plotDF$term=="Rsoil"])
     
     
-    bDF2 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA)
+    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(bDF2) <- c("bootID", "Leaf_NPP", "Fine_Root_NPP", "Coarse_Root_NPP", 
                         "Other_NPP", "Understorey_NPP", "Frass_production", "Ra_root", "sum")
-    bDF2$Leaf_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Leaf NPP"],
+    bDF2$Leaf_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Leaf NPP"],
                            sd=plotDF$eCO2_sd[plotDF$term=="Leaf NPP"])
-    bDF2$Fine_Root_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Fine Root NPP"],
+    bDF2$Fine_Root_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Fine Root NPP"],
                                 sd=plotDF$eCO2_sd[plotDF$term=="Fine Root NPP"])
-    bDF2$Coarse_Root_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Coarse Root NPP"],
+    bDF2$Coarse_Root_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Coarse Root NPP"],
                                   sd=plotDF$eCO2_sd[plotDF$term=="Coarse Root NPP"])
-    bDF2$Other_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Other NPP"],
+    bDF2$Other_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Other NPP"],
                             sd=plotDF$eCO2_sd[plotDF$term=="Other NPP"])
-    bDF2$Understorey_NPP <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Understorey NPP"],
+    bDF2$Understorey_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Understorey NPP"],
                                   sd=plotDF$eCO2_sd[plotDF$term=="Understorey NPP"])
-    bDF2$Frass_production <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Frass production"],
+    bDF2$Frass_production <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Frass production"],
                                    sd=plotDF$eCO2_sd[plotDF$term=="Frass production"])
-    bDF2$Ra_root <- rnorm(1000, mean=plotDF$eCO2[plotDF$term=="Ra root"],
+    bDF2$Ra_root <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Ra root"],
                           sd=plotDF$eCO2_sd[plotDF$term=="Ra root"])
     
     bDF2$sum <- rowSums(bDF2[,2:8])
     
     
     ### prepare error bar ranges
+    ### prepare error bar ranges
     errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg", "sum")
-    errDF$sum[errDF$cat=="Litter+Rroot"] <- mean(bDF2$sum)
-    errDF$sum[errDF$cat=="Rsoil"] <- mean(bDF1$Rsoil)
+    errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$eCO2[plotDF$cat=="Litter+Rroot"])
+    errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$eCO2[plotDF$cat=="Rsoil"])
     
-    errDF$pos[errDF$cat=="Litter+Rroot"] <- quantile(bDF2$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="Litter+Rroot"] <- quantile(bDF2$sum, probs = c(0.025))
-    errDF$pos[errDF$cat=="Rsoil"] <- quantile(bDF1$Rsoil, probs = c(0.975))
-    errDF$neg[errDF$cat=="Rsoil"] <- quantile(bDF1$Rsoil, probs = c(0.025))
+    errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
+    errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
+    
+    errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
+    errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
+    
+    errDF$pos[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] + errDF$conf[errDF$cat=="Litter+Rroot"] 
+    errDF$neg[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] - errDF$conf[errDF$cat=="Litter+Rroot"] 
+    errDF$pos[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] + errDF$conf[errDF$cat=="Rsoil"] 
+    errDF$neg[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] - errDF$conf[errDF$cat=="Rsoil"]
+    
     
     
     ### make the bar plot

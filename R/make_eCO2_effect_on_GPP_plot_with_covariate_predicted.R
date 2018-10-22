@@ -3,6 +3,12 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     ######### Plot abs, no interactions, and change in pools
     ### read in the csv file to plot the treatment effect and confidence interval
     myDF <- read.csv("R_other/treatment_statistics_abs_no_interaction_with_covariate.csv")
+    
+    ### compute standard error
+    myDF$se1 <- with(myDF, abs((conf_high - conf_low)/3.92))
+    myDF$se2 <- with(myDF, abs((effect_size)/abs(qnorm(1 - (Trt_Pr)/2))))
+    #myDF$sd <- with(myDF, se2 * sqrt((Trt_Df+1) * Trt_Df.res * (Date_Df + 1)))
+    myDF$sd <- with(myDF, se2 * sqrt((Date_Df + 1)))
 
     #### assign color scheme according to treatment p-value
     myDF$trt_sig[myDF$Trt_Pr > 0.1] <- "non-sig"
@@ -54,7 +60,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     plotDF1$plot.cat[plotDF1$Category=="prod"] <- "NPP"
     plotDF1$plot.cat[plotDF1$Variable=="ch4"] <- "Influxes"
     
-    plotDF1 <- plotDF1[,c("Variable", "effect_size", "conf_low", "conf_high", "plot.cat")]
+    #plotDF1 <- plotDF1[,c("Variable", "effect_size", "conf_low", "conf_high", "plot.cat")]
+    plotDF1 <- plotDF1[,c("Variable", "effect_size", "conf_low", "conf_high", "plot.cat", "sd", "Date_Df")]
     
     plotDF1$plot.cat[plotDF1$Variable%in%c("root_respiration", "understorey_respiration",
                                            "over_leaf_respiration", "wood_respiration")] <- "Ra"
@@ -76,28 +83,168 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     plotDF2[6,"conf_high"] <- plotDF2$conf_high[plotDF2$Variable=="Outfluxes"]+
         plotDF2$conf_high[plotDF2$Variable=="Ra"]
     
-    subDF <- plotDF2[plotDF2$Variable%in%c("Outfluxes","Ra"),]
     
-    subDF$conf_low_radius <- with(subDF, effect_size - conf_low)
-    subDF$conf_high_radius <- with(subDF, conf_high - effect_size)
-    subDF$conf_low_radius_sq <- (subDF$conf_low_radius)^2
-    subDF$conf_high_radius_sq <- (subDF$conf_high_radius)^2
-    subDF$plot.cat2 <- "total_outflux"
+    ### revise confidence interval for each variables
+    ### set number of bootstrapping
+    n.b <- 1000
     
-    subDF2 <- summaryBy(conf_high_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=subDF, FUN=sum)
-    subDF3 <- summaryBy(conf_low_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=subDF, FUN=sum)
+    ### perform bootstrapping for each category sum (i.e. cat == MAESPA and NPP+Ra)
+    set.seed(1234)
     
-    subDF2$conf_high_radius <- sqrt(subDF2$conf_high_radius_sq)
-    subDF3$conf_low_radius <- sqrt(subDF3$conf_low_radius_sq)
+    ## change in pools
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "delta_soil_c", "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", "delta_coarseroot_c", 
+                        "delta_litter_c")
+    bDF1$delta_soil_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_soil_c"],
+                                 sd=plotDF1$sd[plotDF1$Variable=="delta_soil_c"])
+    bDF1$delta_leaf_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_leaf_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_leaf_c"])
+    bDF1$delta_wood_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_wood_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_wood_c"])
+    bDF1$delta_fineroot_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_fineroot_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_fineroot_c"])
+    bDF1$delta_coarseroot_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_coarseroot_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_coarseroot_c"])
+    bDF1$delta_litter_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_litter_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_litter_c"])
+    bDF1$sum <- with(bDF1, delta_soil_c + delta_leaf_c + delta_wood_c + delta_fineroot_c + delta_coarseroot_c + 
+                         delta_litter_c)
     
-    plotDF2[6,"conf_low"] <- plotDF2[6,"effect_size"] - subDF3$conf_low_radius
-    plotDF2[6,"conf_high"] <- plotDF2[6,"effect_size"] + subDF2$conf_high_radius
+    plotDF2$conf_low[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    ## Influxes
+    bDF1 <- data.frame(c(1:n.b), NA, NA,NA)
+    colnames(bDF1) <- c("bootID", "ch4", "over_gpp", "understorey_gpp")
+    bDF1$ch4 <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="ch4"],
+                               sd=plotDF1$sd[plotDF1$Variable=="ch4"])
+    bDF1$over_gpp <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="over_gpp"],
+                               sd=plotDF1$sd[plotDF1$Variable=="over_gpp"])
+    bDF1$understorey_gpp <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_gpp"],
+                               sd=plotDF1$sd[plotDF1$Variable=="understorey_gpp"])
+    bDF1$sum <- with(bDF1, ch4 + over_gpp + understorey_gpp)
+    
+    plotDF2$conf_low[plotDF2$Variable=="Influxes"] <- plotDF2$effect_size[plotDF2$Variable=="Influxes"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    plotDF2$conf_high[plotDF2$Variable=="Influxes"] <- plotDF2$effect_size[plotDF2$Variable=="Influxes"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    ## NPP
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "herb_consump", "leaf_prod", "twig_prod", "bark_prod", "seed_prod",
+                        "wood_prod", "fineroot_prod", "coarseroot_prod", "understorey_prod")
+    bDF1$herb_consump <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="herb_consump"],
+                      sd=plotDF1$sd[plotDF1$Variable=="herb_consump"])
+    bDF1$leaf_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="leaf_prod"],
+                           sd=plotDF1$sd[plotDF1$Variable=="leaf_prod"])
+    bDF1$twig_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="twig_prod"],
+                                  sd=plotDF1$sd[plotDF1$Variable=="twig_prod"])
+    bDF1$bark_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="bark_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="bark_prod"])
+    bDF1$seed_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="seed_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="seed_prod"])
+    bDF1$wood_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="wood_prod"])
+    bDF1$fineroot_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="fineroot_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="fineroot_prod"])
+    bDF1$coarseroot_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="coarseroot_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="coarseroot_prod"])
+    bDF1$understorey_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="understorey_prod"])
+    bDF1$sum <- with(bDF1, herb_consump + leaf_prod + twig_prod + bark_prod + seed_prod + wood_prod + fineroot_prod + coarseroot_prod + understorey_prod)
+    
+    plotDF2$conf_low[plotDF2$Variable=="NPP"] <- plotDF2$effect_size[plotDF2$Variable=="NPP"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    plotDF2$conf_high[plotDF2$Variable=="NPP"] <- plotDF2$effect_size[plotDF2$Variable=="NPP"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    
+    ## Outfluxes - respirations except Ra
+    bDF1 <- data.frame(c(1:n.b), NA, NA)
+    colnames(bDF1) <- c("bootID", "doc", "hetero_respiration")
+    bDF1$doc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="doc"],
+                               sd=plotDF1$sd[plotDF1$Variable=="doc"])
+    bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
+                            sd=plotDF1$sd[plotDF1$Variable=="hetero_respiration"])
+
+    bDF1$sum <- with(bDF1, hetero_respiration + doc)
+    
+    plotDF2$conf_low[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    plotDF2$conf_high[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    ## Ra
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "root_respiration", "understorey_respiration", "over_leaf_respiration",
+                        "wood_respiration")
+    bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
+                      sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
+    bDF1$understorey_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_respiration"],
+                                     sd=plotDF1$sd[plotDF1$Variable=="understorey_respiration"])
+    bDF1$over_leaf_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="over_leaf_respiration"],
+                                          sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
+    bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
+                                          sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
+    
+    
+    bDF1$sum <- with(bDF1, wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
+    
+    plotDF2$conf_low[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    plotDF2$conf_high[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    ## total outfluxes
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "doc", "hetero_respiration", "root_respiration", "understorey_respiration", "over_leaf_respiration",
+                        "wood_respiration")
+    bDF1$doc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="doc"],
+                      sd=plotDF1$sd[plotDF1$Variable=="doc"])
+    bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
+                                     sd=plotDF1$sd[plotDF1$Variable=="hetero_respiration"])
+    bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
+    bDF1$understorey_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_respiration"],
+                                          sd=plotDF1$sd[plotDF1$Variable=="understorey_respiration"])
+    bDF1$over_leaf_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="over_leaf_respiration"],
+                                        sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
+    bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
+    bDF1$sum <- with(bDF1, hetero_respiration + doc +
+                         wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
+    
+    plotDF2$conf_low[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    plotDF2$conf_high[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    
+    #subDF <- plotDF2[plotDF2$Variable%in%c("Outfluxes","Ra"),]
+    #
+    #subDF$conf_low_radius <- with(subDF, effect_size - conf_low)
+    #subDF$conf_high_radius <- with(subDF, conf_high - effect_size)
+    #subDF$conf_low_radius_sq <- (subDF$conf_low_radius)^2
+    #subDF$conf_high_radius_sq <- (subDF$conf_high_radius)^2
+    #subDF$plot.cat2 <- "total_outflux"
+    #
+    #subDF2 <- summaryBy(conf_high_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=subDF, FUN=sum)
+    #subDF3 <- summaryBy(conf_low_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=subDF, FUN=sum)
+    #
+    #subDF2$conf_high_radius <- sqrt(subDF2$conf_high_radius_sq)
+    #subDF3$conf_low_radius <- sqrt(subDF3$conf_low_radius_sq)
+    #
+    #plotDF2[6,"conf_low"] <- plotDF2[6,"effect_size"] - subDF3$conf_low_radius
+    #plotDF2[6,"conf_high"] <- plotDF2[6,"effect_size"] + subDF2$conf_high_radius
     
     
     plotDF2$plot.cat <- c("total_change_in_pool", "total_influx", "total_npp", "total_rh", "total_ra", "total_outflux")
 
     ### Combine the plots
-    plotDF <- rbind(plotDF1, plotDF2[c(1,3,5,6),])
+    plotDF3 <- plotDF1[,c("Variable", "effect_size", "conf_low", "conf_high", "plot.cat")]
+    plotDF <- rbind(plotDF3, plotDF2[c(1,3,5,6),])
     
     ### Assign plot cat 2
     plotDF$plot.cat2[plotDF$plot.cat=="Influxes"] <- "A"
@@ -122,19 +269,115 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     ### confidence interval for each plot.cat2 categories
     ### Need to separately calculate confidence interval using sums of each category
     confDF <- summaryBy(effect_size~plot.cat2, keep.names=T, na.rm=T, data=plotDF, FUN=sum)
-    plotDF$conf_low_radius <- with(plotDF, effect_size - conf_low)
-    plotDF$conf_high_radius <- with(plotDF, conf_high - effect_size)
-    plotDF$conf_low_radius_sq <- (plotDF$conf_low_radius)^2
-    plotDF$conf_high_radius_sq <- (plotDF$conf_high_radius)^2
     
-    confDF2 <- summaryBy(conf_high_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=plotDF, FUN=sum)
-    confDF3 <- summaryBy(conf_low_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=plotDF, FUN=sum)
+    ## update A influxes
+    confDF$conf_low[confDF$plot.cat2 == "A"] <- plotDF2$conf_low[plotDF2$Variable=="Influxes"]
+    confDF$conf_high[confDF$plot.cat2 == "A"] <- plotDF2$conf_high[plotDF2$Variable=="Influxes"]
     
-    confDF2$conf_high_radius <- sqrt(confDF2$conf_high_radius_sq)
-    confDF3$conf_low_radius <- sqrt(confDF3$conf_low_radius_sq)
+    ## update D NPP
+    confDF$conf_low[confDF$plot.cat2 == "D"] <- plotDF2$conf_low[plotDF2$Variable=="NPP"]
+    confDF$conf_high[confDF$plot.cat2 == "D"] <- plotDF2$conf_high[plotDF2$Variable=="NPP"]
     
-    confDF$conf_low <- confDF$effect_size - confDF3$conf_low_radius
-    confDF$conf_high <- confDF$effect_size + confDF2$conf_high_radius
+    ## update E total outfluxes
+    confDF$conf_low[confDF$plot.cat2 == "E"] <- plotDF2$conf_low[plotDF2$Variable=="total_outflux"]
+    confDF$conf_high[confDF$plot.cat2 == "E"] <- plotDF2$conf_high[plotDF2$Variable=="total_outflux"]
+    
+    ## update F change in pools
+    confDF$conf_low[confDF$plot.cat2 == "F"] <- plotDF2$conf_low[plotDF2$Variable=="Change_in_pools"]
+    confDF$conf_high[confDF$plot.cat2 == "F"] <- plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"]
+    
+    ## update B NPP + Ra
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "root_respiration", "understorey_respiration", "over_leaf_respiration",
+                        "wood_respiration","herb_consump", "leaf_prod", "twig_prod", "bark_prod", "seed_prod",
+                        "wood_prod", "fineroot_prod", "coarseroot_prod", "understorey_prod")
+    bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
+    bDF1$understorey_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_respiration"],
+                                          sd=plotDF1$sd[plotDF1$Variable=="understorey_respiration"])
+    bDF1$over_leaf_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="over_leaf_respiration"],
+                                        sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
+    bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
+    bDF1$herb_consump <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="herb_consump"],
+                               sd=plotDF1$sd[plotDF1$Variable=="herb_consump"])
+    bDF1$leaf_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="leaf_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="leaf_prod"])
+    bDF1$twig_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="twig_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="twig_prod"])
+    bDF1$bark_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="bark_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="bark_prod"])
+    bDF1$seed_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="seed_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="seed_prod"])
+    bDF1$wood_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_prod"],
+                            sd=plotDF1$sd[plotDF1$Variable=="wood_prod"])
+    bDF1$fineroot_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="fineroot_prod"],
+                                sd=plotDF1$sd[plotDF1$Variable=="fineroot_prod"])
+    bDF1$coarseroot_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="coarseroot_prod"],
+                                  sd=plotDF1$sd[plotDF1$Variable=="coarseroot_prod"])
+    bDF1$understorey_prod <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_prod"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="understorey_prod"])
+    bDF1$sum <- with(bDF1, herb_consump + leaf_prod + twig_prod + bark_prod + seed_prod + wood_prod + fineroot_prod +
+                         coarseroot_prod + understorey_prod + wood_respiration + over_leaf_respiration + 
+                         understorey_respiration + root_respiration)
+    
+    confDF$conf_low[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    confDF$conf_high[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    ## update C change in pool + total outfluxes
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "delta_soil_c", "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", "delta_coarseroot_c", 
+                        "delta_litter_c","doc", "hetero_respiration", "root_respiration", 
+                        "understorey_respiration", "over_leaf_respiration",
+                        "wood_respiration")
+    bDF1$delta_soil_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_soil_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_soil_c"])
+    bDF1$delta_leaf_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_leaf_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_leaf_c"])
+    bDF1$delta_wood_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_wood_c"],
+                               sd=plotDF1$sd[plotDF1$Variable=="delta_wood_c"])
+    bDF1$delta_fineroot_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_fineroot_c"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="delta_fineroot_c"])
+    bDF1$delta_coarseroot_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_coarseroot_c"],
+                                     sd=plotDF1$sd[plotDF1$Variable=="delta_coarseroot_c"])
+    bDF1$delta_litter_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_litter_c"],
+                                 sd=plotDF1$sd[plotDF1$Variable=="delta_litter_c"])
+    bDF1$doc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="doc"],
+                      sd=plotDF1$sd[plotDF1$Variable=="doc"])
+    bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
+                                     sd=plotDF1$sd[plotDF1$Variable=="hetero_respiration"])
+    bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
+    bDF1$understorey_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_respiration"],
+                                          sd=plotDF1$sd[plotDF1$Variable=="understorey_respiration"])
+    bDF1$over_leaf_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="over_leaf_respiration"],
+                                        sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
+    bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
+    bDF1$sum <- with(bDF1, delta_soil_c + delta_leaf_c + delta_wood_c + delta_fineroot_c + delta_coarseroot_c + 
+                         delta_litter_c + hetero_respiration + doc +
+                         wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
+    
+    confDF$conf_low[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] -
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    confDF$conf_high[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] +
+        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    
+    #plotDF$conf_low_radius <- with(plotDF, effect_size - conf_low)
+    #plotDF$conf_high_radius <- with(plotDF, conf_high - effect_size)
+    #plotDF$conf_low_radius_sq <- (plotDF$conf_low_radius)^2
+    #plotDF$conf_high_radius_sq <- (plotDF$conf_high_radius)^2
+    #
+    #confDF2 <- summaryBy(conf_high_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=plotDF, FUN=sum)
+    #confDF3 <- summaryBy(conf_low_radius_sq~plot.cat2, keep.names=T, na.rm=T, data=plotDF, FUN=sum)
+    #
+    #confDF2$conf_high_radius <- sqrt(confDF2$conf_high_radius_sq)
+    #confDF3$conf_low_radius <- sqrt(confDF3$conf_low_radius_sq)
+    #
+    #confDF$conf_low <- confDF$effect_size - confDF3$conf_low_radius
+    #confDF$conf_high <- confDF$effect_size + confDF2$conf_high_radius
     
     y.lab1 <- c("ch4"=expression(CH[4]),                          # 1
                 "over_gpp"=expression(GPP[o]),                    # 2
@@ -432,7 +675,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                  position="stack") +
         geom_errorbar(data=confDF, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
                       width=0.1, size=1, color="grey") + 
-        geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=4, shape=21, fill="white")+
+        geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("GPP", 
                                   expression(paste("NPP+", R[a])),
@@ -464,12 +707,12 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
         #                   labels=c(-400, -200, -50, -25, 0, 50, 100, 150, 400, 650))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
         guides(fill=guide_legend(ncol=6))+
-        ylim(-500,1100)
+        ylim(-100,500)
         
      #plot(p3)
 
     ### Plotting
-    pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate.pdf", width=8, height=6)
+    pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate_bootstrapped.pdf", width=8, height=6)
     #plot(p1)
     plot(p3)
     #plot(p2)

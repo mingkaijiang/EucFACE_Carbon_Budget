@@ -749,27 +749,21 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted()
 ### make a summary table for all key values used in the manuscript
 #report_key_values_for_manuscript()
 
-### Power analysis ???
-
 
 ### Plot individual variable figures
 #source("R/plot_figures.R")
 
 
 ### Solutions:
-### Maintain existing understorey GPP
-### Use CUE to calculate understorey respiration
 ### Use shallow depth and September values for Soil C and incremental change in Soil C
 ### Use John's Rsoil with updated fitted coefficients and EucFACE parameters
 ### Use Nam Jin's stem respiration and needs his justification of his data
 
+### bootstrapping eCO2 effect - still unsure
+### checking bootstrapped result on NEP
 ### One last missing bit is VOC, but with a lot of flexibility to close the mass balance now.
-### Jim will continue working on understorey GPP
-### Need to use SE, not SD in the plot
 ### Finish main text, figures
-### Finish Method section
-### Finish SM figures, with corrected data
-### Finish method section (ask individual contributions), upload all needed datat on HIEv (by Nov-20)
+### Finish Method section (individual contributions)
 
 ###### ---------------- End -------------------- ######
 options(warn=0)
