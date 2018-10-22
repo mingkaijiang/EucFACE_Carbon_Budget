@@ -173,21 +173,12 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 ### Method 2 is a sapwood mass based method
 ### Method 3 is based on Roberto's three month data, temperature function fitted to Jan and Feb only
 ### Method 4 is based on Roberto's three month data, but with temperature function fitted to each campaign
+### method 5 is based on 9 month of data, with temperature function fitted to each treatment only
 wood_respiration_flux <- make_wood_respiration_flux()
 #wood_respiration_flux <- make_wood_respiration_flux_3()
 #wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
-#compare_Rwood(nDF=wood_respiration_flux_nj, rDF=wood_respiration_flux)
-
-#wood_respiration_flux$Yr <- year(wood_respiration_flux$Date)
-#test <- summaryBy(wood_respiration~Ring+Yr, FUN=sum, data=wood_respiration_flux, keep.names=T)
-#test$wood_respiration <- test$wood_respiration / 1000
-#test$Trt[test$Ring%in%c(2,3,6)] <- "amb"
-#test$Trt[test$Ring%in%c(1,4,5)] <- "ele"
-#
-#pdf("R_other/Rstem_comparison_Jan_Feb_rate.pdf")
-#with(wood_respiration_flux_ann, boxplot(Value~Trt, ylim=c(200,600)))
-#with(test, boxplot(wood_respiration~Trt, ylim=c(200,600)))
-#dev.off()
+wood_respiration_flux5 <- make_wood_respiration_flux_5()
+# compare_Rwood(nDF=wood_respiration_flux5, oDF=wood_respiration_flux)
 
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()

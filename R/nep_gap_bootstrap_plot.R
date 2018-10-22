@@ -251,7 +251,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
                                   expression(Delta*C[pools])))+
         theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
     
-    plot(p1)
+    #plot(p1)
     
     pdf("R_other/nep_gap_bootstrapped.pdf", width=8, height=8)
     plot(p1)
