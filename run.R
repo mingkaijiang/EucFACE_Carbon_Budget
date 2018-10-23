@@ -174,10 +174,10 @@ standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
 ### Method 3 is based on Roberto's three month data, temperature function fitted to Jan and Feb only
 ### Method 4 is based on Roberto's three month data, but with temperature function fitted to each campaign
 ### method 5 is based on 9 month of data, with temperature function fitted to each treatment only
-wood_respiration_flux <- make_wood_respiration_flux()
-#wood_respiration_flux <- make_wood_respiration_flux_3()
-#wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
-wood_respiration_flux5 <- make_wood_respiration_flux_5()
+#wood_respiration_flux <- make_wood_respiration_flux()
+##wood_respiration_flux <- make_wood_respiration_flux_3()
+##wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
+wood_respiration_flux <- make_wood_respiration_flux_5()
 # compare_Rwood(nDF=wood_respiration_flux5, oDF=wood_respiration_flux)
 
 ### understorey SLA
