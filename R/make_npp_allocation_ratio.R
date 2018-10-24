@@ -14,72 +14,69 @@ make_npp_allocation_ratio <- function() {
     npp$trt <- rep(c("aC", "eC"), each = length(term))
     
     ### leaf NPP
-    npp$value[npp$term=="LeafNPP" & npp$trt=="aC"] <- with(leaflitter_flux[leaflitter_flux$Ring==2|leaflitter_flux$Ring==3|leaflitter_flux$Ring==6,],
-                                                           sum(leaf_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="LeafNPP" & npp$trt=="aC"] <- with(leaflitter_flux_ann[leaflitter_flux_ann$Ring==2|leaflitter_flux_ann$Ring==3|leaflitter_flux_ann$Ring==6,],
+                                                           mean(predicted))
     
-    npp$value[npp$term=="LeafNPP" & npp$trt=="eC"] <- with(leaflitter_flux[leaflitter_flux$Ring==1|leaflitter_flux$Ring==4|leaflitter_flux$Ring==5,],
-                                                           sum(leaf_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="LeafNPP" & npp$trt=="eC"] <- with(leaflitter_flux_ann[leaflitter_flux_ann$Ring==1|leaflitter_flux_ann$Ring==4|leaflitter_flux_ann$Ring==5,],
+                                                           mean(predicted))
     ### twig NPP
-    npp$value[npp$term=="TwigNPP" & npp$trt=="aC"] <- with(leaflitter_flux[leaflitter_flux$Ring==2|leaflitter_flux$Ring==3|leaflitter_flux$Ring==6,],
-                                                           sum(twig_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="TwigNPP" & npp$trt=="aC"] <- with(twiglitter_flux_ann[twiglitter_flux_ann$Ring==2|twiglitter_flux_ann$Ring==3|twiglitter_flux_ann$Ring==6,],
+                                                           mean(predicted))
     
-    npp$value[npp$term=="TwigNPP" & npp$trt=="eC"] <- with(leaflitter_flux[leaflitter_flux$Ring==1|leaflitter_flux$Ring==4|leaflitter_flux$Ring==5,],
-                                                           sum(twig_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="TwigNPP" & npp$trt=="eC"] <- with(twiglitter_flux_ann[twiglitter_flux_ann$Ring==1|twiglitter_flux_ann$Ring==4|twiglitter_flux_ann$Ring==5,],
+                                                           mean(predicted))
     
     ### bark NPP
-    npp$value[npp$term=="BarkNPP" & npp$trt=="aC"] <- with(leaflitter_flux[leaflitter_flux$Ring==2|leaflitter_flux$Ring==3|leaflitter_flux$Ring==6,],
-                                                           sum(bark_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="BarkNPP" & npp$trt=="aC"] <- with(barklitter_flux_ann[barklitter_flux_ann$Ring==2|barklitter_flux_ann$Ring==3|barklitter_flux_ann$Ring==6,],
+                                                           mean(predicted))
     
-    npp$value[npp$term=="BarkNPP" & npp$trt=="eC"] <- with(leaflitter_flux[leaflitter_flux$Ring==1|leaflitter_flux$Ring==4|leaflitter_flux$Ring==5,],
-                                                           sum(bark_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="BarkNPP" & npp$trt=="eC"] <- with(barklitter_flux_ann[barklitter_flux_ann$Ring==1|barklitter_flux_ann$Ring==4|barklitter_flux_ann$Ring==5,],
+                                                           mean(predicted))
     
     ### seed NPP
-    npp$value[npp$term=="SeedNPP" & npp$trt=="aC"] <- with(leaflitter_flux[leaflitter_flux$Ring==2|leaflitter_flux$Ring==3|leaflitter_flux$Ring==6,],
-                                                           sum(seed_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="SeedNPP" & npp$trt=="aC"] <- with(seedlitter_flux_ann[seedlitter_flux_ann$Ring==2|seedlitter_flux_ann$Ring==3|seedlitter_flux_ann$Ring==6,],
+                                                           mean(predicted))
 
-    npp$value[npp$term=="SeedNPP" & npp$trt=="eC"] <- with(leaflitter_flux[leaflitter_flux$Ring==1|leaflitter_flux$Ring==4|leaflitter_flux$Ring==5,],
-                                                           sum(seed_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="SeedNPP" & npp$trt=="eC"] <- with(seedlitter_flux_ann[seedlitter_flux_ann$Ring==1|seedlitter_flux_ann$Ring==4|seedlitter_flux_ann$Ring==5,],
+                                                           mean(predicted))
     
     ### Wood NPP
-    npp$value[npp$term=="StemNPP" & npp$trt=="aC"] <- with(wood_production_flux[wood_production_flux$Ring==2|wood_production_flux$Ring==3|wood_production_flux$Ring==6,],
-                                                           sum(wood_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="StemNPP" & npp$trt=="aC"] <- with(wood_production_flux_ann[wood_production_flux_ann$Ring==2|wood_production_flux_ann$Ring==3|wood_production_flux_ann$Ring==6,],
+                                                           mean(predicted))
 
-    npp$value[npp$term=="StemNPP" & npp$trt=="eC"] <- with(wood_production_flux[wood_production_flux$Ring==1|wood_production_flux$Ring==4|wood_production_flux$Ring==5,],
-                                                           sum(wood_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="StemNPP" & npp$trt=="eC"] <- with(wood_production_flux_ann[wood_production_flux_ann$Ring==1|wood_production_flux_ann$Ring==4|wood_production_flux_ann$Ring==5,],
+                                                           mean(predicted))
 
     ### fine root NPP
-    npp$value[npp$term=="FineRootNPP" & npp$trt=="aC"] <- with(fineroot_production_flux[fineroot_production_flux$Ring==2|fineroot_production_flux$Ring==3|fineroot_production_flux$Ring==6,],
-                                                           sum(fineroot_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+    npp$value[npp$term=="FineRootNPP" & npp$trt=="aC"] <- with(fineroot_production_flux_ann[fineroot_production_flux_ann$Ring==2|fineroot_production_flux_ann$Ring==3|fineroot_production_flux_ann$Ring==6,],
+                                                               mean(predicted))
     
-    npp$value[npp$term=="FineRootNPP" & npp$trt=="eC"] <- with(fineroot_production_flux[fineroot_production_flux$Ring==1|fineroot_production_flux$Ring==4|fineroot_production_flux$Ring==5,],
-                                                           sum(fineroot_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+    npp$value[npp$term=="FineRootNPP" & npp$trt=="eC"] <- with(fineroot_production_flux_ann[fineroot_production_flux_ann$Ring==1|fineroot_production_flux_ann$Ring==4|fineroot_production_flux_ann$Ring==5,],
+                                                               mean(predicted))
     
 
     ### Coarse root NPP
-    npp$value[npp$term=="CoarseRootNPP" & npp$trt=="aC"] <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$Ring==2|coarse_root_production_flux_1$Ring==3|coarse_root_production_flux_1$Ring==6,],
-                                                               sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+    npp$value[npp$term=="CoarseRootNPP" & npp$trt=="aC"] <- with(coarse_root_production_flux_ann[coarse_root_production_flux_ann$Ring==2|coarse_root_production_flux_ann$Ring==3|coarse_root_production_flux_ann$Ring==6,],
+                                                                 mean(predicted))
     
-    npp$value[npp$term=="CoarseRootNPP" & npp$trt=="eC"] <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$Ring==1|coarse_root_production_flux_1$Ring==4|coarse_root_production_flux_1$Ring==5,],
-                                                               sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="CoarseRootNPP" & npp$trt=="eC"] <- with(coarse_root_production_flux_ann[coarse_root_production_flux_ann$Ring==1|coarse_root_production_flux_ann$Ring==4|coarse_root_production_flux_ann$Ring==5,],
+                                                                 mean(predicted))
 
     ### leaf consumption
-    npp$value[npp$term=="LeafConsumption" & npp$trt=="aC"] <- with(herbivory_leaf_consumption_flux[herbivory_leaf_consumption_flux$Ring==2|herbivory_leaf_consumption_flux$Ring==3|herbivory_leaf_consumption_flux$Ring==6,],
-                                                                 sum(herbivory_leaf_consumption_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+    npp$value[npp$term=="LeafConsumption" & npp$trt=="aC"] <- with(herbivory_leaf_consumption_flux_ann[herbivory_leaf_consumption_flux_ann$Ring==2|herbivory_leaf_consumption_flux_ann$Ring==3|herbivory_leaf_consumption_flux_ann$Ring==6,],
+                                                                   mean(predicted))
     
-    npp$value[npp$term=="LeafConsumption" & npp$trt=="eC"] <- with(herbivory_leaf_consumption_flux[herbivory_leaf_consumption_flux$Ring==1|herbivory_leaf_consumption_flux$Ring==4|herbivory_leaf_consumption_flux$Ring==5,],
-                                                                 sum(herbivory_leaf_consumption_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="LeafConsumption" & npp$trt=="eC"] <- with(herbivory_leaf_consumption_flux_ann[herbivory_leaf_consumption_flux_ann$Ring==1|herbivory_leaf_consumption_flux_ann$Ring==4|herbivory_leaf_consumption_flux_ann$Ring==5,],
+                                                                   mean(predicted))
 
     ### Understorey aboveground production
-    npp$value[npp$term=="UnderstoreyNPP" & npp$trt=="aC"] <- with(understorey_aboveground_production_flux[understorey_aboveground_production_flux$Ring==2|understorey_aboveground_production_flux$Ring==3|understorey_aboveground_production_flux$Ring==6,],
-                                                                   sum(understorey_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+    npp$value[npp$term=="UnderstoreyNPP" & npp$trt=="aC"] <- with(understorey_aboveground_production_flux_ann[understorey_aboveground_production_flux_ann$Ring==2|understorey_aboveground_production_flux_ann$Ring==3|understorey_aboveground_production_flux_ann$Ring==6,],
+                                                                  mean(predicted))
     
-    npp$value[npp$term=="UnderstoreyNPP" & npp$trt=="eC"] <- with(understorey_aboveground_production_flux[understorey_aboveground_production_flux$Ring==1|understorey_aboveground_production_flux$Ring==4|understorey_aboveground_production_flux$Ring==5,],
-                                                                   sum(understorey_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv
+    npp$value[npp$term=="UnderstoreyNPP" & npp$trt=="eC"] <- with(understorey_aboveground_production_flux_ann[understorey_aboveground_production_flux_ann$Ring==1|understorey_aboveground_production_flux_ann$Ring==4|understorey_aboveground_production_flux_ann$Ring==5,],
+                                                                  mean(predicted))
     
     ### MycorrhizalProduction
-    
-    
-    ### FlowerProduction
     
     
     ### Calculate total NPP per treatment
@@ -90,14 +87,38 @@ make_npp_allocation_ratio <- function() {
     npp$ratio[npp$trt=="aC"] <- npp$value[npp$trt=="aC"] / ac.tot
     npp$ratio[npp$trt=="eC"] <- npp$value[npp$trt=="eC"] / ec.tot
     
+    npp$term <- factor(npp$term, levels=unique(npp$term))
+    
+    
+    require(viridis)
+    col.list1 <- viridis(9)
+    
+    ### Prepare variable labels
+    var.labs1 <- c(expression(NPP[leaf]), expression(NPP[wood]),
+                   expression(NPP[froot]), expression(NPP[croot]),
+                   expression(NPP[twig]), expression(NPP[seed]),
+                   expression(NPP[bark]), expression(NPP[ua]),
+                   expression(NPP[hb]))
+    
+    ## Calculate change in allocation
+    delta1 <- (npp[npp$trt=="eC","value"]-npp[npp$trt=="aC","value"])
+    delta2 <- (npp[npp$trt=="eC","value"]-npp[npp$trt=="aC","value"])/npp[npp$trt=="aC","value"]*100
+    deltaDF <- data.frame(npp$term[npp$trt=="aC"], delta1, delta2)
+    colnames(deltaDF) <- c("term", "delta.abs", "delta.pct")
+    deltaDF <- deltaDF[complete.cases(deltaDF$delta.abs),]
+    deltaDF$term <- factor(deltaDF$term, levels=unique(deltaDF$term))
+    
     ### Make plots
     p1 <- ggplot(npp,
                  aes(trt, value)) +   
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        xlab("Treatment") + ylab(expression(paste("NPP g C ", m^-2, yr^-1))) +
+        xlab("Treatment") + ylab(expression(paste("NPP (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c(expression(aCO[2]), expression(eCO[2])))+
         theme_linedraw() +
+        scale_fill_manual(name="NPP", 
+                          values = col.list1,
+                          labels=var.labs1) +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
               axis.text.x = element_text(size=12),
@@ -106,16 +127,19 @@ make_npp_allocation_ratio <- function() {
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
-              legend.position="right",
+              legend.position="none",
               legend.text.align=0)
     
     p2 <- ggplot(npp,
-                 aes(trt, ratio)) +   
+                 aes(trt, ratio*100)) +   
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        xlab("Treatment") + ylab("Allocation fraction") +
+        xlab("Treatment") + ylab("NPP allocation fraction (%)") +
         scale_x_discrete(labels=c(expression(aCO[2]), expression(eCO[2])))+
         theme_linedraw() +
+        scale_fill_manual(name="NPP", 
+                          values = col.list1,
+                          labels=var.labs1) +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
               axis.text.x = element_text(size=12),
@@ -127,12 +151,53 @@ make_npp_allocation_ratio <- function() {
               legend.position="right",
               legend.text.align=0)
     
-    pdf("R_other/NPP_allocation_abs.pdf")
-    plot(p1)
-    dev.off()
+    p3 <- ggplot(deltaDF,
+                 aes(term, delta.abs)) +   
+        geom_bar(stat = "identity", aes(fill=term),
+                 position="stack") +
+        xlab("Variable") + ylab(expression(paste("Change in allocation (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("","","","","","","","",""))+
+        theme_linedraw() +
+        scale_fill_manual(name="NPP", 
+                          values = col.list1,
+                          labels=var.labs1) +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="none",
+              legend.text.align=0)
     
-    pdf("R_other/NPP_allocation_ratio.pdf")
-    plot(p2)
-    dev.off()
+    p4 <- ggplot(deltaDF,
+                 aes(term, delta.pct)) +   
+        geom_bar(stat = "identity", aes(fill=term),
+                 position="stack") +
+        xlab("Variable") + ylab("Change in allocation (%)") +
+        scale_x_discrete(labels=c("","","","","","","","",""))+
+        theme_linedraw() +
+        scale_fill_manual(name="NPP", 
+                          values = col.list1,
+                          labels=var.labs1) +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_line(color="grey"),
+              legend.position="right",
+              legend.text.align=0)
+
+    require(grid)
+    require(cowplot)
     
+    pdf("output/NPP_allocation.pdf", width=10,height=8)
+    plot_grid(p1, p2, p3, p4, labels="AUTO", ncol=2, align="v", axis="l",
+              rel_widths=c(1,1.2, 1, 1.2))
+    dev.off()
 }

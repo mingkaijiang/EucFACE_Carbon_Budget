@@ -296,8 +296,8 @@ generate_stats_abs_covariate(stat.model="no_interaction_with_covariate")
 #generate_stats_abs_linear_covariate(stat.model="no_interaction_with_linear_covariate")
 
 ### Make some plots
-source("R/make_statistical_comparison_plots.R")
-make_statistical_comparison_plots()
+#source("R/make_statistical_comparison_plots.R")
+#make_statistical_comparison_plots()
 
 #source("R/make_statistical_comparison_linear_covariate_plots.R")
 #make_statistical_comparison_linear_covariate_plots()
@@ -677,8 +677,11 @@ nep_gap_bootstrap_plot(inDF=tables_by_ring_predicted)
 #biomass_increment_plot()
 
 ### NPP allocation
-#source("R/make_npp_allocation_ratio.R")
-#make_npp_allocation_ratio()
+source("R/make_npp_allocation_ratio.R")
+make_npp_allocation_ratio()
+
+### initial LAI vs. long-term LAI
+lai.fit <- make_initial_lai_vs_long_term_lai(lai_variable)
 
 #### TBCA
 #source("R/make_belowground_c_flux_allocation.R")
