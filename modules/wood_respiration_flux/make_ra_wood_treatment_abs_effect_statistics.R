@@ -50,6 +50,7 @@ make_ra_wood_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Read initial basal area data
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     f12$ba <- ((f12$X20.09.2012/2)^2) * pi
+
     baDF <- summaryBy(ba~Ring, data=f12, FUN=sum, na.rm=T, keep.names=T)
     
     ### return in unit of cm2/m2, which is m2 ha-1
@@ -65,6 +66,25 @@ make_ra_wood_treatment_abs_effect_statistics <- function(inDF, var.cond,
     tDF$Psyllid <- "Before"
     tDF$Psyllid[tDF$Yr >= 2016] <- "After"
 
+    
+    ### Get tree information where stem efflux were measured
+    rstemDF <- read.csv(file.path(getToPath(), 
+                                  "FACE_A0089_RA_STEMCO2EFLUX_L1_20171218-20171220.csv"))
+    tree.list <- unique(rstemDF$Label)
+    
+    tmpDF <- f12[f12$Tree%in%tree.list,]
+    
+    baDF <- summaryBy(ba~Ring, data=tmpDF, FUN=sum, na.rm=T, keep.names=T)
+    
+    ### return in unit of cm2/m2, which is m2 ha-1
+    baDF$ba_ground_area <- baDF$ba / ring_area
+    
+    for (i in 1:6) {
+        tDF$Cov4[tDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
+    }
+    
+    
+    
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor
     int.m1 <- "non-interative_with_covariate"
@@ -81,6 +101,26 @@ make_ra_wood_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ## confidence interval 
     eff.conf1 <- confint(modelt1,"Trtele")
+    
+    
+    ### test effect of Cov3 - basal area
+    ## model 1: no interaction, year as factor, ring random factor
+    int.mt <- "non-interative_with_covariate"
+    modeltt <- lmer(Value~Trt + Yrf + Cov4 + (1|Ring), data=tDF)
+    
+    ## anova
+    mt.anova <- Anova(modeltt, test="F")
+    
+    ## Check ele - amb diff
+    summt <- summary(glht(modeltt, linfct = mcp(Trt = "Tukey")))
+    
+    ## average effect size
+    eff.sizet <- coef(modeltt)[[1]][1,2]
+    
+    ## confidence interval 
+    eff.conft <- confint(modeltt,"Trtele")
+    
+    eff.conft
     
     ### Analyse the variable model
     ## model 2: interaction, year as factor, ring random factor

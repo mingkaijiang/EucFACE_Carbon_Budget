@@ -45,7 +45,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
                                   Ra_stem - Ra_und - VOC - Rhb - DOC - Rsoil - Rgrowth))
 
     out$aCO2[out$Method=="In-out"] <- mean(bDF1$inout)
-    out$aCO2_conf[out$Method=="In-out"] <- sd(bDF1$inout)/sqrt(1000) * 1.96
+    out$aCO2_conf[out$Method=="In-out"] <- sd(bDF1$inout)#/sqrt(1000) * 1.96
     
     ## elevated rings
     bDF1$GPP_overstorey <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="GPP overstorey"],
@@ -74,7 +74,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
                                   Ra_stem - Ra_und - VOC - Rhb - DOC - Rsoil - Rgrowth))
     
     out$eCO2[out$Method=="In-out"] <- mean(bDF1$inout)
-    out$eCO2_conf[out$Method=="In-out"] <- sd(bDF1$inout)/sqrt(1000) * 1.96
+    out$eCO2_conf[out$Method=="In-out"] <- sd(bDF1$inout)#/sqrt(1000) * 1.96
     
     ### create dataframe to hold bootstrap results - npp
     bDF1 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA)
@@ -105,7 +105,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
                                   Mycorrhizal_prod + Leaf_cons - Rh))
     
     out$aCO2[out$Method=="NPP-Rh"] <- mean(bDF1$tot)
-    out$aCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1$tot)/sqrt(1000) * 1.96
+    out$aCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
     
     ## elevated rings
     bDF1$Leaf_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Leaf NPP"],
@@ -130,7 +130,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
                                 Mycorrhizal_prod + Leaf_cons - Rh))
     
     out$eCO2[out$Method=="NPP-Rh"] <- mean(bDF1$tot)
-    out$eCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1$tot)/sqrt(1000) * 1.96
+    out$eCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
     
     
     
@@ -165,7 +165,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
     bDF1$tot <- with(bDF1, (soilc+leafc+woodc+uac+frootc+crootc+micc+mycc+litter+insect))
     
     out$aCO2[out$Method=="Pool"] <- mean(bDF1$tot)
-    out$aCO2_conf[out$Method=="Pool"] <- sd(bDF1$tot)/sqrt(1000) * 1.96
+    out$aCO2_conf[out$Method=="Pool"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
     
     ## elevated rings
     bDF1$soilc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Soil C"],
@@ -192,7 +192,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
     bDF1$tot <- with(bDF1, (soilc+leafc+woodc+uac+frootc+crootc+micc+mycc+litter+insect))
     
     out$eCO2[out$Method=="Pool"] <- mean(bDF1$tot)
-    out$eCO2_conf[out$Method=="Pool"] <- sd(bDF1$tot)/sqrt(1000) * 1.96
+    out$eCO2_conf[out$Method=="Pool"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
     
  
     write.csv(out, "R_other/NEP_bootstrapped_method_comparison.csv", row.names=F)

@@ -85,16 +85,22 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])
     errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])
     
-    errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
-    errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
+    errDF$sd[errDF$cat=="NPP+Ra"] <- sd(bDF2$sum)
+    errDF$sd[errDF$cat=="MAESPA"] <- sd(bDF1$sum)
     
-    errDF$conf[errDF$cat=="NPP+Ra"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="NPP+Ra"]
-    errDF$conf[errDF$cat=="MAESPA"] <- qt(0.95/2 + .5, length(bDF1$sum)-1) * errDF$se[errDF$cat=="MAESPA"]
+    #errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
+    #errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
     
-    errDF$pos[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] + errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] - errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.025))
-    errDF$pos[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] + errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] - errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.025))
+    #errDF$conf[errDF$cat=="NPP+Ra"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="NPP+Ra"]
+    #errDF$conf[errDF$cat=="MAESPA"] <- qt(0.95/2 + .5, length(bDF1$sum)-1) * errDF$se[errDF$cat=="MAESPA"]
+    
+    errDF$conf[errDF$cat=="NPP+Ra"] <- errDF$sd[errDF$cat=="NPP+Ra"]
+    errDF$conf[errDF$cat=="MAESPA"] <- errDF$sd[errDF$cat=="MAESPA"]
+    
+    errDF$pos[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] + errDF$conf[errDF$cat=="NPP+Ra"] 
+    errDF$neg[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] - errDF$conf[errDF$cat=="NPP+Ra"] 
+    errDF$pos[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] + errDF$conf[errDF$cat=="MAESPA"] 
+    errDF$neg[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] - errDF$conf[errDF$cat=="MAESPA"] 
     
     ### Prepare variable labels
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
@@ -223,16 +229,22 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$eCO2[plotDF$cat=="NPP+Ra"])
     errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$eCO2[plotDF$cat=="MAESPA"])
     
-    errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
-    errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
+    errDF$sd[errDF$cat=="NPP+Ra"] <- sd(bDF2$sum)
+    errDF$sd[errDF$cat=="MAESPA"] <- sd(bDF1$sum)
     
-    errDF$conf[errDF$cat=="NPP+Ra"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="NPP+Ra"]
-    errDF$conf[errDF$cat=="MAESPA"] <- qt(0.95/2 + .5, length(bDF1$sum)-1) * errDF$se[errDF$cat=="MAESPA"]
+    #errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
+    #errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
     
-    errDF$pos[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] + errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] - errDF$conf[errDF$cat=="NPP+Ra"] #quantile(bDF2$sum, probs = c(0.025))
-    errDF$pos[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] + errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.975))
-    errDF$neg[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] - errDF$conf[errDF$cat=="MAESPA"] #quantile(bDF1$sum, probs = c(0.025))
+    #errDF$conf[errDF$cat=="NPP+Ra"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="NPP+Ra"]
+    #errDF$conf[errDF$cat=="MAESPA"] <- qt(0.95/2 + .5, length(bDF1$sum)-1) * errDF$se[errDF$cat=="MAESPA"]
+    
+    errDF$conf[errDF$cat=="NPP+Ra"] <- errDF$sd[errDF$cat=="NPP+Ra"]
+    errDF$conf[errDF$cat=="MAESPA"] <- errDF$sd[errDF$cat=="MAESPA"]
+    
+    errDF$pos[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] + errDF$conf[errDF$cat=="NPP+Ra"] 
+    errDF$neg[errDF$cat=="NPP+Ra"] <- errDF$sum[errDF$cat=="NPP+Ra"] - errDF$conf[errDF$cat=="NPP+Ra"] 
+    errDF$pos[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] + errDF$conf[errDF$cat=="MAESPA"] 
+    errDF$neg[errDF$cat=="MAESPA"] <- errDF$sum[errDF$cat=="MAESPA"] - errDF$conf[errDF$cat=="MAESPA"] 
     
     
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
@@ -333,11 +345,17 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$aCO2[plotDF$cat=="Litter+Rroot"])
     errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$aCO2[plotDF$cat=="Rsoil"])
     
-    errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
-    errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
+    errDF$sd[errDF$cat=="Litter+Rroot"] <- sd(bDF2$sum)
+    errDF$sd[errDF$cat=="Rsoil"] <- sd(bDF1$Rsoil)
     
-    errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
-    errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
+    #errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
+    #errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
+    
+    #errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
+    #errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
+    
+    errDF$conf[errDF$cat=="Litter+Rroot"] <- errDF$sd[errDF$cat=="Litter+Rroot"]
+    errDF$conf[errDF$cat=="Rsoil"] <- errDF$sd[errDF$cat=="Rsoil"]
     
     errDF$pos[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] + errDF$conf[errDF$cat=="Litter+Rroot"] 
     errDF$neg[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] - errDF$conf[errDF$cat=="Litter+Rroot"] 
@@ -450,11 +468,17 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$eCO2[plotDF$cat=="Litter+Rroot"])
     errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$eCO2[plotDF$cat=="Rsoil"])
     
-    errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
-    errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
+    #errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
+    #errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
     
-    errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
-    errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
+    errDF$sd[errDF$cat=="Litter+Rroot"] <- sd(bDF2$sum)
+    errDF$sd[errDF$cat=="Rsoil"] <- sd(bDF1$Rsoil)
+    
+    #errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
+    #errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
+    
+    errDF$conf[errDF$cat=="Litter+Rroot"] <- errDF$sd[errDF$cat=="Litter+Rroot"]
+    errDF$conf[errDF$cat=="Rsoil"] <- errDF$sd[errDF$cat=="Rsoil"]
     
     errDF$pos[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] + errDF$conf[errDF$cat=="Litter+Rroot"] 
     errDF$neg[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] - errDF$conf[errDF$cat=="Litter+Rroot"] 
