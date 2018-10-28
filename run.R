@@ -748,13 +748,6 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted()
 #source("R/plot_figures.R")
 
 
-### Solutions:
-### Use shallow depth and September values for Soil C and incremental change in Soil C
-### Use John's Rsoil with updated fitted coefficients and EucFACE parameters
-### Use Nam Jin's stem respiration and needs his justification of his data
-
-### bootstrapping eCO2 effect - still unsure
-### checking bootstrapped result on NEP
 ### One last missing bit is VOC, but with a lot of flexibility to close the mass balance now.
 ### Finish main text, figures
 ### Finish Method section (individual contributions)

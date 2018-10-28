@@ -253,7 +253,7 @@ nep_gap_bootstrap_plot <- function(inDF) {
     
     #plot(p1)
     
-    pdf("R_other/nep_gap_bootstrapped.pdf", width=8, height=8)
+    pdf("Output/nep_gap_bootstrapped.pdf", width=8, height=8)
     plot(p1)
     dev.off()
     

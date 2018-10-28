@@ -753,7 +753,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
      #plot(p3)
 
     ### Plotting
-    pdf("R_other/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate_bootstrapped.pdf", width=8, height=6)
+    pdf("Output/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate_bootstrapped.pdf", width=8, height=6)
     #plot(p1)
     plot(p3)
     #plot(p2)
