@@ -41,16 +41,29 @@ make_root_respiration_flux <- function(fr_pool, cr_pool){
   fr_biomass <- summaryBy(fineroot_pool~Ring, data=fr_pool, keep.names=T, FUN=mean)
   cr_biomass <- summaryBy(coarse_root_pool~Ring, data=cr_pool, keep.names=T, FUN=mean)
   
+  ### calculate the proportion of coarseroot that is intermediate root, bole and coarseroot
+  ir.frac <- 0.24/0.88
+  cr.frac <- 0.29/0.88
+  br.frac <- 0.35/0.88
+  
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {
       tempDF[tempDF$Ring == i, "fr_biomass"] <- fr_biomass[fr_biomass$Ring == i, "fineroot_pool"]
-      tempDF[tempDF$Ring == i, "cr_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr_at_top_soil
+      #tempDF[tempDF$Ring == i, "cr_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr_at_top_soil
+      tempDF[tempDF$Ring == i, "cr_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr.frac * cr_at_top_soil
+      tempDF[tempDF$Ring == i, "ir_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * ir.frac * cr_at_top_soil
+      tempDF[tempDF$Ring == i, "br_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * br.frac * cr_at_top_soil
+      
       
   }
   
   ### Calculate R root
-  tempDF$Rfroot <- Rcoef_fr * Rbase ^ ((tempDF$T5_avg - 15) / 10) * tempDF$fr_biomass
-  tempDF$Rcroot <- Rcoef_cr * Rbase ^ ((tempDF$T5_avg - 15) / 10) * tempDF$cr_biomass
+  tempDF$Rfroot <- (Rcoef_fr * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$fr_biomass
+  #tempDF$Rcroot <- (Rcoef_cr * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$cr_biomass
+  tempDF$Rcroot1 <- (1.33 * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$cr_biomass
+  tempDF$Riroot <- (2.426 * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$ir_biomass
+  tempDF$Rbroot <- (0.656 * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$br_biomass
+  tempDF$Rcroot <- with(tempDF, Rcroot1 + Riroot + Rbroot)
   tempDF$Rroot <- tempDF$Rfroot + tempDF$Rcroot
   
   ### convert from nmol CO2 g-1 s-1 to mg C m-2 15min-1
