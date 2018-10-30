@@ -42,8 +42,8 @@ make_wood_respiration_flux_5 <- function() {
     hDF$b[hDF$Ring%in%c(2,3,6)] <- 0.1122
     hDF$b[hDF$Ring%in%c(1,4,5)] <- 0.097
     
-    #hDF$a <- 0.1789
-    #hDF$b <- 0.1042
+    hDF$a <- 0.1789
+    hDF$b <- 0.1042
     
     a.factor <- 1/mean(c(0.82, 0.96, 0.94))  
     e.factor <- 1/mean(c(1.11, 1.02, 0.97))
@@ -52,10 +52,10 @@ make_wood_respiration_flux_5 <- function() {
     
     ### Calculate respiration rate (umol CO2 m-2 h-1)
     hDF$Resp <- hDF$a * exp(hDF$b * hDF$AirTC_1_Avg) * hDF$SA * 3600
-    
+
     ### Convert unit from umol CO2 m-2 h-1 to mg C m-2 h-1
-    hDF$Resp_mg <- hDF$Resp * 1e-6 * 12.01 * 1000 * hDF$scale_factor
-    
+    hDF$Resp_mg <- hDF$Resp * 1e-6 * 12.01 * 1000 #* hDF$scale_factor
+
     ### daily sums of stem respiration
     hDF$Date <- strptime(hDF$DateHour, format="%Y-%m-%d")
     dDF <- summaryBy(Resp_mg~Date+Ring, data=hDF, FUN=sum, keep.names=T, na.rm=T)
@@ -66,6 +66,15 @@ make_wood_respiration_flux_5 <- function() {
     dDF$ndays <- 1
     
     out <- dDF[,c("Date", "Start_date", "End_date", "Ring", "wood_respiration", "ndays")]
+    
+    
+    #out$trt[out$Ring%in%c(2,3,6)] <- "aCO2"
+    #out$trt[out$Ring%in%c(1,4,5)] <- "eCO2"
+    #out$year <- year(out$Date)
+    
+    #test1 <- summaryBy(wood_respiration~year+Ring+trt,FUN=sum, data=out, keep.names=T)
+    #test2 <- summaryBy(wood_respiration~year+trt,FUN=mean, data=test1, keep.names=T)
+    #test3 <- summaryBy(wood_respiration~year+trt,FUN=mean, data=test1, keep.names=T)
     
     return(out)
     

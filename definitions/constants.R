@@ -48,7 +48,7 @@ strip_area <- 0.1
 # convert production flux from mg m-2 d-1 to g m-2 yr-1
 conv <- 365 / 1000  
 
-# ccost growth respiration (guess value)
+# ccost growth respiration based on Drake et al. 2018 NP.
 ccost <- 0.3
 
 # root respiration coefficients
@@ -57,13 +57,13 @@ ccost <- 0.3
 # this basal respiration rate is for fineroot only!
 Rcoef_fr <- 4.425 # nmol CO2 m-2 s-1
 
-# This is the base rate, the same for root and stem!
+# This is the base rate
 Rbase <- 2.26
 
 ## fraction of coarse root at top 30 cm of soil
 cr_at_top_soil <- 0.5
 
-# tjos basa; respiration rate is for coarseroot onl!
+# respiration rate is for coarseroot only!
 Rcoef_cr <- 1.33 # nmol CO2 m-2 s-1
 
 # understorey cue
