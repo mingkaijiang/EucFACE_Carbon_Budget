@@ -151,7 +151,7 @@ leaflitter_pool <- make_leaflitter_pool(c_fraction)
 ### Insect pool
 ### method 1 is based on litter basket data
 ### method 2 is based on pitfalls and suction data
-insect_pool2 <- make_insect_pool(c_fraction_lp)
+#insect_pool2 <- make_insect_pool(c_fraction_lp)
 insect_pool <- make_insect_pool2(c_fraction_lp)
 
 ### sapwood C and N fraction

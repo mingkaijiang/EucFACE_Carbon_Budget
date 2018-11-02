@@ -36,8 +36,7 @@ make_insect_pool2 <- function(c_frac){
     
     ### pitfall sampling over 2 week period
     myDF.sum$weight <- ifelse(myDF.sum$Method=="pitfall", myDF.sum$weight.mg.C.m2 / 14, myDF.sum$weight.mg.C.m2)
-    #myDF.sum$weight <- ifelse(myDF.sum$Method=="pitfall", myDF.sum$weight.mg.C.m2, myDF.sum$weight.mg.C.m2)
-    
+
     ### sum across methods to get a total arthropod biomass 
     myDF.sum2 <- summaryBy(weight~Date+Ring+Plot, FUN=sum, data=myDF.sum, keep.names=T, na.rm=T)
     
@@ -45,14 +44,22 @@ make_insect_pool2 <- function(c_frac){
     myDF.avg <- summaryBy(weight~Date+Ring, FUN=mean, data=myDF.sum2, keep.names=T, na.rm=T)
     myDF.avg$weight <- myDF.avg$weight / 1000
     
+    # add aerial data here
+    aDF <- make_species_biomass_relationship_aerial_insects()
+    
+    outDF <- rbind(myDF.avg, aDF)
+    
+    # sum by date
+    out <- summaryBy(weight~Ring+Date, FUN=sum, data=outDF, keep.names=T)
+    
     ### out
-    out <- myDF.avg[,c("Date", "Ring", "weight")]
+    out <- out[,c("Date", "Ring", "weight")]
     colnames(out) <- c("Date", "Ring", "insect_pool")
     
     # 
     #out$trt[out$Ring%in%c(2,3,6)] <- "aCO2"
     #out$trt[out$Ring%in%c(1,4,5)] <- "eCO2"
-    
+    #
     #test <- summaryBy(insect_pool~trt, data=out, FUN=mean)
     #with(out, plot(insect_pool~Date, color=trt))
     #with(out, boxplot(insect_pool~trt))
