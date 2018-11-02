@@ -728,7 +728,7 @@ p4 <- ggplot(soilc.ph)+
     geom_errorbar(data=soilc.ph, mapping=aes(x=as.character(Ring),
                                                ymin=ph-se, ymax=ph+se),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y="Soil pH")+
+    labs(x="Ring", y="Soil pH (water)")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1624,8 +1624,8 @@ p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
     labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
@@ -1853,7 +1853,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
-          legend.position="none")+
+          legend.position="right")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -2339,7 +2339,10 @@ p1 <- ggplot(g.resp, aes(x=as.character(Trt), y=value))+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_discrete("", 
+                     labels=c(expression(aCO[2]),
+                              expression(eCO[2])))
 
 pdf("output/Rgrowth_flux.pdf", width=4,height=4)
 plot(p1)
