@@ -253,7 +253,7 @@ make_statistical_comparison_plots <- function() {
     #          gp=gpar(fontsize=16, col="black", fontface="bold"))
     #dev.off()
     
-    pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool_with_covariate.pdf", width=8, height=12)
+    pdf("output/treatment_effect_abs_no_interaction_change_in_pool_with_covariate.pdf", width=8, height=12)
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 
