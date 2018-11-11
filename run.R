@@ -150,9 +150,11 @@ leaflitter_pool <- make_leaflitter_pool(c_fraction)
 
 ### Insect pool
 ### method 1 is based on litter basket data
-### method 2 is based on pitfalls and suction data
-#insect_pool2 <- make_insect_pool(c_fraction_lp)
-insect_pool <- make_insect_pool2(c_fraction_lp)
+### understorey insect is based on suction data
+### ground dwelling is based on pitfall data
+insect_pool <- make_insect_pool(c_fraction_lp)
+understorey_insect_pool <- make_understorey_insect_pool(c_frac=c_fraction_lp)
+ground_dwelling_insect_pool <- make_ground_dwelling_insect_pool(c_frac=c_fraction_lp)
 
 ### sapwood C and N fraction
 sapwood_cn_fraction <- make_sapwood_c_n_fraction()

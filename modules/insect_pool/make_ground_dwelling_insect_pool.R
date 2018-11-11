@@ -1,4 +1,4 @@
-make_understorey_insect_pool <- function(c_frac){
+make_ground_dwelling_insect_pool <- function(c_frac){
     
     ### only use suction data and litterfall data
     
@@ -37,7 +37,7 @@ make_understorey_insect_pool <- function(c_frac){
     myDF.sum$weight.mg.C.m2 <- myDF.sum$weight.mg.C / myDF.sum$area
     
     ### only use suction data
-    myDF.sum <- subset(myDF.sum, Method=="suction")
+    myDF.sum <- subset(myDF.sum, Method=="pitfall")
     
     ### pitfall sampling over 2 week period
     myDF.sum$weight <- ifelse(myDF.sum$Method=="pitfall", myDF.sum$weight.mg.C.m2 / 14, myDF.sum$weight.mg.C.m2)
@@ -49,7 +49,8 @@ make_understorey_insect_pool <- function(c_frac){
     myDF.avg <- summaryBy(weight~Date+Ring, FUN=mean, data=myDF.sum2, keep.names=T, na.rm=T)
     myDF.avg$weight <- myDF.avg$weight / 1000
     
-
+    outDF <- myDF.avg
+    
     # sum by date
     out <- summaryBy(weight~Ring+Date, FUN=sum, data=outDF, keep.names=T)
     

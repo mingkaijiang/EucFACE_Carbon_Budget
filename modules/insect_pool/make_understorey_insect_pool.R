@@ -49,7 +49,8 @@ make_understorey_insect_pool <- function(c_frac){
     myDF.avg <- summaryBy(weight~Date+Ring, FUN=mean, data=myDF.sum2, keep.names=T, na.rm=T)
     myDF.avg$weight <- myDF.avg$weight / 1000
     
-
+    outDF <- myDF.avg
+    
     # sum by date
     out <- summaryBy(weight~Ring+Date, FUN=sum, data=outDF, keep.names=T)
     
