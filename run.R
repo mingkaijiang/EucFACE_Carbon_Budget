@@ -559,6 +559,18 @@ insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=insect_pool,
                                                     stat.model="no_interaction_with_covariate",
                                                     return.outcome="predicted")
 
+understorey_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=understorey_insect_pool, 
+                                                             var.cond="pool", var.col=3,
+                                                             date.as.factor=T,
+                                                             stat.model="no_interaction_with_covariate",
+                                                             return.outcome="predicted")
+
+ground_dwelling_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=ground_dwelling_insect_pool, 
+                                                                         var.cond="pool", var.col=3,
+                                                                         date.as.factor=T,
+                                                                         stat.model="no_interaction_with_covariate",
+                                                                         return.outcome="predicted")
+
 
 ### Delta Soil C
 delta_soil_c_pool_ann <- make_delta_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
@@ -636,6 +648,13 @@ delta_insect_pool_ann <- make_delta_insc_treatment_abs_effect_statistics(inDF=in
                                                                 date.as.factor=T,
                                                                 stat.model="no_interaction_with_covariate",
                                                                 return.outcome="predicted")
+
+
+delta_ground_dwelling_insect_pool_ann <- make_delta_insc_treatment_abs_effect_statistics(inDF=ground_dwelling_insect_pool, 
+                                                                             var.cond="pool", var.col=3,
+                                                                             date.as.factor=T,
+                                                                             stat.model="no_interaction_with_covariate",
+                                                                             return.outcome="predicted")
 
 
 ###### ----------Make summary tables-------------- ######

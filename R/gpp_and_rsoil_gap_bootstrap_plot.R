@@ -104,12 +104,12 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     
     ### Prepare variable labels
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
-                  expression(NPP[leaf]), expression(NPP[wood]),
+                  expression(NPP[leaf]), expression(NPP[stem]),
                   expression(NPP[froot]), expression(NPP[croot]),
                   expression(NPP[other]), expression(NPP[ua]),
                   expression(NPP[hb]), #expression(NPP[myc]), 
                   expression(R[leaf]),
-                  expression(R[wood]), expression(R[root]),
+                  expression(R[stem]), expression(R[root]),
                   expression(R[ua]), #expression(R[hb]),
                   expression(R[g]))
     
@@ -366,7 +366,7 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     ### Prepare variable labels
     var.labs2 <- c(expression(NPP[leaf]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
-                  expression(NPP[ua]),expression(P[frass]), #expression(NPP[myc]), 
+                  expression(NPP[ua]),expression(Frass), #expression(NPP[myc]), 
                   expression(R[root]),#expression(Delta*C[soil]), 
                   expression(R[soil]))
     

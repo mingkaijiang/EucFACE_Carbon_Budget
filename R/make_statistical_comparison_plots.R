@@ -15,9 +15,9 @@ make_statistical_comparison_plots <- function() {
     
     #### exclude all pools
     myDF$Category <- c(rep("pool", 11), # 1 - 11
-                       rep("resp", 2), # 12 - 13
-                       rep("prod", 1), # 14
-                       rep("resp", 2), # 15 - 16
+                       rep("resp", 3), # 12 - 14
+                       rep("prod", 1), # 15
+                       rep("resp", 1), # 16
                        rep("prod", 1), # 17
                        rep("resp", 2), # 18 - 19
                        rep("prod", 9), # 20 - 28
@@ -84,7 +84,7 @@ make_statistical_comparison_plots <- function() {
     
     y.lab1 <- c("delta_soil_c"=expression(Delta*C[soil]),
                 "delta_leaf_c"=expression(Delta*C[leaf]),
-                "delta_wood_c"=expression(Delta*C[wood]),
+                "delta_wood_c"=expression(Delta*C[stem]),
                 "delta_fineroot_c"=expression(Delta*C[froot]),
                 "delta_coarseroot_c"=expression(Delta*C[croot]),
                 "delta_understorey_c"=expression(Delta*C[ua]),
@@ -93,30 +93,30 @@ make_statistical_comparison_plots <- function() {
                 "delta_microbial_c"=expression(Delta*C[micr]),
                 "delta_mycorrhizal_c"=expression(Delta*C[myco]),
                 "delta_litter_c"=expression(Delta*C[lit]),
-                "delta_insect_c"=expression(Delta*C[ins]))
+                "delta_insect_c"=expression(Delta*C[insect]))
     
-    y.lab2 <- c("wood_respiration"=expression(R[wood]),
+    y.lab2 <- c("wood_respiration"=expression(R[stem]),
                 "root_respiration"=expression(R[root]),
                 "understorey_respiration"=expression(R[ua]),
-                "herb_consump"=expression(NPP[hb]),
                 "herb_respiration"=expression(R[hb]),
                 "soil_respiration"=expression(R[soil]),
-                "doc"=expression(L[doc]),
+                "doc"=expression(DOC),
                 "hetero_respiration"=expression(R[rh]),
-                "over_leaf_respiration"=expression(R[leaf]))
+                "over_leaf_respiration"=expression(R[leaf]),
+                "frass_prod"=expression(Frass))
     
-    y.lab3 <- c("frass_prod"=expression(P[frass]),
-                "lerp_prod"=expression(P[lerp]),
+    y.lab3 <- c("herb_consump"=expression(NPP[hb]),
+                "lerp_prod"=expression(NPP[lerp]),
                 "leaf_prod"=expression(NPP[leaf]),
                 "twig_prod"=expression(NPP[twig]),
                 "bark_prod"=expression(NPP[bark]),
                 "seed_prod"=expression(NPP[seed]),
-                "wood_prod"=expression(NPP[wood]),
+                "wood_prod"=expression(NPP[stem]),
                 "fineroot_prod"=expression(NPP[froot]),
                 "coarseroot_prod"=expression(NPP[croot]),
                 "understorey_prod"=expression(NPP[ua]),
                 #"mycorrhizal_prod"=expression(NPP[myc]),
-                "ch4"=expression(U[CH[4]]))
+                "ch4"=expression(CH[4]))
     
     y.lab4 <- c("over_gpp"=expression(GPP[o]),
                 "understorey_gpp"=expression(GPP[u]))

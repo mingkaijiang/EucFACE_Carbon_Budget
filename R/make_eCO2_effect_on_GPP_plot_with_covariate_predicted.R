@@ -432,24 +432,24 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                 "twig_prod"=expression(NPP[twig]),                # 9
                 "bark_prod"=expression(NPP[bark]),                # 10
                 "seed_prod"=expression(NPP[seed]),                # 11
-                "wood_prod"=expression(NPP[wood]),                # 12
+                "wood_prod"=expression(NPP[stem]),                # 12
                 "fineroot_prod"=expression(NPP[froot]),           # 13
                 "coarseroot_prod"=expression(NPP[croot]),         # 14
                 "understorey_prod"=expression(NPP[ua]),           # 15
                 #"mycorrhizal_prod"=expression(NPP[myc]),           # 15
                 "root_respiration"=expression(R[root]),           # 16
                 "understorey_respiration"=expression(R[ua]),      # 17
-                "doc"=expression(R[doc]),                         # 18
-                "hetero_respiration"=expression(R[h]),            # 19
+                "doc"=expression(DOC),                            # 18
+                "hetero_respiration"=expression(R[rh]),            # 19
                 "over_leaf_respiration"=expression(R[leaf]),      # 20
-                "wood_respiration"=expression(R[wood]),           # 21
+                "wood_respiration"=expression(R[stem]),           # 21
                 "delta_soil_c"=expression(Delta*C[soil]),         # 22
                 "delta_leaf_c"=expression(Delta*C[leaf]),         # 23
-                "delta_wood_c"=expression(Delta*C[wood]),         # 24
+                "delta_wood_c"=expression(Delta*C[stem]),         # 24
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 25
                 "delta_coarseroot_c"=expression(Delta*C[croot]),  # 26
                 "delta_understorey_c"=expression(Delta*C[ua]),    # 27
-                "delta_litter_c"=expression(Delta*C[litter]))     # 28
+                "delta_litter_c"=expression(Delta*C[lit]))     # 28
           
     
     ## gpp
@@ -674,7 +674,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                 "twig_prod"=expression(NPP[twig]),                # 8
                 "bark_prod"=expression(NPP[bark]),                # 9
                 "seed_prod"=expression(NPP[seed]),                # 10
-                "wood_prod"=expression(NPP[wood]),                # 11
+                "wood_prod"=expression(NPP[stem]),                # 11
                 "fineroot_prod"=expression(NPP[froot]),           # 12
                 "coarseroot_prod"=expression(NPP[croot]),         # 13
                 "understorey_prod"=expression(NPP[ua]),           # 14
@@ -682,11 +682,11 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                 
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16
-                "hetero_respiration"=expression(R[h]),            # 17
+                "hetero_respiration"=expression(R[rh]),            # 17
                 "over_leaf_respiration"=expression(R[leaf]),      # 18
-                "wood_respiration"=expression(R[wood]),           # 19
+                "wood_respiration"=expression(R[stem]),           # 19
                 "delta_soil_c"=expression(Delta*C[soil]),         # 20
-                "delta_wood_c"=expression(Delta*C[wood]),         # 21
+                "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
                 "delta_coarseroot_c"=expression(Delta*C[croot]),    # 23
                 "delta_understorey_c"=expression(Delta*C[ua]),    # 24

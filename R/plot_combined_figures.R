@@ -235,7 +235,7 @@ p1 <- ggplot(woodc.tr, aes(x=as.character(Date),y=wood_pool,fill=Treatment))+
     #geom_smooth(method='lm')+
     #geom_dotplot(binaxis='wood_pool', stackdir='center', 
     #             position=position_dodge(1), binwidth=30, dotsize=2)+
-    labs(x="Date", y=expression(paste(C[wood], " (kg C ", m^-2, ")")))+
+    labs(x="Date", y=expression(paste(C[stem], " (kg C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -253,7 +253,7 @@ p1 <- ggplot(woodc.tr, aes(x=as.character(Date),y=wood_pool,fill=Treatment))+
 ## wood stock per ring (g C, no area involved)
 p2 <- ggplot(wood.stock.tr, aes(x=as.character(Date),y=Wood_Stock/1000,fill=Treatment))+
     geom_boxplot(position=position_dodge(1))+
-    labs(x="Date", y=expression(paste(C[wood], " (kg C ", tree^-1, ")")))+
+    labs(x="Date", y=expression(paste(C[stem], " (kg C ", tree^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -270,7 +270,7 @@ p2 <- ggplot(wood.stock.tr, aes(x=as.character(Date),y=Wood_Stock/1000,fill=Trea
 
 p3 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as.factor(Treatment)))+
     geom_bar(stat="identity")+
-    labs(x="Ring", y=expression(paste(C[wood], " (t C ", ring^-1, ")")))+
+    labs(x="Ring", y=expression(paste(C[stem], " (t C ", ring^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -295,7 +295,7 @@ wood.stock.sum.mean <- make_treatment_effect_df_2(inDF=wood.stock.sum.mean)
 
 p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as.factor(Class)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Ring", y=expression(paste(C[wood], " (t C ", ring^-1, ")")))+
+    labs(x="Ring", y=expression(paste(C[stem], " (t C ", ring^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -316,7 +316,7 @@ woodc.ring <- summaryBy(Wood_Stock_t~Ring+Date, FUN=sum, data=wood.stock.sum, ke
 p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)))+
     geom_point()+
     geom_smooth(mapping=aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)), method=lm)+
-    labs(x="Date", y=expression(paste(C[wood], " (t C ", ring^-1, ")")))+
+    labs(x="Date", y=expression(paste(C[stem], " (t C ", ring^-1, ")")))+
     theme_linedraw() + ylim(1, 4)+
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1392,7 +1392,7 @@ colnames(myc.prop) <- c("Ring", "myc.prop", "Trt")
 p1 <- ggplot(mic.tr, aes(x=Date))+
     geom_point(data=mic.tr, aes(y=avg, color=factor(Treatment)))+
     geom_segment(data=mic.tr, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste(C[mic], " (g C ", m^-2, ")")))+
+    labs(x="Date", y=expression(paste(C[micr], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1469,31 +1469,46 @@ dev.off()
 lit.prod.tr <- leaflitter_flux
 lit.prod.tr[lit.prod.tr$Ring== 2|lit.prod.tr$Ring==3|lit.prod.tr$Ring==6,"Treatment"] <- "aCO2"
 lit.prod.tr[lit.prod.tr$Ring== 1|lit.prod.tr$Ring==4|lit.prod.tr$Ring==5,"Treatment"] <- "eCO2"
+lit.prod <- summaryBy(leaf_flux~Ring+Treatment, data=lit.prod.tr, FUN=mean, keep.names=T)
+lit.prod.se <- summaryBy(leaf_flux~Ring+Treatment, data=lit.prod.tr, FUN=se, keep.names=T)
+lit.prod$se <- lit.prod.se$leaf_flux
 
 ### Decomposition rate
 decp.rt <- make_leaflitter_decomposition_rate()
 decp.rt[decp.rt$Ring== 2|decp.rt$Ring==3|decp.rt$Ring==6,"Treatment"] <- "aCO2"
 decp.rt[decp.rt$Ring== 1|decp.rt$Ring==4|decp.rt$Ring==5,"Treatment"] <- "eCO2"
 
+decp.avg <- summaryBy(coef~Treatment, data=decp.rt, FUN=mean, keep.names=T)
+decp.se <- summaryBy(coef~Treatment, data=decp.rt, FUN=se, keep.names=T)
+decp.avg$se <- decp.se$coef
+
 ### Litter, CWD and insect
 lit.tr <- make_treatment_effect_df(inDF=leaflitter_pool, v=6, cond=1)
 cwd.tr <- make_treatment_effect_df(inDF=standing_dead_c_pool, v=3, cond=2)
 
+lit.pool <- leaflitter_pool
+lit.pool[lit.pool$Ring== 2|lit.pool$Ring==3|lit.pool$Ring==6,"Treatment"] <- "aCO2"
+lit.pool[lit.pool$Ring== 1|lit.pool$Ring==4|lit.pool$Ring==5,"Treatment"] <- "eCO2"
+
+lit.avg <- summaryBy(leaflitter_pool~Ring+Treatment, data=lit.pool, FUN=mean, keep.names=T)
+lit.se <- summaryBy(leaflitter_pool~Ring+Treatment, data=lit.pool, FUN=se, keep.names=T)
+lit.avg$se <- lit.se$leaflitter_pool
+
 ### Plot decomposition rate
-p1 <- ggplot(decp.rt, aes(x=Treatment,y=coef,fill=Treatment))+
-    geom_boxplot(position=position_dodge(1))+
-    labs(x="Treatment", y=expression(paste(k[leaf], " (", d^-1, ")")))+
+p1 <- ggplot(decp.rt, aes(x=as.character(Ring), y=coef, fill=factor(Treatment)))+
+    geom_point(data=decp.rt, mapping=aes(x=as.character(Ring), y=coef,fill=factor(Treatment)), 
+               size=4, shape=21)+
+    labs(x="Ring", y=expression(paste(k[leaf], " (", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_line(color="grey"),
           legend.position="none")+
-    scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
 
@@ -1503,8 +1518,8 @@ p2 <- ggplot(lit.prod.tr, aes(x=Treatment,y=leaf_flux,fill=Treatment))+
     labs(x="Treatment", y=expression(paste("Leaf litterfall (mg C ", m^-2, d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
@@ -1513,13 +1528,18 @@ p2 <- ggplot(lit.prod.tr, aes(x=Treatment,y=leaf_flux,fill=Treatment))+
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_x_discrete("", 
+                     labels=c(expression(aCO[2]),
+                              expression(eCO[2])))
 
 ## Plot leaf litter pool
 p3 <- ggplot(lit.tr, aes(x=Date))+
     #geom_point(data=lit.tr, aes(y=avg, color=factor(Treatment)))+
     #geom_segment(data=lit.tr, aes(x=Date, y=avg-sd, xend=Date, yend=avg+sd, color=factor(Treatment)))+
     geom_ribbon(data=lit.tr,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
+    #geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
+    #              position = position_dodge(0.9), width=0.2, size=0.4) +
     geom_line(data=lit.tr, aes(y=avg, color=factor(Treatment)))+
     labs(x="Date", y=expression(paste(C[lit], " (g C ", m^-2, ")")))+
     theme_linedraw() +
@@ -1540,13 +1560,54 @@ p3 <- ggplot(lit.tr, aes(x=Date))+
                  date_labels="%b-%Y",
                  limits = as.Date(c('2013-01-01','2016-12-31')))
 
-## plot 
-pdf("output/leaflitter_pool_and_decomposition_rate.pdf", width=10,height=8)
-top_row <- plot_grid(p1, p2, align = 'h')
-plot_grid(top_row, p3, ncol = 1, rel_heights = c(1, 1.2))
+p4 <- ggplot(lit.prod, aes(x=as.character(Ring), y=leaf_flux, fill=factor(Treatment)))+
+    geom_point(data=lit.prod, mapping=aes(x=Ring, y=leaf_flux,fill=factor(Treatment)), 
+               size=4, shape=21)+
+    geom_errorbar(aes(ymax=leaf_flux+se, ymin=leaf_flux-se), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="Ring", y=expression(paste("Leaf litterfall (mg C ", m^-2, d^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="none")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p5 <- ggplot(lit.avg, aes(x=as.character(Ring), y=leaflitter_pool, fill=factor(Treatment)))+
+    geom_point(data=lit.avg, mapping=aes(x=Ring, y=leaflitter_pool,fill=factor(Treatment)), 
+               size=4, shape=21)+
+    geom_errorbar(aes(ymax=leaflitter_pool+se, ymin=leaflitter_pool-se), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="Ring", y=expression(paste(C[lit], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
 grid.labs <- c("(a)", "(b)", "(c)")
 
-grid.text(grid.labs,x = c(0.14, 0.625, 0.13), y = c(0.97, 0.97, 0.50),
+## plot 
+pdf("output/leaflitter_pool_and_decomposition_rate.pdf", width=6,height=8)
+#top_row <- plot_grid(p1, p2, align = 'h')
+#plot_grid(top_row, p3, ncol = 1, rel_heights = c(1, 1.2))
+#grid.text(grid.labs,x = c(0.14, 0.625, 0.13), y = c(0.97, 0.97, 0.50),
+#          gp=gpar(fontsize=16, col="black", fontface="bold"))
+plot_grid(p1, p4, p5, labels="", ncol=1, align="v", axis = "l", rel_heights=c(1,1,1.5))
+grid.text(grid.labs, x = 0.21, y = c(0.95, 0.64, 0.36),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -1778,7 +1839,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[wood], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1843,7 +1904,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[wood], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2096,7 +2157,7 @@ p3 <- ggplot(frass.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(P[frass], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste("Frass (g C ", m^-2, yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2232,7 +2293,7 @@ p2 <- ggplot(wood.resp.avg, aes(x=as.character(year), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[wood], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[stem], " (g C ", m^-2, yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
