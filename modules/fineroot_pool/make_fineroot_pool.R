@@ -1,5 +1,5 @@
 #- Make the fine root C pool
-make_fineroot_pool <- function(c_frac){
+make_fineroot_pool <- function(){
   
   #- download the data
   download_fineroot_data()
@@ -16,10 +16,18 @@ make_fineroot_pool <- function(c_frac){
   #- average across rings and dates
   frb.m <- summaryBy(frb_tot+frb_top+frb_bot~Date+Ring,data=frb1,FUN=mean,keep.names=T)
   
+  #- assign carbon fraction to each ring
+  frb.m$c_frac[frb.m$Ring==1] <- 0.426
+  frb.m$c_frac[frb.m$Ring==2] <- 0.413
+  frb.m$c_frac[frb.m$Ring==3] <- 0.399
+  frb.m$c_frac[frb.m$Ring==4] <- 0.415
+  frb.m$c_frac[frb.m$Ring==5] <- 0.42
+  frb.m$c_frac[frb.m$Ring==6] <- 0.401
+  
   #- convert to g C m-2. Use fine-root specific c_fraction from Juan.
-  frb.m$fineroot_pool <- frb.m$frb_tot*c_frac
-  frb.m$fineroot_0_10_cm <- frb.m$frb_top*c_frac
-  frb.m$fineroot_10_30_cm <- frb.m$frb_bot*c_frac
+  frb.m$fineroot_pool <- frb.m$frb_tot*frb.m$c_frac
+  frb.m$fineroot_0_10_cm <- frb.m$frb_top*frb.m$c_frac
+  frb.m$fineroot_10_30_cm <- frb.m$frb_bot*frb.m$c_frac
   
   
   #- format dataframe to return

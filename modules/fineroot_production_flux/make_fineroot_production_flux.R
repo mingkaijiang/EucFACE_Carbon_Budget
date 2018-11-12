@@ -1,5 +1,5 @@
 #- Make the fineroot c production flux
-make_fineroot_production_flux <- function(c_frac){
+make_fineroot_production_flux <- function(){
     
     # returns fine root production flux (mg m-2 d-1)
     # 5 time points, possibly measured at quarterly timesteps
@@ -20,8 +20,16 @@ make_fineroot_production_flux <- function(c_frac){
     #- average across rings and dates
     frp.m <- summaryBy(frp_tot~Date+Ring,data=frp1,FUN=mean,keep.names=T,na.rm=T)
     
+    #- assign carbon fraction to each ring
+    frp.m$c_frac[frp.m$Ring==1] <- 0.426
+    frp.m$c_frac[frp.m$Ring==2] <- 0.413
+    frp.m$c_frac[frp.m$Ring==3] <- 0.399
+    frp.m$c_frac[frp.m$Ring==4] <- 0.415
+    frp.m$c_frac[frp.m$Ring==5] <- 0.42
+    frp.m$c_frac[frp.m$Ring==6] <- 0.401
+    
     #- convert to mg C m-2 day-1
-    frp.m$fineroot_production_flux <- frp.m$frp_tot*c_frac*1000
+    frp.m$fineroot_production_flux <- frp.m$frp_tot*frp.m$c_frac*1000
     
     #- add 3 months before the first date
     frp.m$End_date <- frp.m$Date

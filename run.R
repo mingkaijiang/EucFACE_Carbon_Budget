@@ -111,12 +111,12 @@ leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
 
 ### Fine root pool
 ### reads in c_fraction_fr defined in constant
-fineroot_c_pool <- make_fineroot_pool(c_fraction_fr)
+fineroot_c_pool <- make_fineroot_pool()
 
 
 ### fineroot c production flux
 ### reads in c_fraction_fr defined in constant
-fineroot_production_flux <- make_fineroot_production_flux(c_fraction_fr)
+fineroot_production_flux <- make_fineroot_production_flux()
 
 ### frass c production flux
 frass_production_flux <- make_frass_production_flux()
