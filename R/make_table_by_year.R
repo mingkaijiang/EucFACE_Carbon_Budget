@@ -174,7 +174,10 @@ make_EucFACE_table_by_year <- function() {
     }
     
     # VOC
-
+    voc_emission_flux$year <- year(voc_emission_flux$Date)
+    for (i in yr.list) {
+        inout$VOC[inout$year == i] <- mean(voc_emission_flux[voc_emission_flux$year == i, "voc_flux"])
+    }
     
     # Ra understorey
     understorey_respiration_flux$year <- year(understorey_respiration_flux$Start_date)

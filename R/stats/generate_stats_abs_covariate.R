@@ -177,6 +177,12 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                       date.as.factor=T,
                                                       stat.model=stat.model,
                                                       return.outcome="model")
+    
+    s.voc <- make_voc_treatment_abs_effect_statistics(inDF=voc_emission_flux, 
+                                                                   var.cond="ann.flux", var.col=3,
+                                                                   date.as.factor=T,
+                                                                   stat.model=stat.model,
+                                                                   return.outcome="model")
   
     ### Leaflitter flux
     s.lit.leaf <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
@@ -331,7 +337,7 @@ generate_stats_abs_covariate <- function(stat.model) {
                   "microbial_c","mycorrhizal_c","litter_c","insect_c",
                   "root_respiration","understorey_respiration",
                   "frass_prod","herb_consump","herb_respiration","lerp_prod",
-                  "soil_respiration","doc","ch4","leaf_prod","twig_prod",
+                  "soil_respiration","doc","ch4","voc","leaf_prod","twig_prod",
                   "bark_prod","seed_prod","wood_prod","fineroot_prod",
                   "coarseroot_prod","understorey_prod","hetero_respiration","understorey_lit",
                   "over_gpp","over_leaf_respiration","wood_respiration",#"mycorrhizal_prod",
@@ -385,6 +391,7 @@ generate_stats_abs_covariate <- function(stat.model) {
     out[out$Variable=="soil_respiration",2:17] <- assign_stats(s.var=s.rsoil)
     out[out$Variable=="doc",2:17] <- assign_stats(s.var=s.doc)
     out[out$Variable=="ch4",2:17] <- assign_stats(s.var=s.ch4)
+    out[out$Variable=="voc",2:17] <- assign_stats(s.var=s.voc)
     out[out$Variable=="leaf_prod",2:17] <- assign_stats(s.var=s.lit.leaf)
     out[out$Variable=="twig_prod",2:17] <- assign_stats(s.var=s.lit.twig)
     out[out$Variable=="bark_prod",2:17] <- assign_stats(s.var=s.lit.bark)

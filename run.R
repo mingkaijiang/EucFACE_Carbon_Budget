@@ -410,6 +410,13 @@ methane_c_flux_ann <- make_ch4_treatment_abs_effect_statistics(inDF=methane_c_fl
                                                   stat.model="no_interaction_with_covariate",
                                                   return.outcome="predicted")
 
+### VOC
+voc_c_flux_ann <- make_voc_treatment_abs_effect_statistics(inDF=voc_emission_flux, 
+                                                               var.cond="flux", var.col=3,
+                                                               date.as.factor=T,
+                                                               stat.model="no_interaction_with_covariate",
+                                                               return.outcome="predicted")
+
 ### Leaflitter flux
 leaflitter_flux_ann <- make_litter_flux_treatment_abs_effect_statistics(inDF=leaflitter_flux, 
                                                                var.cond="flux", var.col=6,
@@ -773,11 +780,6 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted()
 
 ### Plot individual variable figures
 #source("R/plot_figures.R")
-
-
-### One last missing bit is VOC, but with a lot of flexibility to close the mass balance now.
-### Finish main text, figures
-### Finish Method section (individual contributions)
 
 ###### ---------------- End -------------------- ######
 options(warn=0)

@@ -118,6 +118,7 @@ make_table_by_ring <- function() {
             
         
         # VOC
+        inout[inout$term == "VOC", i+1] <- mean(voc_emission_flux[voc_emission_flux$Ring == i, "voc_flux"])
         
         # CH4
         inout[inout$term == "CH4 efflux", i+1] <- with(methane_c_flux[methane_c_flux$Ring ==i,],

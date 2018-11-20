@@ -241,8 +241,12 @@ make_EucFACE_table <- function() {
     inout$processing_notes[inout$term == "CH4 efflux"] <- "No gap-filling applied yet"
     
     # VOC
-    inout$data_notes[inout$term == "VOC"] <- "Needs data from David"
-    inout$processing_notes[inout$term == "VOC"] <- ""
+    inout$data_notes[inout$term == "VOC"] <- mean(voc_emission_flux$voc_flux, na.rm=T) 
+    inout$start_year[inout$term == "VOC"] <- min(year(voc_emission_flux$Date))
+    inout$end_year[inout$term == "VOC"] <- max(year(voc_emission_flux$Date))
+    inout$timepoint[inout$term == "VOC"] <- length(unique(voc_emission_flux$Date))
+    inout$data_notes[inout$term == "VOC"] <- "simulated"
+    inout$processing_notes[inout$term == "VOC"] <- "assume soil moisture effect"
     
     ##############################################
     #### Method 2
