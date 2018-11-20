@@ -19,7 +19,7 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     ### only include respiration
     raDF <- rbind(temDF[temDF$term == "Ra leaf",],temDF[temDF$term == "Ra stem",],
                   temDF[temDF$term == "Ra root",],temDF[temDF$term == "Ra understorey",],
-                  temDF[temDF$term == "Rgrowth",])
+                  temDF[temDF$term == "Rgrowth",],temDF[temDF$term == "VOC",])
     
     ### calculated gpp based on NPP + Ra
     gppDF.est <- rbind(nppDF, raDF)
@@ -46,10 +46,10 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
                                   sd=plotDF$aCO2_sd[plotDF$term=="GPP understorey"])
     bDF1$sum <- with(bDF1, GPP_overstorey + GPP_understorey)
     
-    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA)
+    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
     colnames(bDF2) <- c("bootID", "Leaf_NPP", "Stem_NPP", "Fine_Root_NPP", "Coarse_Root_NPP", 
                         "Other_NPP", "Understorey_NPP", "Leaf_consumption", "Ra_leaf", 
-                        "Ra_stem", "Ra_root", "Ra_understorey", "Rgrowth", "sum")
+                        "Ra_stem", "Ra_root", "Ra_understorey", "Rgrowth", "VOC", "sum")
     bDF2$Leaf_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Leaf NPP"],
                                  sd=plotDF$aCO2_sd[plotDF$term=="Leaf NPP"])
     bDF2$Stem_NPP <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Stem NPP"],
@@ -74,7 +74,8 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
                            sd=plotDF$aCO2_sd[plotDF$term=="Ra understorey"])
     bDF2$Rgrowth <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="Rgrowth"],
                            sd=plotDF$aCO2_sd[plotDF$term=="Rgrowth"])
-
+    bDF2$VOC <- rnorm(n.b, mean=plotDF$aCO2[plotDF$term=="VOC"],
+                          sd=plotDF$aCO2_sd[plotDF$term=="VOC"])
     
     bDF2$sum <- rowSums(bDF2[,2:13])
     
@@ -111,11 +112,11 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
                   expression(R[leaf]),
                   expression(R[stem]), expression(R[root]),
                   expression(R[ua]), #expression(R[hb]),
-                  expression(R[g]))
+                  expression(R[g]), "VOC")
     
     ### Prepare variable colors
     require(viridis)
-    col.list1 <- viridis(14)
+    col.list1 <- viridis(15)
     
     plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
     
@@ -169,7 +170,7 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     ### only include respiration
     raDF <- rbind(temDF[temDF$term == "Ra leaf",],temDF[temDF$term == "Ra stem",],
                   temDF[temDF$term == "Ra root",],temDF[temDF$term == "Ra understorey",],
-                  temDF[temDF$term == "Rgrowth",])
+                  temDF[temDF$term == "Rgrowth",],temDF[temDF$term == "VOC"])
     
     ### calculated gpp based on NPP + Ra
     gppDF.est <- rbind(nppDF, raDF)
@@ -190,10 +191,10 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
                                   sd=plotDF$eCO2_sd[plotDF$term=="GPP understorey"])
     bDF1$sum <- with(bDF1, GPP_overstorey + GPP_understorey)
     
-    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA)
+    bDF2 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA, NA)
     colnames(bDF2) <- c("bootID", "Leaf_NPP", "Stem_NPP", "Fine_Root_NPP", "Coarse_Root_NPP", 
                         "Other_NPP", "Understorey_NPP", "Leaf_consumption", "Ra_leaf", 
-                        "Ra_stem", "Ra_root", "Ra_understorey", "Rgrowth", "sum")
+                        "Ra_stem", "Ra_root", "Ra_understorey", "Rgrowth", "VOC", "sum")
     bDF2$Leaf_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Leaf NPP"],
                            sd=plotDF$eCO2_sd[plotDF$term=="Leaf NPP"])
     bDF2$Stem_NPP <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Stem NPP"],
@@ -218,7 +219,8 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
                                  sd=plotDF$eCO2_sd[plotDF$term=="Ra understorey"])
     bDF2$Rgrowth <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="Rgrowth"],
                           sd=plotDF$eCO2_sd[plotDF$term=="Rgrowth"])
-    
+    bDF2$VOC <- rnorm(n.b, mean=plotDF$eCO2[plotDF$term=="VOC"],
+                          sd=plotDF$eCO2_sd[plotDF$term=="VOC"])
     
     bDF2$sum <- rowSums(bDF2[,2:13])
     

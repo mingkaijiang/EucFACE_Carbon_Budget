@@ -2597,4 +2597,34 @@ plot(p1)
 dev.off()
 
 
+###################---------------------######################
+### VOC
+o.voc.tr <- voc_emission_flux
+o.voc.tr$Trt[o.voc.tr$Ring%in%c(2,3,6)] <- "aCO2"
+o.voc.tr$Trt[o.voc.tr$Ring%in%c(1,4,5)] <- "eCO2"
+o.voc.tr$year <- as.character(year(o.voc.tr$Date))
 
+### Plot
+p1 <- ggplot(o.voc.tr, aes(x=year, y=voc_flux))+
+    geom_bar(stat = "identity", aes(fill=as.character(Ring)), position="dodge")+
+    labs(x="Year", y=expression(paste("VOC (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_line(color="grey"),
+          legend.position="bottom")+
+    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
+                                              "3" = "cyan", "4" = "pink",
+                                              "5" = "orange", "6" = "darkblue"),
+                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+
+
+## plot 
+pdf("output/voc_fluxes.pdf", width=9,height=6)
+plot(p1)
+dev.off()

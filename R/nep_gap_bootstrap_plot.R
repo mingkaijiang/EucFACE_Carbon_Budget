@@ -31,7 +31,8 @@ nep_gap_bootstrap_plot <- function(inDF) {
                                   sd=inoutDF$aCO2_sd[inoutDF$term=="Ra stem"])
     bDF1$Ra_und <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Ra understorey"],
                                   sd=inoutDF$aCO2_sd[inoutDF$term=="Ra understorey"])
-    bDF1$VOC <- 0.0
+    bDF1$VOC <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="VOC"],
+                      sd=inoutDF$aCO2_sd[inoutDF$term=="VOC"])
     bDF1$Rhb <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Rherbivore"],
                                   sd=inoutDF$aCO2_sd[inoutDF$term=="Rherbivore"])
     bDF1$DOC <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="DOC loss"],
@@ -60,7 +61,8 @@ nep_gap_bootstrap_plot <- function(inDF) {
                           sd=inoutDF$eCO2_sd[inoutDF$term=="Ra stem"])
     bDF1$Ra_und <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Ra understorey"],
                          sd=inoutDF$eCO2_sd[inoutDF$term=="Ra understorey"])
-    bDF1$VOC <- 0.0
+    bDF1$VOC <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="VOC"],
+                      sd=inoutDF$eCO2_sd[inoutDF$term=="VOC"])
     bDF1$Rhb <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Rherbivore"],
                       sd=inoutDF$eCO2_sd[inoutDF$term=="Rherbivore"])
     bDF1$DOC <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="DOC loss"],

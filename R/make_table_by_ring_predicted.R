@@ -112,6 +112,7 @@ make_table_by_ring_predicted <- function() {
             
         
         # VOC
+        inout[inout$term == "VOC", i+1] <- mean(voc_c_flux_ann$predicted[voc_c_flux_ann$Ring == i])
         
         # CH4
         inout[inout$term == "CH4 efflux", i+1] <- mean(methane_c_flux_ann$predicted[methane_c_flux_ann$Ring ==i])
@@ -359,9 +360,11 @@ make_table_by_ring_predicted <- function() {
     inout$aCO2_sd[inout$term=="Rsoil"] <- tmpDF$sd[tmpDF$Trt=="amb"] 
     inout$eCO2_sd[inout$term=="Rsoil"] <- tmpDF$sd[tmpDF$Trt=="ele"] 
     
-    #tmpDF <- calc_conf_of_predicted_variable(myDF=)
-    #inout$aCO2_conf[inout$term=="VOC"] <- tmpDF$conf[tmpDF$Trt=="amb"] 
-    #inout$eCO2_conf[inout$term=="VOC"] <- tmpDF$conf[tmpDF$Trt=="ele"] 
+    tmpDF <- calc_conf_of_predicted_variable(myDF=voc_c_flux_ann)
+    inout$aCO2_conf[inout$term=="VOC"] <- tmpDF$conf[tmpDF$Trt=="amb"] 
+    inout$eCO2_conf[inout$term=="VOC"] <- tmpDF$conf[tmpDF$Trt=="ele"] 
+    inout$aCO2_sd[inout$term=="VOC"] <- tmpDF$sd[tmpDF$Trt=="amb"] 
+    inout$eCO2_sd[inout$term=="VOC"] <- tmpDF$sd[tmpDF$Trt=="ele"] 
     
     tmpDF1 <- data.frame(inout$Ring_2[inout$term=="Rgrowth"], 
                          inout$Ring_3[inout$term=="Rgrowth"], 

@@ -26,14 +26,16 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                        rep("resp", 2), # 15 - 16
                        rep("prod", 1), # 17
                        rep("resp", 2), # 18 - 19
-                       rep("prod", 9), # 20 - 28
-                       rep("resp", 1), # 29
-                       rep("prod",1),  # 30
-                       rep("gpp", 1),  # 31
-                       rep("resp", 2), # 32 - 33
-                       #rep("prod",1),  # 33
-                       rep("gpp", 1),  # 34
-                       rep("change_in_pool", 11))   # 35 - 45
+                       rep("prod", 1), # 20
+                       rep("resp", 1), # 21
+                       rep("prod", 8), # 22 - 29
+                       rep("resp", 1), # 30
+                       rep("prod",1),  # 31
+                       rep("gpp", 1),  # 32
+                       rep("resp", 2), # 33 - 34
+                       #rep("prod",1),  # 35
+                       rep("gpp", 1),  # 35
+                       rep("change_in_pool", 11))   # 36 - 46
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, Variable != c("delta_understorey_c_2"))
@@ -48,7 +50,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                             "seed_prod", "wood_prod", "fineroot_prod",
                                             "coarseroot_prod", "understorey_prod", "herb_consump", #"mycorrhizal_prod",
                                             "over_leaf_respiration", "wood_respiration", "root_respiration",
-                                            "understorey_respiration", "hetero_respiration","doc",
+                                            "understorey_respiration", "hetero_respiration","doc", "voc",
                                             "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", 
                                             "delta_coarseroot_c", "delta_understorey_c", 
                                             "delta_litter_c","delta_soil_c"))
@@ -64,7 +66,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     plotDF1 <- plotDF1[,c("Variable", "effect_size", "conf_low", "conf_high", "plot.cat", "sd", "Date_Df")]
     
     plotDF1$plot.cat[plotDF1$Variable%in%c("root_respiration", "understorey_respiration",
-                                           "over_leaf_respiration", "wood_respiration")] <- "Ra"
+                                           "over_leaf_respiration", "wood_respiration", "voc")] <- "Ra"
     plotDF1$plot.cat[plotDF1$Variable=="herb_consump"] <- "NPP"
     
     
@@ -183,8 +185,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                sd=plotDF1$sd[plotDF1$Variable=="doc"])
     bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
                             sd=plotDF1$sd[plotDF1$Variable=="hetero_respiration"])
-
-    bDF1$sum <- with(bDF1, hetero_respiration + doc)
+    
+    bDF1$sum <- with(bDF1, hetero_respiration + doc )
     
     #plotDF2$conf_low[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
@@ -197,9 +199,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
         sd(bDF1$sum) 
     
     ## Ra
-    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA)
     colnames(bDF1) <- c("bootID", "root_respiration", "understorey_respiration", "over_leaf_respiration",
-                        "wood_respiration")
+                        "wood_respiration", "voc")
     bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
                       sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
     bDF1$understorey_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="understorey_respiration"],
@@ -208,9 +210,10 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                           sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
     bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
                                           sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
+    bDF1$voc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="voc"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="voc"])
     
-    
-    bDF1$sum <- with(bDF1, wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
+    bDF1$sum <- with(bDF1, wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration + voc)
     
     #plotDF2$conf_low[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
@@ -223,9 +226,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
         sd(bDF1$sum) 
     
     ## total outfluxes
-    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA)
     colnames(bDF1) <- c("bootID", "doc", "hetero_respiration", "root_respiration", "understorey_respiration", "over_leaf_respiration",
-                        "wood_respiration")
+                        "wood_respiration", "voc")
     bDF1$doc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="doc"],
                       sd=plotDF1$sd[plotDF1$Variable=="doc"])
     bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
@@ -238,7 +241,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                         sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
     bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
                                    sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
-    bDF1$sum <- with(bDF1, hetero_respiration + doc +
+    bDF1$voc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="voc"],
+                      sd=plotDF1$sd[plotDF1$Variable=="voc"])
+    bDF1$sum <- with(bDF1, hetero_respiration + doc + voc + 
                          wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
     
     plotDF2$conf_low[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] -
@@ -317,8 +322,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     confDF$conf_high[confDF$plot.cat2 == "F"] <- plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"]
     
     ## update B NPP + Ra
-    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(bDF1) <- c("bootID", "root_respiration", "understorey_respiration", "over_leaf_respiration",
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(bDF1) <- c("bootID", "root_respiration", "understorey_respiration", "over_leaf_respiration", "voc",
                         "wood_respiration","herb_consump", "leaf_prod", "twig_prod", "bark_prod", "seed_prod",
                         "wood_prod", "fineroot_prod", "coarseroot_prod", "understorey_prod")
     bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
@@ -327,6 +332,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                           sd=plotDF1$sd[plotDF1$Variable=="understorey_respiration"])
     bDF1$over_leaf_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="over_leaf_respiration"],
                                         sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
+    bDF1$voc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="voc"],
+                                        sd=plotDF1$sd[plotDF1$Variable=="voc"])
     bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
                                    sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
     bDF1$herb_consump <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="herb_consump"],
@@ -349,7 +356,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                    sd=plotDF1$sd[plotDF1$Variable=="understorey_prod"])
     bDF1$sum <- with(bDF1, herb_consump + leaf_prod + twig_prod + bark_prod + seed_prod + wood_prod + fineroot_prod +
                          coarseroot_prod + understorey_prod + wood_respiration + over_leaf_respiration + 
-                         understorey_respiration + root_respiration)
+                         understorey_respiration + root_respiration + voc)
     
     #confDF$conf_low[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
@@ -362,11 +369,11 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
         sd(bDF1$sum) 
     
     ## update C change in pool + total outfluxes
-    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(bDF1) <- c("bootID", "delta_soil_c", "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", "delta_coarseroot_c", 
                         "delta_litter_c","doc", "hetero_respiration", "root_respiration", 
                         "understorey_respiration", "over_leaf_respiration",
-                        "wood_respiration")
+                        "wood_respiration", "voc")
     bDF1$delta_soil_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_soil_c"],
                                sd=plotDF1$sd[plotDF1$Variable=="delta_soil_c"])
     bDF1$delta_leaf_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_leaf_c"],
@@ -391,8 +398,10 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                         sd=plotDF1$sd[plotDF1$Variable=="over_leaf_respiration"])
     bDF1$wood_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="wood_respiration"],
                                    sd=plotDF1$sd[plotDF1$Variable=="wood_respiration"])
+    bDF1$voc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="voc"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="voc"])
     bDF1$sum <- with(bDF1, delta_soil_c + delta_leaf_c + delta_wood_c + delta_fineroot_c + delta_coarseroot_c + 
-                         delta_litter_c + hetero_respiration + doc +
+                         delta_litter_c + hetero_respiration + doc + voc + 
                          wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
     
     #confDF$conf_low[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] -
@@ -440,6 +449,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                 "root_respiration"=expression(R[root]),           # 16
                 "understorey_respiration"=expression(R[ua]),      # 17
                 "doc"=expression(DOC),                            # 18
+                "voc"=expression(VOC),
                 "hetero_respiration"=expression(R[rh]),            # 19
                 "over_leaf_respiration"=expression(R[leaf]),      # 20
                 "wood_respiration"=expression(R[stem]),           # 21
@@ -470,7 +480,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
-    E.col.list <- colfunc.R(6)
+    E.col.list <- colfunc.R(7)
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
@@ -499,7 +509,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                    "root_respiration"=E.col.list[3],           
                    "understorey_respiration"=E.col.list[4],      
                    "hetero_respiration"=E.col.list[5],            
-                   "doc"=E.col.list[6],                        
+                   "doc"=E.col.list[6],     
+                   "voc"=E.col.list[7],                        
+                   
                    "delta_leaf_c"=F.col.list[1],         
                    "delta_wood_c"=F.col.list[2],        
                    "delta_fineroot_c"=F.col.list[3],    

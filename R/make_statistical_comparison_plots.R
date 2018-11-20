@@ -20,7 +20,9 @@ make_statistical_comparison_plots <- function() {
                        rep("resp", 1), # 16
                        rep("prod", 1), # 17
                        rep("resp", 2), # 18 - 19
-                       rep("prod", 9), # 20 - 28
+                       rep("prod", 1),
+                       rep("resp", 1),
+                       rep("prod", 8), # 20 - 28
                        rep("resp", 1), # 29
                        rep("prod",1),  # 30
                        rep("gpp", 1),  # 31
@@ -101,6 +103,7 @@ make_statistical_comparison_plots <- function() {
                 "herb_respiration"=expression(R[hb]),
                 "soil_respiration"=expression(R[soil]),
                 "doc"=expression(DOC),
+                "voc"=expression(VOC),
                 "hetero_respiration"=expression(R[rh]),
                 "over_leaf_respiration"=expression(R[leaf]),
                 "frass_prod"=expression(Frass))
