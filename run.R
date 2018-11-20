@@ -100,6 +100,9 @@ soil_respiration_flux <- make_soil_respiration_flux()
 ### LAI, and soil moisture (m3/m3)
 #prepare_VOC_met_data(laiDF=lai_variable)
 
+### first result based on model with soil moisture
+### second set of result based on model without soil moisture
+voc_emission_flux <- make_voc_emission_flux()
 
 ### leaf C pool
 ### read in c_fraction defined in constant
