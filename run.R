@@ -102,7 +102,8 @@ soil_respiration_flux <- make_soil_respiration_flux()
 
 ### first result based on model with soil moisture
 ### second set of result based on model without soil moisture
-voc_emission_flux <- make_voc_emission_flux()
+#voc_emission_flux <- make_voc_emission_flux()
+voc_emission_flux <- make_voc_emission_flux2()
 
 ### leaf C pool
 ### read in c_fraction defined in constant
