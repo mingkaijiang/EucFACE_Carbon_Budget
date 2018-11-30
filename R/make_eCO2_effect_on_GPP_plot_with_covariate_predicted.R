@@ -443,6 +443,19 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     #confDF$conf_low <- confDF$effect_size - confDF3$conf_low_radius
     #confDF$conf_high <- confDF$effect_size + confDF2$conf_high_radius
     
+    bDF1 <- data.frame(c(1:n.b), NA, NA)
+    colnames(bDF1) <- c("bootID", "hetero_respiration", "root_respiration")
+    bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
+                                     sd=plotDF1$sd[plotDF1$Variable=="hetero_respiration"])
+    bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
+                                   sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
+    bDF1$sum <- with(bDF1, hetero_respiration + root_respiration)
+    soil_resp_mean <- confDF$effect_size[confDF$plot.cat2 == "C"] -
+        sd(bDF1$sum) 
+    confDF$conf_high[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] +
+        sd(bDF1$sum) 
+    
+    
     y.lab1 <- c("ch4"=expression(CH[4]),                          # 1
                 "over_gpp"=expression(GPP[o]),                    # 2
                 "understorey_gpp"=expression(GPP[u]),             # 3
