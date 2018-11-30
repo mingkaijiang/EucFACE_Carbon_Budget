@@ -450,10 +450,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
                                    sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
     bDF1$sum <- with(bDF1, hetero_respiration + root_respiration)
-    soil_resp_mean <- confDF$effect_size[confDF$plot.cat2 == "C"] -
-        sd(bDF1$sum) 
-    confDF$conf_high[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] +
-        sd(bDF1$sum) 
+    soil_resp_mean <- mean(bDF1$sum)
+    soil_resp_conf_low <- mean(bDF1$sum)-sd(bDF1$sum) 
+    soil_resp_conf_high  <- mean(bDF1$sum)+sd(bDF1$sum) 
     
     
     y.lab1 <- c("ch4"=expression(CH[4]),                          # 1
