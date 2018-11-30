@@ -53,7 +53,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                             "understorey_respiration", "hetero_respiration","doc", "voc",
                                             "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", 
                                             "delta_coarseroot_c", "delta_understorey_c", 
-                                            "delta_litter_c","delta_soil_c"))
+                                            "delta_litter_c","delta_soil_c","delta_microbial_c",
+                                            "delta_mycorrhizal_c", "delta_litter_c", "delta_insect_c"))
 
     ### Add plot category
     plotDF1$plot.cat[plotDF1$Category=="gpp"] <- "Influxes"
@@ -94,9 +95,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     set.seed(1234)
     
     ## change in pools
-    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(bDF1) <- c("bootID", "delta_soil_c", "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", "delta_coarseroot_c", 
-                        "delta_litter_c")
+                        "delta_litter_c", "delta_microbial_c", "delta_mycorrhizal_c", "delta_insect_c")
     bDF1$delta_soil_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_soil_c"],
                                  sd=plotDF1$sd[plotDF1$Variable=="delta_soil_c"])
     bDF1$delta_leaf_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_leaf_c"],
@@ -109,8 +110,14 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                sd=plotDF1$sd[plotDF1$Variable=="delta_coarseroot_c"])
     bDF1$delta_litter_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_litter_c"],
                                sd=plotDF1$sd[plotDF1$Variable=="delta_litter_c"])
+    bDF1$delta_microbial_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_microbial_c"],
+                                 sd=plotDF1$sd[plotDF1$Variable=="delta_microbial_c"])
+    bDF1$delta_mycorrhizal_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_mycorrhizal_c"],
+                                 sd=plotDF1$sd[plotDF1$Variable=="delta_mycorrhizal_c"])
+    bDF1$delta_insect_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_insect_c"],
+                                 sd=plotDF1$sd[plotDF1$Variable=="delta_insect_c"])
     bDF1$sum <- with(bDF1, delta_soil_c + delta_leaf_c + delta_wood_c + delta_fineroot_c + delta_coarseroot_c + 
-                         delta_litter_c)
+                         delta_litter_c + delta_microbial_c + delta_mycorrhizal_c + delta_insect_c)
     
     #plotDF2$conf_low[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
@@ -369,9 +376,10 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
         sd(bDF1$sum) 
     
     ## update C change in pool + total outfluxes
-    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(bDF1) <- c("bootID", "delta_soil_c", "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", "delta_coarseroot_c", 
-                        "delta_litter_c","doc", "hetero_respiration", "root_respiration", 
+                        "delta_litter_c","delta_microbial_c", "delta_mycorrhizal_c", "delta_insect_c",
+                        "doc", "hetero_respiration", "root_respiration", 
                         "understorey_respiration", "over_leaf_respiration",
                         "wood_respiration", "voc")
     bDF1$delta_soil_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_soil_c"],
@@ -386,6 +394,12 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                                      sd=plotDF1$sd[plotDF1$Variable=="delta_coarseroot_c"])
     bDF1$delta_litter_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_litter_c"],
                                  sd=plotDF1$sd[plotDF1$Variable=="delta_litter_c"])
+    bDF1$delta_microbial_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_microbial_c"],
+                                    sd=plotDF1$sd[plotDF1$Variable=="delta_microbial_c"])
+    bDF1$delta_mycorrhizal_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_mycorrhizal_c"],
+                                      sd=plotDF1$sd[plotDF1$Variable=="delta_mycorrhizal_c"])
+    bDF1$delta_insect_c <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="delta_insect_c"],
+                                 sd=plotDF1$sd[plotDF1$Variable=="delta_insect_c"])
     bDF1$doc <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="doc"],
                       sd=plotDF1$sd[plotDF1$Variable=="doc"])
     bDF1$hetero_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="hetero_respiration"],
@@ -612,9 +626,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    F.col.list <- colfunc.delta(6)
+    F.col.list <- colfunc.delta(7)
     
-    v.list <- viridis(26)
+    v.list <- viridis(27)
     #v.list <- rainbow(26)
 
     ### Combine all color list
@@ -645,7 +659,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                    "delta_coarseroot_c"=F.col.list[4],  
                    "delta_understorey_c"=F.col.list[5],    
                    "delta_soil_c"=F.col.list[1],         
-                   "delta_litter_c"=F.col.list[6])       
+                   "delta_litter_c"=F.col.list[7],
+                   "delta_microbial_c"=F.col.list[6])       
     
     #col.list2 <- c("over_gpp"=v.list[1],                    
     #               "understorey_gpp"=v.list[2],  
@@ -702,7 +717,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
                 "delta_coarseroot_c"=expression(Delta*C[croot]),    # 23
                 "delta_understorey_c"=expression(Delta*C[ua]),    # 24
-                "delta_litter_c"=expression(Delta*C[lit]))     # 25
+                "delta_litter_c"=expression(Delta*C[lit]),
+                "delta_microbial_c"=expression(Delta*C[micr]))     # 25
 
     #for (i in 1:5) {
     #    if (confDF[i, "conf_low"] >= -50) {
