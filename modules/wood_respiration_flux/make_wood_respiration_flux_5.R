@@ -36,13 +36,16 @@ make_wood_respiration_flux_5 <- function() {
     hDF$DOY <- yday(hDF$DateHour)
     
     ####### read in the stem respiration data, unit in umol CO2 m-2 of wood area s-1
-    hDF$a[hDF$Ring%in%c(2,3,6)] <- 0.1323
-    hDF$a[hDF$Ring%in%c(1,4,5)] <- 0.2353
+    #hDF$a[hDF$Ring%in%c(2,3,6)] <- 0.1323
+    #hDF$a[hDF$Ring%in%c(1,4,5)] <- 0.2353
     
-    hDF$b[hDF$Ring%in%c(2,3,6)] <- 0.1122
-    hDF$b[hDF$Ring%in%c(1,4,5)] <- 0.097
+    #hDF$b[hDF$Ring%in%c(2,3,6)] <- 0.1122
+    #hDF$b[hDF$Ring%in%c(1,4,5)] <- 0.097
     
-    hDF$a <- 0.1789
+    #hDF$a <- 0.1789
+    #hDF$b <- 0.1042
+    
+    hDF$a <- 0.1866
     hDF$b <- 0.1042
     
     a.factor <- 1/mean(c(0.82, 0.96, 0.94))  
