@@ -78,6 +78,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
     modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
+    #modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1+Cov2|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -95,7 +96,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## model 2: interaction, year as factor, ring random factor, with pre-treatment
     int.m2 <- "interative_with_covariate"
     modelt2 <- lmer(Value~Trt*Yrf+Cov2 + (1|Ring),data=tDF)
-    
+
     ## anova
     m2.anova <- Anova(modelt2, test="F")
     
@@ -174,6 +175,10 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Predict the model with a standard LAI value
     newDF <- tDF
     newDF$Cov2 <- 1.14815  # initial LAI averages
+    #newDF$Cov2[newDF$Trt=="aCO2"] <- 1.174467  # aCO2
+    #newDF$Cov2[newDF$Trt=="eCO2"] <- 1.121833  # eCO2
+    #newDF$Cov2 <- 1.0  
+    
     newDF$predicted <- predict(out$mod, newdata=newDF)
     
     newDF$Ring <- as.numeric(as.character(newDF$Ring))
