@@ -37,10 +37,24 @@ make_delta_uac_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## Get year list and ring list
     tDF <- deltaDF
     
+    ### add annual average LAI for each year and ring
+    lai <- lai_variable
+    lai$year <- as.numeric(year(lai$Date))
+    cov6 <- summaryBy(lai_variable~Ring+year, data=lai, FUN=mean, keep.names=T)
+    
+    for (i in 1:6) {
+        for (j in 2013:2016) {
+            tDF$Cov6[tDF$Ring==i&tDF$Yr==j] <- cov6[cov6$Ring==i&cov6$year==j,"lai_variable"]
+        }
+    }
+    
+    tDF$Cov6 <- as.numeric(unlist(tDF$Cov6))
+    
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(delta~Trt+Datef+Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lmer(delta~Trt + Datef + Cov6 + (1|Ring),data=tDF)
+    #modelt1 <- lmer(Value~Trt + Datef + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
