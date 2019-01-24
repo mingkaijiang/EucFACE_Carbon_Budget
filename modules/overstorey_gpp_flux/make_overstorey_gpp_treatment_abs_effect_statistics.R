@@ -73,11 +73,20 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Add psyllid attack event
     tDF$Psyllid <- "Before"
     tDF$Psyllid[tDF$Yr >= 2016] <- "After"
+    
+    
+    ### add annual average LAI for each year and ring
+    for (i in 1:6) {
+        for (j in 2013:2016) {
+            tDF$Cov6[tDF$Ring==i&tDF$Yr==j] <- pDF$LAI.mean[pDF$year==j&pDF$Ring==i]
+            
+        }
+    }
 
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + Cov6 + (1|Ring),data=tDF)
     #modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1+Cov2|Ring),data=tDF)
     
     ## anova
@@ -174,10 +183,9 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Predict the model with a standard LAI value
     newDF <- tDF
-    newDF$Cov2 <- 1.14815  # initial LAI averages
-    #newDF$Cov2[newDF$Trt=="aCO2"] <- 1.174467  # aCO2
-    #newDF$Cov2[newDF$Trt=="eCO2"] <- 1.121833  # eCO2
-    #newDF$Cov2 <- 1.0  
+    #newDF$Cov6 <- 1.14815  # initial LAI averages
+    newDF$Cov6 <- 1.703864  # long-term LAI averages
+    
     
     newDF$predicted <- predict(out$mod, newdata=newDF)
     
@@ -190,3 +198,22 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
         return(newDF)
     }
 }
+
+
+lai_variable$Trt[lai_variable$Ring%in%c(2,3,6)] <- "aCO2"
+lai_variable$Trt[lai_variable$Ring%in%c(1,4,5)] <- "eCO2"
+summaryBy(lai_variable~Trt, data=lai_variable, FUN=mean)
+
+
+with(newDF, plot(predicted~Value, xlim=c(1200,2400), ylim=c(1200,2400)))
+abline(a=0,b=1)
+mod <- lm(newDF$predicted~newDF$Value)
+summary(mod)
+
+
+ggplot(newDF, aes(x=Cov2, y=Value, color=Trt))+
+    geom_point()
+
+summaryBy(Value~Trt, data=newDF, FUN=mean)
+summaryBy(predicted~Trt, data=newDF, FUN=mean)
+
