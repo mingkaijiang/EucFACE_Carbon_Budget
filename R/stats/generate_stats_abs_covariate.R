@@ -47,11 +47,11 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                       stat.model=stat.model,
                                                       return.outcome="model")
  
-    s.uac2 <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
-                                                        var.cond="pool", var.col=3,
-                                                        date.as.factor=T,
-                                                       stat.model=stat.model,
-                                                       return.outcome="model")
+    #s.uac2 <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+    #                                                    var.cond="pool", var.col=3,
+    #                                                    date.as.factor=T,
+    #                                                   stat.model=stat.model,
+    #                                                   return.outcome="model")
 
     ### Microbial C pool
     s.micc <- make_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
@@ -296,11 +296,11 @@ generate_stats_abs_covariate <- function(stat.model) {
                                                       stat.model=stat.model,
                                                       return.outcome="model")
     
-    s.delta.uac2 <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
-                                                       var.cond="pool", var.col=3,
-                                                       date.as.factor=T,
-                                                       stat.model=stat.model,
-                                                       return.outcome="model")
+    #s.delta.uac2 <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+    #                                                   var.cond="pool", var.col=3,
+    #                                                   date.as.factor=T,
+    #                                                   stat.model=stat.model,
+    #                                                   return.outcome="model")
     
     ### Delta Microbial C pool
     s.delta.micc <- make_delta_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
@@ -376,7 +376,7 @@ generate_stats_abs_covariate <- function(stat.model) {
     out[out$Variable=="fineroot_c",2:17] <- assign_stats(s.var=s.frc)
     out[out$Variable=="coarseroot_c",2:17] <- assign_stats(s.var=s.crc)
     out[out$Variable=="understorey_c",2:17] <- assign_stats(s.var=s.uac)
-    out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
+    #out[out$Variable=="understorey_c_2",2:17] <- assign_stats(s.var=s.uac2)
     out[out$Variable=="microbial_c",2:17] <- assign_stats(s.var=s.micc)
     out[out$Variable=="mycorrhizal_c",2:17] <- assign_stats(s.var=s.mycc)
     out[out$Variable=="litter_c",2:17] <- assign_stats(s.var=s.litc)
@@ -418,7 +418,7 @@ generate_stats_abs_covariate <- function(stat.model) {
     out[out$Variable=="delta_fineroot_c",2:17] <- assign_stats(s.var=s.delta.frc)
     out[out$Variable=="delta_coarseroot_c",2:17] <- assign_stats(s.var=s.delta.crc)
     out[out$Variable=="delta_understorey_c",2:17] <- assign_stats(s.var=s.delta.uac)
-    out[out$Variable=="delta_understorey_c_2",2:17] <- assign_stats(s.var=s.delta.uac2)
+    #out[out$Variable=="delta_understorey_c_2",2:17] <- assign_stats(s.var=s.delta.uac2)
     out[out$Variable=="delta_microbial_c",2:17] <- assign_stats(s.var=s.delta.micc)
     out[out$Variable=="delta_mycorrhizal_c",2:17] <- assign_stats(s.var=s.delta.mycc)
     out[out$Variable=="delta_litter_c",2:17] <- assign_stats(s.var=s.delta.litc)

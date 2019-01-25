@@ -31,13 +31,14 @@ make_delta_frootc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     #### Assign factors
     deltaDF$Trt <- as.factor(deltaDF$Trt)
-    deltaDF$Ring <- as.factor(deltaDF$Ring)
     deltaDF$Datef <- as.factor(deltaDF$Date)
     
     ## Get year list and ring list
     tDF <- deltaDF
+    tDF$Ring <- as.numeric(tDF$Ring)
     
     ### add annual average LAI for each year and ring
+    tDF$Yr <- year(tDF$Date)
     lai <- lai_variable
     lai$year <- as.numeric(year(lai$Date))
     cov6 <- summaryBy(lai_variable~Ring+year, data=lai, FUN=mean, keep.names=T)
@@ -49,12 +50,13 @@ make_delta_frootc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     }
     
     tDF$Cov6 <- as.numeric(unlist(tDF$Cov6))
+    tDF$Ring <- as.factor(tDF$Ring)
     
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(Value~Trt + Yrf + Cov6 + (1|Ring),data=tDF)
-    #modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lmer(delta~Trt + Datef + Cov6 + (1|Ring),data=tDF)
+    #modelt1 <- lmer(delta~Trt + Datef + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")

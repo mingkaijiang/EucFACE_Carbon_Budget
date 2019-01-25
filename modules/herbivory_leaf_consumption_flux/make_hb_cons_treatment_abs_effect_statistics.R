@@ -71,7 +71,7 @@ make_hb_cons_treatment_abs_effect_statistics <- function(inDF, var.cond,
     cov6 <- summaryBy(lai_variable~Ring+year, data=lai, FUN=mean, keep.names=T)
     
     for (i in 1:6) {
-        for (j in 2013:2016) {
+        for (j in 2012:2016) {
             tDF$Cov6[tDF$Ring==i&tDF$Yr==j] <- cov6[cov6$Ring==i&cov6$year==j,"lai_variable"]
         }
     }
