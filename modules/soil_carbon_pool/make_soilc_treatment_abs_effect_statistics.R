@@ -55,13 +55,15 @@ make_soilc_treatment_abs_effect_statistics <- function(inDF, var.cond,
 
     ### add annual average LAI for each year and ring
     lai <- lai_variable
-    lai$year <- as.numeric(year(lai$Date))
-    cov6 <- summaryBy(lai_variable~Ring+year, data=lai, FUN=mean, keep.names=T)
+    #lai$year <- as.numeric(year(lai$Date))
+    #cov6 <- summaryBy(lai_variable~Ring+year, data=lai, FUN=mean, keep.names=T)
+    cov6 <- summaryBy(lai_variable~Ring, data=lai, FUN=mean, keep.names=T)
     
     for (i in 1:6) {
-        for (j in 2012:2016) {
-            tDF$Cov6[tDF$Ring==i&tDF$Yr==j] <- cov6[cov6$Ring==i&cov6$year==j,"lai_variable"]
-        }
+        #for (j in 2012:2016) {
+        #    tDF$Cov6[tDF$Ring==i&tDF$Yr==j] <- cov6[cov6$Ring==i&cov6$year==j,"lai_variable"]
+        #}
+        tDF$Cov6[tDF$Ring==i] <- cov6[cov6$Ring==i,"lai_variable"]
     }
     
     tDF$Cov6 <- as.numeric(unlist(tDF$Cov6))

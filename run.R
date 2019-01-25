@@ -536,6 +536,8 @@ understorey_aboveground_c_pool_ann <- make_uac_treatment_abs_effect_statistics(i
                                                   stat.model="no_interaction_with_covariate",
                                                   return.outcome="predicted")
 
+#understorey_aboveground_c_pool_2_ann <- understorey_aboveground_c_pool_ann
+
 understorey_aboveground_c_pool_2_ann <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
                                                    var.cond="pool", var.col=3,
                                                    date.as.factor=T,
@@ -624,6 +626,8 @@ delta_understorey_aboveground_c_pool_ann <- make_delta_uac_treatment_abs_effect_
                                                               date.as.factor=T,
                                                               stat.model="no_interaction_with_covariate",
                                                               return.outcome="predicted")
+
+#delta_understorey_aboveground_c_pool_2_ann <- delta_understorey_aboveground_c_pool_ann
 
 delta_understorey_aboveground_c_pool_2_ann <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
                                                                var.cond="pool", var.col=3,
@@ -760,7 +764,7 @@ lai.fit <- make_initial_lai_vs_long_term_lai(lai_variable)
 
 ### Make some plots
 source("R/make_statistical_comparison_plots.R")
-make_statistical_comparison_plots_predicted()
+make_statistical_comparison_plots()
 
 #source("R/make_eCO2_effect_on_GPP_plot.R")
 #make_eCO2_effect_on_GPP_plot()

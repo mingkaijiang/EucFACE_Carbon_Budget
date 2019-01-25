@@ -668,7 +668,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                    "hetero_respiration"=E.col.list[3],            
                    "delta_wood_c"=F.col.list[2],        
                    "delta_fineroot_c"=F.col.list[3],    
-                   "delta_coarseroot_c"=F.col.list[4],  
+                   #"delta_coarseroot_c"=F.col.list[4],  
+                   "delta_leaf_c"=F.col.list[4],  
                    "delta_understorey_c"=F.col.list[5],    
                    "delta_soil_c"=F.col.list[1],         
                    "delta_litter_c"=F.col.list[7],
@@ -727,7 +728,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted <- function() {
                 "delta_soil_c"=expression(Delta*C[soil]),         # 20
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
-                "delta_coarseroot_c"=expression(Delta*C[croot]),    # 23
+                #"delta_coarseroot_c"=expression(Delta*C[croot]),    # 23
+                "delta_leaf_c"=expression(Delta*C[leaf]),
                 "delta_understorey_c"=expression(Delta*C[ua]),    # 24
                 "delta_litter_c"=expression(Delta*C[lit]),
                 "delta_microbial_c"=expression(Delta*C[micr]))     # 25
