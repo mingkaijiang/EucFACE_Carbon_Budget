@@ -57,8 +57,8 @@ make_delta_insc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(delta~Trt + Datef + Cov6 + (1|Ring),data=tDF)
-    #modelt1 <- lmer(delta~Trt + Datef + Cov2 + (1|Ring),data=tDF)
+    #modelt1 <- lmer(delta~Trt + Datef + Cov6 + (1|Ring),data=tDF)
+    modelt1 <- lmer(delta~Trt + Datef + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -154,8 +154,8 @@ make_delta_insc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Predict the model with a standard LAI value
     newDF <- tDF
-    #newDF$Cov6 <- 1.14815  # initial LAI averages
-    newDF$Cov6 <- 1.703864  # long-term LAI averages
+    newDF$Cov6 <- 1.14815  # initial LAI averages
+    #newDF$Cov6 <- 1.703864  # long-term LAI averages
     
     newDF$predicted <- predict(out$mod, newdata=newDF)
     
