@@ -7,8 +7,9 @@ make_insc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     covDF$Ring <- as.numeric(covDF$Ring)
     inDF$Ring <- as.numeric(inDF$Ring)
     
-    #cov2 <- lai_variable[lai_variable$Date<="2013-01-01",]
-    cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
+    cov2 <- lai_variable[lai_variable$Date<="2013-02-06",]
+    #cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
+    
     covDF2 <- summaryBy(lai_variable~Ring, data=cov2, FUN=mean, keep.names=T)
     
     ### Read initial basal area data
@@ -166,7 +167,9 @@ make_insc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Predict the model with a standard LAI value
     newDF <- tDF
-    newDF$Cov6 <- 1.14815  # initial LAI averages
+    #newDF$Cov2 <- 1.14815  # initial LAI averages
+    newDF$Cov2 <- mean(covDF2$lai_variable)
+    
     #newDF$Cov6 <- 1.703864  # long-term LAI averages
     
     newDF$predicted <- predict(out$mod, newdata=newDF)
