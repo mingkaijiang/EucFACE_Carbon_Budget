@@ -197,7 +197,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Predict the model with a standard LAI value
     newDF <- tDF
-    newDF$Cov2 <- 1.14815  # initial LAI averages
+    #newDF$Cov2 <- 1.14815  # initial LAI averages
     newDF$Cov2 <- mean(covDF2$lai_variable)
     #newDF$Cov6 <- 1.703864  # long-term LAI averages
     
