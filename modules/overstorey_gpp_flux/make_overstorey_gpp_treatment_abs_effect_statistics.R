@@ -7,18 +7,25 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     covDF$Ring <- as.numeric(covDF$Ring)
     inDF$Ring <- as.numeric(inDF$Ring)
     
-    #cov2 <- lai_variable[lai_variable$Date<="2013-01-01",]
-    cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
+    cov2 <- lai_variable[lai_variable$Date<="2013-02-06",]
+    #cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
     covDF2 <- summaryBy(lai_variable~Ring, data=cov2, FUN=mean, keep.names=T)
     
     ### Read initial basal area data
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     f12$ba <- ((f12$X20.09.2012/2)^2) * pi
+    
+    ### include only live trees
+    f12 <- subset(f12, !(Tree %in% c(125, 206, 210, 212, 510, 518, 520, 
+                                     524, 527, 531, 605, 608, 615, 616, 617)))
+    
     baDF <- summaryBy(ba~Ring, data=f12, FUN=sum, na.rm=T, keep.names=T)
     
     ### return in unit of cm2/m2, which is m2 ha-1
     baDF$ba_ground_area <- baDF$ba / ring_area
-    baDF2 <- data.frame(c(1:6), c(611, 835, 795, 896, 1019, 815))
+    #baDF2 <- data.frame(c(1:6), c(611, 835, 795, 896, 1019, 815)) # summary table values
+    baDF2 <- data.frame(c(1:6), c(25.19, 24.32, 25.96, 20.87, 37.99, 29.0)) # Duursma 2015 SI4 value
+    
     colnames(baDF2) <- c("Ring", "BA")
     
     ### soil C pool
@@ -94,7 +101,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
     #modelt1 <- lmer(Value~Trt + Yrf + Cov6 + (1|Ring),data=tDF)
-    modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + Cov3 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")
@@ -190,7 +197,8 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ### Predict the model with a standard LAI value
     newDF <- tDF
-    newDF$Cov6 <- 1.14815  # initial LAI averages
+    newDF$Cov2 <- 1.14815  # initial LAI averages
+    newDF$Cov2 <- mean(covDF2$lai_variable)
     #newDF$Cov6 <- 1.703864  # long-term LAI averages
     
     
@@ -198,8 +206,8 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     newDF$Ring <- as.numeric(as.character(newDF$Ring))
     
-    #summaryBy(Value~Trt, data=newDF, FUN=mean)
-    #summaryBy(predicted~Trt, data=newDF, FUN=mean)
+    summaryBy(Value~Trt, data=newDF, FUN=mean)
+    summaryBy(predicted~Trt, data=newDF, FUN=mean)
     
     if (return.outcome == "model") {
         return(out)

@@ -17,8 +17,26 @@ make_dbh_and_wood_stock <- function(include.bark.effect){
     ########################
     # Read in additional files that I used when doing the data analysis
     classif <- read.csv("download/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)
-    classif$Active.FALSE.means.dead.[classif$Tree == 608] <- FALSE  # This tree dead too
-
+    classif$Active.FALSE.means.dead.[classif$Tree == 608] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 125] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 206] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 210] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 212] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 510] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 518] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 520] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 524] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 527] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 531] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 605] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 615] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 616] <- FALSE  # This tree dead
+    classif$Active.FALSE.means.dead.[classif$Tree == 617] <- FALSE  # This tree dead
+    #classif$Active.FALSE.means.dead.[classif$Tree == 101] <- FALSE  # This tree dead in 2018
+    #classif$Active.FALSE.means.dead.[classif$Tree == 219] <- FALSE  # This tree dead in 2018
+    #classif$Active.FALSE.means.dead.[classif$Tree == 220] <- FALSE  # This tree dead in 2018
+    #classif$Active.FALSE.means.dead.[classif$Tree == 621] <- FALSE  # This tree dead in 2018
+    
     ########################
     
     # Merge the files
@@ -31,7 +49,7 @@ make_dbh_and_wood_stock <- function(include.bark.effect){
     # remove dead trees
     all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
     all <- subset(all, Active.FALSE.means.dead.== TRUE)
-    all <- all[complete.cases(all),]
+    #all <- all[complete.cases(all),]
     
     # remove "CORR" columns and dead column
     uncorr <- all[,-grep("CORR",names(all))]
