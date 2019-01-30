@@ -291,11 +291,13 @@ colnames(wood.stock.sum) <- c("Ring", "Date", "Class", "Wood_Stock_g")
 wood.stock.sum$Wood_Stock_t <- wood.stock.sum$Wood_Stock_g / 1000 / 1000
 wood.stock.sum.mean <- summaryBy(Wood_Stock_t~Ring+Class, data=wood.stock.sum, FUN=mean)
 colnames(wood.stock.sum.mean) <- c("Ring", "Class", "Wood_Stock")
-wood.stock.sum.mean <- make_treatment_effect_df_2(inDF=wood.stock.sum.mean)  
+wood.stock.sum.mean <- make_treatment_effect_df_2(inDF=wood.stock.sum.mean) 
+### convert unit
+wood.stock.sum.mean$Wood_Stock_gCm2 <- wood.stock.sum.mean$Wood_Stock*1000000/ring_area
 
-p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as.factor(Class)))+
+p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock_gCm2, fill=as.factor(Class)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Ring", y=expression(paste(C[stem], " (t C ", ring^-1, ")")))+
+    labs(x="Ring", y=expression(paste(C[stem], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -304,7 +306,7 @@ p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Class", values = c("Dominant" = "green","Codominant" = "orange", 
@@ -312,11 +314,12 @@ p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as
 
 ### Time series of wood plot per ring
 woodc.ring <- summaryBy(Wood_Stock_t~Ring+Date, FUN=sum, data=wood.stock.sum, keep.names=T)
+woodc.ring$Wood_Stock_gCm2 <- woodc.ring$Wood_Stock_t*1000000/ring_area
 
-p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)))+
+p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_gCm2, color=as.factor(Ring)))+
     geom_point()+
     geom_smooth(mapping=aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)), method=lm)+
-    labs(x="Date", y=expression(paste(C[stem], " (t C ", ring^-1, ")")))+
+    labs(x="Date", y=expression(paste(C[stem], " (g C ", m^-2, ")")))+
     theme_linedraw() + ylim(1, 4)+
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -325,7 +328,7 @@ p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -339,7 +342,7 @@ grid.labs <- c("(a)", "(b)")
 ## plot 
 pdf("output/Wood_C_time_series.pdf", width=6,height=6)
 plot_grid(p4, p5, labels="", ncol=1, align="v", axis = "b")
-grid.text(grid.labs,x = 0.15, y = c(0.96, 0.46),
+grid.text(grid.labs,x = 0.2, y = c(0.96, 0.46),
           gp=gpar(fontsize=14, col="black", fontface="bold"))
 dev.off()
 
@@ -1507,7 +1510,7 @@ p1 <- ggplot(decp.rt, aes(x=as.character(Ring), y=coef, fill=factor(Treatment)))
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -1524,7 +1527,7 @@ p2 <- ggplot(lit.prod.tr, aes(x=Treatment,y=leaf_flux,fill=Treatment))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1550,7 +1553,7 @@ p3 <- ggplot(lit.tr, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1574,7 +1577,7 @@ p4 <- ggplot(lit.prod, aes(x=as.character(Ring), y=leaf_flux, fill=factor(Treatm
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -1593,7 +1596,7 @@ p5 <- ggplot(lit.avg, aes(x=as.character(Ring), y=leaflitter_pool, fill=factor(T
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -1607,7 +1610,7 @@ pdf("output/leaflitter_pool_and_decomposition_rate.pdf", width=6,height=8)
 #grid.text(grid.labs,x = c(0.14, 0.625, 0.13), y = c(0.97, 0.97, 0.50),
 #          gp=gpar(fontsize=16, col="black", fontface="bold"))
 plot_grid(p1, p4, p5, labels="", ncol=1, align="v", axis = "l", rel_heights=c(1,1,1.5))
-grid.text(grid.labs, x = 0.21, y = c(0.95, 0.64, 0.36),
+grid.text(grid.labs, x = 0.21, y = c(0.95, 0.66, 0.38),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -1641,7 +1644,7 @@ p1 <- ggplot(plotDF1, aes(Treatment, insect_pool))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1722,6 +1725,37 @@ seed.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=5, cond=1)
 bark.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=4, cond=1)
 twig.lit <- make_treatment_effect_df(inDF=leaflitter_flux, v=3, cond=1)
 
+### calculate annual rate
+lit.prod.tr$year <- year(lit.prod.tr$Date)
+#yr.list <- unique(lit.prod.tr$year)
+yr.list <- c(2013:2016)
+
+plotDF <- data.frame(rep(yr.list, each=6), rep(c(1:6), by=length(yr.list)), NA, NA, NA, NA)
+colnames(plotDF) <- c("Year", "Ring", "leaf_lit", "seed_lit", "bark_lit", "twig_lit")
+
+
+for (i in yr.list) {
+    for (j in 1:6) {
+        plotDF$leaf_lit[plotDF$Year==i&plotDF$Ring==j] <- round(with(lit.prod.tr[lit.prod.tr$year==i&lit.prod.tr$Ring==j,],
+                                                                     sum(leaf_flux*ndays,na.rm=T)/sum(ndays,na.rm=T)) * conv ,2)
+        plotDF$seed_lit[plotDF$Year==i&plotDF$Ring==j] <- round(with(lit.prod.tr[lit.prod.tr$year==i&lit.prod.tr$Ring==j,],
+                                                                     sum(seed_flux*ndays,na.rm=T)/sum(ndays,na.rm=T)) * conv ,2)
+        plotDF$twig_lit[plotDF$Year==i&plotDF$Ring==j] <- round(with(lit.prod.tr[lit.prod.tr$year==i&lit.prod.tr$Ring==j,],
+                                                                     sum(twig_flux*ndays,na.rm=T)/sum(ndays,na.rm=T)) * conv ,2)
+        plotDF$bark_lit[plotDF$Year==i&plotDF$Ring==j] <- round(with(lit.prod.tr[lit.prod.tr$year==i&lit.prod.tr$Ring==j,],
+                                                                     sum(bark_flux*ndays,na.rm=T)/sum(ndays,na.rm=T)) * conv ,2)
+    }
+}
+
+plotDF[plotDF$Ring%in%c(2,3,6),"Treatment"] <- "aCO2"
+plotDF[plotDF$Ring%in%c(1,4,5),"Treatment"] <- "eCO2"
+
+plotDF2 <- summaryBy(leaf_lit+seed_lit+bark_lit+twig_lit~Year+Treatment, data=plotDF, FUN=mean, keep.names=T)
+plotDF3 <- summaryBy(leaf_lit+seed_lit+bark_lit+twig_lit~Year+Treatment, data=plotDF, FUN=se, keep.names=T)
+plotDF2$leaf_se <- plotDF3$leaf_lit
+plotDF2$seed_se <- plotDF3$seed_lit
+plotDF2$twig_se <- plotDF3$twig_lit
+plotDF2$bark_se <- plotDF3$bark_lit
 
 ### plot
 p1 <- ggplot(leaf.lit, aes(x=Date))+
@@ -1736,7 +1770,7 @@ p1 <- ggplot(leaf.lit, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1756,7 +1790,7 @@ p2 <- ggplot(twig.lit, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1776,7 +1810,7 @@ p3 <- ggplot(bark.lit, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1796,7 +1830,7 @@ p4 <- ggplot(seed.lit, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1805,15 +1839,100 @@ p4 <- ggplot(seed.lit, aes(x=Date))+
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
 
+### plot
+p5 <- ggplot(plotDF2, aes(x=Year, y=leaf_lit))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
+    geom_errorbar(aes(ymax=leaf_lit+leaf_se, ymin=leaf_lit-leaf_se, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[ol], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p6 <- ggplot(plotDF2, aes(x=Year, y=twig_lit))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
+    geom_errorbar(aes(ymax=twig_lit+twig_se, ymin=twig_lit-twig_se, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[twig], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p7 <- ggplot(plotDF2, aes(x=Year, y=bark_lit))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
+    geom_errorbar(aes(ymax=bark_lit+bark_se, ymin=bark_lit-bark_se, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[bark], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p8 <- ggplot(plotDF2, aes(x=Year, y=seed_lit))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
+    geom_errorbar(aes(ymax=seed_lit+seed_se, ymin=seed_lit-seed_se, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(NPP[seed], " (g C ", m^-2, yr^-1, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="bottom")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
 grid.labs <- c("(a)", "(b)", "(c)", "(d)")
 
 ## plot 
 pdf("output/NPP_litter.pdf", width=8,height=12)
-plot_grid(p1, p2, 
-          p3, p4, 
+plot_grid(p5, p6, 
+          p7, p8, 
           labels="", ncol=1, align="v", axis = "l", 
           rel_heights=c(0.7, 0.7, 0.7, 1))
-grid.text(grid.labs,x = 0.15, y = c(0.97, 0.74, 0.5, 0.29),
+grid.text(grid.labs,x = 0.12, y = c(0.97, 0.74, 0.51, 0.29),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -1913,7 +2032,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),

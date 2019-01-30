@@ -639,7 +639,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    F.col.list <- colfunc.delta(7)
+    F.col.list <- colfunc.delta(6)
     
     v.list <- viridis(27)
     #v.list <- rainbow(26)
@@ -671,10 +671,10 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
                    "delta_fineroot_c"=F.col.list[3],    
                    #"delta_coarseroot_c"=F.col.list[4],  
                    "delta_leaf_c"=F.col.list[4],  
-                   "delta_understorey_c"=F.col.list[5],    
-                   "delta_soil_c"=F.col.list[1],         
-                   "delta_litter_c"=F.col.list[7],
-                   "delta_microbial_c"=F.col.list[6])     
+                   #"delta_understorey_c"=F.col.list[5],    
+                   "delta_soil_c"=F.col.list[6],         
+                   "delta_litter_c"=F.col.list[1],
+                   "delta_microbial_c"=F.col.list[5])     
     #col.list2 <- c("over_gpp"=v.list[1],                    
     #               "understorey_gpp"=v.list[2],  
     #               "Change_in_pools"=v.list[3],
@@ -792,7 +792,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
         guides(fill=guide_legend(ncol=6))+
         ylim(-500,1000)
     
-    plot(p3)
+    #plot(p3)
     
     ### Plotting
     pdf("Output/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate_bootstrapped.pdf", width=8, height=6)
