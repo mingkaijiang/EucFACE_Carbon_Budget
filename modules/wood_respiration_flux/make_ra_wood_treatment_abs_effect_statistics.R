@@ -137,8 +137,6 @@ make_ra_wood_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## confidence interval 
     eff.conft <- confint(modeltt,"Trtele")
     
-    eff.conft
-    
     ### Analyse the variable model
     ## model 2: interaction, year as factor, ring random factor
     int.m2 <- "interative_with_covariate"

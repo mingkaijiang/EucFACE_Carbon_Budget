@@ -785,12 +785,13 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
         #geom_vline(xintercept = 4.5, linetype="dashed", color="black")+
         #geom_vline(xintercept = 5.5, linetype="dashed", color="black")+
         
-        #scale_y_continuous(limits=c(-100, 200), 
-        #                   breaks=c(-100, -75, -50, -25, 0, 50, 100, 150, 175, 200),
-        #                   labels=c(-400, -200, -50, -25, 0, 50, 100, 150, 400, 650))+
+        scale_y_continuous(limits=c(-400, 800), 
+                           breaks=c(-400, -200, -100, 0, 100, 200, 400, 800),
+                           labels=c(-400, -200, -100, 0, 100, 200, 400, 800))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
-        guides(fill=guide_legend(ncol=6))+
-        ylim(-500,1000)
+        guides(fill=guide_legend(ncol=6))#+
+        #ylim(-400,800)+
+        #scale_y_continuous(breaks=c(-400,0,400,800), limits=c(-400, 800))
     
     #plot(p3)
     

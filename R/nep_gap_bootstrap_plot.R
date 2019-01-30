@@ -251,7 +251,10 @@ nep_gap_bootstrap_plot <- function(inDF) {
                          labels=c("In - Out",
                                   expression(paste("NPP - ", R[h])),
                                   expression(Delta*C[pools])))+
-        theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
+        theme(legend.justification=c(1,0), legend.position=c(0.2,0.05))+
+        scale_y_continuous(limits=c(-500, 500), 
+                           breaks=c(-500, -250, -100, 0, 100, 250, 500),
+                           labels=c(-500, -250, -100, 0, 100, 250, 500))
     
     #plot(p1)
     

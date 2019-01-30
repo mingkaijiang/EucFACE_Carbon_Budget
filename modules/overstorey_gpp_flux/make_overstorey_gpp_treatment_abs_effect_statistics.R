@@ -101,7 +101,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
     #modelt1 <- lmer(Value~Trt + Yrf + Cov6 + (1|Ring),data=tDF)
-    modelt1 <- lmer(Value~Trt + Yrf + Cov3 + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")

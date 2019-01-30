@@ -19,6 +19,7 @@ make_rh_treatment_abs_effect_statistics <- function(inDF, var.cond,
 
     #### Update variable name so that this function can be used across different variables
     colnames(inDF)[var.col] <- "Value"
+    inDF$Value <- as.numeric(as.character(inDF$Value))
     
     #### dataframe with annual totals in g m-2 yr-1
     ###------ Treatment interacting with date, or not
