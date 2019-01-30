@@ -43,7 +43,7 @@ p1 <- ggplot(lai.tr, aes(Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -70,7 +70,7 @@ p2 <- ggplot(sla.tr, aes(Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -95,7 +95,7 @@ p3 <- ggplot(leafc.tr, aes(Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -145,7 +145,7 @@ dev.off()
 #          axis.title.y=element_text(size=14),
 #          legend.text=element_text(size=12),
 #          legend.title=element_text(size=14),
-#          panel.grid.major=element_line(color="grey"),
+#          panel.grid.major=element_blank(),
 #          legend.position="right")+
 #    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
 #                        labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -170,7 +170,7 @@ dev.off()
 #          axis.title.y=element_text(size=14),
 #          legend.text=element_text(size=12),
 #          legend.title=element_text(size=14),
-#          panel.grid.major=element_line(color="grey"),
+#          panel.grid.major=element_blank(),
 #          legend.position="right")+
 #    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
 #                        labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -189,7 +189,7 @@ dev.off()
 #          axis.title.y=element_text(size=14),
 #          legend.text=element_text(size=12),
 #          legend.title=element_text(size=14),
-#          panel.grid.major=element_line(color="grey"),
+#          panel.grid.major=element_blank(),
 #          legend.position="right")+
 #    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
 #                        labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -244,7 +244,7 @@ p1 <- ggplot(woodc.tr, aes(x=as.character(Date),y=wood_pool,fill=Treatment))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -262,7 +262,7 @@ p2 <- ggplot(wood.stock.tr, aes(x=as.character(Date),y=Wood_Stock/1000,fill=Trea
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -279,7 +279,7 @@ p3 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -456,7 +456,7 @@ p1 <- ggplot(uac1.tr, aes(as.character(Date), avg))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -476,7 +476,7 @@ p2 <- ggplot(uac1.class.tr, aes(Class, avg, color=as.factor(Treatment)))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -529,7 +529,7 @@ p1 <- ggplot(crc1.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -551,7 +551,7 @@ p2 <- ggplot(crc.tr.w)+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -601,7 +601,7 @@ p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(limit=c("fr0_10", "fr10_30", "cr"),
                       values=c("orange", "green", "brown"),
@@ -656,7 +656,7 @@ p1 <- ggplot(soilc.tr, aes(Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -675,7 +675,7 @@ p2 <- ggplot(soil.bk.tr, aes(x=as.character(ring),y=bulk_density_kg_m3, fill=as.
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     coord_cartesian(ylim = c(1000,2000)) +
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -697,7 +697,7 @@ p3 <-  ggplot(soilc.ring)+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     coord_cartesian(ylim = c(1000,3000)) +
     scale_fill_manual(name="Treatment", 
@@ -740,7 +740,7 @@ p4 <- ggplot(soilc.ph)+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     coord_cartesian(ylim = c(5,6)) +
     scale_fill_manual(name="Treatment", 
@@ -764,7 +764,7 @@ p5 <- ggplot(soilc.cn)+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     coord_cartesian(ylim = c(10,20)) +
     scale_fill_manual(name="Treatment", 
@@ -788,7 +788,7 @@ p6 <- ggplot(soilc.cp)+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     coord_cartesian(ylim = c(100,300)) +
     scale_fill_manual(name="Treatment", 
@@ -868,7 +868,7 @@ p1 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.fa
           axis.title.y=element_blank(),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -920,7 +920,7 @@ p5 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.fa
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -972,7 +972,7 @@ p7 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.fa
           axis.title.y=element_blank(),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -1024,7 +1024,7 @@ p9 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.fa
           axis.title.y=element_blank(),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -1079,7 +1079,7 @@ p11 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.f
           axis.title.y=element_blank(),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -1136,7 +1136,7 @@ p3 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.fa
           axis.title.y=element_blank(),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
@@ -1211,7 +1211,7 @@ p <- ggplot(plotDF, aes(x=Treatment, y=fineroot_pool, fill=Depth))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-30cm" = "orange"),
                       labels=c("0-10cm","10-30cm"))+
@@ -1249,7 +1249,7 @@ p <- ggplot(plotDF, aes(x=Treatment, y=fineroot_pool, fill=Depth))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-30cm" = "orange"),
                       labels=c("0-10cm","10-30cm"))+
@@ -1283,7 +1283,7 @@ p1 <- ggplot(plotDF1, aes(x=Treatment, y=soil_carbon_pool, fill=Depth))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-20cm" = "orange", "20-30cm" = "brown"),
                       labels=c("0-10cm","10-20cm","20-30cm"))+
@@ -1306,7 +1306,7 @@ p2 <- ggplot(plotDF2, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1332,7 +1332,7 @@ p3 <- ggplot(plotDF3, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1358,7 +1358,7 @@ p4 <- ggplot(plotDF4, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1404,7 +1404,7 @@ p1 <- ggplot(mic.tr, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1427,7 +1427,7 @@ p2 <- ggplot(myc.tr, aes(x=Date))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))+
@@ -1449,7 +1449,7 @@ p3 <- ggplot(myc.prop, aes(x=as.character(Ring), y=myc.prop*100, fill=factor(Trt
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
@@ -1675,7 +1675,7 @@ p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
@@ -1694,7 +1694,7 @@ p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     #scale_y_continuous(position="left")+
     scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
@@ -1967,7 +1967,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -1988,7 +1988,7 @@ p2 <- ggplot(croot.prod, aes(x=as.character(Yr), y=avg))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2104,7 +2104,7 @@ p1 <- ggplot(root.plot, aes(x=component, y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2152,7 +2152,7 @@ p1 <- ggplot(und.avg, aes(x=as.character(Yr), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2243,7 +2243,7 @@ p1 <- ggplot(hb.avg, aes(x=as.character(Yr), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     ylim(0,50)+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2264,7 +2264,7 @@ p2 <- ggplot(hb.resp.avg, aes(x=as.character(Yr), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     ylim(0,50)+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2285,7 +2285,7 @@ p3 <- ggplot(frass.avg, aes(x=as.character(Yr), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     ylim(0,50)+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2399,7 +2399,7 @@ p1 <- ggplot(o.leaf.resp.avg, aes(x=as.character(year), y=Rfoliage))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     ylim(0, 600)+
     #scale_y_continuous(position="left")+
@@ -2421,7 +2421,7 @@ p2 <- ggplot(wood.resp.avg, aes(x=as.character(year), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     ylim(0, 600)+
     #scale_y_continuous(position="left")+
@@ -2443,7 +2443,7 @@ p3 <- ggplot(und.resp.avg, aes(x=as.character(year), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     ylim(0, 600)+
     #scale_y_continuous(position="left")+
@@ -2465,7 +2465,7 @@ p4 <- ggplot(root.resp.avg, aes(x=as.character(year), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     ylim(0, 600)+
     #scale_y_continuous(position="left")+
@@ -2513,7 +2513,7 @@ p1 <- ggplot(g.resp, aes(x=as.character(Trt), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
@@ -2592,7 +2592,7 @@ p1 <- ggplot(soil.resp.avg, aes(x=as.character(year), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="none")+
     ylim(0, 1500)+
     #scale_y_continuous(position="left")+
@@ -2614,7 +2614,7 @@ p2 <- ggplot(rh.resp.avg, aes(x=as.character(year), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     ylim(0, 1500)+
     #scale_y_continuous(position="left")+
@@ -2698,7 +2698,7 @@ p1 <- ggplot(plot.df, aes(x=as.character(component), y=value))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="right")+
     ylim(0, 0.3)+
     #scale_y_continuous(position="left")+
@@ -2735,7 +2735,7 @@ p1 <- ggplot(o.voc.tr, aes(x=year, y=voc_flux))+
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
-          panel.grid.major=element_line(color="grey"),
+          panel.grid.major=element_blank(),
           legend.position="bottom")+
     scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
                                               "3" = "cyan", "4" = "pink",
