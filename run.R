@@ -786,5 +786,22 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted()
 ### Plot individual variable figures
 #source("R/plot_figures.R")
 
+
+### Plot a combined gpp and rsoil gap plot
+source("R/gpp_and_rsoil_gap_bootstrap_plot_se.R")
+gpp_and_rsoil_gap_bootstrap_plot_se(inDF=tables_by_ring_predicted)
+
+### NEP gaps   - Note the different input file!
+source("R/nep_gap_bootstrap_plot_se.R")
+nep_gap_bootstrap_plot_se(inDF=tables_by_ring_predicted)
+
+### Make some plots
+source("R/make_statistical_comparison_plots_se.R")
+make_statistical_comparison_plots_se()
+
+source("R/make_eCO2_effect_on_GPP_plot_with_covariate_se.R")
+make_eCO2_effect_on_GPP_plot_with_covariate_predicted_se()
+
+
 ###### ---------------- End -------------------- ######
 options(warn=0)
