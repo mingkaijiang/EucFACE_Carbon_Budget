@@ -119,15 +119,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     bDF1$sum <- with(bDF1, delta_soil_c + delta_leaf_c + delta_wood_c + delta_fineroot_c + delta_coarseroot_c + 
                          delta_litter_c + delta_microbial_c + delta_mycorrhizal_c + delta_insect_c)
     
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #plotDF2$conf_low[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] +
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     plotDF2$conf_low[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"] <- plotDF2$effect_size[plotDF2$Variable=="Change_in_pools"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     ## Influxes
     bDF1 <- data.frame(c(1:n.b), NA, NA,NA)
@@ -140,15 +143,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
                                   sd=plotDF1$sd[plotDF1$Variable=="understorey_gpp"])
     bDF1$sum <- with(bDF1, ch4 + over_gpp + understorey_gpp)
     
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #plotDF2$conf_low[plotDF2$Variable=="Influxes"] <- plotDF2$effect_size[plotDF2$Variable=="Influxes"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #plotDF2$conf_high[plotDF2$Variable=="Influxes"] <- plotDF2$effect_size[plotDF2$Variable=="Influxes"] +
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     plotDF2$conf_low[plotDF2$Variable=="Influxes"] <- plotDF2$effect_size[plotDF2$Variable=="Influxes"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     plotDF2$conf_high[plotDF2$Variable=="Influxes"] <- plotDF2$effect_size[plotDF2$Variable=="Influxes"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     ## NPP
     bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA)
@@ -174,15 +180,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
                                    sd=plotDF1$sd[plotDF1$Variable=="understorey_prod"])
     bDF1$sum <- with(bDF1, herb_consump + leaf_prod + twig_prod + bark_prod + seed_prod + wood_prod + fineroot_prod + coarseroot_prod + understorey_prod)
     
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #plotDF2$conf_low[plotDF2$Variable=="NPP"] <- plotDF2$effect_size[plotDF2$Variable=="NPP"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #plotDF2$conf_high[plotDF2$Variable=="NPP"] <- plotDF2$effect_size[plotDF2$Variable=="NPP"] +
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     plotDF2$conf_low[plotDF2$Variable=="NPP"] <- plotDF2$effect_size[plotDF2$Variable=="NPP"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     plotDF2$conf_high[plotDF2$Variable=="NPP"] <- plotDF2$effect_size[plotDF2$Variable=="NPP"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     
     ## Outfluxes - respirations except Ra
@@ -195,15 +204,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     
     bDF1$sum <- with(bDF1, hetero_respiration + doc )
     
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #plotDF2$conf_low[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #plotDF2$conf_high[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] +
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     plotDF2$conf_low[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] -
-        sd(bDF1$sum)
+        sd(bDF1.sub$sum)
     plotDF2$conf_high[plotDF2$Variable=="Outfluxes"] <- plotDF2$effect_size[plotDF2$Variable=="Outfluxes"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     ## Ra
     bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA)
@@ -222,15 +234,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     
     bDF1$sum <- with(bDF1, wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration + voc)
     
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #plotDF2$conf_low[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #plotDF2$conf_high[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] +
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     plotDF2$conf_low[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     plotDF2$conf_high[plotDF2$Variable=="Ra"] <- plotDF2$effect_size[plotDF2$Variable=="Ra"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     ## total outfluxes
     bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA)
@@ -253,15 +268,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     bDF1$sum <- with(bDF1, hetero_respiration + doc + voc + 
                          wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
     
-    plotDF2$conf_low[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] -
-        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
-    plotDF2$conf_high[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] +
-        se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
+    #plotDF2$conf_low[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] -
+    #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
+    #plotDF2$conf_high[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] +
+    #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     plotDF2$conf_low[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     plotDF2$conf_high[plotDF2$Variable=="total_outflux"] <- plotDF2$effect_size[plotDF2$Variable=="total_outflux"] +
-        sd(bDF1$sum)
+        sd(bDF1.sub$sum)
     
     
     #subDF <- plotDF2[plotDF2$Variable%in%c("Outfluxes","Ra"),]
@@ -365,15 +383,18 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
                          coarseroot_prod + understorey_prod + wood_respiration + over_leaf_respiration + 
                          understorey_respiration + root_respiration + voc)
     
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #confDF$conf_low[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #confDF$conf_high[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] +
     #   se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     
     confDF$conf_low[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     confDF$conf_high[confDF$plot.cat2 == "B"]  <- confDF$effect_size[confDF$plot.cat2 == "B"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     ## update C change in pool + total outfluxes
     bDF1 <- data.frame(c(1:n.b), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
@@ -418,6 +439,10 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
                          delta_litter_c + hetero_respiration + doc + voc + 
                          wood_respiration + over_leaf_respiration + understorey_respiration + root_respiration)
     
+    
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
     #confDF$conf_low[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] -
     #    se(bDF1$sum) * qt(0.95/2 + .5, length(bDF1$sum)-1)
     #confDF$conf_high[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] +
@@ -425,9 +450,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     
     
     confDF$conf_low[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] -
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     confDF$conf_high[confDF$plot.cat2 == "C"]  <- confDF$effect_size[confDF$plot.cat2 == "C"] +
-        sd(bDF1$sum) 
+        sd(bDF1.sub$sum) 
     
     #plotDF$conf_low_radius <- with(plotDF, effect_size - conf_low)
     #plotDF$conf_high_radius <- with(plotDF, conf_high - effect_size)
@@ -450,9 +475,13 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color <- 
     bDF1$root_respiration <- rnorm(n.b, mean=plotDF1$effect_size[plotDF1$Variable=="root_respiration"],
                                    sd=plotDF1$sd[plotDF1$Variable=="root_respiration"])
     bDF1$sum <- with(bDF1, hetero_respiration + root_respiration)
-    soil_resp_mean <- mean(bDF1$sum)
-    soil_resp_conf_low <- mean(bDF1$sum)-sd(bDF1$sum) 
-    soil_resp_conf_high  <- mean(bDF1$sum)+sd(bDF1$sum) 
+    
+    qt1 <- quantile(bDF1$sum, c(0.1, 0.9)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    
+    soil_resp_mean <- mean(bDF1.sub$sum)
+    soil_resp_conf_low <- mean(bDF1.sub$sum)-sd(bDF1.sub$sum) 
+    soil_resp_conf_high  <- mean(bDF1.sub$sum)+sd(bDF1.sub$sum) 
     
     
     y.lab1 <- c("ch4"=expression(CH[4]),                          # 1

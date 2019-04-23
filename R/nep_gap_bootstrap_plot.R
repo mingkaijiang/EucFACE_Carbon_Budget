@@ -45,8 +45,13 @@ nep_gap_bootstrap_plot <- function(inDF) {
     bDF1$inout <- with(bDF1, (GPP_overstorey + GPP_understorey - CH4 - Ra_leaf - 
                                   Ra_stem - Ra_und - VOC - Rhb - DOC - Rsoil - Rgrowth))
 
-    out$aCO2[out$Method=="In-out"] <- mean(bDF1$inout)
-    out$aCO2_conf[out$Method=="In-out"] <- sd(bDF1$inout)#/sqrt(1000) * 1.96
+    
+    qt1 <- quantile(bDF1$inout, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, inout >= qt1[1] & inout <= qt1[2])
+
+    
+    out$aCO2[out$Method=="In-out"] <- mean(bDF1.sub$inout)
+    out$aCO2_conf[out$Method=="In-out"] <- sd(bDF1.sub$inout)#/sqrt(1000) * 1.96
     
     ## elevated rings
     bDF1$GPP_overstorey <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="GPP overstorey"],
@@ -75,8 +80,11 @@ nep_gap_bootstrap_plot <- function(inDF) {
     bDF1$inout <- with(bDF1, (GPP_overstorey + GPP_understorey - CH4 - Ra_leaf - 
                                   Ra_stem - Ra_und - VOC - Rhb - DOC - Rsoil - Rgrowth))
     
-    out$eCO2[out$Method=="In-out"] <- mean(bDF1$inout)
-    out$eCO2_conf[out$Method=="In-out"] <- sd(bDF1$inout)#/sqrt(1000) * 1.96
+    qt1 <- quantile(bDF1$inout, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, inout >= qt1[1] & inout <= qt1[2])
+    
+    out$eCO2[out$Method=="In-out"] <- mean(bDF1.sub$inout)
+    out$eCO2_conf[out$Method=="In-out"] <- sd(bDF1.sub$inout)#/sqrt(1000) * 1.96
     
     ### create dataframe to hold bootstrap results - npp
     bDF1 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA)
@@ -106,8 +114,11 @@ nep_gap_bootstrap_plot <- function(inDF) {
     bDF1$tot <- with(bDF1, (Leaf_NPP + Stem_NPP + Froot_NPP + Croot_NPP + Other_NPP + Und_NPP + 
                                   Mycorrhizal_prod + Leaf_cons - Rh))
     
-    out$aCO2[out$Method=="NPP-Rh"] <- mean(bDF1$tot)
-    out$aCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
+    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
+    
+    out$aCO2[out$Method=="NPP-Rh"] <- mean(bDF1.sub$tot)
+    out$aCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
     
     ## elevated rings
     bDF1$Leaf_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Leaf NPP"],
@@ -131,8 +142,11 @@ nep_gap_bootstrap_plot <- function(inDF) {
     bDF1$tot <- with(bDF1, (Leaf_NPP + Stem_NPP + Froot_NPP + Croot_NPP + Other_NPP + Und_NPP + 
                                 Mycorrhizal_prod + Leaf_cons - Rh))
     
-    out$eCO2[out$Method=="NPP-Rh"] <- mean(bDF1$tot)
-    out$eCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
+    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
+    
+    out$eCO2[out$Method=="NPP-Rh"] <- mean(bDF1.sub$tot)
+    out$eCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
     
     
     
@@ -166,8 +180,11 @@ nep_gap_bootstrap_plot <- function(inDF) {
     
     bDF1$tot <- with(bDF1, (soilc+leafc+woodc+uac+frootc+crootc+micc+mycc+litter+insect))
     
-    out$aCO2[out$Method=="Pool"] <- mean(bDF1$tot)
-    out$aCO2_conf[out$Method=="Pool"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
+    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
+    
+    out$aCO2[out$Method=="Pool"] <- mean(bDF1.sub$tot)
+    out$aCO2_conf[out$Method=="Pool"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
     
     ## elevated rings
     bDF1$soilc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Soil C"],
@@ -193,8 +210,11 @@ nep_gap_bootstrap_plot <- function(inDF) {
     
     bDF1$tot <- with(bDF1, (soilc+leafc+woodc+uac+frootc+crootc+micc+mycc+litter+insect))
     
-    out$eCO2[out$Method=="Pool"] <- mean(bDF1$tot)
-    out$eCO2_conf[out$Method=="Pool"] <- sd(bDF1$tot)#/sqrt(1000) * 1.96
+    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
+    
+    out$eCO2[out$Method=="Pool"] <- mean(bDF1.sub$tot)
+    out$eCO2_conf[out$Method=="Pool"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
     
  
     write.csv(out, "R_other/NEP_bootstrapped_method_comparison.csv", row.names=F)

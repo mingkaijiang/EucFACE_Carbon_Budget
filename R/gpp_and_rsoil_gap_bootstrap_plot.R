@@ -79,6 +79,11 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     
     bDF2$sum <- rowSums(bDF2[,2:13])
     
+    qt1 <- quantile(bDF1$sum, c(0.005, 0.995)) 
+    qt2 <- quantile(bDF2$sum, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    bDF2.sub <- subset(bDF2, sum >= qt2[1] & sum <= qt2[2])
+    
     
     ### prepare error bar ranges
     errDF <- data.frame(c("NPP+Ra", "MAESPA"), NA, NA, NA)
@@ -86,8 +91,8 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$aCO2[plotDF$cat=="NPP+Ra"])
     errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$aCO2[plotDF$cat=="MAESPA"])
     
-    errDF$sd[errDF$cat=="NPP+Ra"] <- sd(bDF2$sum)
-    errDF$sd[errDF$cat=="MAESPA"] <- sd(bDF1$sum)
+    errDF$sd[errDF$cat=="NPP+Ra"] <- sd(bDF2.sub$sum)
+    errDF$sd[errDF$cat=="MAESPA"] <- sd(bDF1.sub$sum)
     
     #errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
     #errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
@@ -225,14 +230,19 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     bDF2$sum <- rowSums(bDF2[,2:13])
     
     
+    qt1 <- quantile(bDF1$sum, c(0.005, 0.995)) 
+    qt2 <- quantile(bDF2$sum, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, sum >= qt1[1] & sum <= qt1[2])
+    bDF2.sub <- subset(bDF2, sum >= qt2[1] & sum <= qt2[2])
+    
     ### prepare error bar ranges
     errDF <- data.frame(c("NPP+Ra", "MAESPA"), NA, NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg", "sum")
     errDF$sum[errDF$cat=="NPP+Ra"] <- sum(plotDF$eCO2[plotDF$cat=="NPP+Ra"])
     errDF$sum[errDF$cat=="MAESPA"] <- sum(plotDF$eCO2[plotDF$cat=="MAESPA"])
     
-    errDF$sd[errDF$cat=="NPP+Ra"] <- sd(bDF2$sum)
-    errDF$sd[errDF$cat=="MAESPA"] <- sd(bDF1$sum)
+    errDF$sd[errDF$cat=="NPP+Ra"] <- sd(bDF2.sub$sum)
+    errDF$sd[errDF$cat=="MAESPA"] <- sd(bDF1.sub$sum)
     
     #errDF$se[errDF$cat=="NPP+Ra"] <- se(bDF2$sum)
     #errDF$se[errDF$cat=="MAESPA"] <- se(bDF1$sum)
@@ -339,7 +349,10 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     
     bDF2$sum <- rowSums(bDF2[,2:8])
     
-    
+    qt1 <- quantile(bDF1$Rsoil, c(0.005, 0.995)) 
+    qt2 <- quantile(bDF2$sum, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, Rsoil >= qt1[1] & Rsoil <= qt1[2])
+    bDF2.sub <- subset(bDF2, sum >= qt2[1] & sum <= qt2[2])
     
     ### prepare error bar ranges
     errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
@@ -347,8 +360,8 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$aCO2[plotDF$cat=="Litter+Rroot"])
     errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$aCO2[plotDF$cat=="Rsoil"])
     
-    errDF$sd[errDF$cat=="Litter+Rroot"] <- sd(bDF2$sum)
-    errDF$sd[errDF$cat=="Rsoil"] <- sd(bDF1$Rsoil)
+    errDF$sd[errDF$cat=="Litter+Rroot"] <- sd(bDF2.sub$sum)
+    errDF$sd[errDF$cat=="Rsoil"] <- sd(bDF1.sub$Rsoil)
     
     #errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
     #errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
@@ -462,8 +475,11 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     
     bDF2$sum <- rowSums(bDF2[,2:8])
     
+    qt1 <- quantile(bDF1$Rsoil, c(0.005, 0.995)) 
+    qt2 <- quantile(bDF2$sum, c(0.005, 0.995)) 
+    bDF1.sub <- subset(bDF1, Rsoil >= qt1[1] & Rsoil <= qt1[2])
+    bDF2.sub <- subset(bDF2, sum >= qt2[1] & sum <= qt2[2])
     
-    ### prepare error bar ranges
     ### prepare error bar ranges
     errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
     colnames(errDF) <- c("cat", "pos", "neg", "sum")
@@ -473,8 +489,8 @@ gpp_and_rsoil_gap_bootstrap_plot <- function(inDF) {
     #errDF$se[errDF$cat=="Litter+Rroot"] <- se(bDF2$sum)
     #errDF$se[errDF$cat=="Rsoil"] <- se(bDF1$Rsoil)
     
-    errDF$sd[errDF$cat=="Litter+Rroot"] <- sd(bDF2$sum)
-    errDF$sd[errDF$cat=="Rsoil"] <- sd(bDF1$Rsoil)
+    errDF$sd[errDF$cat=="Litter+Rroot"] <- sd(bDF2.sub$sum)
+    errDF$sd[errDF$cat=="Rsoil"] <- sd(bDF1.sub$Rsoil)
     
     #errDF$conf[errDF$cat=="Litter+Rroot"] <- qt(0.95/2 + .5, length(bDF2$sum)-1) * errDF$se[errDF$cat=="Litter+Rroot"]
     #errDF$conf[errDF$cat=="Rsoil"] <- qt(0.95/2 + .5, length(bDF1$Rsoil)-1) * errDF$se[errDF$cat=="Rsoil"]
