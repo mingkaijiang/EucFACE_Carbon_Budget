@@ -75,38 +75,38 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     names(plotDF2)[1] <- "Variable"
     
     ### the confidence above is not correct, update these numbers
-    plotDF2[plotDF2$Variable == "Change_in_pools", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="delta_leaf_c","sd"]^2)/3 + 
-                    (plotDF1[plotDF1$Variable=="delta_wood_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_understorey_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_fineroot_c","sd"]^2)/3 + 
-                    (plotDF1[plotDF1$Variable=="delta_coarseroot_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_litter_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_microbial_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_soil_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_mycorrhizal_c","sd"]^2)/3 +
-                    (plotDF1[plotDF1$Variable=="delta_insect_c","sd"]^2)/3)
+    plotDF2[plotDF2$Variable == "Change_in_pools", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="delta_leaf_c","sd"]^2 + 
+                    plotDF1[plotDF1$Variable=="delta_wood_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_understorey_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_fineroot_c","sd"]^2 + 
+                    plotDF1[plotDF1$Variable=="delta_coarseroot_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_litter_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_microbial_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_soil_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_mycorrhizal_c","sd"]^2 +
+                    plotDF1[plotDF1$Variable=="delta_insect_c","sd"]^2)/10)
     
-    plotDF2[plotDF2$Variable == "Influxes", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="over_gpp","sd"]^2)/3 + 
-                                                                     (plotDF1[plotDF1$Variable=="understorey_gpp","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="ch4","sd"]^2)/3)
+    plotDF2[plotDF2$Variable == "Influxes", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="over_gpp","sd"]^2 + 
+                                                                     plotDF1[plotDF1$Variable=="understorey_gpp","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="ch4","sd"]^2)/3)
     
-    plotDF2[plotDF2$Variable == "NPP", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="leaf_prod","sd"]^2)/3 + 
-                                                                     (plotDF1[plotDF1$Variable=="wood_prod","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="fineroot_prod","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="coarseroot_prod","sd"]^2)/3 + 
-                                                                     (plotDF1[plotDF1$Variable=="other_prod","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="understorey_prod","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="herb_consump","sd"]^2)/3)
+    plotDF2[plotDF2$Variable == "NPP", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="leaf_prod","sd"]^2 + 
+                                                                     plotDF1[plotDF1$Variable=="wood_prod","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="fineroot_prod","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="coarseroot_prod","sd"]^2 + 
+                                                                     plotDF1[plotDF1$Variable=="other_prod","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="understorey_prod","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="herb_consump","sd"]^2)/7)
     
-    plotDF2[plotDF2$Variable == "Outfluxes", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="doc","sd"]^2)/3 + 
-                                                                     (plotDF1[plotDF1$Variable=="hetero_respiration","sd"]^2)/3)
+    plotDF2[plotDF2$Variable == "Outfluxes", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="doc","sd"]^2 + 
+                                                                     plotDF1[plotDF1$Variable=="hetero_respiration","sd"]^2)/2)
     
-    plotDF2[plotDF2$Variable == "Ra", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2)/3 + 
-                                                                     (plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="root_respiration","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2)/3 + 
-                                                                     (plotDF1[plotDF1$Variable=="voc","sd"]^2)/3 +
-                                                                     (plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2)/3)
+    plotDF2[plotDF2$Variable == "Ra", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2 + 
+                                                                     plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="root_respiration","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2 + 
+                                                                     plotDF1[plotDF1$Variable=="voc","sd"]^2 +
+                                                                     plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2)/6)
     
     
     ### Total of Ra and Rh and the conf. interval
@@ -118,14 +118,14 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     colnames(tot_out) <- c("Variable", "effect_size", "conf_low", "conf_high", "sd")
     plotDF2 <- rbind(plotDF2, tot_out) 
     
-    plotDF2[plotDF2$Variable == "total_outflux", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2)/3 + 
-                                                                   (plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2)/3 +
-                                                                   (plotDF1[plotDF1$Variable=="root_respiration","sd"]^2)/3 +
-                                                                   (plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2)/3 + 
-                                                                   (plotDF1[plotDF1$Variable=="voc","sd"]^2)/3 +
-                                                                   (plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2)/3+
-                                                                   (plotDF1[plotDF1$Variable=="doc","sd"]^2)/3 + 
-                                                                   (plotDF1[plotDF1$Variable=="hetero_respiration","sd"]^2)/3)
+    plotDF2[plotDF2$Variable == "total_outflux", "sd"] <- sqrt((plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2 + 
+                                                                   plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2 +
+                                                                   plotDF1[plotDF1$Variable=="root_respiration","sd"]^2 +
+                                                                   plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2 + 
+                                                                   plotDF1[plotDF1$Variable=="voc","sd"]^2 +
+                                                                   plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2+
+                                                                   plotDF1[plotDF1$Variable=="doc","sd"]^2 + 
+                                                                   plotDF1[plotDF1$Variable=="hetero_respiration","sd"]^2)/8)
     
     
     plotDF2$plot.cat <- c("total_change_in_pool", "total_influx", "total_npp", "total_rh", "total_ra", "total_outflux")
@@ -179,19 +179,19 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     confDF$conf_high[confDF$plot.cat2 == "F"] <- plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"]
     
     ## update B NPP + Ra
-    confDF$sd[confDF$plot.cat2 == "B"] <- sqrt((plotDF1[plotDF1$Variable=="leaf_prod","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="wood_prod","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="fineroot_prod","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="coarseroot_prod","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="other_prod","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="understorey_prod","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="herb_consump","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="root_respiration","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="voc","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2)/3)
+    confDF$sd[confDF$plot.cat2 == "B"] <- sqrt((plotDF1[plotDF1$Variable=="leaf_prod","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="wood_prod","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="fineroot_prod","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="coarseroot_prod","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="other_prod","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="understorey_prod","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="herb_consump","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="root_respiration","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="voc","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2)/13)
     
     confDF <- as.data.frame(confDF)
     
@@ -201,24 +201,24 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
         as.numeric(confDF[confDF$plot.cat2 == "B", "sd"])
     
     ## update C change in pool + total outfluxes
-    confDF$sd[confDF$plot.cat2 == "C"] <- sqrt((plotDF1[plotDF1$Variable=="delta_leaf_c","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="delta_wood_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_understorey_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_fineroot_c","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="delta_coarseroot_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_litter_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_microbial_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_soil_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_mycorrhizal_c","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="delta_insect_c","sd"]^2)/3+
-                                                   (plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="root_respiration","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="voc","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2)/3 +
-                                                   (plotDF1[plotDF1$Variable=="doc","sd"]^2)/3 + 
-                                                   (plotDF1[plotDF1$Variable=="hetero_respiration","sd"]^2)/3)
+    confDF$sd[confDF$plot.cat2 == "C"] <- sqrt((plotDF1[plotDF1$Variable=="delta_leaf_c","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="delta_wood_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_understorey_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_fineroot_c","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="delta_coarseroot_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_litter_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_microbial_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_soil_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_mycorrhizal_c","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="delta_insect_c","sd"]^2+
+                                                   plotDF1[plotDF1$Variable=="over_leaf_respiration","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="wood_respiration","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="root_respiration","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="understorey_respiration","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="voc","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="growth_respiration","sd"]^2 +
+                                                   plotDF1[plotDF1$Variable=="doc","sd"]^2 + 
+                                                   plotDF1[plotDF1$Variable=="hetero_respiration","sd"]^2)/18)
     
     
     confDF[confDF$plot.cat2 == "C", "conf_low"]  <- as.numeric(confDF[confDF$plot.cat2 == "C", "effect_size"]) -
