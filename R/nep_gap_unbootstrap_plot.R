@@ -9,212 +9,134 @@ nep_gap_unbootstrap_plot <- function(inDF) {
     out <- data.frame(c("In-out", "NPP-Rh", "Pool"), NA, NA, NA, NA)
     colnames(out) <- c("Method", "aCO2", "eCO2", "aCO2_conf", "eCO2_conf")
     
-    ### create dataframe to hold bootstrap results - inout
-    bDF1 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(bDF1) <- c("bootID", "GPP_overstorey", "GPP_understorey", 
-                        "CH4", "Ra_leaf", "Ra_stem", "Ra_und", "VOC",
-                        "Rhb", "DOC", "Rsoil", "Rgrowth")
-    
-    ## set seed
-    set.seed(99)
-    
-    ## ambient rings
-    bDF1$GPP_overstorey <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="GPP overstorey"],
-                                 sd=inoutDF$aCO2_sd[inoutDF$term=="GPP overstorey"])
-    bDF1$GPP_understorey <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="GPP understorey"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="GPP understorey"])
-    bDF1$CH4 <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="CH4 efflux"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="CH4 efflux"])
-    bDF1$Ra_leaf <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Ra leaf"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="Ra leaf"])
-    bDF1$Ra_stem <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Ra stem"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="Ra stem"])
-    bDF1$Ra_und <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Ra understorey"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="Ra understorey"])
-    bDF1$VOC <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="VOC"],
-                      sd=inoutDF$aCO2_sd[inoutDF$term=="VOC"])
-    bDF1$Rhb <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Rherbivore"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="Rherbivore"])
-    bDF1$DOC <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="DOC loss"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="DOC loss"])
-    bDF1$Rsoil <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Rsoil"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="Rsoil"])
-    bDF1$Rgrowth <- rnorm(1000, mean=inoutDF$aCO2[inoutDF$term=="Rgrowth"],
-                                  sd=inoutDF$aCO2_sd[inoutDF$term=="Rgrowth"])
-    
-    bDF1$inout <- with(bDF1, (GPP_overstorey + GPP_understorey - CH4 - Ra_leaf - 
-                                  Ra_stem - Ra_und - VOC - Rhb - DOC - Rsoil - Rgrowth))
 
+    out$aCO2[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "aCO2"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "aCO2"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "aCO2"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "aCO2"] - inoutDF[inoutDF$term=="Ra stem", "aCO2"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "aCO2"] - inoutDF[inoutDF$term=="Rgrowth", "aCO2"] -
+        inoutDF[inoutDF$term=="VOC", "aCO2"] - inoutDF[inoutDF$term=="Rherbivore", "aCO2"]  -
+        inoutDF[inoutDF$term=="DOC loss", "aCO2"] - inoutDF[inoutDF$term=="Rsoil", "aCO2"] 
     
-    qt1 <- quantile(bDF1$inout, c(0.005, 0.995)) 
-    bDF1.sub <- subset(bDF1, inout >= qt1[1] & inout <= qt1[2])
-
+    sd1 <- sqrt((inoutDF[inoutDF$term=="GPP overstorey", "aCO2_sd"]^2 + 
+                     inoutDF[inoutDF$term=="GPP understorey", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="CH4 efflux", "aCO2_sd"]^2)/3)
     
-    out$aCO2[out$Method=="In-out"] <- mean(bDF1.sub$inout)
-    out$aCO2_conf[out$Method=="In-out"] <- sd(bDF1.sub$inout)#/sqrt(1000) * 1.96
+    sd2 <- sqrt((inoutDF[inoutDF$term=="Ra leaf", "aCO2_sd"]^2 + 
+                     inoutDF[inoutDF$term=="Ra stem", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Ra root", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Ra understorey", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="VOC", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Rherbivore", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="DOC loss", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Rsoil", "aCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Rgrowth", "aCO2_sd"]^2)/9)
+    
+    out$aCO2_conf[out$Method=="In-out"] <- sqrt(sd1^2/3 + sd2^2/3)
     
     ## elevated rings
-    bDF1$GPP_overstorey <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="GPP overstorey"],
-                                 sd=inoutDF$eCO2_sd[inoutDF$term=="GPP overstorey"])
-    bDF1$GPP_understorey <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="GPP understorey"],
-                                  sd=inoutDF$eCO2_sd[inoutDF$term=="GPP understorey"])
-    bDF1$CH4 <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="CH4 efflux"],
-                      sd=inoutDF$eCO2_sd[inoutDF$term=="CH4 efflux"])
-    bDF1$Ra_leaf <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Ra leaf"],
-                          sd=inoutDF$eCO2_sd[inoutDF$term=="Ra leaf"])
-    bDF1$Ra_stem <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Ra stem"],
-                          sd=inoutDF$eCO2_sd[inoutDF$term=="Ra stem"])
-    bDF1$Ra_und <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Ra understorey"],
-                         sd=inoutDF$eCO2_sd[inoutDF$term=="Ra understorey"])
-    bDF1$VOC <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="VOC"],
-                      sd=inoutDF$eCO2_sd[inoutDF$term=="VOC"])
-    bDF1$Rhb <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Rherbivore"],
-                      sd=inoutDF$eCO2_sd[inoutDF$term=="Rherbivore"])
-    bDF1$DOC <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="DOC loss"],
-                      sd=inoutDF$eCO2_sd[inoutDF$term=="DOC loss"])
-    bDF1$Rsoil <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Rsoil"],
-                        sd=inoutDF$eCO2_sd[inoutDF$term=="Rsoil"])
-    bDF1$Rgrowth <- rnorm(1000, mean=inoutDF$eCO2[inoutDF$term=="Rgrowth"],
-                          sd=inoutDF$eCO2_sd[inoutDF$term=="Rgrowth"])
+    out$eCO2[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "eCO2"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "eCO2"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "eCO2"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "eCO2"] - inoutDF[inoutDF$term=="Ra stem", "eCO2"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "eCO2"] - inoutDF[inoutDF$term=="Rgrowth", "eCO2"] -
+        inoutDF[inoutDF$term=="VOC", "eCO2"] - inoutDF[inoutDF$term=="Rherbivore", "eCO2"]  -
+        inoutDF[inoutDF$term=="DOC loss", "eCO2"] - inoutDF[inoutDF$term=="Rsoil", "eCO2"] 
     
-    bDF1$inout <- with(bDF1, (GPP_overstorey + GPP_understorey - CH4 - Ra_leaf - 
-                                  Ra_stem - Ra_und - VOC - Rhb - DOC - Rsoil - Rgrowth))
+    sd1 <- sqrt((inoutDF[inoutDF$term=="GPP overstorey", "eCO2_sd"]^2 + 
+                     inoutDF[inoutDF$term=="GPP understorey", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="CH4 efflux", "eCO2_sd"]^2)/3)
     
-    qt1 <- quantile(bDF1$inout, c(0.005, 0.995)) 
-    bDF1.sub <- subset(bDF1, inout >= qt1[1] & inout <= qt1[2])
+    sd2 <- sqrt((inoutDF[inoutDF$term=="Ra leaf", "eCO2_sd"]^2 + 
+                     inoutDF[inoutDF$term=="Ra stem", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Ra root", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Ra understorey", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="VOC", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Rherbivore", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="DOC loss", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Rsoil", "eCO2_sd"]^2 +
+                     inoutDF[inoutDF$term=="Rgrowth", "eCO2_sd"]^2)/9)
     
-    out$eCO2[out$Method=="In-out"] <- mean(bDF1.sub$inout)
-    out$eCO2_conf[out$Method=="In-out"] <- sd(bDF1.sub$inout)#/sqrt(1000) * 1.96
+    out$eCO2_conf[out$Method=="In-out"] <- sqrt(sd1^2/3 + sd2^2/3)
     
     ### create dataframe to hold bootstrap results - npp
-    bDF1 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(bDF1) <- c("bootID", "Leaf_NPP", "Stem_NPP", 
-                        "Froot_NPP", "Croot_NPP", "Other_NPP", "Und_NPP", "Leaf_cons",
-                        "Mycorrhizal_prod", "Rh")
+    out$aCO2[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "aCO2"] + 
+        nppDF[nppDF$term=="Stem NPP", "aCO2"] + abs(nppDF[nppDF$term=="Fine Root NPP", "aCO2"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "aCO2"] + nppDF[nppDF$term=="Other NPP", "aCO2"] + 
+        nppDF[nppDF$term=="Understorey NPP", "aCO2"] + nppDF[nppDF$term=="Leaf consumption", "aCO2"] -
+        nppDF[nppDF$term=="R hetero", "aCO2"] 
     
-    ## ambient rings
-    bDF1$Leaf_NPP <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Leaf NPP"],
-                                 sd=nppDF$aCO2_sd[nppDF$term=="Leaf NPP"])
-    bDF1$Stem_NPP <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Stem NPP"],
-                                  sd=nppDF$aCO2_sd[nppDF$term=="Stem NPP"])
-    bDF1$Froot_NPP <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Fine Root NPP"],
-                      sd=nppDF$aCO2_sd[nppDF$term=="Fine Root NPP"])
-    bDF1$Croot_NPP <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Coarse Root NPP"],
-                          sd=nppDF$aCO2_sd[nppDF$term=="Coarse Root NPP"])
-    bDF1$Other_NPP <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Other NPP"],
-                          sd=nppDF$aCO2_sd[nppDF$term=="Other NPP"])
-    bDF1$Und_NPP <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Understorey NPP"],
-                         sd=nppDF$aCO2_sd[nppDF$term=="Understorey NPP"])
-    bDF1$Mycorrhizal_prod <- 0.0
-    bDF1$Leaf_cons <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="Leaf consumption"],
-                      sd=nppDF$aCO2_sd[nppDF$term=="Leaf consumption"])
-    bDF1$Rh <- rnorm(1000, mean=nppDF$aCO2[nppDF$term=="R hetero"],
-                      sd=nppDF$aCO2_sd[nppDF$term=="R hetero"])
+    sd1 <- sqrt((nppDF[nppDF$term=="Leaf NPP", "aCO2_sd"]^2 + 
+                     nppDF[nppDF$term=="Stem NPP", "aCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Fine Root NPP", "aCO2_sd"]^2 + 
+                     nppDF[nppDF$term=="Coarse Root NPP", "aCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Other NPP", "aCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Understorey NPP", "aCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Leaf consumption", "aCO2_sd"]^2)/7)
     
-    bDF1$tot <- with(bDF1, (Leaf_NPP + Stem_NPP + Froot_NPP + Croot_NPP + Other_NPP + Und_NPP + 
-                                  Mycorrhizal_prod + Leaf_cons - Rh))
+    sd2 <- nppDF[nppDF$term=="R hetero", "aCO2_sd"]
     
-    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
-    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
+    out$aCO2_conf[out$Method=="NPP-Rh"] <- sqrt(sd1^2/3 + sd2^2/3)
     
-    out$aCO2[out$Method=="NPP-Rh"] <- mean(bDF1.sub$tot)
-    out$aCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
     
     ## elevated rings
-    bDF1$Leaf_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Leaf NPP"],
-                           sd=nppDF$eCO2_sd[nppDF$term=="Leaf NPP"])
-    bDF1$Stem_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Stem NPP"],
-                           sd=nppDF$eCO2_sd[nppDF$term=="Stem NPP"])
-    bDF1$Froot_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Fine Root NPP"],
-                            sd=nppDF$eCO2_sd[nppDF$term=="Fine Root NPP"])
-    bDF1$Croot_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Coarse Root NPP"],
-                            sd=nppDF$eCO2_sd[nppDF$term=="Coarse Root NPP"])
-    bDF1$Other_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Other NPP"],
-                            sd=nppDF$eCO2_sd[nppDF$term=="Other NPP"])
-    bDF1$Und_NPP <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Understorey NPP"],
-                          sd=nppDF$eCO2_sd[nppDF$term=="Understorey NPP"])
-    bDF1$Mycorrhizal_prod <- 0.0
-    bDF1$Leaf_cons <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="Leaf consumption"],
-                            sd=nppDF$eCO2_sd[nppDF$term=="Leaf consumption"])
-    bDF1$Rh <- rnorm(1000, mean=nppDF$eCO2[nppDF$term=="R hetero"],
-                     sd=nppDF$eCO2_sd[nppDF$term=="R hetero"])
+    out$eCO2[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "eCO2"] + 
+        nppDF[nppDF$term=="Stem NPP", "eCO2"] + abs(nppDF[nppDF$term=="Fine Root NPP", "eCO2"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "eCO2"] + nppDF[nppDF$term=="Other NPP", "eCO2"] + 
+        nppDF[nppDF$term=="Understorey NPP", "eCO2"] + nppDF[nppDF$term=="Leaf consumption", "eCO2"] -
+        nppDF[nppDF$term=="R hetero", "eCO2"] 
     
-    bDF1$tot <- with(bDF1, (Leaf_NPP + Stem_NPP + Froot_NPP + Croot_NPP + Other_NPP + Und_NPP + 
-                                Mycorrhizal_prod + Leaf_cons - Rh))
+    sd1 <- sqrt((nppDF[nppDF$term=="Leaf NPP", "eCO2_sd"]^2 + 
+                     nppDF[nppDF$term=="Stem NPP", "eCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Fine Root NPP", "eCO2_sd"]^2 + 
+                     nppDF[nppDF$term=="Coarse Root NPP", "eCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Other NPP", "eCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Understorey NPP", "eCO2_sd"]^2 +
+                     nppDF[nppDF$term=="Leaf consumption", "eCO2_sd"]^2)/7)
     
-    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
-    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
+    sd2 <- nppDF[nppDF$term=="R hetero", "eCO2_sd"]
     
-    out$eCO2[out$Method=="NPP-Rh"] <- mean(bDF1.sub$tot)
-    out$eCO2_conf[out$Method=="NPP-Rh"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
-    
+    out$eCO2_conf[out$Method=="NPP-Rh"] <- sqrt(sd1^2/3 + sd2^2/3)
     
     
     ### create dataframe to hold bootstrap results - change in pools
-    bDF1 <- data.frame(c(1:1000), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(bDF1) <- c("bootID", "soilc", "leafc", 
-                        "woodc", "crootc", "frootc", "uac", "micc",
-                        "mycc", "litter", "insect")
+    out$aCO2[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "aCO2"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "aCO2"] + deltaDF[deltaDF$term=="Understorey above-ground", "aCO2"] +
+        deltaDF[deltaDF$term=="Fine Root", "aCO2"] + deltaDF[deltaDF$term=="Coarse Root", "aCO2"] + 
+        deltaDF[deltaDF$term=="Litter", "aCO2"] + deltaDF[deltaDF$term=="Microbial biomass", "aCO2"] +
+        deltaDF[deltaDF$term=="Soil C", "aCO2"] + deltaDF[deltaDF$term=="Mycorrhizae", "aCO2"] +
+        deltaDF[deltaDF$term=="Insects", "aCO2"] 
+
     
-    ## ambient rings
-    bDF1$soilc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Soil C"],
-                                 sd=deltaDF$aCO2_sd[deltaDF$term=="Soil C"])
-    bDF1$leafc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Overstorey leaf"],
-                                  sd=deltaDF$aCO2_sd[deltaDF$term=="Overstorey leaf"])
-    bDF1$woodc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Overstorey wood"],
-                      sd=deltaDF$aCO2_sd[deltaDF$term=="Overstorey wood"])
-    bDF1$crootc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Coarse Root"],
-                          sd=deltaDF$aCO2_sd[deltaDF$term=="Coarse Root"])
-    bDF1$frootc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Fine Root"],
-                          sd=deltaDF$aCO2_sd[deltaDF$term=="Fine Root"])
-    bDF1$uac <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Understorey above-ground"],
-                         sd=deltaDF$aCO2_sd[deltaDF$term=="Understorey above-ground"])
-    bDF1$micc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Microbial biomass"],
-                      sd=deltaDF$aCO2_sd[deltaDF$term=="Microbial biomass"])
-    bDF1$mycc <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Mycorrhizae"],
-                      sd=deltaDF$aCO2_sd[deltaDF$term=="Mycorrhizae"])
-    bDF1$litter <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Litter"],
-                        sd=deltaDF$aCO2_sd[deltaDF$term=="Litter"])
-    bDF1$insect <- rnorm(1000, mean=deltaDF$aCO2[deltaDF$term=="Insects"],
-                          sd=deltaDF$aCO2_sd[deltaDF$term=="Insects"])
+    out$aCO2_conf[out$Method=="Pool"] <- sqrt((deltaDF[deltaDF$term=="Overstorey leaf", "aCO2_sd"]^2 + 
+                     deltaDF[deltaDF$term=="Overstorey wood", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Understorey above-ground", "aCO2_sd"]^2 + 
+                     deltaDF[deltaDF$term=="Fine Root", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Coarse Root", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Litter", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Microbial biomass", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Soil C", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Mycorrhizae", "aCO2_sd"]^2 +
+                     deltaDF[deltaDF$term=="Insects", "aCO2_sd"]^2)/7)
     
-    bDF1$tot <- with(bDF1, (soilc+leafc+woodc+uac+frootc+crootc+micc+mycc+litter+insect))
-    
-    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
-    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
-    
-    out$aCO2[out$Method=="Pool"] <- mean(bDF1.sub$tot)
-    out$aCO2_conf[out$Method=="Pool"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
     
     ## elevated rings
-    bDF1$soilc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Soil C"],
-                        sd=deltaDF$eCO2_sd[deltaDF$term=="Soil C"])
-    bDF1$leafc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Overstorey leaf"],
-                        sd=deltaDF$eCO2_sd[deltaDF$term=="Overstorey leaf"])
-    bDF1$woodc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Overstorey wood"],
-                        sd=deltaDF$eCO2_sd[deltaDF$term=="Overstorey wood"])
-    bDF1$crootc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Coarse Root"],
-                         sd=deltaDF$eCO2_sd[deltaDF$term=="Coarse Root"])
-    bDF1$frootc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Fine Root"],
-                         sd=deltaDF$eCO2_sd[deltaDF$term=="Fine Root"])
-    bDF1$uac <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Understorey above-ground"],
-                      sd=deltaDF$eCO2_sd[deltaDF$term=="Understorey above-ground"])
-    bDF1$micc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Microbial biomass"],
-                       sd=deltaDF$eCO2_sd[deltaDF$term=="Microbial biomass"])
-    bDF1$mycc <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Mycorrhizae"],
-                       sd=deltaDF$eCO2_sd[deltaDF$term=="Mycorrhizae"])
-    bDF1$litter <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Litter"],
-                         sd=deltaDF$eCO2_sd[deltaDF$term=="Litter"])
-    bDF1$insect <- rnorm(1000, mean=deltaDF$eCO2[deltaDF$term=="Insects"],
-                         sd=deltaDF$eCO2_sd[deltaDF$term=="Insects"])
+    out$eCO2[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "eCO2"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "eCO2"] + deltaDF[deltaDF$term=="Understorey above-ground", "eCO2"] +
+        deltaDF[deltaDF$term=="Fine Root", "eCO2"] + deltaDF[deltaDF$term=="Coarse Root", "eCO2"] + 
+        deltaDF[deltaDF$term=="Litter", "eCO2"] + deltaDF[deltaDF$term=="Microbial biomass", "eCO2"] +
+        deltaDF[deltaDF$term=="Soil C", "eCO2"] + deltaDF[deltaDF$term=="Mycorrhizae", "eCO2"] +
+        deltaDF[deltaDF$term=="Insects", "eCO2"] 
     
-    bDF1$tot <- with(bDF1, (soilc+leafc+woodc+uac+frootc+crootc+micc+mycc+litter+insect))
     
-    qt1 <- quantile(bDF1$tot, c(0.005, 0.995)) 
-    bDF1.sub <- subset(bDF1, tot >= qt1[1] & tot <= qt1[2])
-    
-    out$eCO2[out$Method=="Pool"] <- mean(bDF1.sub$tot)
-    out$eCO2_conf[out$Method=="Pool"] <- sd(bDF1.sub$tot)#/sqrt(1000) * 1.96
+    out$eCO2_conf[out$Method=="Pool"] <- sqrt((deltaDF[deltaDF$term=="Overstorey leaf", "eCO2_sd"]^2 + 
+                                                   deltaDF[deltaDF$term=="Overstorey wood", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Understorey above-ground", "eCO2_sd"]^2 + 
+                                                   deltaDF[deltaDF$term=="Fine Root", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Coarse Root", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Litter", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Microbial biomass", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Soil C", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Mycorrhizae", "eCO2_sd"]^2 +
+                                                   deltaDF[deltaDF$term=="Insects", "eCO2_sd"]^2)/7)
     
  
     write.csv(out, "R_other/NEP_bootstrapped_method_comparison.csv", row.names=F)
@@ -276,7 +198,7 @@ nep_gap_unbootstrap_plot <- function(inDF) {
                            breaks=c(-500, -250, -100, 0, 100, 250, 500),
                            labels=c(-500, -250, -100, 0, 100, 250, 500))
     
-    #plot(p1)
+    plot(p1)
     
     pdf("Output/nep_gap_bootstrapped.pdf", width=8, height=8)
     plot(p1)

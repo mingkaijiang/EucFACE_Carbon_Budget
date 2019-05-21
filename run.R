@@ -772,6 +772,9 @@ lai.fit <- make_initial_lai_vs_long_term_lai(lai_variable)
 source("R/make_statistical_comparison_plots.R")
 make_statistical_comparison_plots()
 
+source("R/make_statistical_comparison_plots_based_on_ring_level_data.R")
+make_statistical_comparison_plots_based_on_ring_level_data(inDF=tables_by_ring_predicted)
+
 #source("R/make_eCO2_effect_on_GPP_plot.R")
 #make_eCO2_effect_on_GPP_plot()
 

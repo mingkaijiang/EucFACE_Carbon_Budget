@@ -1,0 +1,275 @@
+make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
+  
+    ######### 7. Plot abs, no interactions, and change in pools, with covariates
+    ### read in the csv file to plot the treatment effect and confidence interval
+    myDF <- rbind(inDF$inout, inDF$npp, inDF$pool, inDF$delta_pool)
+    
+    myDF$diff_mean <- myDF$eCO2 - myDF$aCO2
+    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2)/3 + (myDF$eCO2_sd^2)/3)
+    
+    myDF <- myDF[complete.cases(myDF$diff_mean),]
+    
+    myDF$term <- c("over_gpp", "understorey_gpp", "ch4",
+                   "over_leaf_respiration", "wood_respiration", "root_respiration",
+                   "understorey_respiration","voc", "herbivory_respiration",
+                   "doc", "soil_respiration", "growth_respiration",
+                   "leaf_prod", "wood_prod", "fineroot_prod",
+                   "coarseroot_prod", "other_prod", "understorey_prod", 
+                   "understorey_lit", "frass_prod", "herb_consump", #"mycorrhizal_prod",
+                   "hetero_respiration", "over_leaf", "wood", "und_aboveground",
+                   "fineroot", "coarseroot", "litter", "cwd", "microbe",
+                   "soil", "mycorrhizae", "insects", 
+                   "delta_leaf_c", "delta_wood_c", "delta_understorey_c",
+                   "delta_fineroot_c", "delta_coarseroot_c", 
+                   "delta_litter_c","delta_microbial_c","delta_soil_c",
+                   "delta_mycorrhizal_c", "delta_insect_c")
+    
+    #### exclude all pools
+    myDF$Category <- c(rep("gpp", 2),  
+                       rep("resp", 10), 
+                       rep("prod", 6),
+                       rep("litter", 2), 
+                       rep("prod", 1), 
+                       rep("resp", 1), 
+                       rep("pool", 11), 
+                       rep("change_in_pool", 10))  
+    
+    ### Drop redundant pools and fluxes
+    myDF <- subset(myDF, term != c("understorey_lit"))
+    
+    ### Drop CWD - confidence interval too large
+    myDF <- subset(myDF, term != c("cwd"))
+    
+    myDF <- myDF[,c("term", "diff_mean", "diff_sd", "Category")]
+    colnames(myDF) <- c("Variable", "effect_size", "sd", "Category")
+    myDF$conf_low <- myDF$effect_size - myDF$sd
+    myDF$conf_high <- myDF$effect_size + myDF$sd
+    
+    myDF[myDF$Variable=="ch4", "Category"] <- "gpp"
+
+    
+    plotDF1 <- subset(myDF, Category == "change_in_pool")
+    plotDF2 <- subset(myDF, Category == "resp")
+    plotDF3 <- subset(myDF, Category == "prod")
+    plotDF4 <- subset(myDF, Category == "gpp")
+    
+    ### transform the data so that we could have break point on x axis
+    #Function to transform data to y positions
+    trans <- function(x) {
+        if (x < 0) {
+            pmax(x,-50) + 0.2*pmin(x+50,0)
+        } else {
+            pmin(x,50) + 0.2*pmax(x-50,0)
+        }
+    }
+    
+    xticks.brk <- xticks <- c(-400, -200, -50, -25, 0, 25, 50, 150, 300, 600)
+    
+    #Transform the data onto the display scale
+    for (i in 1:length(plotDF1$Variable)) {
+        plotDF1$effect_size_t[i] <- trans(plotDF1$effect_size[i])
+        plotDF1$conf_low_t[i] <- trans(plotDF1$conf_low[i])
+        plotDF1$conf_high_t[i] <- trans(plotDF1$conf_high[i])
+    }   
+    
+    for (i in 1:length(plotDF2$Variable)) {
+        plotDF2$effect_size_t[i] <- trans(plotDF2$effect_size[i])
+        plotDF2$conf_low_t[i] <- trans(plotDF2$conf_low[i])
+        plotDF2$conf_high_t[i] <- trans(plotDF2$conf_high[i])
+    }  
+    
+    for (i in 1:length(plotDF3$Variable)) {
+        plotDF3$effect_size_t[i] <- trans(plotDF3$effect_size[i])
+        plotDF3$conf_low_t[i] <- trans(plotDF3$conf_low[i])
+        plotDF3$conf_high_t[i] <- trans(plotDF3$conf_high[i])
+    }  
+    
+    for (i in 1:length(plotDF4$Variable)) {
+        plotDF4$effect_size_t[i] <- trans(plotDF4$effect_size[i])
+        plotDF4$conf_low_t[i] <- trans(plotDF4$conf_low[i])
+        plotDF4$conf_high_t[i] <- trans(plotDF4$conf_high[i])
+    }  
+    
+    for (i in 1:length(xticks)) {
+        xticks.brk[i] <- trans(xticks[i])
+    }
+    
+    y.lab1 <- c("delta_soil_c"=expression(Delta*C[soil]),
+                "delta_leaf_c"=expression(Delta*C[leaf]),
+                "delta_wood_c"=expression(Delta*C[stem]),
+                "delta_fineroot_c"=expression(Delta*C[froot]),
+                "delta_coarseroot_c"=expression(Delta*C[croot]),
+                "delta_understorey_c"=expression(Delta*C[ua]),
+                "delta_understorey_c_live"=expression(Delta*C[ua_live]),
+                "delta_understorey_c_dead"=expression(Delta*C[ua_dead]),
+                "delta_microbial_c"=expression(Delta*C[micr]),
+                "delta_mycorrhizal_c"=expression(Delta*C[myco]),
+                "delta_litter_c"=expression(Delta*C[lit]),
+                "delta_insect_c"=expression(Delta*C[insect]))
+    
+    y.lab2 <- c("wood_respiration"=expression(R[stem]),
+                "root_respiration"=expression(R[root]),
+                "understorey_respiration"=expression(R[ua]),
+                "herb_respiration"=expression(R[hb]),
+                "soil_respiration"=expression(R[soil]),
+                "doc"=expression(DOC),
+                "voc"=expression(VOC),
+                "hetero_respiration"=expression(R[rh]),
+                "over_leaf_respiration"=expression(R[leaf]),
+                "frass_prod"=expression(Frass),
+                "growth_respiration"=expression(R[growth]))
+    
+    y.lab3 <- c("herb_consump"=expression(NPP[hb]),
+                "lerp_prod"=expression(NPP[lerp]),
+                "leaf_prod"=expression(NPP[leaf]),
+                "other_prod"=expression(NPP[other]),
+                "wood_prod"=expression(NPP[stem]),
+                "fineroot_prod"=expression(NPP[froot]),
+                "coarseroot_prod"=expression(NPP[croot]),
+                "understorey_prod"=expression(NPP[ua]))
+    
+    y.lab4 <- c("over_gpp"=expression(GPP[o]),
+                "understorey_gpp"=expression(GPP[u]),
+                "ch4"=expression(CH[4]))
+    
+    
+    ### add conditional color to data frames
+    plotDF1$col.con <- ifelse(plotDF1$effect_size_t<0, "red3", "blue2")
+    plotDF2$col.con <- ifelse(plotDF2$effect_size_t<0, "red3", "blue2")
+    plotDF3$col.con <- ifelse(plotDF3$effect_size_t<0, "red3", "blue2")
+    plotDF4$col.con <- ifelse(plotDF4$effect_size_t<0, "red3", "blue2")
+    
+    #### Plotting
+    p8 <- ggplot(plotDF4)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF4$col.con)+
+        labs(x="eC minus aC", y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none")+
+        geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
+        scale_y_discrete(labels=y.lab4)
+    
+    
+    p5 <- ggplot(plotDF1)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF1$col.con)+
+        #scale_color_manual(name="Treatment significance", 
+        #                   labels = c("Non-sig", "Sig (P<0.1)"), 
+        #                   values = c("non-sig"="#f8766d","sig"="#00ba38"))+ 
+        #scale_shape_manual(name="Date Significance", 
+        #                   labels = c("Non-sig", "Sig (P<0.05)"), 
+        #                   values = c(1, 2))+ 
+        labs(x="eC minus aC", y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none")+
+        geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
+        scale_y_discrete(labels=y.lab1)
+    
+    p6 <- ggplot(plotDF3)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF3$col.con)+
+        labs(x="eC minus aC", y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_blank(), 
+              axis.text.x = element_blank(),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="none")+
+        geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
+        scale_y_discrete(labels=y.lab3)
+    
+    p7 <- ggplot(plotDF2)+ 
+        geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
+                         yend=reorder(Variable, effect_size_t), xend=conf_high_t), 
+                     size=6, color="grey")+
+        geom_point(aes(y=reorder(Variable, effect_size_t), x=effect_size_t), 
+                   stat='identity', size=4, shape=19, color=plotDF2$col.con)+
+        scale_color_manual(name="Treatment significance", 
+                           labels = c("Non-sig", "Sig (P<0.1)"), 
+                           values = c("non-sig"="#f8766d","sig"="#00ba38"))+ 
+        labs(x=expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")")), y="")+
+        theme_linedraw()+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=14), 
+              axis.text.x = element_text(size=12),
+              axis.text.y=element_text(size=12),
+              axis.title.y=element_text(size=14),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
+              panel.grid.major=element_blank(),
+              legend.position="bottom")+
+        geom_vline(xintercept = 0.0)+
+        geom_vline(xintercept = -50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = -55, linetype="dashed", color="grey")+
+        geom_vline(xintercept = 50, linetype="dashed", color="grey")+
+        #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
+        #geom_rect(aes(xmin=-50, xmax=-40, ymin=0, ymax=18), fill="white")+
+        scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
+        scale_y_discrete(labels=y.lab2)
+    
+    #grid.labs <- c("(a)", "(b)", "(c)")
+    
+    #require(grid)
+    
+    ## plot 
+    #pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool.pdf", width=8, height=10)
+    #grid.newpage()
+    #grid.draw(rbind(ggplotGrob(p8), ggplotGrob(p5), ggplotGrob(p6), 
+    #                ggplotGrob(p7), size="last"))
+    #grid.text(grid.labs,x = 0.95, y = c(0.95, 0.63, 0.32),
+    #          gp=gpar(fontsize=16, col="black", fontface="bold"))
+    #dev.off()
+    
+    pdf("output/treatment_effect_abs_no_interaction_change_in_pool_with_covariate.pdf", width=8, height=12)
+    require(cowplot)    
+    plot_grid(p8, p5, 
+              p6, p7, 
+              labels="AUTO", ncol=1, align="v", axis = "l",
+              rel_heights=c(0.3,1,1,0.9))
+    dev.off()
+    
+}
