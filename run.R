@@ -681,10 +681,6 @@ source("R/make_table_by_ring_predicted.R")
 tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 
-### Next to do is to randomly generate 1000 data points for each treatment,
-### based on predicted values, and their SD, assuming normal distribution,
-### to generate GPP, Rsoil plot (mean +- confidence interval)
-### and NEP plot (mean +- confidence interval)
 
 
 ###### ----------Check for C gaps-------------- ######
@@ -698,14 +694,14 @@ tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 ### Plot a combined gpp and rsoil gap plot
 ### To plot, you need to go into the function
-source("R/gpp_and_rsoil_gap_plot.R")
-gpp_and_rsoil_gap_plot(inDF=tables_by_ring_predicted)
+#source("R/gpp_and_rsoil_gap_plot.R")
+#gpp_and_rsoil_gap_plot(inDF=tables_by_ring_predicted)
 
 #source("R/gpp_and_rsoil_gap_bootstrap_plot.R")
 #gpp_and_rsoil_gap_bootstrap_plot(inDF=tables_by_ring_predicted)
 
-source("R/gpp_and_rsoil_gap_unbootstrap_plot.R")
-gpp_and_rsoil_gap_unbootstrap_plot(inDF=tables_by_ring_predicted)
+source("R/gpp_and_rsoil_gap_unbootstrap_plot_2.R")
+gpp_and_rsoil_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 
 ### NEP gaps   - Note the different input file!
 source("R/nep_gap_plot.R")
