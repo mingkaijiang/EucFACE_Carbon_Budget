@@ -110,7 +110,7 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
     y.lab2 <- c("wood_respiration"=expression(R[stem]),
                 "root_respiration"=expression(R[root]),
                 "understorey_respiration"=expression(R[ua]),
-                "herb_respiration"=expression(R[hb]),
+                "herbivory_respiration"=expression(R[hb]),
                 "soil_respiration"=expression(R[soil]),
                 "doc"=expression(DOC),
                 "voc"=expression(VOC),
