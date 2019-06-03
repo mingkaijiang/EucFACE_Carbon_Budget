@@ -510,9 +510,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
         #geom_vline(xintercept = 4.5, linetype="dashed", color="black")+
         #geom_vline(xintercept = 5.5, linetype="dashed", color="black")+
         
-        scale_y_continuous(limits=c(-200, 800), 
-                           breaks=c(-200, -100, 0, 100, 250, 500),
-                           labels=c(-200, -100, 0, 100, 250, 500))+
+        scale_y_continuous(limits=c(-150, 500), 
+                           breaks=c(-150, -75, 0, 75, 150, 300, 500),
+                           labels=c(-150, -75, 0, 75, 150, 300, 500))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
         guides(fill=guide_legend(ncol=6))#+
         #ylim(-400,800)+

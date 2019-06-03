@@ -765,8 +765,8 @@ nep_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 #generate_stats_abs_change_in_pools(stat.model="no_interaction")
 
 ### Make some plots
-source("R/make_statistical_comparison_plots.R")
-make_statistical_comparison_plots()
+#source("R/make_statistical_comparison_plots.R")
+#make_statistical_comparison_plots()
 
 source("R/make_statistical_comparison_plots_based_on_ring_level_data.R")
 make_statistical_comparison_plots_based_on_ring_level_data(inDF=tables_by_ring_predicted)
@@ -780,8 +780,8 @@ make_statistical_comparison_plots_based_on_ring_level_data(inDF=tables_by_ring_p
 #source("R/make_eCO2_effect_on_GPP_plot_with_covariate.R")
 #make_eCO2_effect_on_GPP_plot_with_covariate_predicted()
 
-source("R/make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data.R")
-make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data(inDF=tables_by_ring_predicted)
+source("R/make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2.R")
+make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2(inDF=tables_by_ring_predicted)
 ### all supplementary figures
 ###source("R/plot_combined_figures.R")
 
