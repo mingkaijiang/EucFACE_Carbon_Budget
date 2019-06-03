@@ -704,25 +704,25 @@ source("R/gpp_and_rsoil_gap_unbootstrap_plot_2.R")
 gpp_and_rsoil_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 
 ### NEP gaps   - Note the different input file!
-source("R/nep_gap_plot.R")
-nep_gap_plot(inDF=tables_by_ring_predicted)
+#source("R/nep_gap_plot.R")
+#nep_gap_plot(inDF=tables_by_ring_predicted)
 
 #source("R/nep_gap_bootstrap_plot.R")
 #nep_gap_bootstrap_plot(inDF=tables_by_ring_predicted)
 
-source("R/nep_gap_unbootstrap_plot.R")
-nep_gap_unbootstrap_plot(inDF=tables_by_ring_predicted)
+source("R/nep_gap_unbootstrap_plot_2.R")
+nep_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 
 ### Biomass increment
 #source("R/biomass_increment_plot.R")
 #biomass_increment_plot()
 
 ### NPP allocation
-source("R/make_npp_allocation_ratio.R")
-make_npp_allocation_ratio()
+#source("R/make_npp_allocation_ratio.R")
+#make_npp_allocation_ratio()
 
 ### initial LAI vs. long-term LAI
-lai.fit <- make_initial_lai_vs_long_term_lai(lai_variable)
+#lai.fit <- make_initial_lai_vs_long_term_lai(lai_variable)
 
 #### TBCA
 #source("R/make_belowground_c_flux_allocation.R")

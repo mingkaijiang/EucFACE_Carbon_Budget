@@ -231,8 +231,6 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
               legend.text.align=0)+
         ylim(0, 3)
         
-    plot(p1)
-
     
     ### make the bar plot
     p2 <- ggplot(plotDF2,
@@ -261,82 +259,143 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
               legend.text.align=0)+
         ylim(0, 3)
     
-    plot(p2)
-    
-    ### subseting NPP DF
-    temDF <- inDF$npp[,c("term", "aCO2", "aCO2_sd")]
-    
-    ### only include plant NPP
-    nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
-                   temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
-                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
-                   temDF[temDF$term == "Frass production",])
-    aDF <- inDF$inout[, c("term", "aCO2", "aCO2_sd")]
-    nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
-    
-    ### Add change in soil pool into NPP df
-    temDF <- inDF$delta_pool
-    asoil <- temDF[temDF$term=="Soil C", c("term", "aCO2", "aCO2_sd")]
-    
-    ### subsetting inout df
-    temDF <- inDF$inout[,c("term", "aCO2", "aCO2_sd")]
-    
-    ### only include Rsoil
-    rsoilDF <- temDF[temDF$term == "Rsoil",]
-    
-    nppDF$cat <- "Litter+Rroot"
-    rsoilDF$cat <- "Rsoil"
-    
-    plotDF <- rbind(nppDF, rsoilDF)
-    plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
-    
-    ### convert unit from g C to kg C
-    plotDF$aCO2 <- as.numeric(plotDF$aCO2)/1000
-    plotDF$aCO2_sd <- as.numeric(plotDF$aCO2_sd)/1000
     
     
-    ### prepare error bar ranges
-    errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
-    colnames(errDF) <- c("cat", "pos", "neg", "sum")
-    errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$aCO2[plotDF$cat=="Litter+Rroot"])
-    errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$aCO2[plotDF$cat=="Rsoil"])
+    ### create data frames to store ring average for aCO2 and eCO2
+    ## aCO2
+    plotDF1 <- rbind(temDF1[temDF1$term == "Leaf NPP","aCO2"],
+                     temDF1[temDF1$term == "Fine Root NPP","aCO2"],
+                     temDF1[temDF1$term == "Coarse Root NPP","aCO2"],
+                     temDF1[temDF1$term == "Other NPP","aCO2"],
+                     temDF1[temDF1$term == "Understorey NPP","aCO2"],
+                     temDF1[temDF1$term == "Frass production","aCO2"],
+                     temDF2[temDF2$term == "Ra root","aCO2"],
+                     temDF2[temDF2$term == "Rsoil","aCO2"])
     
-    errDF$sd[errDF$cat=="Litter+Rroot"] <- sqrt((plotDF[plotDF$term=="Leaf NPP","aCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Fine Root NPP","aCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Coarse Root NPP","aCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Other NPP","aCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Understorey NPP","aCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Frass production","aCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Ra root","aCO2_sd"]^2)/7)
-    errDF$sd[errDF$cat=="Rsoil"] <- plotDF[plotDF$term=="Rsoil","aCO2_sd"]
+    plotDF2 <- rbind(temDF1[temDF1$term == "Leaf NPP","eCO2"],
+                     temDF1[temDF1$term == "Fine Root NPP","eCO2"],
+                     temDF1[temDF1$term == "Coarse Root NPP","eCO2"],
+                     temDF1[temDF1$term == "Other NPP","eCO2"],
+                     temDF1[temDF1$term == "Understorey NPP","eCO2"],
+                     temDF1[temDF1$term == "Frass production","eCO2"],
+                     temDF2[temDF2$term == "Ra root","eCO2"],
+                     temDF2[temDF2$term == "Rsoil","eCO2"])
     
-    errDF$conf[errDF$cat=="Litter+Rroot"] <- errDF$sd[errDF$cat=="Litter+Rroot"]
-    errDF$conf[errDF$cat=="Rsoil"] <- errDF$sd[errDF$cat=="Rsoil"]
+    plotDF1$cat <- plotDF2$cat <- c(rep("Litter+Rroot", 7), rep("Rsoil", 1))
+    plotDF1$term <- plotDF2$term <- c("Leaf NPP","Fine Root NPP","Coarse Root NPP","Other NPP",
+                                      "Understorey NPP","Frass production","Ra root",
+                                      "Rsoil")
     
-    errDF$pos[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] + as.numeric(errDF$conf[errDF$cat=="Litter+Rroot"])
-    errDF$neg[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] - as.numeric(errDF$conf[errDF$cat=="Litter+Rroot"]) 
-    errDF$pos[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] + as.numeric(errDF$conf[errDF$cat=="Rsoil"])
-    errDF$neg[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] - as.numeric(errDF$conf[errDF$cat=="Rsoil"])
+    plotDF1$term <- factor(plotDF1$term, levels=unique(plotDF1$term))
+    plotDF2$term <- factor(plotDF2$term, levels=unique(plotDF2$term))
+    
+    plotDF1$aCO2 <- plotDF1$aCO2/1000
+    plotDF2$eCO2 <- plotDF2$eCO2/1000
+    
+    
+    
+    ### create data frames to store ring data for aCO2 and eCO2
+    ## aCO2
+    errDF1 <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
+    colnames(errDF1) <- c("cat", "R2", "R3", "R6")
+    ## eCO2
+    errDF2 <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
+    colnames(errDF2) <- c("cat", "R1", "R4", "R5")
+    
+    ### calculate sum of NPP + ra for each ring
+    ## aCO2
+    errDF1[errDF1$cat=="Litter+Rroot", "R2"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_2"],
+                                                    temDF1[temDF1$term == "Fine Root NPP","Ring_2"],
+                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_2"],
+                                                    temDF1[temDF1$term == "Other NPP","Ring_2"],
+                                                    temDF1[temDF1$term == "Understorey NPP","Ring_2"],
+                                                    temDF1[temDF1$term == "Frass production","Ring_2"],
+                                                    temDF2[temDF2$term == "Ra root","Ring_2"])
+
+    errDF1[errDF1$cat=="Litter+Rroot", "R3"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_3"],
+                                                    temDF1[temDF1$term == "Fine Root NPP","Ring_3"],
+                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_3"],
+                                                    temDF1[temDF1$term == "Other NPP","Ring_3"],
+                                                    temDF1[temDF1$term == "Understorey NPP","Ring_3"],
+                                                    temDF1[temDF1$term == "Frass production","Ring_3"],
+                                                    temDF2[temDF2$term == "Ra root","Ring_3"])
+    
+    errDF1[errDF1$cat=="Litter+Rroot", "R6"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_6"],
+                                                    temDF1[temDF1$term == "Fine Root NPP","Ring_6"],
+                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_6"],
+                                                    temDF1[temDF1$term == "Other NPP","Ring_6"],
+                                                    temDF1[temDF1$term == "Understorey NPP","Ring_6"],
+                                                    temDF1[temDF1$term == "Frass production","Ring_6"],
+                                                    temDF2[temDF2$term == "Ra root","Ring_6"])
+    
+    ## eCO2
+    errDF2[errDF2$cat=="Litter+Rroot", "R1"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_1"],
+                                                    temDF1[temDF1$term == "Fine Root NPP","Ring_1"],
+                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_1"],
+                                                    temDF1[temDF1$term == "Other NPP","Ring_1"],
+                                                    temDF1[temDF1$term == "Understorey NPP","Ring_1"],
+                                                    temDF1[temDF1$term == "Frass production","Ring_1"],
+                                                    temDF2[temDF2$term == "Ra root","Ring_1"])
+    
+    errDF2[errDF2$cat=="Litter+Rroot", "R4"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_4"],
+                                                    temDF1[temDF1$term == "Fine Root NPP","Ring_4"],
+                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_4"],
+                                                    temDF1[temDF1$term == "Other NPP","Ring_4"],
+                                                    temDF1[temDF1$term == "Understorey NPP","Ring_4"],
+                                                    temDF1[temDF1$term == "Frass production","Ring_4"],
+                                                    temDF2[temDF2$term == "Ra root","Ring_4"])
+    
+    errDF2[errDF2$cat=="Litter+Rroot", "R5"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_5"],
+                                                    temDF1[temDF1$term == "Fine Root NPP","Ring_5"],
+                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_5"],
+                                                    temDF1[temDF1$term == "Other NPP","Ring_5"],
+                                                    temDF1[temDF1$term == "Understorey NPP","Ring_5"],
+                                                    temDF1[temDF1$term == "Frass production","Ring_5"],
+                                                    temDF2[temDF2$term == "Ra root","Ring_5"])
+    
+    ### Rsoil
+    ## aCO2
+    errDF1[errDF1$cat=="Rsoil", "R2"] <- temDF2[temDF2$term == "Rsoil","Ring_2"]
+    errDF1[errDF1$cat=="Rsoil", "R3"] <- temDF2[temDF2$term == "Rsoil","Ring_3"]
+    errDF1[errDF1$cat=="Rsoil", "R6"] <- temDF2[temDF2$term == "Rsoil","Ring_6"]
+    
+    ## 2CO2
+    errDF2[errDF2$cat=="Rsoil", "R1"] <- temDF2[temDF2$term == "Rsoil","Ring_1"]
+    errDF2[errDF2$cat=="Rsoil", "R4"] <- temDF2[temDF2$term == "Rsoil","Ring_4"]
+    errDF2[errDF2$cat=="Rsoil", "R5"] <- temDF2[temDF2$term == "Rsoil","Ring_5"]
+    
+    ## calculate means and sd, convert unit from g C to kg C
+    errDF1$aCO2 <- rowMeans(subset(errDF1, select=c(R2, R3, R6)), na.rm=T)/1000
+    errDF1$aCO2_sd <- rowSds(as.matrix(subset(errDF1, select=c(R2, R3, R6)), na.rm=T))/1000
+    
+    errDF2$eCO2 <- rowMeans(subset(errDF2, select=c(R1, R4, R5)), na.rm=T)/1000
+    errDF2$eCO2_sd <- rowSds(as.matrix(subset(errDF2, select=c(R1, R4, R5)), na.rm=T))/1000
+    
+    errDF1$pos <- errDF1$aCO2+errDF1$aCO2_sd
+    errDF2$pos <- errDF2$eCO2+errDF2$eCO2_sd
+    
+    errDF1$neg <- errDF1$aCO2-errDF1$aCO2_sd
+    errDF2$neg <- errDF2$eCO2-errDF2$eCO2_sd
     
     
     ### Prepare variable labels
     var.labs2 <- c(expression(NPP[leaf]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
-                  expression(NPP[ua]),expression(Frass), #expression(NPP[myc]), 
-                  expression(R[root]),#expression(Delta*C[soil]), 
+                  expression(NPP[ua]),expression(Frass), 
+                  expression(R[root]),
                   expression(R[soil]))
     
     ### Prepare variable colors
     col.list2 <- viridis(8)
     
     ### make the bar plot
-    p3 <- ggplot(plotDF,
+    p3 <- ggplot(plotDF1,
                  aes(cat, aCO2)) +
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        geom_point(data=errDF, mapping=aes(x=cat, y=sum), 
+        geom_point(data=errDF1, mapping=aes(x=cat, y=aCO2), 
                    size=4, shape=21, fill="white")+
-        geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
+        geom_segment(data=errDF1, aes(x=cat, xend=cat, y=neg, yend=pos), 
                      colour="black")+
         xlab("") + ylab(expression(paste(R[soil], " (kg C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c(expression(paste("Litter+", R[root])),
@@ -357,72 +416,15 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
               legend.text.align=0)+
         ylim(0, 1.6)
     
-    ### eCO2
-    ### subseting NPP DF
-    temDF <- inDF$npp[,c("term", "eCO2", "eCO2_sd")]
-    
-    ### only include plant NPP
-    nppDF <- rbind(temDF[temDF$term == "Leaf NPP",],
-                   temDF[temDF$term == "Fine Root NPP",],temDF[temDF$term == "Coarse Root NPP",],
-                   temDF[temDF$term == "Other NPP",],temDF[temDF$term == "Understorey NPP",],
-                   temDF[temDF$term == "Frass production",])#, temDF[temDF$term == "Mycorrhizal production",])
-    aDF <- inDF$inout[, c("term", "eCO2", "eCO2_sd")]
-    nppDF <- rbind(nppDF, aDF[aDF$term == "Ra root",])
-    
-    ### Add change in soil pool into NPP df
-    temDF <- inDF$delta_pool
-    esoil <- temDF[temDF$term=="Soil C", c("term", "eCO2", "eCO2_sd")]
-    
-    ### subsetting inout df
-    temDF <- inDF$inout[,c("term", "eCO2", "eCO2_sd")]
-    
-    ### only include Rsoil
-    rsoilDF <- temDF[temDF$term == "Rsoil",]
-    
-    nppDF$cat <- "Litter+Rroot"
-    rsoilDF$cat <- "Rsoil"
-    
-    plotDF <- rbind(nppDF, rsoilDF)
-    plotDF$term <- factor(plotDF$term, levels=unique(plotDF$term))
-    
-    ### convert unit from g C to kg C
-    plotDF$eCO2 <- as.numeric(plotDF$eCO2)/1000
-    plotDF$eCO2_sd <- as.numeric(plotDF$eCO2_sd)/1000
-    
-    
-    ### prepare error bar ranges
-    errDF <- data.frame(c("Litter+Rroot", "Rsoil"), NA, NA, NA)
-    colnames(errDF) <- c("cat", "pos", "neg", "sum")
-    errDF$sum[errDF$cat=="Litter+Rroot"] <- sum(plotDF$eCO2[plotDF$cat=="Litter+Rroot"])
-    errDF$sum[errDF$cat=="Rsoil"] <- sum(plotDF$eCO2[plotDF$cat=="Rsoil"])
-    
-    errDF$sd[errDF$cat=="Litter+Rroot"] <- sqrt((plotDF[plotDF$term=="Leaf NPP","eCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Fine Root NPP","eCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Coarse Root NPP","eCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Other NPP","eCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Understorey NPP","eCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Frass production","eCO2_sd"]^2 + 
-                                                    plotDF[plotDF$term=="Ra root","eCO2_sd"]^2)/7)
-    errDF$sd[errDF$cat=="Rsoil"] <- plotDF[plotDF$term=="Rsoil","eCO2_sd"]
-    
-    errDF$conf[errDF$cat=="Litter+Rroot"] <- errDF$sd[errDF$cat=="Litter+Rroot"]
-    errDF$conf[errDF$cat=="Rsoil"] <- errDF$sd[errDF$cat=="Rsoil"]
-    
-    errDF$pos[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] + as.numeric(errDF$conf[errDF$cat=="Litter+Rroot"])
-    errDF$neg[errDF$cat=="Litter+Rroot"] <- errDF$sum[errDF$cat=="Litter+Rroot"] - as.numeric(errDF$conf[errDF$cat=="Litter+Rroot"]) 
-    errDF$pos[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] + as.numeric(errDF$conf[errDF$cat=="Rsoil"])
-    errDF$neg[errDF$cat=="Rsoil"] <- errDF$sum[errDF$cat=="Rsoil"] - as.numeric(errDF$conf[errDF$cat=="Rsoil"])
-    
-    
     
     ### make the bar plot
-    p4 <- ggplot(plotDF,
+    p4 <- ggplot(plotDF2,
                 aes(cat, eCO2)) +
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        geom_point(data=errDF, mapping=aes(x=cat, y=sum), 
+        geom_point(data=errDF2, mapping=aes(x=cat, y=eCO2), 
                    size=4, shape=21, fill="white")+
-        geom_segment(data=errDF, aes(x=cat, xend=cat, y=neg, yend=pos), 
+        geom_segment(data=errDF2, aes(x=cat, xend=cat, y=neg, yend=pos), 
                      colour="black")+
         xlab("") + ylab(expression(paste(R[soil], " (kg C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c(expression(paste("Litter+", R[root])),
