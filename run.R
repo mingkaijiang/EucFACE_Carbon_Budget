@@ -584,93 +584,108 @@ ground_dwelling_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inD
                                                                          stat.model="no_interaction_with_covariate",
                                                                          return.outcome="predicted")
 
-
-### Delta Soil C
-delta_soil_c_pool_ann <- make_delta_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
-                                                                  var.cond="pool", var.col=3,
-                                                                  date.as.factor=T,
-                                                                  stat.model="no_interaction_with_covariate",
-                                                                  return.outcome="predicted")
-
-### Delta Leaf C
-delta_leaf_c_pool_ann <- make_delta_leafc_treatment_abs_effect_statistics(inDF=leaf_c_pool, 
-                                                                  var.cond="pool", var.col=3,
-                                                                  date.as.factor=T,
-                                                                  stat.model="no_interaction_with_covariate",
-                                                                  return.outcome="predicted")
-
-### Delta Wood C pool
-delta_wood_c_pool_ann <- make_delta_woodc_treatment_abs_effect_statistics(inDF=wood_c_pool, 
-                                                                  var.cond="pool", var.col=3,
-                                                                  date.as.factor=T,
-                                                                  stat.model="no_interaction_with_covariate",
-                                                                  return.outcome="predicted") 
-
-### Delta Fineroot C pool
-delta_fineroot_c_pool_ann <- make_delta_frootc_treatment_abs_effect_statistics(inDF=fineroot_c_pool, 
-                                                                 var.cond="pool", var.col=3,
-                                                                 date.as.factor=T,
-                                                                 stat.model="no_interaction_with_covariate",
-                                                                 return.outcome="predicted")
-
-### Delta Coarseroot C pool
-delta_coarse_root_c_pool_ann <- make_delta_crootc_treatment_abs_effect_statistics(inDF=coarse_root_c_pool_1, 
-                                                                 var.cond="pool", var.col=3,
-                                                                 date.as.factor=T,
-                                                                 stat.model="no_interaction_with_covariate",
-                                                                 return.outcome="predicted")
-
-### Delta Understorey aboveground C pool
-delta_understorey_aboveground_c_pool_ann <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
-                                                              var.cond="pool", var.col=5,
-                                                              date.as.factor=T,
-                                                              stat.model="no_interaction_with_covariate",
-                                                              return.outcome="predicted")
-
-#delta_understorey_aboveground_c_pool_2_ann <- delta_understorey_aboveground_c_pool_ann
-
-delta_understorey_aboveground_c_pool_2_ann <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
-                                                               var.cond="pool", var.col=3,
-                                                               date.as.factor=T,
-                                                               stat.model="no_interaction_with_covariate",
-                                                               return.outcome="predicted")
-
-### Delta Microbial C pool
-delta_microbial_c_pool_ann <- make_delta_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
-                                                                var.cond="pool", var.col=3,
-                                                                date.as.factor=T,
-                                                                stat.model="no_interaction_with_covariate",
-                                                                return.outcome="predicted")
-
-### Delta Mycorrhizal C pool
-delta_mycorrhizal_c_pool_ann <- make_delta_mycc_treatment_abs_effect_statistics(inDF=mycorrhizal_c_pool, 
-                                                                var.cond="pool", var.col=3,
-                                                                date.as.factor=T,
-                                                                stat.model="no_interaction_with_covariate",
-                                                                return.outcome="predicted")
+### Delta pools
+delta_soil_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=soil_c_pool, var.col=3)
+delta_leaf_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaf_c_pool, var.col=3)
+delta_wood_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=wood_c_pool, var.col=3)
+delta_fineroot_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=fineroot_c_pool, var.col=3)
+delta_coarse_root_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=coarse_root_c_pool_1, var.col=3)
+delta_understorey_aboveground_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool, var.col=5)
+delta_understorey_aboveground_c_pool_2_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_2, var.col=3)
+delta_microbial_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=microbial_c_pool, var.col=3)
+delta_mycorrhizal_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool, var.col=3)
+delta_leaflitter_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaflitter_pool, var.col=6)
+delta_insect_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=insect_pool, var.col=3)
+delta_ground_dwelling_insect_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool, var.col=3)
 
 
-### Delta Leaf litter C pool
-delta_leaflitter_pool_ann <- make_delta_litc_treatment_abs_effect_statistics(inDF=leaflitter_pool, 
-                                                                var.cond="pool", var.col=6,
-                                                                date.as.factor=T,
-                                                                stat.model="no_interaction_with_covariate"
-                                                                ,return.outcome="predicted")
 
-### Delta Insect pool
-delta_insect_pool_ann <- make_delta_insc_treatment_abs_effect_statistics(inDF=insect_pool, 
-                                                                var.cond="pool", var.col=3,
-                                                                date.as.factor=T,
-                                                                stat.model="no_interaction_with_covariate",
-                                                                return.outcome="predicted")
-
-
-delta_ground_dwelling_insect_pool_ann <- make_delta_insc_treatment_abs_effect_statistics(inDF=ground_dwelling_insect_pool, 
-                                                                             var.cond="pool", var.col=3,
-                                                                             date.as.factor=T,
-                                                                             stat.model="no_interaction_with_covariate",
-                                                                             return.outcome="predicted")
-
+#### Delta Soil C
+#delta_soil_c_pool_ann <- make_delta_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
+#                                                                  var.cond="pool", var.col=3,
+#                                                                  date.as.factor=T,
+#                                                                  stat.model="no_interaction_with_covariate",
+#                                                                  return.outcome="predicted")
+#
+#### Delta Leaf C
+#delta_leaf_c_pool_ann <- make_delta_leafc_treatment_abs_effect_statistics(inDF=leaf_c_pool, 
+#                                                                  var.cond="pool", var.col=3,
+#                                                                  date.as.factor=T,
+#                                                                  stat.model="no_interaction_with_covariate",
+#                                                                  return.outcome="predicted")
+#
+#### Delta Wood C pool
+#delta_wood_c_pool_ann <- make_delta_woodc_treatment_abs_effect_statistics(inDF=wood_c_pool, 
+#                                                                  var.cond="pool", var.col=3,
+#                                                                  date.as.factor=T,
+#                                                                  stat.model="no_interaction_with_covariate",
+#                                                                  return.outcome="predicted") 
+#
+#### Delta Fineroot C pool
+#delta_fineroot_c_pool_ann <- make_delta_frootc_treatment_abs_effect_statistics(inDF=fineroot_c_pool, 
+#                                                                 var.cond="pool", var.col=3,
+#                                                                 date.as.factor=T,
+#                                                                 stat.model="no_interaction_with_covariate",
+#                                                                 return.outcome="predicted")
+#
+#### Delta Coarseroot C pool
+#delta_coarse_root_c_pool_ann <- make_delta_crootc_treatment_abs_effect_statistics(inDF=coarse_root_c_pool_1, 
+#                                                                 var.cond="pool", var.col=3,
+#                                                                 date.as.factor=T,
+#                                                                 stat.model="no_interaction_with_covariate",
+#                                                                 return.outcome="predicted")
+#
+#### Delta Understorey aboveground C pool
+#delta_understorey_aboveground_c_pool_ann <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
+#                                                              var.cond="pool", var.col=5,
+#                                                              date.as.factor=T,
+#                                                              stat.model="no_interaction_with_covariate",
+#                                                              return.outcome="predicted")
+#
+##delta_understorey_aboveground_c_pool_2_ann <- delta_understorey_aboveground_c_pool_ann
+#
+#delta_understorey_aboveground_c_pool_2_ann <- make_delta_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
+#                                                               var.cond="pool", var.col=3,
+#                                                               date.as.factor=T,
+#                                                               stat.model="no_interaction_with_covariate",
+#                                                               return.outcome="predicted")
+#
+#### Delta Microbial C pool
+#delta_microbial_c_pool_ann <- make_delta_micc_treatment_abs_effect_statistics(inDF=microbial_c_pool, 
+#                                                                var.cond="pool", var.col=3,
+#                                                                date.as.factor=T,
+#                                                                stat.model="no_interaction_with_covariate",
+#                                                                return.outcome="predicted")
+#
+#### Delta Mycorrhizal C pool
+#delta_mycorrhizal_c_pool_ann <- make_delta_mycc_treatment_abs_effect_statistics(inDF=mycorrhizal_c_pool, 
+#                                                                var.cond="pool", var.col=3,
+#                                                                date.as.factor=T,
+#                                                                stat.model="no_interaction_with_covariate",
+#                                                                return.outcome="predicted")
+#
+#
+#### Delta Leaf litter C pool
+#delta_leaflitter_pool_ann <- make_delta_litc_treatment_abs_effect_statistics(inDF=leaflitter_pool, 
+#                                                                var.cond="pool", var.col=6,
+#                                                                date.as.factor=T,
+#                                                                stat.model="no_interaction_with_covariate"
+#                                                                ,return.outcome="predicted")
+#
+#### Delta Insect pool
+#delta_insect_pool_ann <- make_delta_insc_treatment_abs_effect_statistics(inDF=insect_pool, 
+#                                                                var.cond="pool", var.col=3,
+#                                                                date.as.factor=T,
+#                                                                stat.model="no_interaction_with_covariate",
+#                                                                return.outcome="predicted")
+#
+#
+#delta_ground_dwelling_insect_pool_ann <- make_delta_insc_treatment_abs_effect_statistics(inDF=ground_dwelling_insect_pool, 
+#                                                                             var.cond="pool", var.col=3,
+#                                                                             date.as.factor=T,
+#                                                                             stat.model="no_interaction_with_covariate",
+#                                                                             return.outcome="predicted")
+#
 
 ###### ----------Make summary tables-------------- ######
 ###### This is a summary table of all predicted data
