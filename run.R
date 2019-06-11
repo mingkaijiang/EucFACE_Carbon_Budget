@@ -594,9 +594,9 @@ delta_understorey_aboveground_c_pool_ann <- make_delta_pool_treatment_abs_effect
 delta_understorey_aboveground_c_pool_2_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_2, var.col=3)
 delta_microbial_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=microbial_c_pool, var.col=3)
 delta_mycorrhizal_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool, var.col=3)
-delta_leaflitter_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaflitter_pool, var.col=6)
-delta_insect_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=insect_pool, var.col=3)
-delta_ground_dwelling_insect_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool, var.col=3)
+delta_leaflitter_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaflitter_pool, var.col=6)
+delta_insect_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=insect_pool, var.col=3)
+delta_ground_dwelling_insect_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool, var.col=3)
 
 
 

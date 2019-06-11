@@ -223,9 +223,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    F.col.list <- colfunc.delta(7)
+    F.col.list <- colfunc.delta(8)
     
-    v.list <- viridis(24)
+    v.list <- viridis(25)
     #v.list <- rainbow(26)
     
     ### Combine all color list
@@ -251,8 +251,9 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                    "delta_fineroot_c"=F.col.list[3],    
                    "delta_litter_c"=F.col.list[4],
                    "delta_microbial_c"=F.col.list[5],
-                   "delta_soil_c"=F.col.list[6],
-                   "delta_mycorrhizal_c"=F.col.list[7])     
+                   "delta_soil_c"=F.col.list[8],
+                   "delta_mycorrhizal_c"=F.col.list[7],
+                   "delta_insect_c"=F.col.list[6])     
         
     
     # y label
@@ -279,7 +280,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                 "delta_litter_c"=expression(Delta*C[lit]),
                 "delta_microbial_c"=expression(Delta*C[micr]),
                 "delta_soil_c"=expression(Delta*C[soil]),
-                "delta_mycorrhizal_c"=expression(Delta*C[myco]))     # 25
+                "delta_mycorrhizal_c"=expression(Delta*C[myco]),
+                "delta_insect_c"=expression(Delta*C[ins]))     # 25
     
     
     
@@ -318,8 +320,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
         #geom_vline(xintercept = 5.5, linetype="dashed", color="black")+
         
         scale_y_continuous(limits=c(-200, 500), 
-                           breaks=c(-200, -100, 0, 100, 200, 500),
-                           labels=c(-200, -100, 0, 100, 200, 500))+
+                           breaks=c(-200, -100, 0, 100, 200, 400, 600),
+                           labels=c(-200, -100, 0, 100, 200, 400, 600))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
         guides(fill=guide_legend(ncol=6))#+
         #ylim(-400,800)+

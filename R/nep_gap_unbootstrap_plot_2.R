@@ -186,6 +186,7 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
               legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom")+
+        geom_hline(yintercept = 0, linetype="dashed", color="black")+
         scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_colour_manual(name="", values = c("aCO2" = "black", "eCO2" = "black"),
@@ -198,6 +199,8 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
         scale_y_continuous(limits=c(-500, 500), 
                            breaks=c(-500, -250, -100, 0, 100, 250, 500),
                            labels=c(-500, -250, -100, 0, 100, 250, 500))
+    
+    
     
     #plot(p1)
     
