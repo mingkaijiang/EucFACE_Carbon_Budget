@@ -2143,7 +2143,7 @@ p1 <- ggplot(und.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[hb], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[ua], " (g C ", m^-2, yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
