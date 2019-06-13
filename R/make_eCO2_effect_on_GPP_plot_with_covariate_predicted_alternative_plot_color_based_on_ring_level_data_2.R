@@ -190,7 +190,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     
     
     ### Simplify the plot by eleminating fluxes that has CO2 effect < 1 g m-2 yr-1
-    plotDF2 <- subset(plotDF, abs(effect_size) >= 1)
+    plotDF2 <- subset(plotDF, abs(effect_size) >= 5)
     
     ### Order plot DF
     plotDF2 <- plotDF2[order(plotDF2$plot.cat2),]
@@ -215,15 +215,15 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     ## NPP
     #colfunc.npp <- colorRampPalette(c("seagreen", "green", "yellowgreen"))
     #D.col.list <- colfunc.npp(9)
-    D.col.list <- c("darkgreen", "seagreen", "chartreuse3", "yellowgreen", "chartreuse1", "springgreen3")#, "springgreen1")
+    D.col.list <- c("darkgreen", "seagreen", "chartreuse3", "yellowgreen", "chartreuse1")#, "springgreen3")
     
     ## R
     colfunc.R <- colorRampPalette(c("darkred", "pink"))
-    E.col.list <- colfunc.R(5)
+    E.col.list <- colfunc.R(4)
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    F.col.list <- colfunc.delta(8)
+    F.col.list <- colfunc.delta(5)
     
     v.list <- viridis(25)
     #v.list <- rainbow(26)
@@ -240,20 +240,20 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                    "fineroot_prod"=D.col.list[3],           
                    "other_prod"=D.col.list[4],                
                    "understorey_prod"=D.col.list[5], 
-                   "herb_consump"=D.col.list[6],           
-                   "over_leaf_respiration"=E.col.list[4],      
-                   "wood_respiration"=E.col.list[5],           
-                   "root_respiration"=E.col.list[1],           
-                   "understorey_respiration"=E.col.list[2],      
-                   "hetero_respiration"=E.col.list[3],    
+                   #"herb_consump"=D.col.list[6],           
+                   #"over_leaf_respiration"=E.col.list[4],      
+                   "wood_respiration"=E.col.list[1],           
+                   "root_respiration"=E.col.list[2],           
+                   "understorey_respiration"=E.col.list[3],      
+                   "hetero_respiration"=E.col.list[4],    
                    "delta_leaf_c"=F.col.list[1],  
                    "delta_wood_c"=F.col.list[2],        
                    "delta_fineroot_c"=F.col.list[3],    
-                   "delta_litter_c"=F.col.list[4],
-                   "delta_microbial_c"=F.col.list[5],
-                   "delta_soil_c"=F.col.list[8],
-                   "delta_mycorrhizal_c"=F.col.list[7],
-                   "delta_insect_c"=F.col.list[6])     
+                   #"delta_litter_c"=F.col.list[4],
+                   "delta_microbial_c"=F.col.list[4],
+                   "delta_soil_c"=F.col.list[5])#,
+                   #"delta_mycorrhizal_c"=F.col.list[7],
+                   #"delta_insect_c"=F.col.list[6])     
         
     
     # y label
@@ -263,25 +263,25 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                 "Ra"=expression(R[a]),                            # 5
                 "Change_in_pools"=expression(Delta*C[pools]),
                 "total_outflux"="R",                              # 4
-                "leaf_prod"=expression(NPP[leaf]),                # 7
+                "leaf_prod"=expression(NPP[ol]),                # 7
                 "wood_prod"=expression(NPP[stem]),                # 11
                 "fineroot_prod"=expression(NPP[froot]),           # 12
                 "other_prod"=expression(NPP[other]),                # 8
                 "understorey_prod"=expression(NPP[ua]),           # 14
-                "herb_consump"=expression(NPP[insect]),           # 6
-                "over_leaf_respiration"=expression(R[leaf]),      # 18
+                #"herb_consump"=expression(NPP[insect]),           # 6
+                #"over_leaf_respiration"=expression(R[leaf]),      # 18
                 "wood_respiration"=expression(R[stem]),           # 19
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16
                 "hetero_respiration"=expression(R[rh]),            # 17
-                "delta_leaf_c"=expression(Delta*C[leaf]),
+                "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
-                "delta_litter_c"=expression(Delta*C[lit]),
+                #"delta_litter_c"=expression(Delta*C[lit]),
                 "delta_microbial_c"=expression(Delta*C[micr]),
-                "delta_soil_c"=expression(Delta*C[soil]),
-                "delta_mycorrhizal_c"=expression(Delta*C[myco]),
-                "delta_insect_c"=expression(Delta*C[ins]))     # 25
+                "delta_soil_c"=expression(Delta*C[soil]))#,
+                #"delta_mycorrhizal_c"=expression(Delta*C[myco]),
+                #"delta_insect_c"=expression(Delta*C[ins]))     # 25
     
     
     

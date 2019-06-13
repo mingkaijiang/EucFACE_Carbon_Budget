@@ -63,7 +63,8 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
         }
     }
     
-    xticks.brk <- xticks <- c(-400, -200, -50, -25, 0, 25, 50, 150, 300, 600)
+    #xticks.brk <- xticks <- c(-400, -200, -50, -25, 0, 25, 50, 150, 300, 600)
+    xticks.brk <- xticks <- c(-200,-50, -25, 0, 25, 50, 200, 400)
     
     #Transform the data onto the display scale
     for (i in 1:length(plotDF1$Variable)) {
@@ -95,7 +96,7 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
     }
     
     y.lab1 <- c("delta_soil_c"=expression(Delta*C[soil]),
-                "delta_leaf_c"=expression(Delta*C[leaf]),
+                "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),
                 "delta_fineroot_c"=expression(Delta*C[froot]),
                 "delta_coarseroot_c"=expression(Delta*C[croot]),
@@ -115,13 +116,13 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
                 "doc"=expression(DOC),
                 "voc"=expression(VOC),
                 "hetero_respiration"=expression(R[rh]),
-                "over_leaf_respiration"=expression(R[leaf]),
+                "over_leaf_respiration"=expression(R[ol]),
                 "frass_prod"=expression(Frass),
                 "growth_respiration"=expression(R[growth]))
     
     y.lab3 <- c("herb_consump"=expression(NPP[hb]),
                 "lerp_prod"=expression(NPP[lerp]),
-                "leaf_prod"=expression(NPP[leaf]),
+                "leaf_prod"=expression(NPP[ol]),
                 "other_prod"=expression(NPP[other]),
                 "wood_prod"=expression(NPP[stem]),
                 "fineroot_prod"=expression(NPP[froot]),

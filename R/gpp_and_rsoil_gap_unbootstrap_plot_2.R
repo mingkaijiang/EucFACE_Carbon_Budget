@@ -191,11 +191,11 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
     
     ### Prepare variable labels
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
-                  expression(NPP[leaf]), expression(NPP[stem]),
+                  expression(NPP[ol]), expression(NPP[stem]),
                   expression(NPP[froot]), expression(NPP[croot]),
                   expression(NPP[other]), expression(NPP[ua]),
                   expression(NPP[hb]), 
-                  expression(R[leaf]),
+                  expression(R[ol]),
                   expression(R[stem]), expression(R[root]),
                   expression(R[ua]), 
                   expression(R[g]), "VOC")
@@ -379,7 +379,7 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
     
     
     ### Prepare variable labels
-    var.labs2 <- c(expression(NPP[leaf]), expression(NPP[froot]),
+    var.labs2 <- c(expression(NPP[ol]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
                   expression(NPP[ua]),expression(Frass), 
                   expression(R[root]),
