@@ -250,7 +250,8 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                    "delta_wood_c"=F.col.list[2],        
                    "delta_fineroot_c"=F.col.list[3],    
                    #"delta_litter_c"=F.col.list[4],
-                   "delta_microbial_c"=F.col.list[4],
+                   #"delta_microbial_c"=F.col.list[4],
+                   "delta_understorey_c"=F.col.list[4],
                    "delta_soil_c"=F.col.list[5])#,
                    #"delta_mycorrhizal_c"=F.col.list[7],
                    #"delta_insect_c"=F.col.list[6])     
@@ -279,6 +280,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
                 #"delta_litter_c"=expression(Delta*C[lit]),
                 "delta_microbial_c"=expression(Delta*C[micr]),
+                "delta_understorey_c"=expression(Delta*C[ua]),
                 "delta_soil_c"=expression(Delta*C[soil]))#,
                 #"delta_mycorrhizal_c"=expression(Delta*C[myco]),
                 #"delta_insect_c"=expression(Delta*C[ins]))     # 25

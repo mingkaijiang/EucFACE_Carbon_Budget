@@ -1,135 +1,150 @@
 nep_gap_plot <- function(inDF) {
-    
     ### subseting each method
-    inoutDF <- as.data.frame(inDF$inout[,1:7])
-    nppDF <- as.data.frame(inDF$npp[,1:7])
+    inoutDF <- as.data.frame(inDF$inout[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6")])
+    nppDF <- as.data.frame(inDF$npp[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6")])
+    deltaDF <- as.data.frame(inDF$delta_pool[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6")])
     
     ### prepare output df
-    out <- data.frame(c("In-out", "NPP-Rh", "Pool"), NA, NA, NA, NA, NA, NA)
-    colnames(out) <- c("Method", "R1", "R2", "R3", "R4", "R5", "R6")
-
-    ### calculate NEP based on each method
-    for (i in c(2:7)) {
-        out[out$Method=="In-out", i] <- (inoutDF[inoutDF$term == "GPP overstorey", i] + 
-            inoutDF[inoutDF$term == "GPP understorey", i] -
-            inoutDF[inoutDF$term == "CH4 efflux", i] -
-            inoutDF[inoutDF$term == "Ra leaf", i] -
-            inoutDF[inoutDF$term == "Ra stem", i] -
-            inoutDF[inoutDF$term == "Ra understorey", i] -
-            #inoutDF[inoutDF$term == "VOC", i] -
-            inoutDF[inoutDF$term == "Rherbivore", i] -
-            inoutDF[inoutDF$term == "DOC loss", i] -
-            inoutDF[inoutDF$term == "Rsoil", i] -
-            inoutDF[inoutDF$term == "Rgrowth", i]) 
-        
-        out[out$Method=="NPP-Rh", i] <- nppDF[nppDF$term == "Leaf NPP", i] +
-            nppDF[nppDF$term == "Stem NPP", i] +
-            nppDF[nppDF$term == "Fine Root NPP", i] +
-            nppDF[nppDF$term == "Coarse Root NPP", i] +
-            nppDF[nppDF$term == "Other NPP", i] +
-            nppDF[nppDF$term == "Understorey NPP", i] +
-            nppDF[nppDF$term == "Leaf consumption", i] -
-            #nppDF[nppDF$term == "Mycorrhizal production", i] -
-            nppDF[nppDF$term == "R hetero", i] 
-            #nppDF[nppDF$term == "Flower production", i] 
-    }
-
-    ### Change in pools
-    delta_soil_c <- make_yearly_delta_pool_function_ann(inDF=soil_c_pool_ann, var.col=9)
-    delta_leaf_c <- make_yearly_delta_pool_function_ann(inDF=leaf_c_pool_ann, var.col=9)
-    delta_wood_c <- make_yearly_delta_pool_function_ann(inDF=wood_c_pool_ann, var.col=9)
-    delta_croot_c <- make_yearly_delta_pool_function_ann(inDF=coarse_root_c_pool_ann, var.col=9)
-    delta_froot_c <- make_yearly_delta_pool_function_ann(inDF=fineroot_c_pool_ann, var.col=9)
-    delta_ua_c <- make_yearly_delta_pool_function_ann(inDF=understorey_aboveground_c_pool_ann, var.col=9)
-    delta_mic_c <- make_yearly_delta_pool_function_ann(inDF=microbial_c_pool_ann, var.col=9)
-    delta_myc_c <- make_yearly_delta_pool_function_ann(inDF=mycorrhizal_c_pool_ann, var.col=9)
-    delta_ins_c <- make_yearly_delta_pool_function_ann(inDF=insect_pool_ann, var.col=9)
-    delta_lit_c <- make_yearly_delta_pool_function_ann(inDF=leaflitter_pool_ann, var.col=9)
-    
-    #delta_soil_c <- delta_soil_c_pool_ann
-    #delta_leaf_c <- delta_leaf_c_pool_ann
-    #delta_wood_c <- delta_wood_c_pool_ann
-    #delta_croot_c <- delta_coarse_root_c_pool_ann
-    #delta_froot_c <- delta_fineroot_c_pool_ann
-    #delta_ua_c <- delta_understorey_aboveground_c_pool_ann
-    #delta_mic_c <- delta_microbial_c_pool_ann
-    #delta_myc_c <- delta_mycorrhizal_c_pool_ann
-    #delta_ins_c <- delta_insect_pool_ann
-    #delta_lit_c <- delta_leaflitter_pool_ann
-
-    ### create df to store pools
-    pool.list <- c("soilc", "leafc", "woodc", "crootc", "frootc", "uac",
-                   "micc", "mycc", "litter", "cwd", "insect")
-    poolDF <- data.frame(pool.list, NA,NA,NA,NA,NA,NA)
-    colnames(poolDF) <- c("Term", "R1", "R2", "R3", "R4", "R5", "R6")
-    
-    ### A function to calculate means of each ring, return unit of g C m-2 yr-1
-    calculate_variable_mean <- function(delta_pool) {
-        temp <- data.frame(c(1:6), NA)
-        colnames(temp) <- c("Ring", "Value")
-        
-        for (i in 1:6) {
-            temp$Value[temp$Ring==i] <- with(delta_pool[delta_pool$Ring == i,],
-                                             sum(daily_biomass_change*ndays)/sum(ndays)) * 365 
-        }
-        
-        #out <- mean(temp$Value, na.rm=T)
-        
-        return(temp)
-    }
-
-    ### assign values
-    poolDF[poolDF$Term=="soilc",2:7] <- summaryBy(delta~Ring,data=delta_soil_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="leafc",2:7] <- summaryBy(delta~Ring,data=delta_leaf_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="woodc",2:7] <- summaryBy(delta~Ring,data=delta_wood_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="crootc",2:7] <- summaryBy(delta~Ring,data=delta_croot_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="frootc",2:7] <- summaryBy(delta~Ring,data=delta_froot_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="uac",2:7] <- summaryBy(delta~Ring,data=delta_ua_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="micc",2:7] <- summaryBy(delta~Ring,data=delta_mic_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="mycc",2:7] <- summaryBy(delta~Ring,data=delta_myc_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="insect",2:7] <- summaryBy(delta~Ring,data=delta_ins_c,keep.names=T)$delta
-    poolDF[poolDF$Term=="cwd",2:7] <- 0.0
-    poolDF[poolDF$Term=="litter",2:7] <- summaryBy(delta~Ring,data=delta_lit_c,keep.names=T)$delta
-    
-    #poolDF[poolDF$Term=="soilc",2:7] <- summaryBy(predicted~Ring,data=delta_soil_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="leafc",2:7] <- summaryBy(predicted~Ring,data=delta_leaf_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="woodc",2:7] <- summaryBy(predicted~Ring,data=delta_wood_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="crootc",2:7] <- summaryBy(predicted~Ring,data=delta_croot_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="frootc",2:7] <- summaryBy(predicted~Ring,data=delta_froot_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="uac",2:7] <- summaryBy(predicted~Ring,data=delta_ua_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="micc",2:7] <- summaryBy(predicted~Ring,data=delta_mic_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="mycc",2:7] <- summaryBy(predicted~Ring,data=delta_myc_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="insect",2:7] <- summaryBy(predicted~Ring,data=delta_ins_c,keep.names=T)$predicted
-    #poolDF[poolDF$Term=="cwd",2:7] <- 0.0
-    #poolDF[poolDF$Term=="litter",2:7] <- summaryBy(predicted~Ring,data=delta_lit_c,keep.names=T)$predicted
+    out <- data.frame(c("In-out", "NPP-Rh", "Pool"), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    colnames(out) <- c("Method", "R1", "R2", "R3", "R4", "R5", "R6", "aCO2", "eCO2", "aCO2_sd", "eCO2_sd")
     
     
-    ### NEP change in pools
-    for (i in c(2:7)) {
-        out[out$Method=="Pool", i] <- sum(poolDF[,i])
-    }
+    out$R1[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "Ring_1"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "Ring_1"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "Ring_1"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "Ring_1"] - inoutDF[inoutDF$term=="Ra stem", "Ring_1"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "Ring_1"] - inoutDF[inoutDF$term=="Rgrowth", "Ring_1"] -
+        inoutDF[inoutDF$term=="VOC", "Ring_1"] - inoutDF[inoutDF$term=="Rherbivore", "Ring_1"]  -
+        inoutDF[inoutDF$term=="DOC loss", "Ring_1"] - inoutDF[inoutDF$term=="Rsoil", "Ring_1"] 
     
-    # calculate means and sd
+    out$R2[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "Ring_2"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "Ring_2"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "Ring_2"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "Ring_2"] - inoutDF[inoutDF$term=="Ra stem", "Ring_2"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "Ring_2"] - inoutDF[inoutDF$term=="Rgrowth", "Ring_2"] -
+        inoutDF[inoutDF$term=="VOC", "Ring_2"] - inoutDF[inoutDF$term=="Rherbivore", "Ring_2"]  -
+        inoutDF[inoutDF$term=="DOC loss", "Ring_2"] - inoutDF[inoutDF$term=="Rsoil", "Ring_2"] 
+    
+    out$R3[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "Ring_3"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "Ring_3"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "Ring_3"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "Ring_3"] - inoutDF[inoutDF$term=="Ra stem", "Ring_3"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "Ring_3"] - inoutDF[inoutDF$term=="Rgrowth", "Ring_3"] -
+        inoutDF[inoutDF$term=="VOC", "Ring_3"] - inoutDF[inoutDF$term=="Rherbivore", "Ring_3"]  -
+        inoutDF[inoutDF$term=="DOC loss", "Ring_3"] - inoutDF[inoutDF$term=="Rsoil", "Ring_3"] 
+    
+    out$R4[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "Ring_4"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "Ring_4"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "Ring_4"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "Ring_4"] - inoutDF[inoutDF$term=="Ra stem", "Ring_4"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "Ring_4"] - inoutDF[inoutDF$term=="Rgrowth", "Ring_4"] -
+        inoutDF[inoutDF$term=="VOC", "Ring_4"] - inoutDF[inoutDF$term=="Rherbivore", "Ring_4"]  -
+        inoutDF[inoutDF$term=="DOC loss", "Ring_4"] - inoutDF[inoutDF$term=="Rsoil", "Ring_4"] 
+    
+    out$R5[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "Ring_5"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "Ring_5"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "Ring_5"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "Ring_5"] - inoutDF[inoutDF$term=="Ra stem", "Ring_5"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "Ring_5"] - inoutDF[inoutDF$term=="Rgrowth", "Ring_5"] -
+        inoutDF[inoutDF$term=="VOC", "Ring_5"] - inoutDF[inoutDF$term=="Rherbivore", "Ring_5"]  -
+        inoutDF[inoutDF$term=="DOC loss", "Ring_5"] - inoutDF[inoutDF$term=="Rsoil", "Ring_5"] 
+    
+    out$R6[out$Method=="In-out"] <- inoutDF[inoutDF$term=="GPP overstorey", "Ring_6"] + 
+        inoutDF[inoutDF$term=="GPP understorey", "Ring_6"] + abs(inoutDF[inoutDF$term=="CH4 efflux", "Ring_6"]) -
+        inoutDF[inoutDF$term=="Ra leaf", "Ring_6"] - inoutDF[inoutDF$term=="Ra stem", "Ring_6"] - 
+        inoutDF[inoutDF$term=="Ra understorey", "Ring_6"] - inoutDF[inoutDF$term=="Rgrowth", "Ring_6"] -
+        inoutDF[inoutDF$term=="VOC", "Ring_6"] - inoutDF[inoutDF$term=="Rherbivore", "Ring_6"]  -
+        inoutDF[inoutDF$term=="DOC loss", "Ring_6"] - inoutDF[inoutDF$term=="Rsoil", "Ring_6"] 
+    
+    
+    ### create dataframe to hold bootstrap results - npp
+    out$R1[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_1"] + 
+        nppDF[nppDF$term=="Stem NPP", "Ring_1"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_1"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_1"] + nppDF[nppDF$term=="Other NPP", "Ring_1"] + 
+        nppDF[nppDF$term=="Understorey NPP", "Ring_1"] + nppDF[nppDF$term=="Leaf consumption", "Ring_1"] -
+        nppDF[nppDF$term=="R hetero", "Ring_1"] 
+    
+    out$R2[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_2"] + 
+        nppDF[nppDF$term=="Stem NPP", "Ring_2"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_2"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_2"] + nppDF[nppDF$term=="Other NPP", "Ring_2"] + 
+        nppDF[nppDF$term=="Understorey NPP", "Ring_2"] + nppDF[nppDF$term=="Leaf consumption", "Ring_2"] -
+        nppDF[nppDF$term=="R hetero", "Ring_2"] 
+    
+    out$R3[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_3"] + 
+        nppDF[nppDF$term=="Stem NPP", "Ring_3"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_3"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_3"] + nppDF[nppDF$term=="Other NPP", "Ring_3"] + 
+        nppDF[nppDF$term=="Understorey NPP", "Ring_3"] + nppDF[nppDF$term=="Leaf consumption", "Ring_3"] -
+        nppDF[nppDF$term=="R hetero", "Ring_3"] 
+    
+    out$R4[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_4"] + 
+        nppDF[nppDF$term=="Stem NPP", "Ring_4"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_4"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_4"] + nppDF[nppDF$term=="Other NPP", "Ring_4"] + 
+        nppDF[nppDF$term=="Understorey NPP", "Ring_4"] + nppDF[nppDF$term=="Leaf consumption", "Ring_4"] -
+        nppDF[nppDF$term=="R hetero", "Ring_4"] 
+    
+    out$R5[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_5"] + 
+        nppDF[nppDF$term=="Stem NPP", "Ring_5"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_5"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_5"] + nppDF[nppDF$term=="Other NPP", "Ring_5"] + 
+        nppDF[nppDF$term=="Understorey NPP", "Ring_5"] + nppDF[nppDF$term=="Leaf consumption", "Ring_5"] -
+        nppDF[nppDF$term=="R hetero", "Ring_5"] 
+    
+    out$R6[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_6"] + 
+        nppDF[nppDF$term=="Stem NPP", "Ring_6"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_6"]) +
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_6"] + nppDF[nppDF$term=="Other NPP", "Ring_6"] + 
+        nppDF[nppDF$term=="Understorey NPP", "Ring_6"] + nppDF[nppDF$term=="Leaf consumption", "Ring_6"] -
+        nppDF[nppDF$term=="R hetero", "Ring_6"] 
+    
+    
+    
+    ### create dataframe to hold bootstrap results - change in pools
+    out$R1[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_1"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "Ring_1"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_1"] +
+        deltaDF[deltaDF$term=="Fine Root", "Ring_1"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_1"] + 
+        deltaDF[deltaDF$term=="Litter", "Ring_1"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_1"] +
+        deltaDF[deltaDF$term=="Soil C", "Ring_1"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_1"] +
+        deltaDF[deltaDF$term=="Insects", "Ring_1"] 
+    
+    out$R2[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_2"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "Ring_2"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_2"] +
+        deltaDF[deltaDF$term=="Fine Root", "Ring_2"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_2"] + 
+        deltaDF[deltaDF$term=="Litter", "Ring_2"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_2"] +
+        deltaDF[deltaDF$term=="Soil C", "Ring_2"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_2"] +
+        deltaDF[deltaDF$term=="Insects", "Ring_2"] 
+    
+    out$R3[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_3"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "Ring_3"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_3"] +
+        deltaDF[deltaDF$term=="Fine Root", "Ring_3"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_3"] + 
+        deltaDF[deltaDF$term=="Litter", "Ring_3"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_3"] +
+        deltaDF[deltaDF$term=="Soil C", "Ring_3"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_3"] +
+        deltaDF[deltaDF$term=="Insects", "Ring_3"] 
+    
+    out$R4[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_4"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "Ring_4"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_4"] +
+        deltaDF[deltaDF$term=="Fine Root", "Ring_4"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_4"] + 
+        deltaDF[deltaDF$term=="Litter", "Ring_4"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_4"] +
+        deltaDF[deltaDF$term=="Soil C", "Ring_4"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_4"] +
+        deltaDF[deltaDF$term=="Insects", "Ring_4"] 
+    
+    out$R5[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_5"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "Ring_5"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_5"] +
+        deltaDF[deltaDF$term=="Fine Root", "Ring_5"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_5"] + 
+        deltaDF[deltaDF$term=="Litter", "Ring_5"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_5"] +
+        deltaDF[deltaDF$term=="Soil C", "Ring_5"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_5"] +
+        deltaDF[deltaDF$term=="Insects", "Ring_5"] 
+    
+    out$R6[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_6"] + 
+        deltaDF[deltaDF$term=="Overstorey wood", "Ring_6"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_6"] +
+        deltaDF[deltaDF$term=="Fine Root", "Ring_6"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_6"] + 
+        deltaDF[deltaDF$term=="Litter", "Ring_6"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_6"] +
+        deltaDF[deltaDF$term=="Soil C", "Ring_6"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_6"] +
+        deltaDF[deltaDF$term=="Insects", "Ring_6"] 
+    
     out$aCO2 <- rowMeans(subset(out, select=c(R2, R3, R6)), na.rm=T)
     out$eCO2 <- rowMeans(subset(out, select=c(R1, R4, R5)), na.rm=T)
+    out$aCO2_sd <- rowSds(as.matrix(subset(out, select=c(R2, R3, R6)), na.rm=T))
+    out$eCO2_sd <- rowSds(as.matrix(subset(out, select=c(R1, R4, R5)), na.rm=T))
     
-    require(sciplot)
-    
-    aC <- data.frame(out$R2, out$R3, out$R6)
-    #aCo <- transform(aC, SD = apply(aC, 1, sd, na.rm=T))
-    aCo <- transform(aC, SE = apply(aC, 1, se, na.rm=T))
-    
-    out$aCO2_se <- aCo$SE
-    
-    eC <- data.frame(out$R1, out$R4, out$R5)
-    out$eCO2_se <- transform(eC, SE = apply(eC, 1, se, na.rm=T))$SE
-    
-    write.csv(out, "R_other/NEP_method_comparison.csv", row.names=F)
+    write.csv(out, "R_other/NEP_bootstrapped_method_comparison.csv", row.names=F)
     
     
     ### prepare plotDF
     plotDF <- data.frame(rep(c("In-out", "NPP-Rh", "Pool"), 2), NA, NA, NA)
-    colnames(plotDF) <- c("Method", "NEP", "NEP_se", "Trt")
+    colnames(plotDF) <- c("Method", "NEP", "NEP_conf", "Trt")
     plotDF$Trt <- rep(c("aCO2", "eCO2"), each=3)
     
     plotDF$NEP[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2[out$Method=="In-out"]
@@ -139,21 +154,21 @@ nep_gap_plot <- function(inDF) {
     plotDF$NEP[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="NPP-Rh"]
     plotDF$NEP[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2[out$Method=="Pool"]
     
-    plotDF$NEP_se[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="In-out"]
-    plotDF$NEP_se[plotDF$Method=="NPP-Rh" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="NPP-Rh"]
-    plotDF$NEP_se[plotDF$Method=="Pool" & plotDF$Trt=="aCO2"] <- out$aCO2_se[out$Method=="Pool"]
-    plotDF$NEP_se[plotDF$Method=="In-out" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="In-out"]
-    plotDF$NEP_se[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="NPP-Rh"]
-    plotDF$NEP_se[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2_se[out$Method=="Pool"]
+    plotDF$NEP_conf[plotDF$Method=="In-out" & plotDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="In-out"]
+    plotDF$NEP_conf[plotDF$Method=="NPP-Rh" & plotDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="NPP-Rh"]
+    plotDF$NEP_conf[plotDF$Method=="Pool" & plotDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="Pool"]
+    plotDF$NEP_conf[plotDF$Method=="In-out" & plotDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="In-out"]
+    plotDF$NEP_conf[plotDF$Method=="NPP-Rh" & plotDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="NPP-Rh"]
+    plotDF$NEP_conf[plotDF$Method=="Pool" & plotDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="Pool"]
     
-    plotDF$pos <- plotDF$NEP + plotDF$NEP_se
-    plotDF$neg <- plotDF$NEP - plotDF$NEP_se
+    plotDF$pos <- plotDF$NEP + plotDF$NEP_conf
+    plotDF$neg <- plotDF$NEP - plotDF$NEP_conf
     
-    write.csv(plotDF, "R_other/nep_summary.csv", row.names=F)
+    write.csv(plotDF, "R_other/nep_bootstrapped_summary.csv", row.names=F)
     
     ### make the bar plot
     p1 <- ggplot(plotDF,
-                aes(Method, NEP)) + 
+                 aes(Method, NEP)) + 
         geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
         geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                       position = position_dodge(0.9), width=0.2, size=0.4) +
@@ -170,6 +185,7 @@ nep_gap_plot <- function(inDF) {
               legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom")+
+        geom_hline(yintercept = 0, linetype="dashed", color="black")+
         scale_fill_manual(name="", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_colour_manual(name="", values = c("aCO2" = "black", "eCO2" = "black"),
@@ -178,12 +194,18 @@ nep_gap_plot <- function(inDF) {
                          labels=c("In - Out",
                                   expression(paste("NPP - ", R[h])),
                                   expression(Delta*C[pools])))+
-        theme(legend.justification=c(1,0), legend.position=c(0.9,0.05))
+        theme(legend.justification=c(1,0), legend.position=c(0.2,0.05))+
+        scale_y_continuous(limits=c(-500, 500), 
+                           breaks=c(-500, -250, -100, 0, 100, 250, 500),
+                           labels=c(-500, -250, -100, 0, 100, 250, 500))
+    
+    
     
     #plot(p1)
     
-    pdf("R_other/nep_gap.pdf", width=8, height=8)
+    pdf("Output/nep_gap.pdf", width=8, height=8)
     plot(p1)
     dev.off()
+    
     
 }

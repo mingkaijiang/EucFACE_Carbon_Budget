@@ -31,6 +31,7 @@ make_soil_carbon_pool <- function(bk_density, return){
     # Take out Nov and Dec values because no C conc data is available
     C_dat$month <- month(C_dat$Date)
     C_dat <- subset(C_dat, month == "9")
+    #C_dat <- C_dat[complete.cases(C_dat$totCper),]
     #C_dat <- subset(C_dat, month != "12")
     #C_dat <- subset(C_dat, month != "3")
 

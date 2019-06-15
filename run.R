@@ -65,7 +65,6 @@ soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
 soil_c_pool_all_depth <- make_soil_carbon_pool_all_depths(bk_density=soil_bulk_density_variable,
                                                return="all_depths")
 
-
 ### Soil P pool
 soil_p_concentration <- make_soil_p_concentration(func=mean)
 
@@ -200,6 +199,7 @@ understorey_sla_variable <- make_understorey_sla_variable()
 understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction)
 understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction)
 
+
 ### Understorey production flux
 ### Method 2 is not used because understorey vegetation fluctuates a lot
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction)
@@ -281,18 +281,18 @@ understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=underst
 
 
 ### Delta pools
-delta_soil_c_pool <- make_delta_pool_treatment_abs_effect(inDF=soil_c_pool, var.col=3)
-delta_leaf_c_pool <- make_delta_pool_treatment_abs_effect(inDF=leaf_c_pool, var.col=3)
-delta_wood_c_pool <- make_delta_pool_treatment_abs_effect(inDF=wood_c_pool, var.col=3)
-delta_fineroot_c_pool <- make_delta_pool_treatment_abs_effect(inDF=fineroot_c_pool, var.col=3)
-delta_coarse_root_c_pool <- make_delta_pool_treatment_abs_effect(inDF=coarse_root_c_pool_1, var.col=3)
-delta_understorey_aboveground_c_pool <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool, var.col=5)
-delta_understorey_aboveground_c_pool_2 <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_2, var.col=3)
-delta_microbial_c_pool <- make_delta_pool_treatment_abs_effect(inDF=microbial_c_pool, var.col=3)
-delta_mycorrhizal_c_pool <- make_delta_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool, var.col=3)
-delta_leaflitter_pool <- make_delta_pool_treatment_abs_effect(inDF=leaflitter_pool, var.col=6)
-delta_insect_pool <- make_delta_pool_treatment_abs_effect(inDF=insect_pool, var.col=3)
-delta_ground_dwelling_insect_pool <- make_delta_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool, var.col=3)
+delta_soil_c_pool <- make_delta_pool_function(inDF=soil_c_pool, var.col=3)
+delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
+delta_wood_c_pool <- make_delta_pool_function(inDF=wood_c_pool, var.col=3)
+delta_fineroot_c_pool <- make_delta_pool_function(inDF=fineroot_c_pool, var.col=3)
+delta_coarse_root_c_pool <- make_delta_pool_function(inDF=coarse_root_c_pool_1, var.col=3)
+delta_understorey_aboveground_c_pool <- make_delta_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
+delta_understorey_aboveground_c_pool_2 <- make_delta_pool_function(inDF=understorey_aboveground_c_pool_2, var.col=3)
+delta_microbial_c_pool <- make_delta_pool_function(inDF=microbial_c_pool, var.col=3)
+delta_mycorrhizal_c_pool <- make_delta_pool_function(inDF=mycorrhizal_c_pool, var.col=3)
+delta_leaflitter_pool <- make_delta_pool_function(inDF=leaflitter_pool, var.col=6)
+delta_insect_pool <- make_delta_pool_function(inDF=insect_pool, var.col=3)
+delta_ground_dwelling_insect_pool <- make_delta_pool_function(inDF=ground_dwelling_insect_pool, var.col=3)
 
 
 ###### ----------Make summary tables-------------- ######
@@ -302,15 +302,14 @@ delta_ground_dwelling_insect_pool <- make_delta_pool_treatment_abs_effect(inDF=g
 source("R/make_table.R")
 overall_tables <- make_EucFACE_table()
 
-### Generate ring-specific table (ignoring time variable)
-source("R/make_table_by_ring.R")
-tables_by_ring <- make_table_by_ring()
-
 ### Generate per year table (ignore ring variability)
 source("R/make_table_by_year.R")
 tables_by_year <- make_EucFACE_table_by_year()
 
-
+### Generate ring-specific table (ignoring time variable)
+source("R/make_table_by_ring.R")
+tables_by_ring <- make_table_by_ring()
+inDF <- tables_by_ring
 
 ###### ----------Check for C gaps-------------- ######
 ### GPP gaps
@@ -329,11 +328,8 @@ gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
 source("R/nep_gap_plot.R")
 nep_gap_plot(inDF=tables_by_ring)
 
-#source("R/make_eCO2_effect_on_GPP_plot.R")
-#make_eCO2_effect_on_GPP_plot()
-
-#source("R/make_eCO2_effect_on_GPP_plot2.R")
-#make_eCO2_effect_on_GPP_plot2()
+source("R/make_eCO2_effect_on_GPP_plot.R")
+make_eCO2_effect_on_GPP_plot(inDF)
 
 
 ###### ----------normalization-------------- ######
@@ -342,7 +338,7 @@ nep_gap_plot(inDF=tables_by_ring)
 ### also output predicted values based on the stat model for all variables
 ### All stats for fluxes are based on annual rate
 source("R/stats/generate_stats_abs_covariate.R")
-generate_stats_abs_covariate(stat.model="no_interaction_with_covariate")
+#generate_stats_abs_covariate(stat.model="no_interaction_with_covariate")
 
 #source("R/stats/generate_stats_abs_covariate_linear.R")
 #generate_stats_abs_linear_covariate(stat.model="no_interaction_with_linear_covariate")
@@ -623,20 +619,20 @@ ground_dwelling_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inD
                                                                          return.outcome="predicted")
 
 ### Delta pools
-delta_soil_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=3)
-delta_leaf_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=3)
-delta_wood_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=wood_c_pool_ann, var.col=3)
-delta_fineroot_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=fineroot_c_pool_ann, var.col=3)
-delta_coarse_root_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=coarse_root_c_pool_1_ann, var.col=3)
-delta_understorey_aboveground_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_ann, var.col=5)
-delta_understorey_aboveground_c_pool_2_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_2_ann, var.col=3)
-delta_microbial_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=microbial_c_pool_ann, var.col=3)
-delta_mycorrhizal_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool_ann, var.col=3)
-delta_leaflitter_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaflitter_pool_ann, var.col=6)
-delta_insect_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=insect_pool_ann, var.col=3)
-delta_ground_dwelling_insect_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool_ann, var.col=3)
+delta_soil_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=10)
+delta_leaf_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=12)
+delta_wood_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=wood_c_pool_ann, var.col=14)
+delta_fineroot_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=fineroot_c_pool_ann, var.col=14)
+delta_coarse_root_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=coarse_root_c_pool_ann, var.col=13)
+delta_understorey_aboveground_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_ann, var.col=14)
+delta_understorey_aboveground_c_pool_2_ann <- make_delta_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_2_ann, var.col=12)
+delta_microbial_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=microbial_c_pool_ann, var.col=11)
+delta_mycorrhizal_c_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool_ann, var.col=11)
+delta_leaflitter_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=leaflitter_pool_ann, var.col=15)
+delta_insect_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=insect_pool_ann, var.col=12)
+delta_ground_dwelling_insect_pool_ann <- make_delta_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool_ann, var.col=12)
 
-
+delta_understorey_aboveground_c_pool_ann <- delta_understorey_aboveground_c_pool_2_ann
 
 #### Delta Soil C
 #delta_soil_c_pool_ann <- make_delta_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
@@ -733,6 +729,7 @@ delta_ground_dwelling_insect_pool_ann <- make_delta_pool_treatment_abs_effect(in
 source("R/make_table_by_ring_predicted.R")
 tables_by_ring_predicted <- make_table_by_ring_predicted()
 
+inDF <- tables_by_ring_predicted
 
 
 
