@@ -309,7 +309,7 @@ tables_by_year <- make_EucFACE_table_by_year()
 ### Generate ring-specific table (ignoring time variable)
 source("R/make_table_by_ring.R")
 tables_by_ring <- make_table_by_ring()
-inDF <- tables_by_ring
+#inDF <- tables_by_ring
 
 ###### ----------Check for C gaps-------------- ######
 ### GPP gaps
@@ -746,6 +746,9 @@ gpp_and_rsoil_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 
 source("R/nep_gap_unbootstrap_plot_2.R")
 nep_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
+
+source("R/cue_unbootstrapped_calculation.R")
+cueDF <- cue_unbootstrapped_calculation(inDF=tables_by_ring_predicted)
 
 ### Biomass increment
 #source("R/biomass_increment_plot.R")
