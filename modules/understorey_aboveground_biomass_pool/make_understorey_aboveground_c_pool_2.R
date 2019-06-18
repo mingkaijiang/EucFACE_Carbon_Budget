@@ -26,5 +26,7 @@ make_understorey_aboveground_c_pool_2 <- function(c_frac) {
     ### out DF
     out <- inDF[,c("Date", "Ring", "Total_g_C_m2")]
     
+    out <- subset(out, Date <= "2016-12-31") 
+    
     return(out)
 }

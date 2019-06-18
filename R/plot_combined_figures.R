@@ -61,7 +61,7 @@ p2 <- ggplot(sla.tr, aes(Date))+
     #geom_ribbon(data=sla.tr,aes(ymin=neg,ymax=pos, fill=factor(Treatment)))+
     geom_point(data=sla.tr, aes(y=avg, color=factor(Treatment)))+
     geom_segment(data=sla.tr, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste("SLA (cm2 ", g^-1, ")")))+
+    labs(x="Date", y=expression(paste("SLA (", cm^2, " ", g^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -86,7 +86,7 @@ p3 <- ggplot(leafc.tr, aes(Date))+
               fill="lightgrey", alpha=0.4)+  
     geom_ribbon(data=leafc.tr,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(data=leafc.tr, aes(y=avg, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste(C[leaf], " (g C ", m^-2, ")")))+
+    labs(x="Date", y=expression(paste(C[ol], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -121,7 +121,59 @@ dev.off()
 #uac1.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=5, cond=1)
 #uac1.live.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=3, cond=1)
 #uac1.dead.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=4, cond=1)
-#uac2.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool_2, v=3, cond=1)
+uac2.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool_2, v=3, cond=1)
+
+uac2.tr$year <- year(uac2.tr$Date)
+uac2.yr <- summaryBy(avg~year+Treatment, FUN=c(mean, se), data=uac2.tr, keep.names=T)
+
+p1 <- ggplot(uac2.yr, aes(x=year, y=avg.mean))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
+    geom_errorbar(aes(ymax=(avg.mean+avg.se), ymin=(avg.mean+avg.se), color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="right")+
+    #ylim(0, 0.3)+
+    #scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue3", "eCO2" = "red2"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+p1 <- ggplot(uac2.yr, aes(x=as.character(year), y=avg.mean))+
+    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
+    geom_errorbar(aes(ymax=avg.mean+avg.se, ymin=avg.mean-avg.se, color=factor(Treatment)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="bottom")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
+
+plot(p1)
+
+pdf("output/Understorey_C_pool_stereo_camera.pdf")
+plot(p1)
+dev.off()
 #
 #uac1.live.tr$Class <- "Live"
 #uac1.dead.tr$Class <- "Dead"
@@ -153,30 +205,30 @@ dev.off()
 #                      labels=c(expression(aCO[2]), expression(eCO[2])))
 #
 ### uac2 plot
-#p2 <- ggplot(uac2.tr, aes(Date))+
-#    #geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-#    #geom_segment(data=uac2.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
-#    geom_smooth(method="loess", aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
-#    geom_point(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
-#    labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
-#    scale_x_date(date_breaks = "6 month", 
-#                 date_labels="%b-%Y",
-#                 limits = as.Date(c('2015-01-01','2017-05-01')))+
-#    theme_linedraw() +
-#    theme(panel.grid.minor=element_blank(),
-#          axis.title.x = element_text(size=14), 
-#          axis.text.x = element_text(size=12),
-#          axis.text.y=element_text(size=12),
-#          axis.title.y=element_text(size=14),
-#          legend.text=element_text(size=12),
-#          legend.title=element_text(size=14),
-#          panel.grid.major=element_blank(),
-#          legend.position="right")+
-#    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-#                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-#    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-#                      labels=c(expression(aCO[2]), expression(eCO[2])))
-#
+p2 <- ggplot(uac2.tr, aes(Date))+
+    #geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
+    geom_segment(data=uac2.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
+    #geom_smooth(method="loess", aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
+    geom_point(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
+    labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
+    scale_x_date(date_breaks = "6 month", 
+                 date_labels="%b-%Y",
+                 limits = as.Date(c('2015-01-01','2016-12-31')))+
+    theme_linedraw() +
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
+          axis.text.y=element_text(size=12),
+          axis.title.y=element_text(size=14),
+          legend.text=element_text(size=12),
+          legend.title=element_text(size=14),
+          panel.grid.major=element_blank(),
+          legend.position="right")+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+
 ### uac1 live and dead bar plot
 #p3 <- ggplot(uac1.class.tr, aes(x=Date, y=avg, fill=Class))+
 #    geom_bar(stat="identity", position="stack")+facet_grid(~Treatment)+
@@ -201,9 +253,9 @@ dev.off()
 #require(cowplot)
 #
 ### plot 
-#pdf("output/Understorey_C_pool_time_series.pdf", width=10,height=8)
-#plot_grid(p1, p2, p3, labels="", ncol=1, align="v", axis = "l")
-#
+#pdf("output/Understorey_C_pool_stereo_camera.pdf")
+#plot(p2)
+#dev.off()
 ##grid.newpage()
 ##grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), ggplotGrob(p3),
 ##                size="last"))
@@ -666,7 +718,7 @@ p1 <- ggplot(soilc.tr, aes(Date))+
 ## bulk density
 p2 <- ggplot(soil.bk.tr, aes(x=as.character(ring),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position=position_dodge(width=0.95))+#facet_grid(~ring, switch="x")+
-    labs(x="Ring", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    labs(x="Ring", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() + 
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -859,7 +911,7 @@ bkDF <- subset(soil.bk.tr, ring==1)
 ## ggplot of soil bulk density
 p1 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -911,7 +963,7 @@ bkDF <- subset(soil.bk.tr, ring==3)
 ## ggplot of soil bulk density
 p5 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -963,7 +1015,7 @@ bkDF <- subset(soil.bk.tr, ring==4)
 ## ggplot of soil bulk density
 p7 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1070,7 +1122,7 @@ bkDF <- subset(soil.bk.tr, ring==6)
 ## ggplot of soil bulk density
 p11 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1127,7 +1179,7 @@ bkDF <- subset(soil.bk.tr, ring==2)
 ## ggplot of soil bulk density
 p3 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
+    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1518,7 +1570,7 @@ p1 <- ggplot(decp.rt, aes(x=as.character(Ring), y=coef, fill=factor(Treatment)))
 ### Plot leaf litter production
 p2 <- ggplot(lit.prod.tr, aes(x=Treatment,y=leaf_flux,fill=Treatment))+
     geom_boxplot(position=position_dodge(1))+
-    labs(x="Treatment", y=expression(paste("Leaf litterfall (mg C ", m^-2, d^-1, ")")))+
+    labs(x="Treatment", y=expression(paste("Leaf litterfall (mg C ", m^-2, " ", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1568,7 +1620,7 @@ p4 <- ggplot(lit.prod, aes(x=as.character(Ring), y=leaf_flux, fill=factor(Treatm
                size=4, shape=21)+
     geom_errorbar(aes(ymax=leaf_flux+se, ymin=leaf_flux-se), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="Ring", y=expression(paste("Leaf litterfall (mg C ", m^-2, d^-1, ")")))+
+    labs(x="Ring", y=expression(paste("Leaf litterfall (mg C ", m^-2, " ", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1635,7 +1687,7 @@ p1 <- ggplot(plotDF1, aes(Treatment, insect_pool))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(C[ins], " (g C", m^-2, ")")))+
+    labs(x="", y=expression(paste(C[ins], " (g C", " ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1666,7 +1718,7 @@ u.gpp.tr <- understorey_gpp_flux
 ### Plot
 p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
     geom_bar(stat = "identity", aes(fill=Ring), position="dodge")+
-    labs(x="Year", y=expression(paste(GPP[o], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="Year", y=expression(paste(GPP[o], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1685,7 +1737,7 @@ p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
 
 p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
     geom_bar(stat = "identity", aes(fill=as.factor(Ring)), position="dodge")+
-    labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1761,7 +1813,7 @@ plotDF2$bark_se <- plotDF3$bark_lit
 p1 <- ggplot(leaf.lit, aes(x=Date))+
     geom_ribbon(data=leaf.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
-    labs(x="", y=expression(paste(NPP[ol], " (mg C ", m^-2, d^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[ol], " (mg C ", m^-2, " ", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1781,7 +1833,7 @@ p1 <- ggplot(leaf.lit, aes(x=Date))+
 p2 <- ggplot(twig.lit, aes(x=Date))+
     geom_ribbon(data=twig.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
-    labs(x="", y=expression(paste(NPP[twig], " (mg C ", m^-2, d^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[twig], " (mg C ", m^-2," ",  d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1801,7 +1853,7 @@ p2 <- ggplot(twig.lit, aes(x=Date))+
 p3 <- ggplot(bark.lit, aes(x=Date))+
     geom_ribbon(data=bark.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
-    labs(x="", y=expression(paste(NPP[bark], " (mg C ", m^-2, d^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[bark], " (mg C ", m^-2, " ", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1821,7 +1873,7 @@ p3 <- ggplot(bark.lit, aes(x=Date))+
 p4 <- ggplot(seed.lit, aes(x=Date))+
     geom_ribbon(data=seed.lit,aes(ymin=avg-se,ymax=avg+se, fill=factor(Treatment)))+
     geom_line(aes(x=Date,y=avg,color=as.factor(Treatment)))+
-    labs(x="Date", y=expression(paste(NPP[seed], " (mg C ", m^-2, d^-1, ")")))+
+    labs(x="Date", y=expression(paste(NPP[seed], " (mg C ", m^-2, " ", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1844,7 +1896,7 @@ p5 <- ggplot(plotDF2, aes(x=Year, y=leaf_lit))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
     geom_errorbar(aes(ymax=leaf_lit+leaf_se, ymin=leaf_lit-leaf_se, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[ol], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[ol], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1865,7 +1917,7 @@ p6 <- ggplot(plotDF2, aes(x=Year, y=twig_lit))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
     geom_errorbar(aes(ymax=twig_lit+twig_se, ymin=twig_lit-twig_se, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[twig], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[twig], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1886,7 +1938,7 @@ p7 <- ggplot(plotDF2, aes(x=Year, y=bark_lit))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
     geom_errorbar(aes(ymax=bark_lit+bark_se, ymin=bark_lit-bark_se, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[bark], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[bark], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1907,7 +1959,7 @@ p8 <- ggplot(plotDF2, aes(x=Year, y=seed_lit))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge")+
     geom_errorbar(aes(ymax=seed_lit+seed_se, ymin=seed_lit-seed_se, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[seed], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[seed], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1958,7 +2010,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1979,7 +2031,7 @@ p2 <- ggplot(croot.prod, aes(x=as.character(Yr), y=avg))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[croot], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[croot], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2023,7 +2075,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
     geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2095,7 +2147,7 @@ p1 <- ggplot(root.plot, aes(x=component, y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[root], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[root], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2143,7 +2195,7 @@ p1 <- ggplot(und.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[ua], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[ua], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2234,7 +2286,7 @@ p1 <- ggplot(hb.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[hb], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(NPP[ins], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -2255,7 +2307,7 @@ p2 <- ggplot(hb.resp.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[hb], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[herbivory], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -2276,7 +2328,7 @@ p3 <- ggplot(frass.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste("Frass (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste("Frass (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2390,7 +2442,7 @@ p1 <- ggplot(o.leaf.resp.avg, aes(x=as.character(year), y=Rfoliage))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[ol], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[ol], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -2412,7 +2464,7 @@ p2 <- ggplot(wood.resp.avg, aes(x=as.character(year), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[stem], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[stem], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -2434,7 +2486,7 @@ p3 <- ggplot(und.resp.avg, aes(x=as.character(year), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[ua], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[ua], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -2456,7 +2508,7 @@ p4 <- ggplot(root.resp.avg, aes(x=as.character(year), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[root], " (g C ", m^-2, yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[root], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2605,7 +2657,7 @@ p2 <- ggplot(rh.resp.avg, aes(x=as.character(year), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[h], " (g C ", m^-2, " ", yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[hetero], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2726,7 +2778,7 @@ o.voc.tr$year <- as.character(year(o.voc.tr$Date))
 ### Plot
 p1 <- ggplot(o.voc.tr, aes(x=year, y=voc_flux))+
     geom_bar(stat = "identity", aes(fill=as.character(Ring)), position="dodge")+
-    labs(x="Year", y=expression(paste("VOC (g C ", m^-2, yr^-1, ")")))+
+    labs(x="Year", y=expression(paste("VC (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 

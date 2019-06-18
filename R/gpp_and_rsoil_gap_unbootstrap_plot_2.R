@@ -194,11 +194,11 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
                   expression(NPP[ol]), expression(NPP[stem]),
                   expression(NPP[froot]), expression(NPP[croot]),
                   expression(NPP[other]), expression(NPP[ua]),
-                  expression(NPP[hb]), 
+                  expression(NPP[ins]), 
                   expression(R[ol]),
                   expression(R[stem]), expression(R[root]),
                   expression(R[ua]), 
-                  expression(R[g]), "VOC")
+                  expression(R[grow]), "VC")
     
     ### Prepare variable colors
     require(viridis)

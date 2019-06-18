@@ -222,7 +222,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     
     ### Change in pools
     colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    F.col.list <- colfunc.delta(5)
+    F.col.list <- colfunc.delta(6)
     
     v.list <- viridis(25)
     #v.list <- rainbow(26)
@@ -251,7 +251,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                    "delta_fineroot_c"=F.col.list[3],    
                    #"delta_litter_c"=F.col.list[4],
                    "delta_microbial_c"=F.col.list[4],
-                   #"delta_understorey_c"=F.col.list[4],
+                   "delta_understorey_c"=F.col.list[6],
                    "delta_soil_c"=F.col.list[5])#,
     #"delta_mycorrhizal_c"=F.col.list[7],
     #"delta_insect_c"=F.col.list[6])     
@@ -277,7 +277,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
                 #"delta_litter_c"=expression(Delta*C[lit]),
                 "delta_microbial_c"=expression(Delta*C[micr]),
-                #"delta_understorey_c"=expression(Delta*C[ua]),
+                "delta_understorey_c"=expression(Delta*C[ua]),
                 "delta_soil_c"=expression(Delta*C[soil]))#,
     #"delta_mycorrhizal_c"=expression(Delta*C[myco]),
     #"delta_insect_c"=expression(Delta*C[ins]))     # 25
@@ -318,9 +318,9 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
         #geom_vline(xintercept = 4.5, linetype="dashed", color="black")+
         #geom_vline(xintercept = 5.5, linetype="dashed", color="black")+
         
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-300, -100, 0, 100, 200, 400, 500),
-                           labels=c(-300, -100, 0, 100, 200, 400, 500))+
+        scale_y_continuous(limits=c(-400, 600), 
+                           breaks=c(-300, -100, 0, 100, 200, 400, 600),
+                           labels=c(-300, -100, 0, 100, 200, 400, 600))+
         #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
         guides(fill=guide_legend(ncol=6))#+
     #ylim(-400,800)+

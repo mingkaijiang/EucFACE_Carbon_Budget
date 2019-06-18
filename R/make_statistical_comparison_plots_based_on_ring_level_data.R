@@ -106,21 +106,21 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
                 "delta_microbial_c"=expression(Delta*C[micr]),
                 "delta_mycorrhizal_c"=expression(Delta*C[myco]),
                 "delta_litter_c"=expression(Delta*C[lit]),
-                "delta_insect_c"=expression(Delta*C[insect]))
+                "delta_insect_c"=expression(Delta*C[ins]))
     
     y.lab2 <- c("wood_respiration"=expression(R[stem]),
                 "root_respiration"=expression(R[root]),
                 "understorey_respiration"=expression(R[ua]),
-                "herbivory_respiration"=expression(R[hb]),
+                "herbivory_respiration"=expression(R[herbivory]),
                 "soil_respiration"=expression(R[soil]),
                 "doc"=expression(DOC),
-                "voc"=expression(VOC),
-                "hetero_respiration"=expression(R[rh]),
+                "voc"=expression(VC),
+                "hetero_respiration"=expression(R[hetero]),
                 "over_leaf_respiration"=expression(R[ol]),
                 "frass_prod"=expression(Frass),
-                "growth_respiration"=expression(R[growth]))
+                "growth_respiration"=expression(R[grow]))
     
-    y.lab3 <- c("herb_consump"=expression(NPP[hb]),
+    y.lab3 <- c("herb_consump"=expression(NPP[ins]),
                 "lerp_prod"=expression(NPP[lerp]),
                 "leaf_prod"=expression(NPP[ol]),
                 "other_prod"=expression(NPP[other]),
@@ -135,10 +135,10 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
     
     
     ### add conditional color to data frames
-    plotDF1$col.con <- ifelse(plotDF1$effect_size_t<0, "red3", "blue2")
-    plotDF2$col.con <- ifelse(plotDF2$effect_size_t<0, "red3", "blue2")
-    plotDF3$col.con <- ifelse(plotDF3$effect_size_t<0, "red3", "blue2")
-    plotDF4$col.con <- ifelse(plotDF4$effect_size_t<0, "red3", "blue2")
+    plotDF1$col.con <- ifelse(plotDF1$effect_size_t<0, "#DF6747", "#37AFA9")
+    plotDF2$col.con <- ifelse(plotDF2$effect_size_t<0, "#DF6747", "#37AFA9")
+    plotDF3$col.con <- ifelse(plotDF3$effect_size_t<0, "#DF6747", "#37AFA9")
+    plotDF4$col.con <- ifelse(plotDF4$effect_size_t<0, "#DF6747", "#37AFA9")
     
     #### Plotting
     p8 <- ggplot(plotDF4)+ 
@@ -270,7 +270,7 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
     plot_grid(p8, p5, 
               p6, p7, 
               labels="AUTO", ncol=1, align="v", axis = "l",
-              rel_heights=c(0.3,1,1,0.9))
+              rel_heights=c(0.3,1,1,1))
     dev.off()
     
 }

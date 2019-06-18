@@ -274,7 +274,7 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
                 "wood_respiration"=expression(R[stem]),           # 19
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16
-                "hetero_respiration"=expression(R[rh]),            # 17
+                "hetero_respiration"=expression(R[hetero]),            # 17
                 "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
