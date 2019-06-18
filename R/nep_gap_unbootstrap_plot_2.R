@@ -193,7 +193,7 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
                             labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_x_discrete("",  
                          labels=c("In - Out",
-                                  expression(paste("NPP - ", R[h])),
+                                  expression(paste("NPP - ", R[hetero])),
                                   expression(Delta*C[pools])))+
         theme(legend.justification=c(1,0), legend.position=c(0.2,0.05))+
         scale_y_continuous(limits=c(-500, 500), 
