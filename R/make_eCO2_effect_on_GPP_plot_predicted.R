@@ -234,9 +234,9 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
                    "Change_in_pools"=C.col.list[1],   
                    "total_outflux"=C.col.list[2],
                    "leaf_prod"=D.col.list[1],                
-                   "wood_prod"=D.col.list[2],               
-                   "fineroot_prod"=D.col.list[3],           
-                   "other_prod"=D.col.list[4],                
+                   "wood_prod"=D.col.list[2],  
+                   "other_prod"=D.col.list[3],
+                   "fineroot_prod"=D.col.list[4],           
                    "understorey_prod"=D.col.list[5], 
                    #"herb_consump"=D.col.list[6],           
                    #"over_leaf_respiration"=E.col.list[4],      
@@ -283,6 +283,10 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
                 #"delta_mycorrhizal_c"=expression(Delta*C[myco]),
                 #"delta_insect_c"=expression(Delta*C[ins]))     # 25
     
+    plotDF2[plotDF2$Variable=="fineroot_prod", "var.order"] <- 10
+    plotDF2[plotDF2$Variable=="other_prod", "var.order"] <- 9
+    plotDF2 <- plotDF2[order(plotDF2$var.order),]
+    
     ### split the groups and make separate plots
     plotDF.sub1 <- subset(plotDF2, plot.cat2%in%c("A", "B", "C"))
     confDF.sub1 <- subset(confDF, plot.cat2%in%c("A", "B", "C"))
@@ -315,12 +319,12 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_text(size=14),
+              axis.title.y=element_text(size=20),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
@@ -349,12 +353,12 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
@@ -381,12 +385,12 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
@@ -413,12 +417,12 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
@@ -432,11 +436,11 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
     require(cowplot)
     
     ### Plotting
-    pdf("Output/eco2_effect_on_gpp_predicted.pdf", width=12, height=6)
+    pdf("Output/eco2_effect_on_gpp_predicted.pdf", width=16, height=6)
     plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
-              rel_widths=c(1.5, 0.5, 0.5, 0.5))
+              rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()
     
     
-    
+  #  
  }
