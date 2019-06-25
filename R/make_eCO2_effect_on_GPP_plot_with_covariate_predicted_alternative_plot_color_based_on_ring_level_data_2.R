@@ -287,6 +287,161 @@ make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_bas
     
     
     
+    ### split the groups and make separate plots
+    plotDF.sub1 <- subset(plotDF2, plot.cat2%in%c("A", "B", "C"))
+    confDF.sub1 <- subset(confDF, plot.cat2%in%c("A", "B", "C"))
+    
+    plotDF.sub2 <- subset(plotDF2, plot.cat2=="D")
+    confDF.sub2 <- subset(confDF, plot.cat2=="D")
+    
+    plotDF.sub3 <- subset(plotDF2, plot.cat2=="E")
+    confDF.sub3 <- subset(confDF, plot.cat2=="E")
+    
+    plotDF.sub4 <- subset(plotDF2, plot.cat2=="F")
+    confDF.sub4 <- subset(confDF, plot.cat2=="F")
+    
+    ### make plots
+    p1 <- ggplot(plotDF.sub1,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub1, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub1, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("GPP", 
+                                  expression(paste("NPP+", R[a])),
+                                  expression(paste("R+",Delta*C[pools]))))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_text(size=14),
+              axis.title.y=element_text(size=20),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-200, 500), 
+                           breaks=c(-200, -100, 0, 100, 200, 400, 600),
+                           labels=c(-200, -100, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=3),legend.justification = c(0, 1))+
+        annotate(geom="text", x=0.6, y=500, label="a", size=7)
+    
+    
+    p2 <- ggplot(plotDF.sub2,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub2, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub2, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("NPP", 
+                                  "R",
+                                  expression(Delta*C[pools])))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-200, 500), 
+                           breaks=c(-200, -100, 0, 100, 200, 400, 600),
+                           labels=c(-200, -100, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.5, y=500, label="b", size=7)
+    
+    
+    p3 <- ggplot(plotDF.sub3,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub3, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub3, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("R"))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-200, 500), 
+                           breaks=c(-200, -100, 0, 100, 200, 400, 600),
+                           labels=c(-200, -100, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=2, nrow=3))+
+        annotate(geom="text",x=0.5, y=500, label="c", size=7)
+    
+    
+    p4 <- ggplot(plotDF.sub4,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub4, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub4, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c(expression(Delta*C[pools])))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-200, 500), 
+                           breaks=c(-200, -100, 0, 100, 200, 400, 600),
+                           labels=c(-200, -100, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.5, y=500, label="d", size=7)
+    
+    require(grid)
+    require(cowplot)
+    
+    ### Plotting
+    pdf("Output/eco2_effect_on_gpp_and_subsequent_fluxes_pools_with_covariate_bootstrapped.pdf", width=16, height=6)
+    plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
+              rel_widths=c(1.3, 0.5, 0.5, 0.5))
+    dev.off()
+    
+    
     p3 <- ggplot(plotDF2,
                  aes(plot.cat2, effect_size)) +  
         geom_hline(yintercept=0)+

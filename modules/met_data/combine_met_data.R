@@ -36,13 +36,13 @@ combine_met_data <- function() {
     p1 <- ggplot(plotDF, aes(Date, Tair))+
         geom_ribbon(aes(ymin=Tair-Tair_sd,ymax=Tair+Tair_sd), fill="pink", alpha=0.6)+
         geom_line(color="red")+
-        labs(x="Date", y="Air T (C)")+
+        labs(x="Date", y=expression("Air T ("* degree* "C)"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_blank(), 
               axis.text.x = element_blank(),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_text(size=14),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
@@ -61,7 +61,7 @@ combine_met_data <- function() {
               axis.title.x = element_blank(), 
               axis.text.x = element_blank(),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_text(size=14),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),
@@ -99,7 +99,7 @@ combine_met_data <- function() {
               axis.title.x = element_text(size=14), 
               axis.text.x = element_text(size=12),
               axis.text.y=element_text(size=10),
-              axis.title.y=element_text(size=10),
+              axis.title.y=element_text(size=12),
               legend.text=element_text(size=12),
               legend.title=element_text(size=14),
               panel.grid.major=element_line(color="grey"),

@@ -221,15 +221,16 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.text.x = element_text(size=16),
               axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.title.y=element_text(size=16),
+              legend.text=element_text(size=16),
+              legend.title=element_text(size=18),
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
-        ylim(0, 3)
+        ylim(0, 3)+
+        annotate(geom="text", x=0.6, y=2.9, label="(a)", size=7)
         
     
     ### make the bar plot
@@ -249,15 +250,16 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.text.x = element_text(size=16),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.text=element_text(size=16),
+              legend.title=element_text(size=18),
               panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)+
-        ylim(0, 3)
+        ylim(0, 3)+
+        annotate(geom="text", x=0.6, y=2.9, label="(b)", size=7)
     
     
     
@@ -406,15 +408,16 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.text.x = element_text(size=16),
               axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.title.y=element_text(size=16),
+              legend.text=element_text(size=16),
+              legend.title=element_text(size=18),
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
-        ylim(0, 1.6)
+        ylim(0, 1.6)+
+        annotate(geom="text", x=0.6, y=1.5, label="(c)", size=7)
     
     
     ### make the bar plot
@@ -435,21 +438,23 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
+              axis.text.x = element_text(size=16),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              legend.text=element_text(size=16),
+              legend.title=element_text(size=18),
               panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)+
-        ylim(0, 1.6)
+        ylim(0, 1.6)+
+        annotate(geom="text", x=0.6, y=1.5, label="(d)", size=7)
+    
 
     require(grid)
     require(cowplot)
     
     pdf("output/GPP_Rsoil_gap_bootstrap_plots.pdf", width=12,height=10)
-    plot_grid(p1, p2, p3, p4, labels="AUTO", ncol=2, align="v", axis="l",
+    plot_grid(p1, p2, p3, p4, labels="", ncol=2, align="v", axis="l",
                   rel_widths=c(1,1.2))
     dev.off()
 

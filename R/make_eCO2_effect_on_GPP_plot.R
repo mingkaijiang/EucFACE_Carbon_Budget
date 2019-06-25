@@ -270,8 +270,8 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                 "over_leaf_respiration"=expression(R[ol]),      # 18
                 "wood_respiration"=expression(R[stem]),           # 19
                 "understorey_respiration"=expression(R[ua]),      # 16
-                "growth_respiration"=expression(R[growth]),      # 
-                "hetero_respiration"=expression(R[rh]),            # 17
+                "growth_respiration"=expression(R[grow]),      # 
+                "hetero_respiration"=expression(R[hetero]),            # 17
                 "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
@@ -282,21 +282,64 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     #"delta_mycorrhizal_c"=expression(Delta*C[myco]),
     #"delta_insect_c"=expression(Delta*C[ins]))     # 25
     
+    ### split the groups and make separate plots
+    plotDF.sub1 <- subset(plotDF2, plot.cat2%in%c("A", "B", "C"))
+    confDF.sub1 <- subset(confDF, plot.cat2%in%c("A", "B", "C"))
     
+    plotDF.sub2 <- subset(plotDF2, plot.cat2=="D")
+    confDF.sub2 <- subset(confDF, plot.cat2=="D")
     
-    p3 <- ggplot(plotDF2,
+    plotDF.sub3 <- subset(plotDF2, plot.cat2=="E")
+    confDF.sub3 <- subset(confDF, plot.cat2=="E")
+    
+    plotDF.sub4 <- subset(plotDF2, plot.cat2=="F")
+    confDF.sub4 <- subset(confDF, plot.cat2=="F")
+    
+    ### make plots
+    p1 <- ggplot(plotDF.sub1,
                  aes(plot.cat2, effect_size)) +  
         geom_hline(yintercept=0)+
         geom_bar(stat = "identity", aes(fill=Variable),
                  position="stack") +
-        geom_errorbar(data=confDF, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+        geom_errorbar(data=confDF.sub1, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
                       width=0.1, size=1, color="grey") + 
-        geom_point(data=confDF, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        geom_point(data=confDF.sub1, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
         xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("GPP", 
                                   expression(paste("NPP+", R[a])),
-                                  expression(paste("R+",Delta*C[pools])),
-                                  "NPP", 
+                                  expression(paste("R+",Delta*C[pools]))))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_text(size=14),
+              axis.title.y=element_text(size=20),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-400, 500), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
+                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=3),legend.justification = c(0, 1))+
+        annotate(geom="text", x=0.6, y=500, label="a", size=7)
+    
+    
+    p2 <- ggplot(plotDF.sub2,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub2, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub2, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("NPP", 
                                   "R",
                                   expression(Delta*C[pools])))+
         scale_fill_manual(name="", 
@@ -305,35 +348,94 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
-        geom_vline(xintercept = 3.5, linetype="dashed", color="black")+
-        #geom_vline(xintercept = 4.5, linetype="dashed", color="black")+
-        #geom_vline(xintercept = 5.5, linetype="dashed", color="black")+
-        
-        scale_y_continuous(limits=c(-400, 600), 
-                           breaks=c(-300, -100, 0, 100, 200, 400, 600),
-                           labels=c(-300, -100, 0, 100, 200, 400, 600))+
-        #geom_text(aes(label=Variable), position=position_stack(), stat="identity", size=3, parse=T)
-        guides(fill=guide_legend(ncol=6))#+
-    #ylim(-400,800)+
-    #scale_y_continuous(breaks=c(-400,0,400,800), limits=c(-400, 800))
+        scale_y_continuous(limits=c(-400, 500), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
+                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.5, y=500, label="b", size=7)
     
-    #plot(p3)
+    
+    p3 <- ggplot(plotDF.sub3,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub3, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub3, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c("R"))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-400, 500), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
+                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=2, nrow=3))+
+        annotate(geom="text",x=0.5, y=500, label="c", size=7)
+    
+    
+    p4 <- ggplot(plotDF.sub4,
+                 aes(plot.cat2, effect_size)) +  
+        geom_hline(yintercept=0)+
+        geom_bar(stat = "identity", aes(fill=Variable),
+                 position="stack") +
+        geom_errorbar(data=confDF.sub4, mapping=aes(x=plot.cat2, ymin=conf_low, ymax=conf_high), 
+                      width=0.1, size=1, color="grey") + 
+        geom_point(data=confDF.sub4, mapping=aes(x=plot.cat2, y=effect_size), size=2, shape=21, fill="white")+
+        xlab("") + ylab(expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")"))) +
+        scale_x_discrete(labels=c(expression(Delta*C[pools])))+
+        scale_fill_manual(name="", 
+                          breaks = plotDF2$Variable,
+                          values = col.list2,
+                          labels=y.lab2) +
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=20),
+              axis.text.y=element_blank(),
+              axis.title.y=element_blank(),
+              legend.text=element_text(size=18),
+              legend.title=element_text(size=16),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(-400, 500), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
+                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.5, y=500, label="d", size=7)
+    
+    require(grid)
+    require(cowplot)
     
     ### Plotting
-    pdf("Output/eco2_effect_on_gpp_and_subsequent_fluxes_pools.pdf", width=8, height=6)
-    #plot(p1)
-    plot(p3)
-    #plot(p2)
+    pdf("Output/eco2_effect_on_gpp_and_subsequent_fluxes_pools.pdf", width=16, height=6)
+    plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
+              rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()
+    
     
     
     
