@@ -346,8 +346,11 @@ colnames(wood.stock.sum.mean) <- c("Ring", "Class", "Wood_Stock")
 wood.stock.sum.mean <- make_treatment_effect_df_2(inDF=wood.stock.sum.mean) 
 ### convert unit
 wood.stock.sum.mean$Wood_Stock_gCm2 <- wood.stock.sum.mean$Wood_Stock*1000000/ring_area
+wood.stock.sum.mean$Lab[wood.stock.sum.mean$Class=="Codominant"] <- "2"
+wood.stock.sum.mean$Lab[wood.stock.sum.mean$Class=="Dominant"] <- "1"
+wood.stock.sum.mean$Lab[wood.stock.sum.mean$Class=="Suppressed"] <- "3"
 
-p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock_gCm2, fill=as.factor(Class)))+
+p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock_gCm2, fill=as.factor(Lab)))+
     geom_bar(stat="identity", position="stack")+
     labs(x="Ring", y=expression(paste(C[stem], " (g C ", m^-2, ")")))+
     theme_linedraw() +
@@ -361,8 +364,9 @@ p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock_gCm2, fi
           panel.grid.major=element_blank(),
           legend.position="right")+
     scale_y_continuous(position="left")+
-    scale_fill_manual(name="Class", values = c("Dominant" = "green","Codominant" = "orange", 
-                                              "Suppressed" = "brown"))
+    scale_fill_manual(name="Class", values = c("1" = "green","2" = "orange", 
+                                              "3" = "brown"),
+                      label = c("Dominant", "Co-dominant", "Suppressed"))
 
 ### Time series of wood plot per ring
 woodc.ring <- summaryBy(Wood_Stock_t~Ring+Date, FUN=sum, data=wood.stock.sum, keep.names=T)
@@ -718,6 +722,11 @@ p1 <- ggplot(soilc.tr, aes(Date))+
 ## bulk density
 p2 <- ggplot(soil.bk.tr, aes(x=as.character(ring),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
     geom_bar(stat="identity", position=position_dodge(width=0.95))+#facet_grid(~ring, switch="x")+
+    geom_errorbar(data=soil.bk.tr, mapping=aes(x=as.character(ring),
+                                               ymin=bulk_density_kg_m3-bulk_density_kg_m3_se, 
+                                               ymax=bulk_density_kg_m3+bulk_density_kg_m3_se),
+                  position = position_dodge(0.9),
+                  width=0.2, size=1, color="black")+
     labs(x="Ring", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() + 
     theme(panel.grid.minor=element_blank(),
@@ -1715,9 +1724,12 @@ dev.off()
 o.gpp.tr <- overstorey_gpp_flux
 u.gpp.tr <- understorey_gpp_flux
 
-### Plot
-p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
-    geom_bar(stat = "identity", aes(fill=Ring), position="dodge")+
+
+p1 <- ggplot(data = o.gpp.tr, aes(x = interaction(year, Ring, lex.order = TRUE), 
+                            y = GPP)) +
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge")+
+    #annotate(geom = "text", x = seq_len(nrow(o.gpp.tr)), y = -100, label = o.gpp.tr$Ring, size = 4) +
+    #annotate(geom = "text", x = 3.5 + 6 * (0:3), y = -200, label = unique(o.gpp.tr$year), size = 6) +
     labs(x="Year", y=expression(paste(GPP[o], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
@@ -1728,42 +1740,90 @@ p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_blank(),
-          legend.position="none")+
+          legend.position="top")+
     scale_y_continuous(position="left")+
-    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
-                                              "3" = "cyan", "4" = "pink",
-                                              "5" = "orange", "6" = "darkblue"),
-                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
 
-p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
-    geom_bar(stat = "identity", aes(fill=as.factor(Ring)), position="dodge")+
+
+p2 <- ggplot(data = u.gpp.tr, aes(x = interaction(year, Ring, lex.order = TRUE), 
+                                  y = GPP)) +
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge")+
+    annotate(geom = "text", x = seq_len(nrow(u.gpp.tr)), y = -100, label = u.gpp.tr$Ring, size = 4) +
+    annotate(geom = "text", x = 3.5 + 6 * (0:3), y = -200, label = unique(u.gpp.tr$year), size = 6) +
+    coord_cartesian(ylim = c(0, 750), expand = FALSE, clip = "off") +
     labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
+    theme(plot.margin = unit(c(1, 1, 4, 1), "lines"),
+          panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_blank(),
-          legend.position="bottom")+
-    #scale_y_continuous(position="left")+
-    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
-                                              "3" = "cyan", "4" = "pink",
-                                              "5" = "orange", "6" = "darkblue"),
-                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
-
-
-grid.labs <- c("(a)", "(b)")
-
-## plot 
+          legend.position="none")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
+    
 pdf("output/gpp_fluxes.pdf", width=9,height=6)
 plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
-          rel_heights=c(0.7, 1))
-grid.text(grid.labs, x = 0.14, y = c(0.95, 0.55),
+          rel_heights=c(1, 1.1))
+grid.text(grid.labs, x = 0.14, y = c(0.85, 0.45),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
+
+### Plot
+#p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
+#    geom_bar(stat = "identity", aes(fill=Ring), position="dodge")+
+#    labs(x="Year", y=expression(paste(GPP[o], " (g C ", m^-2, " ", yr^-1, ")")))+
+#    theme_linedraw() +
+#    theme(panel.grid.minor=element_blank(),
+#          axis.title.x = element_blank(), 
+#          axis.text.x = element_blank(),
+#          axis.text.y=element_text(size=12),
+#          axis.title.y=element_text(size=14),
+#          legend.text=element_text(size=12),
+#          legend.title=element_text(size=14),
+#          panel.grid.major=element_blank(),
+#          legend.position="none")+
+#    scale_y_continuous(position="left")+
+#    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
+#                                              "3" = "cyan", "4" = "pink",
+#                                              "5" = "orange", "6" = "darkblue"),
+#                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+#
+#p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
+#    geom_bar(stat = "identity", aes(fill=as.factor(Ring)), position="dodge")+
+#    labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, " ", yr^-1, ")")))+
+#    theme_linedraw() +
+#    theme(panel.grid.minor=element_blank(),
+#          axis.title.x = element_text(size=14), 
+#          axis.text.x = element_text(size=12),
+#          axis.text.y=element_text(size=12),
+#          axis.title.y=element_text(size=14),
+#          legend.text=element_text(size=12),
+#          legend.title=element_text(size=14),
+#          panel.grid.major=element_blank(),
+#          legend.position="bottom")+
+#    #scale_y_continuous(position="left")+
+#    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
+#                                              "3" = "cyan", "4" = "pink",
+#                                              "5" = "orange", "6" = "darkblue"),
+#                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+#
+#
+#grid.labs <- c("(a)", "(b)")
+#
+### plot 
+#pdf("output/gpp_fluxes.pdf", width=9,height=6)
+#plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
+#          rel_heights=c(0.7, 1))
+#grid.text(grid.labs, x = 0.14, y = c(0.95, 0.55),
+#          gp=gpar(fontsize=16, col="black", fontface="bold"))
+#dev.off()
 
 
 ###################---------------------######################
@@ -2546,8 +2606,8 @@ colnames(g.resp) <- c("Trt", "value", "se")
 inout <- tables_by_ring$inout
 g.resp$value[g.resp$Trt=="aCO2"] <- inout$aCO2[inout$term=="Rgrowth"]
 g.resp$value[g.resp$Trt=="eCO2"] <- inout$eCO2[inout$term=="Rgrowth"]
-g.resp$se[g.resp$Trt=="aCO2"] <- inout$aCO2_se[inout$term=="Rgrowth"]
-g.resp$se[g.resp$Trt=="eCO2"] <- inout$eCO2_se[inout$term=="Rgrowth"]
+g.resp$se[g.resp$Trt=="aCO2"] <- inout$aCO2_sd[inout$term=="Rgrowth"]/3
+g.resp$se[g.resp$Trt=="eCO2"] <- inout$eCO2_sd[inout$term=="Rgrowth"]/3
 g.resp$pos <- with(g.resp, value + se)
 g.resp$neg <- with(g.resp, value - se)
 
@@ -2556,7 +2616,7 @@ p1 <- ggplot(g.resp, aes(x=as.character(Trt), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[growth], " (g C ", m^-2, " ", yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[grow], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2775,25 +2835,48 @@ o.voc.tr$Trt[o.voc.tr$Ring%in%c(2,3,6)] <- "aCO2"
 o.voc.tr$Trt[o.voc.tr$Ring%in%c(1,4,5)] <- "eCO2"
 o.voc.tr$year <- as.character(year(o.voc.tr$Date))
 
-### Plot
-p1 <- ggplot(o.voc.tr, aes(x=year, y=voc_flux))+
-    geom_bar(stat = "identity", aes(fill=as.character(Ring)), position="dodge")+
+p1 <- ggplot(data = o.voc.tr, aes(x = interaction(year, Ring, lex.order = TRUE), 
+                                  y = voc_flux)) +
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge")+
+    annotate(geom = "text", x = seq_len(nrow(o.voc.tr)), y = -0.2, label = rep(c(1:6),4), size = 4) +
+    annotate(geom = "text", x = 3.5 + 6 * (0:3), y = -0.6, label = unique(o.voc.tr$year), size = 6) +
+    coord_cartesian(ylim = c(0, 6), expand = FALSE, clip = "off")+
     labs(x="Year", y=expression(paste("VC (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
+    theme(plot.margin = unit(c(1, 1, 4, 1), "lines"),
+          panel.grid.minor=element_blank(),
+          axis.title.x = element_blank(), 
+          axis.text.x = element_blank(),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_blank(),
-          legend.position="bottom")+
-    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
-                                              "3" = "cyan", "4" = "pink",
-                                              "5" = "orange", "6" = "darkblue"),
-                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+          legend.position="top")+
+    scale_y_continuous(position="left")+
+    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
+                      labels=c(expression(aCO[2]), expression(eCO[2])))
 
+
+### Plot
+#p1 <- ggplot(o.voc.tr, aes(x=year, y=voc_flux))+
+#    geom_bar(stat = "identity", aes(fill=as.character(Ring)), position="dodge")+
+#    labs(x="Year", y=expression(paste("VC (g C ", m^-2, " ", yr^-1, ")")))+
+#    theme_linedraw() +
+#    theme(panel.grid.minor=element_blank(),
+#          axis.title.x = element_text(size=14), 
+#          axis.text.x = element_text(size=12),
+#          axis.text.y=element_text(size=12),
+#          axis.title.y=element_text(size=14),
+#          legend.text=element_text(size=12),
+#          legend.title=element_text(size=14),
+#          panel.grid.major=element_blank(),
+#          legend.position="bottom")+
+#    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
+#                                              "3" = "cyan", "4" = "pink",
+#                                              "5" = "orange", "6" = "darkblue"),
+#                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
+#
 
 ## plot 
 pdf("output/voc_fluxes.pdf", width=9,height=6)
