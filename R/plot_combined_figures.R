@@ -322,7 +322,7 @@ p2 <- ggplot(wood.stock.tr, aes(x=as.character(Date),y=Wood_Stock/1000,fill=Trea
 
 p3 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock, fill=as.factor(Treatment)))+
     geom_bar(stat="identity")+
-    labs(x="Ring", y=expression(paste(C[stem], " (t C ", ring^-1, ")")))+
+    labs(x="Plot", y=expression(paste(C[stem], " (t C ", plot^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -352,7 +352,7 @@ wood.stock.sum.mean$Lab[wood.stock.sum.mean$Class=="Suppressed"] <- "3"
 
 p4 <- ggplot(wood.stock.sum.mean, aes(x=as.character(Ring),y=Wood_Stock_gCm2, fill=as.factor(Lab)))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Ring", y=expression(paste(C[stem], " (g C ", m^-2, ")")))+
+    labs(x="Plot", y=expression(paste(C[stem], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -388,7 +388,7 @@ p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_gCm2, color=as.factor(Ring)))+
           legend.position="right")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_color_manual(name="Ring", values = c("pink", "cyan", "blue", "red", "orange", "darkblue"),
+    scale_color_manual(name="Plot", values = c("pink", "cyan", "blue", "red", "orange", "darkblue"),
                       labels=c("Ring1", "Ring2", "Ring3", "Ring4", "Ring5", "Ring6"))
 
 
@@ -648,7 +648,7 @@ plotDF$Se[plotDF$Component=="cr"] <- crDF.se$coarse_root_pool
 
 p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
     geom_bar(stat="identity", position="stack")+
-    labs(x="Ring", y=expression(paste(C[root], " (g C ", m^-2, ")")))+
+    labs(x="Plot", y=expression(paste(C[root], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -727,7 +727,7 @@ p2 <- ggplot(soil.bk.tr, aes(x=as.character(ring),y=bulk_density_kg_m3, fill=as.
                                                ymax=bulk_density_kg_m3+bulk_density_kg_m3_se),
                   position = position_dodge(0.9),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y=expression(paste("BK (kg ", m^-3, ")")))+
+    labs(x="Plot", y=expression(paste("BK (kg ", m^-3, ")")))+
     theme_linedraw() + 
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -749,7 +749,7 @@ p3 <-  ggplot(soilc.ring)+
     geom_errorbar(data=soilc.ring, mapping=aes(x=as.character(Ring),
                       ymin=soil_carbon_pool-se, ymax=soil_carbon_pool+se),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
+    labs(x="Plot", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -792,7 +792,7 @@ p4 <- ggplot(soilc.ph)+
     geom_errorbar(data=soilc.ph, mapping=aes(x=as.character(Ring),
                                                ymin=ph-se, ymax=ph+se),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y="Soil pH (water)")+
+    labs(x="Plot", y="Soil pH (water)")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -816,7 +816,7 @@ p5 <- ggplot(soilc.cn)+
     geom_errorbar(data=soilc.cn, mapping=aes(x=as.character(Ring),
                                              ymin=cn-se, ymax=cn+se),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y="Soil CN")+
+    labs(x="Plot", y="Soil CN")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -840,7 +840,7 @@ p6 <- ggplot(soilc.cp)+
     geom_errorbar(data=soilc.cp, mapping=aes(x=as.character(Ring),
                                              ymin=cp-se, ymax=cp+se),
                   width=0.2, size=1, color="black")+
-    labs(x="Ring", y="Soil CP")+
+    labs(x="Plot", y="Soil CP")+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -1500,7 +1500,7 @@ p2 <- ggplot(myc.tr, aes(x=Date))+
 
 p3 <- ggplot(myc.prop, aes(x=as.character(Ring), y=myc.prop*100, fill=factor(Trt)))+
     geom_bar(stat = "identity")+
-    labs(x="Ring", y="Mycorrhizal proportion (%)")+
+    labs(x="Plot", y="Mycorrhizal proportion (%)")+
     theme_linedraw() +
     ylim(0, 15)+
     theme(panel.grid.minor=element_blank(),
@@ -1562,7 +1562,7 @@ lit.avg$se <- lit.se$leaflitter_pool
 p1 <- ggplot(decp.rt, aes(x=as.character(Ring), y=coef, fill=factor(Treatment)))+
     geom_point(data=decp.rt, mapping=aes(x=as.character(Ring), y=coef,fill=factor(Treatment)), 
                size=4, shape=21)+
-    labs(x="Ring", y=expression(paste(k[leaf], " (", d^-1, ")")))+
+    labs(x="Plot", y=expression(paste(k[leaf], " (", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1629,7 +1629,7 @@ p4 <- ggplot(lit.prod, aes(x=as.character(Ring), y=leaf_flux, fill=factor(Treatm
                size=4, shape=21)+
     geom_errorbar(aes(ymax=leaf_flux+se, ymin=leaf_flux-se), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="Ring", y=expression(paste("Leaf litterfall (mg C ", m^-2, " ", d^-1, ")")))+
+    labs(x="Plot", y=expression(paste("Leaf litterfall (mg C ", m^-2, " ", d^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
@@ -1648,7 +1648,7 @@ p5 <- ggplot(lit.avg, aes(x=as.character(Ring), y=leaflitter_pool, fill=factor(T
                size=4, shape=21)+
     geom_errorbar(aes(ymax=leaflitter_pool+se, ymin=leaflitter_pool-se), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="Ring", y=expression(paste(C[lit], " (g C ", m^-2, ")")))+
+    labs(x="Plot", y=expression(paste(C[lit], " (g C ", m^-2, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
@@ -2367,7 +2367,7 @@ p2 <- ggplot(hb.resp.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[herbivory], " (g C ", m^-2, " ", yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[herbivore], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
