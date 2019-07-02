@@ -116,7 +116,9 @@ make_wood_pool <- function(ring_area, c_frac_ht){
     sap.c <- make_sapwood_c_n_fraction()
     data.m$sap_c_frac[data.m$Ring %in% c(2, 3, 6)] <- sap.c$aCO2[sap.c$variable=="C"]
     data.m$sap_c_frac[data.m$Ring %in% c(1, 4, 5)] <- sap.c$eCO2[sap.c$variable=="C"]
-    
+    #data.m$sap_c_frac <- 0.46
+        
+        
     #### convert from kg DM m-2 to g C m-2
     data.m$heart_pool <- data.m$heart_pool * c_frac_ht * 1000
     data.m$sap_pool <- data.m$sap_pool * data.m$sap_c_frac * 1000

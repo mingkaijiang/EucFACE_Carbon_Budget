@@ -310,7 +310,7 @@ tables_by_year <- make_EucFACE_table_by_year()
 ### Generate ring-specific table (ignoring time variable)
 source("R/make_table_by_ring.R")
 tables_by_ring <- make_table_by_ring()
-inDF <- tables_by_ring
+#inDF <- tables_by_ring
 
 ###### ----------Check for C gaps-------------- ######
 ### GPP gaps

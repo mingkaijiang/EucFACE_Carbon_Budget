@@ -11,6 +11,9 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
     #### 2. If return stats, then need to choose what effect to show (trt.effect) i.e. ratio or abs
     #### 3. Then need to decide which model (stat.model): interaction, no_interaction, dynamic, and no_random_effect
 
+    
+    #c_frac <- 0.46
+        
     #- download the data from HIEv
     download_diameter_data()
     

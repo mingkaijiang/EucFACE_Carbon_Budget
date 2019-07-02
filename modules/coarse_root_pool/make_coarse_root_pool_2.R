@@ -13,6 +13,8 @@ make_coarse_root_pool_2 <- function(c_frac) {
     #- download the data from HIEv
     download_diameter_data()
     
+    #c_frac <- 0.46
+    
     #- read in 2012-15 data sets
     f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
