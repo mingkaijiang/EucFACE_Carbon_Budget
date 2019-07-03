@@ -6,7 +6,7 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
     deltaDF <- as.data.frame(inDF$delta_pool[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6")])
 
     ### prepare output df
-    out <- data.frame(c("In-out", "NPP-Rh", "Pool"), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
+    out <- data.frame(c("In-out", "NPP-Rh", "Pool", "Overall"), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(out) <- c("Method", "R1", "R2", "R3", "R4", "R5", "R6", "aCO2", "eCO2", "aCO2_sd", "eCO2_sd")
     
 
@@ -135,6 +135,14 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
         deltaDF[deltaDF$term=="Soil C", "Ring_6"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_6"] +
         deltaDF[deltaDF$term=="Insects", "Ring_6"] 
     
+    
+    out$R1[out$Method=="Overall"] <- sum(out$R1[out$Method=="In-out"], out$R1[out$Method=="NPP-Rh"], out$R1[out$Method=="Pool"]) / 3
+    out$R2[out$Method=="Overall"] <- sum(out$R2[out$Method=="In-out"], out$R2[out$Method=="NPP-Rh"], out$R2[out$Method=="Pool"]) / 3
+    out$R3[out$Method=="Overall"] <- sum(out$R3[out$Method=="In-out"], out$R3[out$Method=="NPP-Rh"], out$R3[out$Method=="Pool"]) / 3
+    out$R4[out$Method=="Overall"] <- sum(out$R4[out$Method=="In-out"], out$R4[out$Method=="NPP-Rh"], out$R4[out$Method=="Pool"]) / 3
+    out$R5[out$Method=="Overall"] <- sum(out$R5[out$Method=="In-out"], out$R5[out$Method=="NPP-Rh"], out$R5[out$Method=="Pool"]) / 3
+    out$R6[out$Method=="Overall"] <- sum(out$R6[out$Method=="In-out"], out$R6[out$Method=="NPP-Rh"], out$R6[out$Method=="Pool"]) / 3
+    
     out$aCO2 <- rowMeans(subset(out, select=c(R2, R3, R6)), na.rm=T)
     out$eCO2 <- rowMeans(subset(out, select=c(R1, R4, R5)), na.rm=T)
     out$aCO2_sd <- rowSds(as.matrix(subset(out, select=c(R2, R3, R6)), na.rm=T))
@@ -167,8 +175,76 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
     
     write.csv(plotDF, "R_other/nep_bootstrapped_summary.csv", row.names=F)
     
+    ### compute overall NEP
+    oDF <- data.frame(c("aCO2", "eCO2"), NA, NA, NA, NA)
+    colnames(oDF) <- c("Trt", "NEP", "NEP_conf", "pos", "neg")
+    oDF$NEP[oDF$Trt=="aCO2"] <- out$aCO2[out$Method=="Overall"]
+    oDF$NEP[oDF$Trt=="eCO2"] <- out$eCO2[out$Method=="Overall"]
+    oDF$NEP_conf[oDF$Trt=="aCO2"] <- out$aCO2_sd[out$Method=="Overall"]
+    oDF$NEP_conf[oDF$Trt=="eCO2"] <- out$eCO2_sd[out$Method=="Overall"]
+    oDF$pos <- oDF$NEP + oDF$NEP_conf
+    oDF$neg <- oDF$NEP - oDF$NEP_conf
+    
+    ### individual data point for ring-level data
+    plotDF2 <- data.frame(rep(c("aCO2", "eCO2"), each = 9), rep(c("In-out", "NPP-Rh", "Pool"), 6),
+                          rep(c("R2", "R3", "R6", "R1", "R4", "R5"), each=3), NA)
+    colnames(plotDF2) <- c("Trt", "Method", "Ring", "NEP")
+    
+    plotDF2$NEP[plotDF2$Ring=="R1"] <- out[1:3, "R1"]
+    plotDF2$NEP[plotDF2$Ring=="R2"] <- out[1:3, "R2"]
+    plotDF2$NEP[plotDF2$Ring=="R3"] <- out[1:3, "R3"]
+    plotDF2$NEP[plotDF2$Ring=="R4"] <- out[1:3, "R4"]
+    plotDF2$NEP[plotDF2$Ring=="R5"] <- out[1:3, "R5"]
+    plotDF2$NEP[plotDF2$Ring=="R6"] <- out[1:3, "R6"]
+    
     ### make the bar plot
-    p1 <- ggplot(plotDF,
+    p1 <- ggplot() + 
+        geom_hline(yintercept = 0, color="black")+
+        geom_bar(data=oDF, stat = "identity", aes(Trt, NEP, fill=Trt), position="dodge") +
+        geom_errorbar(data=oDF, aes(Trt, ymax=pos, ymin=neg), 
+                      position = position_dodge(0.9), width=0.3, size=1.2) +
+        geom_point(data=oDF, mapping=aes(x=Trt, y=NEP), 
+                   size=8, shape=19,position = position_dodge(0.9), color="black")+
+        geom_point(data=plotDF2, mapping=aes(x=Trt, y=NEP, shape=factor(Method), fill=Trt), 
+                   size=4, position = position_dodge(0.9))+
+        xlab("") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
+        theme_linedraw() +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=16), 
+              axis.text.x = element_text(size=18),
+              axis.text.y=element_text(size=16),
+              axis.title.y=element_text(size=18),
+              legend.text=element_text(size=16),
+              legend.title=element_text(size=18),
+              panel.grid.major=element_blank(),
+              legend.position="bottom",
+              legend.text.align=0,
+              legend.direction="vertical")+
+        scale_fill_manual(name="Treatment", values = c("aCO2" = "blue2", "eCO2" = "red3"),
+                          labels=c(expression(aCO[2]), expression(eCO[2])))+
+        #scale_colour_manual(name="Method", values = c("In-out"="green", "NPP-Rh"="purple", "Pool"="orange"),
+        #                    labels=c("In - Out",
+        #                             expression(paste("NPP - ", R[hetero])),
+        #                             expression(Delta*C[pools])))+
+        scale_shape_manual(name="Method", values = c("In-out"=23, "NPP-Rh"=24, "Pool"=25),
+                           labels=c("In - Out",
+                                    expression(paste("NPP - ", R[hetero])),
+                                    expression(Delta*C[pools])))+
+        scale_x_discrete("",  
+                         labels=c(expression(aCO[2]),
+                                  expression(eCO[2])))+
+        scale_y_continuous(limits=c(-350, 500), 
+                           breaks=c(-500, -250, -100, 0, 100, 250, 500),
+                           labels=c(-500, -250, -100, 0, 100, 250, 500))
+    
+    #plot(p1)
+    
+    
+    pdf("Output/nep_gap_individiual_bootstrapped.pdf", width=8, height=8)
+    plot(p1)
+    dev.off()
+    
+    p2 <- ggplot(plotDF,
                 aes(Method, NEP)) + 
         geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
         geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
@@ -202,10 +278,10 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
     
     
     
-    #plot(p1)
+    #plot(p2)
     
     pdf("Output/nep_gap_bootstrapped.pdf", width=8, height=8)
-    plot(p1)
+    plot(p2)
     dev.off()
     
 }
