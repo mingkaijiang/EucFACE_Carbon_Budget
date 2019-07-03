@@ -200,13 +200,13 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
     ### make the bar plot
     p1 <- ggplot() + 
         geom_hline(yintercept = 0, color="black")+
-        geom_bar(data=oDF, stat = "identity", aes(Trt, NEP, fill=Trt), position="dodge") +
-        geom_errorbar(data=oDF, aes(Trt, ymax=pos, ymin=neg), 
+        #geom_bar(data=oDF, stat = "identity", aes(Trt, NEP, fill=Trt), position="dodge") +
+        geom_errorbar(data=oDF, aes(Trt, ymax=pos, ymin=neg, color=Trt), 
                       position = position_dodge(0.9), width=0.3, size=1.2) +
-        geom_point(data=oDF, mapping=aes(x=Trt, y=NEP), 
-                   size=8, shape=19,position = position_dodge(0.9), color="black")+
-        geom_point(data=plotDF2, mapping=aes(x=Trt, y=NEP, shape=factor(Method), fill=Trt), 
-                   size=4, position = position_dodge(0.9))+
+        geom_point(data=oDF, mapping=aes(x=Trt, y=NEP, fill=Trt), 
+                   size=8, shape=21,position = position_dodge(0.9), color="black")+
+        geom_point(data=plotDF2, mapping=aes(x=Trt, y=NEP, shape=Method, fill=Trt), 
+                   size=4, position = position_dodge(0.9), color="black")+
         xlab("") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -222,10 +222,8 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
               legend.direction="vertical")+
         scale_fill_manual(name="Treatment", values = c("aCO2" = "blue2", "eCO2" = "red3"),
                           labels=c(expression(aCO[2]), expression(eCO[2])))+
-        #scale_colour_manual(name="Method", values = c("In-out"="green", "NPP-Rh"="purple", "Pool"="orange"),
-        #                    labels=c("In - Out",
-        #                             expression(paste("NPP - ", R[hetero])),
-        #                             expression(Delta*C[pools])))+
+        scale_color_manual(name="Treatment", values = c("aCO2" = "blue2", "eCO2" = "red3"),
+                          labels=c(expression(aCO[2]), expression(eCO[2])))+
         scale_shape_manual(name="Method", values = c("In-out"=23, "NPP-Rh"=24, "Pool"=25),
                            labels=c("In - Out",
                                     expression(paste("NPP - ", R[hetero])),
