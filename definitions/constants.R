@@ -11,6 +11,15 @@ c_fraction <- 0.5
 # lerp C content (from Andrew)
 c_fraction_lp <- 0.78
 
+# c fraction for understorey 
+c_fraction_ua <- 0.456
+
+# c fraction for insect
+c_fraction_ins <- 0.5
+
+# c fraction for coarseroot
+c_fraction_croot <- 0.4465
+
 # water fraction in biomass
 water_frac <- 0.5
 

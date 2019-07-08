@@ -120,7 +120,8 @@ make_wood_pool <- function(ring_area, c_frac_ht){
         
         
     #### convert from kg DM m-2 to g C m-2
-    data.m$heart_pool <- data.m$heart_pool * c_frac_ht * 1000
+    #data.m$heart_pool <- data.m$heart_pool * c_frac_ht * 1000
+    data.m$heart_pool <- data.m$heart_pool * data.m$sap_c_frac * 1000
     data.m$sap_pool <- data.m$sap_pool * data.m$sap_c_frac * 1000
     data.m$wood_pool <- data.m$sap_pool + data.m$heart_pool
     

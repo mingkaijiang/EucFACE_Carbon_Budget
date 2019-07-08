@@ -269,7 +269,7 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 
-              labels="AUTO", ncol=1, align="v", axis = "l",
+              labels="auto", ncol=1, align="v", axis = "l",
               rel_heights=c(0.3,1,1,1))
     dev.off()
     

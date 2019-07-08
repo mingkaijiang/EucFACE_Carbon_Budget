@@ -231,7 +231,7 @@ nep_gap_unbootstrap_plot_2 <- function(inDF) {
         scale_x_discrete("",  
                          labels=c(expression(aCO[2]),
                                   expression(eCO[2])))+
-        scale_y_continuous(limits=c(-350, 500), 
+        scale_y_continuous(limits=c(-400, 500), 
                            breaks=c(-500, -250, -100, 0, 100, 250, 500),
                            labels=c(-500, -250, -100, 0, 100, 250, 500))
     

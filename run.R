@@ -155,9 +155,9 @@ leaflitter_pool <- make_leaflitter_pool(c_fraction)
 ### method 1 is based on litter basket data
 ### understorey insect is based on suction data
 ### ground dwelling is based on pitfall data
-insect_pool <- make_insect_pool(c_fraction_lp)
-understorey_insect_pool <- make_understorey_insect_pool(c_frac=c_fraction_lp)
-ground_dwelling_insect_pool <- make_ground_dwelling_insect_pool(c_frac=c_fraction_lp)
+insect_pool <- make_insect_pool(c_fraction_ins)
+understorey_insect_pool <- make_understorey_insect_pool(c_frac=c_fraction_ins)
+ground_dwelling_insect_pool <- make_ground_dwelling_insect_pool(c_frac=c_fraction_ins)
 
 ### sapwood C and N fraction
 sapwood_cn_fraction <- make_sapwood_c_n_fraction()
@@ -196,13 +196,13 @@ understorey_sla_variable <- make_understorey_sla_variable()
 ### reads in c_fraction from constant
 ### method 1 is based on harvest
 ### method 2 is based on stereo camera
-understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction)
-understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction)
+understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction_ua)
+understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction_ua)
 
 
 ### Understorey production flux
 ### Method 2 is not used because understorey vegetation fluctuates a lot
-understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction)
+understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction_ua)
 #understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux_2(understorey_aboveground_c_pool)
 
 ### Understorey LAI
@@ -243,8 +243,8 @@ herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herb
 
 
 ### Coarse root C pool 
-coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction, fr_pool=fineroot_c_pool) 
-coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction) 
+coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction_croot, fr_pool=fineroot_c_pool) 
+coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction_croot) 
 
 
 #### Coarse root C production
@@ -274,7 +274,7 @@ understorey_gpp_flux <- make_understorey_GPP_flux3()
 ### Understorey respiration
 ### assumes either a fixed or a function of temperature
 understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=understorey_aboveground_c_pool,
-                                                                  c_frac=c_fraction,
+                                                                  c_frac=c_fraction_ua,
                                                                   gpp=understorey_gpp_flux,
                                                                   assumption="maespa_all")
 
