@@ -397,7 +397,7 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
         scale_y_continuous(limits=c(-200, 500), 
                            breaks=c(-200, -100, 0, 100, 200, 400, 600),
                            labels=c(-200, -100, 0, 100, 200, 400, 600))+
-        guides(fill=guide_legend(ncol=2, nrow=3))+
+        guides(fill=guide_legend(ncol=2, nrow=2))+
         annotate(geom="text",x=0.5, y=500, label="c", size=7)
     
     

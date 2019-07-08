@@ -24,7 +24,7 @@ make_root_respiration_flux <- function(fr_pool, cr_pool){
   
   ### calculate mean soil temperature
   tempDF$T5_avg <- rowMeans(tempDF[,c("T20cm_1_Avg", "T20cm_2_Avg")], na.rm=T)
-  
+
   ### extract useful columns
   tempDF2 <- tempDF[,c("DateTime", "Date", "Ring", "T5_avg")]
   
@@ -49,17 +49,15 @@ make_root_respiration_flux <- function(fr_pool, cr_pool){
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {
       tempDF[tempDF$Ring == i, "fr_biomass"] <- fr_biomass[fr_biomass$Ring == i, "fineroot_pool"]
-      #tempDF[tempDF$Ring == i, "cr_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr_at_top_soil
-      tempDF[tempDF$Ring == i, "cr_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr.frac * cr_at_top_soil
-      tempDF[tempDF$Ring == i, "ir_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * ir.frac * cr_at_top_soil
-      tempDF[tempDF$Ring == i, "br_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * br.frac * cr_at_top_soil
+      tempDF[tempDF$Ring == i, "cr_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr_at_top_soil * cr.frac 
+      tempDF[tempDF$Ring == i, "ir_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr_at_top_soil * ir.frac 
+      tempDF[tempDF$Ring == i, "br_biomass"] <- cr_biomass[cr_biomass$Ring == i, "coarse_root_pool"] * cr_at_top_soil * br.frac 
       
       
   }
   
   ### Calculate R root
   tempDF$Rfroot <- (Rcoef_fr * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$fr_biomass
-  #tempDF$Rcroot <- (Rcoef_cr * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$cr_biomass
   tempDF$Rcroot1 <- (1.33 * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$cr_biomass
   tempDF$Riroot <- (2.426 * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$ir_biomass
   tempDF$Rbroot <- (0.656 * Rbase ^ ((tempDF$T5_avg - 15) / 10)) * tempDF$br_biomass

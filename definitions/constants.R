@@ -70,7 +70,7 @@ Rcoef_fr <- 4.425 # nmol CO2 m-2 s-1
 Rbase <- 2.26
 
 ## fraction of coarse root at top 30 cm of soil
-cr_at_top_soil <- 0.5
+cr_at_top_soil <- 0.6
 
 # respiration rate is for coarseroot only!
 Rcoef_cr <- 1.33 # nmol CO2 m-2 s-1
