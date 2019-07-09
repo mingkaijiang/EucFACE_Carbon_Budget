@@ -2367,7 +2367,7 @@ p2 <- ggplot(hb.resp.avg, aes(x=as.character(Yr), y=value))+
     geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
     geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
                   position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(R[herbivore], " (g C ", m^-2, " ", yr^-1, ")")))+
+    labs(x="", y=expression(paste(R[ins], " (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_blank(), 
