@@ -374,9 +374,9 @@ woodc.ring$Wood_Stock_gCm2 <- woodc.ring$Wood_Stock_t*1000000/ring_area
 
 p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_gCm2, color=as.factor(Ring)))+
     geom_point()+
-    geom_smooth(mapping=aes(x=Date, y=Wood_Stock_t, color=as.factor(Ring)), method=lm)+
-    labs(x="Date", y=expression(paste(C[stem], " (t C ", m^-2, ")")))+
-    theme_linedraw() + ylim(1, 4)+
+    geom_smooth(mapping=aes(x=Date, y=Wood_Stock_gCm2, color=as.factor(Ring)), method=lm)+
+    labs(x="Date", y=expression(paste(C[stem], " (g C ", m^-2, ")")))+
+    theme_linedraw() + ylim(2000, 7000)+
     theme(panel.grid.minor=element_blank(),
           axis.title.x = element_text(size=14), 
           axis.text.x = element_text(size=12),
