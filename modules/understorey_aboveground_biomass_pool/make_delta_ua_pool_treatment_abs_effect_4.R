@@ -1,11 +1,8 @@
-make_delta_soil_pool_treatment_abs_effect <- function(inDF, 
-                                                 var.col) {
-
-    ### create delta DF
+make_delta_ua_pool_treatment_abs_effect_4 <- function(inDF,var.col) {
+    
     ### extract start and end date
     inDF$Date <- as.Date(as.character(inDF$Datef))
     
-    ### extract start and end date
     s.date <- min(inDF$Date)
     e.date <- max(inDF$Date)
     
@@ -19,13 +16,13 @@ make_delta_soil_pool_treatment_abs_effect <- function(inDF,
     ### create delta df
     delta <- subset(inDF, Date != d.list[1])
     delta$Start_date <- delta$Date  
-    
+
     
     #### calculate differences
     for (i in 1:length(delta$Date)) {
         delta$Start_date[i] <- d.list[which(d.list == delta$Date[i]) - 1]
         delta$prev_biom[i] <- inDF$Value[inDF$Ring == delta$Ring[i] &
-                                             as.numeric(inDF$Date-delta$Start_date[i])==0]
+                                                     as.numeric(inDF$Date-delta$Start_date[i])==0]
     }
     
     ### Length of period
