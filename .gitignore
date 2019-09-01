@@ -12,3 +12,5 @@ download/*.csv
 
 R_other/*.csv
 *.Rmd
+output/*.pdf
+output/*.csv

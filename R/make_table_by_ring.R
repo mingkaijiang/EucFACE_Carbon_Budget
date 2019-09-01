@@ -154,7 +154,7 @@ make_table_by_ring <- function() {
         pool[pool$term == "Coarse Root", i+1] <- mean(coarse_root_c_pool_1[coarse_root_c_pool_1$Ring == i, "coarse_root_pool"], na.rm=T)
         
         # Understorey above-ground
-        pool[pool$term == "Understorey above-ground", i+1] <- mean(understorey_aboveground_c_pool[understorey_aboveground_c_pool$Ring == i, 
+        pool[pool$term == "Understorey above-ground", i+1] <- mean(understorey_aboveground_c_pool_2[understorey_aboveground_c_pool_2$Ring == i, 
                                                                                                   "Total_g_C_m2"], na.rm=T)
         
         # Soil C
@@ -206,7 +206,7 @@ make_table_by_ring <- function() {
         delta_pool[delta_pool$term == "Coarse Root", i+1] <- mean(delta_coarse_root_c_pool$delta[delta_coarse_root_c_pool$Ring == i], na.rm=T)
         
         # Understorey above-ground
-        delta_pool[delta_pool$term == "Understorey above-ground", i+1] <- mean(delta_understorey_aboveground_c_pool$delta[delta_understorey_aboveground_c_pool$Ring == i], na.rm=T)
+        delta_pool[delta_pool$term == "Understorey above-ground", i+1] <- mean(delta_understorey_aboveground_c_pool_2$delta[delta_understorey_aboveground_c_pool_2$Ring == i], na.rm=T)
         
         # Soil C
         delta_pool[delta_pool$term == "Soil C", i+1] <- mean(delta_soil_c_pool$delta[delta_soil_c_pool$Ring == i], na.rm=T)

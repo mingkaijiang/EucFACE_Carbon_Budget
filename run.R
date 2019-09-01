@@ -281,31 +281,45 @@ understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=underst
 
 
 ### Delta pools
-delta_soil_c_pool <- make_delta_pool_function(inDF=soil_c_pool, var.col=3)
-delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
-delta_wood_c_pool <- make_delta_pool_function(inDF=wood_c_pool, var.col=3)
-delta_fineroot_c_pool <- make_delta_pool_function(inDF=fineroot_c_pool, var.col=3)
-delta_coarse_root_c_pool <- make_delta_pool_function(inDF=coarse_root_c_pool_1, var.col=3)
-delta_understorey_aboveground_c_pool <- make_delta_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
-delta_understorey_aboveground_c_pool_2 <- make_delta_pool_function(inDF=understorey_aboveground_c_pool_2, var.col=3)
-delta_microbial_c_pool <- make_delta_pool_function(inDF=microbial_c_pool, var.col=3)
-delta_mycorrhizal_c_pool <- make_delta_pool_function(inDF=mycorrhizal_c_pool, var.col=3)
-delta_leaflitter_pool <- make_delta_pool_function(inDF=leaflitter_pool, var.col=6)
-delta_insect_pool <- make_delta_pool_function(inDF=insect_pool, var.col=3)
-delta_ground_dwelling_insect_pool <- make_delta_pool_function(inDF=ground_dwelling_insect_pool, var.col=3)
+delta_soil_c_pool <- make_delta_soil_pool_function(inDF=soil_c_pool, var.col=3)
 
-#delta_understorey_aboveground_c_pool <- delta_understorey_aboveground_c_pool_2
+delta_leaf_c_pool <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
+
+delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
+
+delta_fineroot_c_pool <- make_delta_fineroot_pool_function(inDF=fineroot_c_pool, var.col=3)
+#delta_fineroot_c_pool <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_pool, var.col=3)
+
+delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarse_root_c_pool_1, var.col=3)
+
+
+### biomass harvest
+delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
+
+### stereo camera values too large
+delta_understorey_aboveground_c_pool_2 <- make_delta_ua_pool_function_4(inDF=understorey_aboveground_c_pool_2, var.col=3)
+
+delta_microbial_c_pool <- make_delta_microbial_pool_function(inDF=microbial_c_pool, var.col=3)
+
+delta_mycorrhizal_c_pool <- make_delta_mycorrhizal_pool_function(inDF=mycorrhizal_c_pool, var.col=3)
+
+delta_leaflitter_pool <- make_delta_leaflitter_pool_function(inDF=leaflitter_pool, var.col=6)
+
+delta_insect_pool <- make_delta_insect_pool_function(inDF=insect_pool, var.col=3)
+
+delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_function(inDF=ground_dwelling_insect_pool, var.col=3)
+
 
 ###### ----------Make summary tables-------------- ######
 ###### This is a summary table of all raw data, without LAI as a covariate
 
 ### Generate overall summary table (ignoring rings and time)
-source("R/make_table.R")
-overall_tables <- make_EucFACE_table()
+#source("R/make_table.R")
+#overall_tables <- make_EucFACE_table()
 
 ### Generate per year table (ignore ring variability)
-source("R/make_table_by_year.R")
-tables_by_year <- make_EucFACE_table_by_year()
+#source("R/make_table_by_year.R")
+#tables_by_year <- make_EucFACE_table_by_year()
 
 ### Generate ring-specific table (ignoring time variable)
 source("R/make_table_by_ring.R")
@@ -329,8 +343,8 @@ tables_by_ring <- make_table_by_ring()
 #source("R/nep_gap_plot.R")
 #nep_gap_plot(inDF=tables_by_ring)
 
-#source("R/make_eCO2_effect_on_GPP_plot.R")
-#make_eCO2_effect_on_GPP_plot(inDF)
+source("R/make_eCO2_effect_on_GPP_plot.R")
+make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 
 ###### ----------normalization-------------- ######
@@ -646,6 +660,10 @@ tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 inDF <- tables_by_ring_predicted
 
+write.csv(inDF$inout, "output/inout.csv", row.names=F)
+write.csv(inDF$npp, "output/npp.csv", row.names=F)
+write.csv(inDF$delta_pool, "output/delta_pool.csv", row.names=F)
+write.csv(inDF$pool, "output/pool.csv", row.names=F)
 
 
 ###### ----------Check for C gaps-------------- ######
