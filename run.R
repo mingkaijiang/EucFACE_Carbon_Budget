@@ -165,6 +165,7 @@ sapwood_cn_fraction <- make_sapwood_c_n_fraction()
 ### wood C pool
 wood_c_pool <- make_wood_pool(ring_area,c_fraction)
 
+
 ### Wood C production
 wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
@@ -292,11 +293,8 @@ delta_fineroot_c_pool <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_poo
 
 delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarse_root_c_pool_1, var.col=3)
 
-
-### biomass harvest
 delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
 
-### stereo camera values too large
 delta_understorey_aboveground_c_pool_2 <- make_delta_ua_pool_function_4(inDF=understorey_aboveground_c_pool_2, var.col=3)
 
 delta_microbial_c_pool <- make_delta_microbial_pool_function(inDF=microbial_c_pool, var.col=3)
