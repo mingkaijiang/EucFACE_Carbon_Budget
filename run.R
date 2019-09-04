@@ -286,6 +286,12 @@ delta_soil_c_pool <- make_delta_soil_pool_function(inDF=soil_c_pool, var.col=3)
 
 delta_leaf_c_pool <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
 
+summaryBy(delta~Ring, data=delta_leaf_c_pool, FUN=mean)
+
+delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
+summaryBy(delta~Ring, data=delta_leaf_c_pool, FUN=mean)
+
+
 delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 
 #delta_fineroot_c_pool <- make_delta_fineroot_pool_function(inDF=fineroot_c_pool, var.col=3)
