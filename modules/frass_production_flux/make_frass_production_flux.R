@@ -1,14 +1,10 @@
 #- Make the frass C flux
-make_frass_production_flux <- function(return.decision="data",
-                                       trt.effect="abs",
-                                       stat.model="interaction") {
+make_frass_production_flux <- function() {
     
     # Fo use frassfall data and frass carbon content data to obtain frass production flux.
     # Frassfall data has longer temporal coverage,
     # frass carbon content is quite constant over time and across rings.
     # Currently only time points that have both frassfall and frass C data are included.
-    # May need to consider just using one frass C content coefficient across time,
-    # so that more temporal coverage can be provided. 
     # returns: frass production per day (mg/d), averaged across start and date dates
     
     #- download the data. 

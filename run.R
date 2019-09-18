@@ -123,12 +123,11 @@ leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
 
 
 ### Fine root pool
-### reads in c_fraction_fr defined in constant
+### reads in ring-specific c fraction information
 fineroot_c_pool <- make_fineroot_pool()
 
 
 ### fineroot c production flux
-### reads in c_fraction_fr defined in constant
 fineroot_production_flux <- make_fineroot_production_flux()
 
 ### frass c production flux
@@ -136,7 +135,6 @@ frass_production_flux <- make_frass_production_flux()
 
 ### herbivore leaf c consumption flux
 ### extrapolated based on frass weight, leaf area consumed and sla data
-### This consumed leaf mass need to be added on top of the canopy c pool. 
 herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla=sla_variable, 
                                                                         frass_flux=frass_production_flux)
 

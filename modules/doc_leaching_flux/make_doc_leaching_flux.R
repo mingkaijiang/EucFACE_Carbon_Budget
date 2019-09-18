@@ -51,6 +51,6 @@ make_doc_leaching_flux <- function(depth){
                        "total_nitrogen", "ndays")
     
     ### Decision on what to return
-        return(out)
+    return(out)
 
 }

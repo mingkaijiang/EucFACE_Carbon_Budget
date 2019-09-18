@@ -1,8 +1,5 @@
 #- Make the lerp C prodution flux
-make_lerp_production_flux <- function(c_frac,
-                                      return.decision="data",
-                                      trt.effect="abs",
-                                      stat.model="interaction") {
+make_lerp_production_flux <- function(c_frac) {
     
     ### The life cycle of lerp is ~ 1 month, and the frass baskets were emptied every 1 month,
     ### So this flux calculated from frass basket measurements is the lerp biomass as well,
@@ -73,45 +70,8 @@ make_lerp_production_flux <- function(c_frac,
     # Only use data period 2012-2016
     out <- out[out$Date<="2016-12-31",]
     
-    ### Compute statistical analyses
-    if (return.decision=="stats") {
-        if (trt.effect == "abs") {
-            if (stat.model == "dynamic") {
-                source("R/stats/treatment_effect_abs_statistics_dynamic.R")
-            } else if (stat.model == "no_interaction") {
-                source("R/stats/treatment_effect_abs_statistics_no_interaction.R")
-            } else if (stat.model == "interaction") {
-                source("R/stats/treatment_effect_abs_statistics_interaction.R")
-            } else {
-                source("R/stats/treatment_effect_abs_statistics_no_random_effect.R")
-            }
-            
-            s.stats <- treatment_effect_abs_statistics(inDF=outDF4, 
-                                                       var.cond="flux", var.col=4,
-                                                       date.as.factor=T)
-        } else if (trt.effect == "ratio") {
-            if (stat.model == "dynamic") {
-                source("R/stats/treatment_effect_ratio_statistics_dynamic.R")
-            } else if (stat.model == "no_interaction") {
-                source("R/stats/treatment_effect_ratio_statistics_no_interaction.R")
-            } else if (stat.model == "interaction") {
-                source("R/stats/treatment_effect_ratio_statistics_interaction.R")
-            } else {
-                source("R/stats/treatment_effect_ratio_statistics_no_random_effect.R")
-            }
-            
-            s.stats <- treatment_effect_ratio_statistics(inDF=outDF4, 
-                                                         var.cond="flux", var.col=4,
-                                                         date.as.factor=T)
-        }
-    }
-
     
-    ### Decision on what to return
-    if (return.decision == "data") {
-        return(out)
-    } else if (return.decision == "stats") {
-        return(s.stats)
-    }
+    return(out)
+    
 }
 
