@@ -12,7 +12,7 @@ make_initial_lai_vs_long_term_lai <- function(lai_variable){
   mod <- lm(l.lai~i.lai, data=laiDF)
   #summary(mod)$r.squared
   
-  ### Decision on what to return
+  ### return
   return(mod)
 }
 

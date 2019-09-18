@@ -1,5 +1,5 @@
 make_lai_variable <- function(){
-
+  
   res <- download_lai_variable()
   
   res <- subset(res, select=c(Date, Ring, LAI))
@@ -11,9 +11,7 @@ make_lai_variable <- function(){
   # Only use data period 2012-2016
   res <- res[res$Date<="2016-12-31",]
   
-  
-  ### Decision on what to return
   return(res)
-
+  
 }
 

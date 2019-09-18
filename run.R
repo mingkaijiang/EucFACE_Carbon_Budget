@@ -1,8 +1,25 @@
-#### Main script to compute EucFACE C balance fluxes and variables
+###########################################################################
+###########################################################################
+###                                                                     ###
+###                EucFACE carbon budget code repository                ###
+###                                                                     ###
+###########################################################################
+###########################################################################
+###########################################################################
+#### Main script to compute EucFACE C budget fluxes and variables.
 #### Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
+###########################################################################
+####
+###########################################################################
+#### Core coding team: 
+####                 Mingkai Jiang (m.jiang@westernsydney.edu.au) 
+####                 Remko Duursma
+####                 John Drake
+####                 Belinda Medlyn
+###########################################################################
 
 
-###### ---------------- setting up runs -------------------- ######
+###### -------------------- setting up runs ------------------------ ######
 #### clear wk space
 rm(list=ls(all=TRUE))
 
@@ -12,7 +29,7 @@ source("R/prepare.R")
 #### Suppress warning messages
 options(warn=-1)
 
-###### ----------Add met data -------------- ######
+###### ---------------------Add met data ------------------------- ######
 ## Soil moisture data
 #pdf("output/soil_moisture_plots.pdf", width=10, height=4)
 #prepare_soil_moisture_data(plot.image = T, monthly=T)
