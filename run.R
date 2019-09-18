@@ -60,11 +60,11 @@ options(warn=-1)
 ### LAI
 lai_variable <- make_lai_variable()
 
-#### Overstorey GPP - with pre-treatment
+#### Overstorey GPP 
 overstorey_gpp_flux <- make_overstorey_gpp_flux()
 
 ## without pre-treatment
-overstorey_gpp_flux2 <- make_overstorey_gpp_flux_2()
+#overstorey_gpp_flux2 <- make_overstorey_gpp_flux_2()
 
 ### SLA
 sla_variable <- make_sla_variable()
