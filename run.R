@@ -87,8 +87,6 @@ soil_p_concentration <- make_soil_p_concentration(func=mean)
 
 soil_phosphate_concentration <- make_soil_phosphate_concentration(func=mean)
 
-#canopy_p_concentration <- make_canopy_p_concentration(func=mean)
-
 soil_p_pool <- make_soil_p_pool(p_conc=soil_p_concentration,
                                 bk_density=soil_bulk_density_variable)
 
@@ -97,11 +95,6 @@ soil_phosphate_pool <- make_soil_phosphate_pool(p_conc=soil_phosphate_concentrat
 
 soil_p_mineralization <- make_soil_p_mineralization_flux(soil_bulk_density_variable)
 
-
-### GPP over P stuffs
-#make_gpp_over_soil_p_conc(pDF=soil_p_concentration)
-#make_gpp_over_soil_phosphate_conc(pDF=soil_phosphate_concentration)
-#make_gpp_over_soil_p_pool(pDF=soil_p_pool)    
 
 ### soil respiration flux
 ### first method is John's
