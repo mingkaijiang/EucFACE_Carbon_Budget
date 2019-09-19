@@ -209,25 +209,18 @@ understorey_aboveground_production_flux <- make_understorey_aboveground_producti
 
 ### Understorey LAI
 ### method 1 based on harvesting data, live biomass only (hence the lowest LAI possible)
-### Method 2 based on stereo camera biomass
 understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
                                                           understorey_sla_variable)
-
-#understorey_lai_variable <- make_understorey_lai_variable_2(understorey_aboveground_c_pool_2, 
-#                                                          understorey_sla_variable,
-#                                                          prDF=understorey_aboveground_c_pool)
 
 ### Soil microbial C pool
 ### top 10 cm only - Cat's data
 microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 
 ### Yolima's data
-microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
+#microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
 
 ### Soil mycorrhizae pool
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
-
-#mycorrhizal_c_pool_2 <- make_mycorrhizal_c_pool_2(soil_bulk_density_variable)
 
 ### Soil mycorrhizae production
 #mycorrhizal_c_production_flux <- make_mycorrhizal_production_flux(soil_bulk_density_variable)
@@ -246,12 +239,12 @@ herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herb
 
 ### Coarse root C pool 
 coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction_croot, fr_pool=fineroot_c_pool) 
-coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction_croot) 
+#coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction_croot) 
 
 
 #### Coarse root C production
 coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_pool_1) 
-coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
+#coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
 
 ### Root respiration flux
 ### Can change T from 5cm to 20 or 30 cm (currently using 20 cm)
