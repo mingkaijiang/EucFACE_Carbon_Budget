@@ -177,13 +177,6 @@ wood_c_pool <- make_wood_pool(ring_area,c_fraction)
 ### Wood C production
 wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
-### Second method for the wood pool.
-### See R_other/compare_wood_pool_methods.R !
-#wood_pool_2 <- make_wood_pool_2(ring_area,c_fraction,wood_density)
-
-### Standing dead C pool
-standing_dead_c_pool <- make_standing_dead_c_pool(ring_area=ring_area,
-                                                  c_frac=c_fraction)
 
 ### Wood respiration flux
 ### Method 1 is Nam Jin's method
