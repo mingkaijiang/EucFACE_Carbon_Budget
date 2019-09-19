@@ -254,16 +254,10 @@ root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool, coarse_root
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
                                                                       root_respiration_flux)
 
-# overstorey_gpp_flux <- make_gpp_over_lai(gppDF=overstorey_gpp_flux, laiDF=lai_variable)
-
 ### Overstorey foliage respiration
 overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 
 ### Understorey GPP
-## method 1 is 0.4 * overstorey GPP
-### method 2 is based on MAESPA simulation
-#understorey_gpp_flux <- make_understorey_GPP_flux()
-understorey_gpp_flux2 <- make_understorey_GPP_flux2(o.gpp=overstorey_gpp_flux)
 understorey_gpp_flux <- make_understorey_GPP_flux3()
 
 ### Understorey respiration
@@ -280,11 +274,7 @@ delta_soil_c_pool <- make_delta_soil_pool_function(inDF=soil_c_pool, var.col=3)
 
 delta_leaf_c_pool <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
 
-summaryBy(delta~Ring, data=delta_leaf_c_pool, FUN=mean)
-
 delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
-summaryBy(delta~Ring, data=delta_leaf_c_pool, FUN=mean)
-
 
 delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 
