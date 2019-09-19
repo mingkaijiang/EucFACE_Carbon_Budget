@@ -36,10 +36,6 @@ make_wood_pool <- function(ring_area, c_frac_ht){
     classif$Active.FALSE.means.dead.[classif$Tree == 615] <- FALSE  # This tree dead
     classif$Active.FALSE.means.dead.[classif$Tree == 616] <- FALSE  # This tree dead
     classif$Active.FALSE.means.dead.[classif$Tree == 617] <- FALSE  # This tree dead
-    #classif$Active.FALSE.means.dead.[classif$Tree == 101] <- FALSE  # This tree dead in 2018
-    #classif$Active.FALSE.means.dead.[classif$Tree == 219] <- FALSE  # This tree dead in 2018
-    #classif$Active.FALSE.means.dead.[classif$Tree == 220] <- FALSE  # This tree dead in 2018
-    #classif$Active.FALSE.means.dead.[classif$Tree == 621] <- FALSE  # This tree dead in 2018
     
 
     #### Merge the files

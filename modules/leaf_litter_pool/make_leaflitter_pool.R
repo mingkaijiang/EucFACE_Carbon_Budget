@@ -1,14 +1,5 @@
 make_leaflitter_pool <- function(c_frac){
     
-    ### download data
-    #litter_raw <- download_leaflitter()  
-    
-    ### glitch fix
-    #litter_raw$Ring <- as.character(litter_raw$Ring)
-    #litter_raw$Trap <- as.character(litter_raw$Trap)
-    #litter_raw$Ring[is.na(litter_raw$Ring)] <- litter_raw$RING[is.na(litter_raw$Ring)]
-    #litter_raw$TRAP[is.na(litter_raw$Ring)] <- litter_raw$RING[is.na(litter_raw$Ring)]
-    
     download_leaflitter()
     
     #### read in data
