@@ -574,8 +574,6 @@ understorey_aboveground_c_pool_ann <- make_uac_treatment_abs_effect_statistics(i
                                                   stat.model="no_interaction_with_covariate",
                                                   return.outcome="predicted")
 
-#understorey_aboveground_c_pool_2_ann <- understorey_aboveground_c_pool_ann
-
 understorey_aboveground_c_pool_2_ann <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
                                                    var.cond="pool", var.col=3,
                                                    date.as.factor=T,
