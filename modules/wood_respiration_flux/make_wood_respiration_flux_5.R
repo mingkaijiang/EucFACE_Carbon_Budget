@@ -11,6 +11,9 @@ make_wood_respiration_flux_5 <- function() {
     ######## Download below canopy Tair data
     metDF <- download_tair_below_canopy()
     
+    ### subset
+    metDF <- metDF[metDF$Date <= "2016-12-31",]
+    
     ### Assign ring information
     metDF$Ring <- sub("FACE_R", "", metDF$Source)
     metDF$Ring <- sub("_B1.*", "", metDF$Ring)
@@ -70,14 +73,6 @@ make_wood_respiration_flux_5 <- function() {
     
     out <- dDF[,c("Date", "Start_date", "End_date", "Ring", "wood_respiration", "ndays")]
     
-    
-    #out$trt[out$Ring%in%c(2,3,6)] <- "aCO2"
-    #out$trt[out$Ring%in%c(1,4,5)] <- "eCO2"
-    #out$year <- year(out$Date)
-    
-    #test1 <- summaryBy(wood_respiration~year+Ring+trt,FUN=sum, data=out, keep.names=T)
-    #test2 <- summaryBy(wood_respiration~year+trt,FUN=mean, data=test1, keep.names=T)
-    #test3 <- summaryBy(wood_respiration~year+trt,FUN=mean, data=test1, keep.names=T)
     
     return(out)
     

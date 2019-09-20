@@ -1,44 +1,14 @@
 make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                            var.col, date.as.factor,
-                                                            stat.model, return.outcome) {
-
-    ### Pass in covariate values (assuming 1 value for each ring)
-    covDF <- summaryBy(soil_p_g_m2~Ring, data=soil_p_pool, FUN=mean, keep.names=T, na.rm=T)
-    covDF$Ring <- as.numeric(covDF$Ring)
+                                                                var.col, date.as.factor,
+                                                                stat.model, return.outcome) {
+    
     inDF$Ring <- as.numeric(inDF$Ring)
     
     cov2 <- lai_variable[lai_variable$Date<="2013-02-06",]
-    #cov2 <- lai_variable[lai_variable$Date=="2012-10-26",]
     covDF2 <- summaryBy(lai_variable~Ring, data=cov2, FUN=mean, keep.names=T)
     
-    ### Read initial basal area data
-    f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
-    f12$ba <- ((f12$X20.09.2012/2)^2) * pi
-    
-    ### include only live trees
-    f12 <- subset(f12, !(Tree %in% c(125, 206, 210, 212, 510, 518, 520, 
-                                     524, 527, 531, 605, 608, 615, 616, 617)))
-    
-    baDF <- summaryBy(ba~Ring, data=f12, FUN=sum, na.rm=T, keep.names=T)
-    
-    ### return in unit of cm2/m2, which is m2 ha-1
-    baDF$ba_ground_area <- baDF$ba / ring_area
-    #baDF2 <- data.frame(c(1:6), c(611, 835, 795, 896, 1019, 815)) # summary table values
-    baDF2 <- data.frame(c(1:6), c(25.19, 24.32, 25.96, 20.87, 37.99, 29.0)) # Duursma 2015 SI4 value
-    
-    colnames(baDF2) <- c("Ring", "BA")
-    
-    ### soil C pool
-    soil <- subset(soil_c_pool, Date=="2012-06-17")
-    soil <- subset(soil_c_pool, Date<="2013-01-01")
-    sDF <- summaryBy(soil_carbon_pool~Ring, data=soil, FUN=mean, keep.names=T)
-    
     for (i in 1:6) {
-        inDF$Cov[inDF$Ring==i] <- covDF$soil_p_g_m2[covDF$Ring==i]
         inDF$Cov2[inDF$Ring==i] <- covDF2$lai_variable[covDF2$Ring==i]
-        inDF$Cov3[inDF$Ring==i] <- baDF$ba_ground_area[baDF$Ring==i]
-        inDF$Cov4[inDF$Ring==i] <- sDF$soil_carbon_pool[sDF$Ring==i]
-        inDF$Cov5[inDF$Ring==i] <- baDF2$BA[baDF2$Ring==i]
     }
     
     #### Assign amb and ele factor
@@ -55,7 +25,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     inDF$Yr <- year(inDF$Date)
     inDF$Ring <- as.factor(inDF$Ring)
     inDF$Datef <- as.factor(inDF$Date)
-
+    
     #### Update variable name so that this function can be used across different variables
     colnames(inDF)[var.col] <- "Value"
     
@@ -66,7 +36,7 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     
     ## Get year list and ring list
     yr.list <- unique(inDF$Yr)
-    tDF <- summaryBy(Value+Cov+Cov2+Cov3+Cov4+Cov5~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
+    tDF <- summaryBy(Value+Cov2~Trt+Ring+Yr,data=inDF,FUN=sum, keep.names=T)
     tDF$Yrf <- as.factor(tDF$Yr)
     
     ### Loop through data, return annual flux in g m-2 yr-1
@@ -77,26 +47,6 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
         }
     }
     
-    ### Add psyllid attack event
-    tDF$Psyllid <- "Before"
-    tDF$Psyllid[tDF$Yr >= 2016] <- "After"
-    
-    
-    ### add annual average LAI for each year and ring
-    lai <- lai_variable
-    #lai$year <- as.numeric(year(lai$Date))
-    #cov6 <- summaryBy(lai_variable~Ring+year, data=lai, FUN=mean, keep.names=T)
-    cov6 <- summaryBy(lai_variable~Ring, data=lai, FUN=mean, keep.names=T)
-    
-    for (i in 1:6) {
-        #for (j in 2013:2016) {
-        #    tDF$Cov6[tDF$Ring==i&tDF$Yr==j] <- cov6[cov6$Ring==i&cov6$year==j,"lai_variable"]
-        #}
-        tDF$Cov6[tDF$Ring==i] <- cov6[cov6$Ring==i,"lai_variable"]
-    }
-    
-    tDF$Cov6 <- as.numeric(unlist(tDF$Cov6))
-
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
@@ -115,85 +65,14 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## confidence interval 
     eff.conf1 <- confint(modelt1,"Trtele")
     
-    ### Analyse the variable model
-    ## model 2: interaction, year as factor, ring random factor, with pre-treatment
-    int.m2 <- "interative_with_covariate"
-    modelt2 <- lmer(Value~Trt*Yrf+Cov2 + (1|Ring),data=tDF)
-
-    ## anova
-    m2.anova <- Anova(modelt2, test="F")
-    
-    ## Check ele - amb diff
-    summ2 <- summary(glht(modelt2, linfct = mcp(Trt = "Tukey")))
-    
-    ## average effect size
-    eff.size2 <- coef(modelt2)[[1]][1,2]
-    
-    ## confidence interval 
-    eff.conf2 <- confint(modelt2,"Trtele")
-    
-    ### Analyse the variable model
-    ## model 3: no interaction, year as factor, covariate, linear model only
-    int.m3 <- "non-interative_with_linear_covariate"
-    modelt3 <- lm(Value~Trt + Yrf + Cov2,data=tDF)
-    
-    ## anova
-    m3.anova <- Anova(modelt3, test="F")
-    
-    ## Check ele - amb diff
-    summ3 <- summary(modelt3)
-    
-    ## average effect size
-    eff.size3 <- coef(modelt3)[[2]]
-    
-    ### confidence interval
-    eff.conf3 <- confint(modelt3,"Trtele")
-    
-    ## standard error of treatment
-    eff.se3 <-sqrt(diag(vcov(modelt3)))[[2]]
-    
-    ### Analyse the variable model
-    ## model 4: no interaction, year as factor, paired t-test
-    int.m4 <- "paired_t_test"
-    modelt4 <- t.test(Value~Trt, data=tDF, paired=T)
-    
-    ## average effect size
-    eff.size4 <- -modelt4$estimate[[1]]
-    
-    ## confidence interval 
-    eff.conf4 <- cbind(as.numeric(-modelt4$conf.int[2]),as.numeric(-modelt4$conf.int[1]))
-    
     ### conditional output
-    if (stat.model == "no_interaction_with_covariate") {
-        out <- list(int.state=int.m1,
-                    mod = modelt1, 
-                    anova = m1.anova,
-                    diff = summ1,
-                    eff = eff.size1,
-                    conf = eff.conf1)
-    } else if (stat.model == "interaction_with_covariate") {
-        out <- list(int.state=int.m2,
-                    mod = modelt2, 
-                    anova = m2.anova,
-                    diff = summ2,
-                    eff = eff.size2,
-                    conf = eff.conf2)
-    } else if (stat.model == "no_interaction_with_linear_covariate") {
-        out <- list(int.state=int.m3,
-                    mod = modelt3, 
-                    anova = m3.anova,
-                    diff = summ3,
-                    se = eff.se3,
-                    eff = eff.size3,
-                    conf = eff.conf3)
-    } else if (stat.model == "paired_t_test") {
-        out <- list(int.state=int.m4,
-                    mod = modelt4, 
-                    anova = NA,
-                    diff = NA,
-                    eff = eff.size4,
-                    conf = eff.conf4)
-    }
+    out <- list(int.state=int.m1,
+                mod = modelt1, 
+                anova = m1.anova,
+                diff = summ1,
+                eff = eff.size1,
+                conf = eff.conf1)
+    
     
     ### Predict the model with a standard LAI value
     newDF <- tDF
@@ -205,9 +84,6 @@ make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond,
     newDF$predicted <- predict(out$mod, newdata=newDF)
     
     newDF$Ring <- as.numeric(as.character(newDF$Ring))
-    
-    summaryBy(Value~Trt, data=newDF, FUN=mean)
-    summaryBy(predicted~Trt, data=newDF, FUN=mean)
     
     if (return.outcome == "model") {
         return(out)
