@@ -102,20 +102,33 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
     # Calculate root biomass, return in t/ha, then convert to g/m2
     data.m$biomass <- exp(0.787 * log(data.m$ba2) + 1.218) * 100
     
+    # calculate fineroot biomass
+    fr_pool$c_frac[fr_pool$Ring==1] <- 0.426
+    fr_pool$c_frac[fr_pool$Ring==2] <- 0.413
+    fr_pool$c_frac[fr_pool$Ring==3] <- 0.399
+    fr_pool$c_frac[fr_pool$Ring==4] <- 0.415
+    fr_pool$c_frac[fr_pool$Ring==5] <- 0.42
+    fr_pool$c_frac[fr_pool$Ring==6] <- 0.401
+    
+    fr_pool$biomass <- fr_pool$fineroot_pool/fr_pool$c_frac
+    
+    fr.ring <- summaryBy(biomass~Ring, data=fr_pool, FUN=mean, keep.names=T, na.rm=T)
+    
     # convert from g matter m-2 to g C m-2
-    data.m$total_root_c_pool <- data.m$biomass * c_frac * water_frac
+    data.m$total_root_biomass <- data.m$biomass * water_frac
     
     # subtract fineroot biomass out, assuming one froot value per ring
-    fr.ring <- summaryBy(fineroot_pool~Ring, data=fr_pool, FUN=mean, keep.names=T, na.rm=T)
     for (i in 1:6) {
-        data.m$coarseroot_c_pool[data.m$Ring == i] <- data.m$total_root_c_pool[data.m$Ring == i] - fr.ring$fineroot_pool[fr.ring$Ring == i]
+        data.m$coarseroot_biomass[data.m$Ring == i] <- data.m$total_root_biomass[data.m$Ring == i] - fr.ring$biomass[fr.ring$Ring == i]
             
     }
+    
+    data.m$coarseroot_c_pool <- data.m$coarseroot_biomass * c_frac
 
     # output
-    cr_pool <- data.m[,c("Date","Ring","coarseroot_c_pool", "total_root_c_pool")]
+    cr_pool <- data.m[,c("Date","Ring","coarseroot_c_pool")]
     
-    colnames(cr_pool) <- c("Date", "Ring", "coarse_root_pool", "total_root_pool")
+    colnames(cr_pool) <- c("Date", "Ring", "coarse_root_pool")
     
     # Only use data period 2012-2016
     cr_pool <- cr_pool[cr_pool$Date<="2016-12-31",]

@@ -247,8 +247,15 @@ coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_
 #coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
 
 ### Root respiration flux
-### Can change T from 5cm to 20 or 30 cm (currently using 20 cm)
-root_respiration_flux <- make_root_respiration_flux(fineroot_c_pool, coarse_root_c_pool_1)
+#root_respiration_flux_old <- make_root_respiration_flux(fineroot_c_pool, 
+#                                                    coarse_root_c_pool_1)
+
+root_respiration_flux <- make_root_respiration_flux_2(fr_pool=fineroot_c_pool, 
+                                                        cr_pool=coarse_root_c_pool_1)
+
+#compare_Rroot(nDF=root_respiration_flux,
+#              oDF=root_respiration_flux_old)
+
 
 ### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
