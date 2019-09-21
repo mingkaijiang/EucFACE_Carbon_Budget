@@ -24,7 +24,7 @@ make_leafc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     inDF$Trt <- as.factor(inDF$Trt)
     inDF$Ring <- as.factor(inDF$Ring)
     inDF$Datef <- as.factor(inDF$Date)
-    
+
     #### Update variable name so that this function can be used across different variables
     colnames(inDF)[var.col] <- "Value"
     
@@ -46,7 +46,7 @@ make_leafc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     ## average effect size
     eff.size1 <- coef(modelt1)[[1]][1,2]
     
-    ## confidence interval 
+    ## confidence interval --- options: c("tukey","scheffe","sidak","bonferroni","dunnettx","mvt") 
     eff.conf1 <- confint(modelt1,"Trtele")
     
     
