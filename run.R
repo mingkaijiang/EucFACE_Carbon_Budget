@@ -304,27 +304,27 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 ######         based on data without considering LAI as a covariate
 
 ### Generate overall summary table (ignoring rings and time)
-#source("R/make_table.R")
+#source("R/un_normalized/make_table.R")
 #overall_tables <- make_EucFACE_table()
 #
 #### Generate per year table (ignore ring variability)
-#source("R/make_table_by_year.R")
+#source("R/un_normalized/make_table_by_year.R")
 #tables_by_year <- make_EucFACE_table_by_year()
 #
 #### Generate ring-specific table (ignoring time variable)
-#source("R/make_table_by_ring.R")
+#source("R/un_normalized/make_table_by_ring.R")
 #tables_by_ring <- make_table_by_ring()
 
 ###### ----------Check for C gaps-------------- ######
 ### Plot a combined gpp and rsoil gap plot
 ### To plot, you need to go into the function
-#source("R/gpp_and_rsoil_gap_plot.R")
+#source("R/un_normalized/gpp_and_rsoil_gap_plot.R")
 #gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
 #
-#source("R/nep_gap_plot.R")
+#source("R/un_normalized/nep_gap_plot.R")
 #nep_gap_plot(inDF=tables_by_ring)
 #
-#source("R/make_eCO2_effect_on_GPP_plot.R")
+#source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
 #make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 
@@ -337,10 +337,6 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 ### All stats for fluxes are based on annual rate
 #source("R/stats/generate_stats_abs_covariate.R")
 #generate_stats_abs_covariate(stat.model="no_interaction_with_covariate")
-
-### Make some plots
-#source("R/make_statistical_comparison_plots.R")
-#make_statistical_comparison_plots()
 
 
 ###### ----------Add predicted values back onto all fluxes and pools-------------- ######
@@ -640,7 +636,7 @@ delta_ground_dwelling_insect_pool_ann <- make_delta_ground_dwelling_insect_pool_
 
 ### Generate ring-specific table (ignoring time variable)
 ### This table is predicted based on average LAI
-source("R/make_table_by_ring_predicted.R")
+source("R/normalized/make_table_by_ring_predicted.R")
 tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 inDF <- tables_by_ring_predicted
@@ -648,39 +644,38 @@ inDF <- tables_by_ring_predicted
 
 ###### ----------Check for C gaps-------------- ######
 ### GPP and Rsoil
-source("R/gpp_and_rsoil_gap_unbootstrap_plot_2.R")
+source("R/normalized/gpp_and_rsoil_gap_unbootstrap_plot_2.R")
 gpp_and_rsoil_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 
 ### NEP gaps   - Note the different input file!
-source("R/nep_gap_unbootstrap_plot_3.R")
+source("R/normalized/nep_gap_unbootstrap_plot_3.R")
 nep_gap_unbootstrap_plot_3(inDF=tables_by_ring_predicted)
 
 ### CUE
-source("R/cue_unbootstrapped_calculation.R")
+source("R/normalized/cue_unbootstrapped_calculation.R")
 cueDF <- cue_unbootstrapped_calculation(inDF=tables_by_ring_predicted)
 
-
-### Make some plots
-#source("R/make_statistical_comparison_plots.R")
-#make_statistical_comparison_plots()
-
-source("R/make_statistical_comparison_plots_based_on_ring_level_data.R")
+### all eCO2 effect on a single vertical plot
+source("R/normalized/make_statistical_comparison_plots_based_on_ring_level_data.R")
 make_statistical_comparison_plots_based_on_ring_level_data(inDF=tables_by_ring_predicted)
 
-#source("R/make_eCO2_effect_on_GPP_plot_with_covariate.R")
-#make_eCO2_effect_on_GPP_plot_with_covariate_predicted()
-
-source("R/make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2.R")
+### eCO2 effect on fate of carbon
+source("R/normalized/make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2.R")
 make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2(inDF=tables_by_ring_predicted)
 
 ### all supplementary figures
 source("R/plot_combined_figures.R")
 
 ### make a summary table for all key values used in the manuscript
-#report_key_values_for_manuscript()
+source("R/report_key_values_for_manuscript.R")
+report_key_values_for_manuscript()
 
 ###### ---------------- DA -------------------- ######
 ###### Step 7. Perform data assimilation to analyze uncertainty
+
+
+
+
 
 
 
