@@ -269,14 +269,14 @@ understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=underst
 ### Delta pools
 delta_soil_c_pool <- make_delta_soil_pool_function(inDF=soil_c_pool, var.col=3)
 
-delta_leaf_c_pool <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
-
-delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
+#delta_leaf_c_pool_old <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
+#delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
+delta_leaf_c_pool <- make_delta_leaf_pool_function_2(inDF=leaf_c_pool, var.col=3)
 
 delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 
-#delta_fineroot_c_pool <- make_delta_fineroot_pool_function(inDF=fineroot_c_pool, var.col=3)
-delta_fineroot_c_pool <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_pool, var.col=3)
+#delta_fineroot_c_pool_old <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_pool, var.col=3)
+delta_fineroot_c_pool <- make_delta_fineroot_pool_function_3(inDF=fineroot_c_pool, var.col=3)
 
 delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarse_root_c_pool_1, var.col=3)
 
