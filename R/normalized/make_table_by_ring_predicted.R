@@ -254,6 +254,13 @@ make_table_by_ring_predicted <- function() {
     pool$percent_diff <- (pool$eCO2 - pool$aCO2) / (pool$aCO2) * 100
     delta_pool$percent_diff <- (delta_pool$eCO2 - delta_pool$aCO2) / (delta_pool$aCO2) * 100
     
+    
+    write.csv(inout, "output/inout.csv", row.names=F)
+    write.csv(npp, "output/npp.csv", row.names=F)
+    write.csv(delta_pool, "output/delta_pool.csv", row.names=F)
+    write.csv(pool, "output/pool.csv", row.names=F)
+    
+    
     ##### output tables
     return(list(inout = data.table(inout), 
                 npp = data.table(npp), 

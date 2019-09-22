@@ -20,6 +20,7 @@
 
 
 ###### -------------------- setting up runs ------------------------ ######
+###### Step 1: prepare the repo
 #### clear wk space
 rm(list=ls(all=TRUE))
 
@@ -30,6 +31,8 @@ source("R/prepare.R")
 options(warn=-1)
 
 ###### ---------------------Add met data ------------------------- ######
+###### Step 2: optional. prepare the met data
+
 ## Soil moisture data
 #pdf("output/soil_moisture_plots.pdf", width=10, height=4)
 #prepare_soil_moisture_data(plot.image = T, monthly=T)
@@ -57,6 +60,7 @@ options(warn=-1)
 #met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
 ###### ----------Compute c fluxes, variables, and pools-------------- ######
+###### Step 3: calculate C fluxes and pools
 ### LAI
 lai_variable <- make_lai_variable()
 
@@ -296,34 +300,37 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 
 
 ###### ----------Make summary tables-------------- ######
-###### This is a summary table of all raw data, without LAI as a covariate
+###### Step 4: make summary table and figures, 
+######         based on data without considering LAI as a covariate
 
 ### Generate overall summary table (ignoring rings and time)
-source("R/make_table.R")
-overall_tables <- make_EucFACE_table()
-
-### Generate per year table (ignore ring variability)
-source("R/make_table_by_year.R")
-tables_by_year <- make_EucFACE_table_by_year()
-
-### Generate ring-specific table (ignoring time variable)
-source("R/make_table_by_ring.R")
-tables_by_ring <- make_table_by_ring()
+#source("R/make_table.R")
+#overall_tables <- make_EucFACE_table()
+#
+#### Generate per year table (ignore ring variability)
+#source("R/make_table_by_year.R")
+#tables_by_year <- make_EucFACE_table_by_year()
+#
+#### Generate ring-specific table (ignoring time variable)
+#source("R/make_table_by_ring.R")
+#tables_by_ring <- make_table_by_ring()
 
 ###### ----------Check for C gaps-------------- ######
 ### Plot a combined gpp and rsoil gap plot
 ### To plot, you need to go into the function
-source("R/gpp_and_rsoil_gap_plot.R")
-gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
-
-source("R/nep_gap_plot.R")
-nep_gap_plot(inDF=tables_by_ring)
-
-source("R/make_eCO2_effect_on_GPP_plot.R")
-make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
+#source("R/gpp_and_rsoil_gap_plot.R")
+#gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
+#
+#source("R/nep_gap_plot.R")
+#nep_gap_plot(inDF=tables_by_ring)
+#
+#source("R/make_eCO2_effect_on_GPP_plot.R")
+#make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 
 ###### ----------normalization-------------- ######
+###### Step 5. Normalizing variables with LAI as a covariate
+
 ### Generate abs on all variables, 
 ### considering no interaction but with pre-treatment LAI as covariate
 ### also output predicted values based on the stat model for all variables
@@ -628,7 +635,8 @@ delta_ground_dwelling_insect_pool_ann <- make_delta_ground_dwelling_insect_pool_
 
 
 ###### ----------Make summary tables-------------- ######
-###### This is a summary table of all predicted data
+###### Step 6. Make summary tables and figures,
+######         based on normalized data
 
 ### Generate ring-specific table (ignoring time variable)
 ### This table is predicted based on average LAI
@@ -636,11 +644,6 @@ source("R/make_table_by_ring_predicted.R")
 tables_by_ring_predicted <- make_table_by_ring_predicted()
 
 inDF <- tables_by_ring_predicted
-
-write.csv(inDF$inout, "output/inout.csv", row.names=F)
-write.csv(inDF$npp, "output/npp.csv", row.names=F)
-write.csv(inDF$delta_pool, "output/delta_pool.csv", row.names=F)
-write.csv(inDF$pool, "output/pool.csv", row.names=F)
 
 
 ###### ----------Check for C gaps-------------- ######
@@ -675,6 +678,14 @@ source("R/plot_combined_figures.R")
 
 ### make a summary table for all key values used in the manuscript
 #report_key_values_for_manuscript()
+
+###### ---------------- DA -------------------- ######
+###### Step 7. Perform data assimilation to analyze uncertainty
+
+
+
+
+
 
 
 ###### ---------------- End -------------------- ######
