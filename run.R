@@ -87,21 +87,14 @@ soil_c_pool_all_depth <- make_soil_carbon_pool_all_depths(bk_density=soil_bulk_d
                                                           return="all_depths")
 
 ### soil respiration flux
-### first method is John's
-### second is Alexis's
 soil_respiration_flux <- make_soil_respiration_flux()
-#soil_respiration_flux2 <- make_soil_respiration_flux_2()
-
-#compare_Rsoil(aDF=soil_respiration_flux2, jDF=soil_respiration_flux)
 
 ### VOC flux - process hourly met data within the function
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
 ### LAI, and soil moisture (m3/m3)
 #prepare_VOC_met_data(laiDF=lai_variable)
 
-### first result based on model with soil moisture
-### second set of result based on model without soil moisture
-#voc_emission_flux <- make_voc_emission_flux()
+### result based on model without soil moisture
 voc_emission_flux <- make_voc_emission_flux2()
 
 ### leaf C pool
@@ -114,11 +107,9 @@ leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
 
 ### Fine root pool
 ### reads in ring-specific c fraction information
-#fineroot_c_pool_old <- make_fineroot_pool()
 fineroot_c_pool <- make_fineroot_pool_2()
 
 ### fineroot c production flux
-#fineroot_production_flux_old <- make_fineroot_production_flux()
 fineroot_production_flux <- make_fineroot_production_flux_2()
 
 ### frass c production flux
@@ -170,16 +161,8 @@ wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
 
 ### Wood respiration flux
-### Method 1 is Nam Jin's method
-### Method 2 is a sapwood mass based method
-### Method 3 is based on Roberto's three month data, temperature function fitted to Jan and Feb only
-### Method 4 is based on Roberto's three month data, but with temperature function fitted to each campaign
-### method 5 is based on 9 month of data, with temperature function fitted to each treatment only
-#wood_respiration_flux <- make_wood_respiration_flux()
-##wood_respiration_flux <- make_wood_respiration_flux_3()
-##wood_respiration_flux2 <- make_wood_respiration_flux_2(wood.pool=wood_c_pool)
+### based on 9 month of data, with temperature function fitted to each treatment only
 wood_respiration_flux <- make_wood_respiration_flux_5()
-# compare_Rwood(nDF=wood_respiration_flux5, oDF=wood_respiration_flux)
 
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
@@ -207,9 +190,6 @@ understorey_lai_variable <- make_understorey_lai_variable(understorey_abovegroun
 ### top 10 cm only - Cat's data
 microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 
-### Yolima's data
-#microbial_c_pool2 <- make_microbial_pool2(soil_bulk_density_variable)
-
 ### Soil mycorrhizae pool
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
 
@@ -235,7 +215,6 @@ coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction_croot, fr_pool=finero
 
 #### Coarse root C production
 coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_pool_1) 
-#coarse_root_production_flux_2 <- make_coarse_root_production_flux(coarse_root_c_pool_2) 
 
 ### Root respiration flux
 #root_respiration_flux_old <- make_root_respiration_flux(fineroot_c_pool, 
@@ -330,16 +309,6 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 
 ###### ----------normalization-------------- ######
 ###### Step 5. Normalizing variables with LAI as a covariate
-
-### Generate abs on all variables, 
-### considering no interaction but with pre-treatment LAI as covariate
-### also output predicted values based on the stat model for all variables
-### All stats for fluxes are based on annual rate
-#source("R/stats/generate_stats_abs_covariate.R")
-#generate_stats_abs_covariate(stat.model="no_interaction_with_covariate")
-
-
-###### ----------Add predicted values back onto all fluxes and pools-------------- ######
 ###### Predict CO2 effect based on LAI, for all variables again
 ###### Note that all fluxes are now annualized
 
@@ -673,7 +642,8 @@ report_key_values_for_manuscript()
 ###### ---------------- DA -------------------- ######
 ###### Step 7. Perform data assimilation to analyze uncertainty
 
-
+### add later
+### https://github.com/mingkaijiang/EucFACE_simulation_reanalysis
 
 
 

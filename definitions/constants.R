@@ -57,7 +57,7 @@ strip_area <- 0.1
 # convert production flux from mg m-2 d-1 to g m-2 yr-1
 conv <- 365 / 1000  
 
-# ccost growth respiration based on Drake et al. 2018 NP.
+# ccost growth respiration based on Drake et al. 2019 NP.
 ccost <- 0.3
 
 # root respiration coefficients

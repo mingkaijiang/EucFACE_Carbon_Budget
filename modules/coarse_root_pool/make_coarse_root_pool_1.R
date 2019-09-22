@@ -6,14 +6,6 @@ make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
     ### Relationship: ln(root biomass) = 0.787 * ln(stand basal area) + 1.218
     ### Root biomass in t/ha, basal area in m2/ha.
     
-    #### three decisions to make:
-    #### 1. return.decision: data - return the dataframe, stats - return the stats
-    #### 2. If return stats, then need to choose what effect to show (trt.effect) i.e. ratio or abs
-    #### 3. Then need to decide which model (stat.model): interaction, no_interaction, dynamic, and no_random_effect
-
-    
-    #c_frac <- 0.46
-        
     #- download the data from HIEv
     download_diameter_data()
     
