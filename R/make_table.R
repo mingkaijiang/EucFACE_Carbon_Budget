@@ -337,12 +337,12 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Insects"]  <- "Assume in equilibrium"
     
     ### CWD or standing dead
-    pool$value[pool$term == "Coarse woody debris"]  <- mean(standing_dead_c_pool$wood_pool)
-    pool$start_year[pool$term == "Coarse woody debris"] <- min(year(standing_dead_c_pool$Date))
-    pool$end_year[pool$term == "Coarse woody debris"] <- max(year(standing_dead_c_pool$Date))
-    pool$timepoint[pool$term == "Coarse woody debris"] <- length(unique(standing_dead_c_pool$Date))
-    pool$data_notes[pool$term == "Coarse woody debris"] <- "Used wood diameter data"
-    pool$processing_notes[pool$term == "Coarse woody debris"]  <- "Taken from the standing dead pool"
+    #pool$value[pool$term == "Coarse woody debris"]  <- mean(standing_dead_c_pool$wood_pool)
+    #pool$start_year[pool$term == "Coarse woody debris"] <- min(year(standing_dead_c_pool$Date))
+    #pool$end_year[pool$term == "Coarse woody debris"] <- max(year(standing_dead_c_pool$Date))
+    #pool$timepoint[pool$term == "Coarse woody debris"] <- length(unique(standing_dead_c_pool$Date))
+    #pool$data_notes[pool$term == "Coarse woody debris"] <- "Used wood diameter data"
+    #pool$processing_notes[pool$term == "Coarse woody debris"]  <- "Taken from the standing dead pool"
     
     ### Litter
     pool$value[pool$term == "Litter"]  <- mean(leaflitter_pool$leaflitter_pool)

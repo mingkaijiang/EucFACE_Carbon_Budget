@@ -33,7 +33,7 @@ make_delta_leaf_pool_function_2 <- function(inDF,var.col) {
         }
     }
     
-    for (i in yr.list) {
+    for (i in yr.list1) {
         for (j in 1:6) {
             delta$Date[delta$Ring==j&delta$Year==i] <- as.character(subDF$Date[subDF$Ring==j&subDF$year==i][1])
         }

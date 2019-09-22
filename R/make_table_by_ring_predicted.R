@@ -155,7 +155,7 @@ make_table_by_ring_predicted <- function() {
         pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool_ann$predicted[microbial_c_pool_ann$Ring == i], na.rm=T)
         
         # Coarse Woody Debris
-        pool[pool$term == "Coarse woody debris", i+1]  <- mean(standing_dead_c_pool$wood_pool[standing_dead_c_pool$Ring == i], na.rm=T)
+        #pool[pool$term == "Coarse woody debris", i+1]  <- mean(standing_dead_c_pool$wood_pool[standing_dead_c_pool$Ring == i], na.rm=T)
         
         # Mycorrhizae
         pool[pool$term == "Mycorrhizae", i+1]  <- mean(mycorrhizal_c_pool_ann$predicted[mycorrhizal_c_pool_ann$Ring == i], na.rm=T)

@@ -299,37 +299,28 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 ###### This is a summary table of all raw data, without LAI as a covariate
 
 ### Generate overall summary table (ignoring rings and time)
-#source("R/make_table.R")
-#overall_tables <- make_EucFACE_table()
+source("R/make_table.R")
+overall_tables <- make_EucFACE_table()
 
 ### Generate per year table (ignore ring variability)
-#source("R/make_table_by_year.R")
-#tables_by_year <- make_EucFACE_table_by_year()
+source("R/make_table_by_year.R")
+tables_by_year <- make_EucFACE_table_by_year()
 
 ### Generate ring-specific table (ignoring time variable)
-#source("R/make_table_by_ring.R")
-#tables_by_ring <- make_table_by_ring()
-#inDF <- tables_by_ring
+source("R/make_table_by_ring.R")
+tables_by_ring <- make_table_by_ring()
 
 ###### ----------Check for C gaps-------------- ######
-### GPP gaps
-#source("R/gpp_gap_plot.R")
-#gpp_gap_plot(inDF=tables_by_ring)
-
-### Rsoil gaps
-#source("R/rsoil_gap_plot.R")
-#rsoil_gap_plot(inDF=tables_by_ring)
-
 ### Plot a combined gpp and rsoil gap plot
 ### To plot, you need to go into the function
-#source("R/gpp_and_rsoil_gap_plot.R")
-#gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
+source("R/gpp_and_rsoil_gap_plot.R")
+gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
 
-#source("R/nep_gap_plot.R")
-#nep_gap_plot(inDF=tables_by_ring)
+source("R/nep_gap_plot.R")
+nep_gap_plot(inDF=tables_by_ring)
 
-#source("R/make_eCO2_effect_on_GPP_plot.R")
-#make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
+source("R/make_eCO2_effect_on_GPP_plot.R")
+make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 
 ###### ----------normalization-------------- ######

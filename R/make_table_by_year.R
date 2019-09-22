@@ -263,10 +263,10 @@ make_EucFACE_table_by_year <- function() {
     }
     
     ### CWD
-    standing_dead_c_pool$year <- year(standing_dead_c_pool$Date)
-    for (i in yr.list) {
-        pool$CoarseWoodyDebris[pool$year == i]  <- round(mean(standing_dead_c_pool[standing_dead_c_pool$year == i, "wood_pool"]), 2)
-    }
+    #standing_dead_c_pool$year <- year(standing_dead_c_pool$Date)
+    #for (i in yr.list) {
+    #    pool$CoarseWoodyDebris[pool$year == i]  <- round(mean(standing_dead_c_pool[standing_dead_c_pool$year == i, "wood_pool"]), 2)
+    #}
     
     
     ##### output tables
