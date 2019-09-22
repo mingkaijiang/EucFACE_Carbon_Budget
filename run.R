@@ -5,22 +5,42 @@
 ###                                                                     ###
 ###########################################################################
 ###########################################################################
-###########################################################################
-#### Main script to compute EucFACE C budget fluxes and variables.
-#### Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
-###########################################################################
-####
-###########################################################################
 #### Core coding team: 
 ####                 Mingkai Jiang (m.jiang@westernsydney.edu.au) 
 ####                 Remko Duursma
 ####                 John Drake
 ####                 Belinda Medlyn
 ###########################################################################
+###########################################################################
+#### Short description: 
+####       Main script to compute EucFACE C budget fluxes and variables.
+####       Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
+###########################################################################
+###########################################################################
+#### Code structure
+#### There are in total 8 chunk steps:
+#### Step 1: Prepare the basics, including R package, constants, sourcing code scripts;
+#### Step 2: (Optional) Prepare met data for simulations;
+#### Step 3: Calculate C budget fluxes, pools, and variables;
+#### Step 4: Make summary tables and figures,
+####         based on un-normalized results;
+#### Step 5: Normalize all responses to pretreatment LAI;
+#### Step 6: Make summary table, based on normalized results;
+#### Step 7: Perform data assimilation to estimate uncertainties,
+####         and NPPmyco;
+#### Step 8: Return to C budget and generate figures.
+####
+###########################################################################
+###########################################################################
 
+####                                 Ready
+####                                 Steady
+####                                 Go!
 
-###### -------------------- setting up runs ------------------------ ######
-###### Step 1: prepare the repo
+###########################################################################
+###                Step 1: Set up the basics                            ###
+###                                                                     ###
+###########################################################################
 #### clear wk space
 rm(list=ls(all=TRUE))
 
@@ -30,9 +50,10 @@ source("R/prepare.R")
 #### Suppress warning messages
 options(warn=-1)
 
-###### ---------------------Add met data ------------------------- ######
-###### Step 2: optional. prepare the met data
-
+###########################################################################
+###                Step 2: Prepare met data                             ###
+###                          OPTIONAL                                   ###
+###########################################################################
 ## Soil moisture data
 #pdf("output/soil_moisture_plots.pdf", width=10, height=4)
 #prepare_soil_moisture_data(plot.image = T, monthly=T)
@@ -59,8 +80,14 @@ options(warn=-1)
 ### Calculate mean annual temperature and precipitation
 #met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
-###### ----------Compute c fluxes, variables, and pools-------------- ######
-###### Step 3: calculate C fluxes and pools
+
+
+
+
+###########################################################################
+###          Step 3: Compute C fluxes, pools & variables                ###
+###                                                                     ###
+###########################################################################
 ### LAI
 lai_variable <- make_lai_variable()
 
@@ -275,9 +302,12 @@ delta_insect_pool <- make_delta_insect_pool_function(inDF=insect_pool, var.col=3
 delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_function(inDF=ground_dwelling_insect_pool, var.col=3)
 
 
-###### ----------Make summary tables-------------- ######
-###### Step 4: make summary table and figures, 
-######         based on data without considering LAI as a covariate
+
+###########################################################################
+###          Step 4: Make summary tables and figures                    ###
+###                  based on data without LAI as a covariate           ###
+###                  commented out at the moment                        ###
+###########################################################################
 
 ### Generate overall summary table (ignoring rings and time)
 #source("R/un_normalized/make_table.R")
@@ -304,11 +334,12 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 #make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 
-###### ----------normalization-------------- ######
-###### Step 5. Normalizing variables with LAI as a covariate
-###### Predict CO2 effect based on LAI, for all variables again
-###### Note that all fluxes are now annualized
 
+
+###########################################################################
+###    Step 5: Normalize response with LAI as a covariate               ###
+###              Note that all fluxes are now annualized                ###
+###########################################################################
 ### overstorey gpp flux
 overstorey_gpp_flux_ann <- make_overstorey_gpp_treatment_abs_effect_statistics(inDF=overstorey_gpp_flux, 
                                                                                var.cond="ann.flux", var.col=3,
@@ -596,19 +627,23 @@ delta_insect_pool_ann <- make_delta_insect_pool_treatment_abs_effect(inDF=insect
 delta_ground_dwelling_insect_pool_ann <- make_delta_ground_dwelling_insect_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool_ann, var.col=8)
 
 
-###### ----------Make summary tables-------------- ######
-###### Step 6. Make summary tables 
-######         based on normalized data
-
+###########################################################################
+###                 Step 6: Make summary tables,                        ###
+###                         based on normalized results                 ###
+###########################################################################
 ### Generate ring-specific table (ignoring time variable)
 ### This table is predicted based on average LAI
 source("R/normalized/make_table_by_ring_predicted.R")
 tables_by_ring_predicted <- make_table_by_ring_predicted()
 
-###### ---------------- DA -------------------- ######
-###### Step 7. Perform data assimilation to analyze uncertainty
-#### A. prepare DA stuffs
 
+
+###########################################################################
+###        Step 7: Perform data assimilation,                           ###
+###                to estimate parameter/variable uncertainties         ###
+###                and NPPmyco                                          ###
+###########################################################################
+#### A. prepare DA stuffs
 ### prepare
 source("R/prepare_DA.R")
 
@@ -619,7 +654,6 @@ set.seed(15)
 dist.type <- "uniform"
 
 #### B. Estimate prefit allocation parameter uncertainties for ambient CO2 treatment
-
 ### step B1: 
 ### prepare the input dataframe for aCO2 and eCO2 treatment
 obsDF <- initialize_obs_amb_dataframe()
@@ -737,6 +771,7 @@ predict_final_output(pChain = pChain.aCO2,
                      return.option = "Check result")
 
 
+########################################################################################
 #### D: Check what parameters are needed for the eCO2 response
 ### step D1: 
 predict_final_output(pChain = pChain.aCO2, 
@@ -834,29 +869,35 @@ predict_final_output(pChain = pChain.eCO2,
                      obs = eco2DF[4,],
                      return.option = "Check result")
 
+
+########################################################################################
 #### E: Make aCO2 and eCO2 comparison summaries
 ### compute a output table to summarize parameters and their uncertainties
 make_parameter_summary_table()
 
 
 #### F: generate model-data comparison on allocation and turnover coefficients
+####    Need to go into function to plot
 combine_all_model_output()
 
 #### G: model-data comparison based on traceability framework
+####    Need to go into function to plot
 compare_data_model_traceability()
 
 
-
-
-###### ----------------------------Return to C budget ----------------------------- ######
-###### Step 8. plotting final results
+###########################################################################
+###                 Step 8: Return to C budget                          ###
+###                         prepare summary tables and figures          ###
+###########################################################################
 inDF <- tables_by_ring_predicted
 
 ### GPP and Rsoil
+###    Need to go into function to plot
 source("R/normalized/gpp_and_rsoil_gap_unbootstrap_plot_2.R")
 gpp_and_rsoil_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
 
-### NEP gaps   - Note the different input file!
+### NEP gaps   
+###    Need to go into function to plot
 source("R/normalized/nep_gap_unbootstrap_plot_3.R")
 nep_gap_unbootstrap_plot_3(inDF=tables_by_ring_predicted)
 
@@ -865,10 +906,12 @@ source("R/normalized/cue_unbootstrapped_calculation.R")
 cueDF <- cue_unbootstrapped_calculation(inDF=tables_by_ring_predicted)
 
 ### all eCO2 effect on a single vertical plot
+###    Need to go into function to plot
 source("R/normalized/make_statistical_comparison_plots_based_on_ring_level_data.R")
 make_statistical_comparison_plots_based_on_ring_level_data(inDF=tables_by_ring_predicted)
 
 ### eCO2 effect on fate of carbon
+###    Need to go into function to plot
 source("R/normalized/make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2.R")
 make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2(inDF=tables_by_ring_predicted)
 
@@ -883,5 +926,7 @@ report_key_values_for_manuscript()
 
 
 
-###### ---------------- End -------------------- ######
+###########################################################################
+###                                 The End                             ###
+###########################################################################
 options(warn=0)

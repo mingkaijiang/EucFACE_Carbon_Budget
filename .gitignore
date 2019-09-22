@@ -14,6 +14,8 @@ R_other/*.csv
 *.Rmd
 output/*.pdf
 output/*.csv
+DA_output/*.pdf
+DA_output/*.csv
 
 model_output/CABL/*.csv
 model_output/CLM4/*.csv
