@@ -14,3 +14,12 @@ R_other/*.csv
 *.Rmd
 output/*.pdf
 output/*.csv
+
+model_output/CABL/*.csv
+model_output/CLM4/*.csv
+model_output/CLMP/*.csv
+model_output/GDAY/*.csv
+model_output/LPJW/*.csv
+model_output/LPJX/*.csv
+model_output/OCNX/*.csv
+model_output/SDVM/*.csv
