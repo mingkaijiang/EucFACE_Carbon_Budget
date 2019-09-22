@@ -32,11 +32,12 @@
 ####
 ###########################################################################
 ###########################################################################
-
-####                                 Ready
+####                                   |
+####                                   |
+####                                  Ready
 ####                                 Steady
-####                                 Go!
-
+####                                   Go!
+####                                   |
 ###########################################################################
 ###                Step 1: Set up the basics                            ###
 ###                                                                     ###
@@ -54,7 +55,7 @@ options(warn=-1)
 ###                Step 2: Prepare met data                             ###
 ###                          OPTIONAL                                   ###
 ###########################################################################
-## Soil moisture data
+### Soil moisture data
 #pdf("output/soil_moisture_plots.pdf", width=10, height=4)
 #prepare_soil_moisture_data(plot.image = T, monthly=T)
 #dev.off()
@@ -79,8 +80,6 @@ options(warn=-1)
 
 ### Calculate mean annual temperature and precipitation
 #met_ann <- calculate_annual_mean_met_data(timestep="Daily")
-
-
 
 
 
@@ -117,6 +116,10 @@ soil_respiration_flux <- make_soil_respiration_flux()
 ### Requires: PAR (umol m-2 s-1), Tair (K), Prec (mm), Pressure (Pa), wind speed (m/s), RH
 ### LAI, and soil moisture (m3/m3)
 #prepare_VOC_met_data(laiDF=lai_variable)
+
+
+### compare isoprene contribution against monoterpene in total VOC
+compare_voc_fluxes()
 
 ### result based on model without soil moisture
 voc_emission_flux <- make_voc_emission_flux2()
@@ -864,7 +867,7 @@ plot_posterior(inDF = pChain.eCO2, Trt = "eCO2", dist.type = dist.type,
 ### step D5: 
 ### predict final output, at mean eCO2 values
 ### print out the final predicted results 
-### check if the Rhet is OKish?
+### check if the Rhet is OK?
 predict_final_output(pChain = pChain.eCO2, 
                      obs = eco2DF[4,],
                      return.option = "Check result")
@@ -889,6 +892,11 @@ compare_data_model_traceability()
 ###                 Step 8: Return to C budget                          ###
 ###                         prepare summary tables and figures          ###
 ###########################################################################
+### add NPP myco flux to the dataframe
+tables_by_ring_predicted <- add_NPPmyco_to_summary_table(inDF = tables_by_ring_predicted,
+                                                         pChain.aCO2 = pChain.aCO2,
+                                                         pChain.eCO2 = pChain.eCO2)
+
 inDF <- tables_by_ring_predicted
 
 ### GPP and Rsoil

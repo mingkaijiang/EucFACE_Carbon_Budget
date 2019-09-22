@@ -31,6 +31,8 @@ make_fineroot_production_flux_2 <- function(){
     # format dataframe to return
     outDF <- outDF[,c("Date","Start_date", "End_date", "Ring","fineroot_production_flux", "ndays")]
     
+    # convert to mg C m-2 yr-1
+    outDF$fineroot_production_flux <- outDF$fineroot_production_flux * 1000
     
     ### return
     return(outDF)

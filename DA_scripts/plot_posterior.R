@@ -19,7 +19,7 @@ plot_posterior <- function(inDF, Trt, dist.type, chainLength) {
                "delta.Cmicr", "delta.Csoil", "Rhet", 
                "Prior","aic", "bic")
     
-    pdf(paste0("output/posterior_distributions_", Trt, "_", dist.type, "_", chainLength, ".pdf"))
+    pdf(paste0("DA_output/posterior_distributions_", Trt, "_", dist.type, "_", chainLength, ".pdf"))
     for (i in 1:col) {
         hist(inDF[,i], main = names[i],
              prob=TRUE,col="black",border="white")
