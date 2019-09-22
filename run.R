@@ -221,7 +221,7 @@ root_respiration_flux_old <- make_root_respiration_flux_2(fr_pool=fineroot_c_poo
                                                           cr_pool=coarse_root_c_pool_1)
 
 
-root_respiration_flux <- make_root_respiration_flux_3(fr_pool=fineroot_c_pool)
+root_respiration_flux <- make_root_respiration_flux_3()
 
 compare_Rroot(nDF=root_respiration_flux,
               oDF=root_respiration_flux_old)
@@ -571,29 +571,29 @@ ground_dwelling_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inD
                                                                              return.outcome="predicted")
 
 ### Delta pools
-delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=10)
+delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=7)
 
-delta_leaf_c_pool_ann <- make_delta_leaf_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=12)
+delta_leaf_c_pool_ann <- make_delta_leaf_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=7)
 
-delta_wood_c_pool_ann <- make_delta_wood_pool_treatment_abs_effect(inDF=wood_c_pool_ann, var.col=14)
+delta_wood_c_pool_ann <- make_delta_wood_pool_treatment_abs_effect(inDF=wood_c_pool_ann, var.col=10)
 
-delta_fineroot_c_pool_ann <- make_delta_fineroot_pool_treatment_abs_effect_2(inDF=fineroot_c_pool_ann, var.col=14)
+delta_fineroot_c_pool_ann <- make_delta_fineroot_pool_treatment_abs_effect_2(inDF=fineroot_c_pool_ann, var.col=10)
 
-delta_coarse_root_c_pool_ann <- make_delta_coarseroot_pool_treatment_abs_effect(inDF=coarse_root_c_pool_ann, var.col=13)
+delta_coarse_root_c_pool_ann <- make_delta_coarseroot_pool_treatment_abs_effect(inDF=coarse_root_c_pool_ann, var.col=8)
 
-delta_understorey_aboveground_c_pool_ann <- make_delta_ua_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_ann, var.col=14)
+delta_understorey_aboveground_c_pool_ann <- make_delta_ua_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_ann, var.col=10)
 
-delta_understorey_aboveground_c_pool_2_ann <- make_delta_ua_pool_treatment_abs_effect_4(inDF=understorey_aboveground_c_pool_2_ann, var.col=12)
+delta_understorey_aboveground_c_pool_2_ann <- make_delta_ua_pool_treatment_abs_effect_4(inDF=understorey_aboveground_c_pool_2_ann, var.col=8)
 
-delta_microbial_c_pool_ann <- make_delta_microbial_pool_treatment_abs_effect(inDF=microbial_c_pool_ann, var.col=11)
+delta_microbial_c_pool_ann <- make_delta_microbial_pool_treatment_abs_effect(inDF=microbial_c_pool_ann, var.col=7)
 
-delta_mycorrhizal_c_pool_ann <- make_delta_mycorrhizal_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool_ann, var.col=11)
+delta_mycorrhizal_c_pool_ann <- make_delta_mycorrhizal_pool_treatment_abs_effect(inDF=mycorrhizal_c_pool_ann, var.col=7)
 
-delta_leaflitter_pool_ann <- make_delta_leaflitter_pool_treatment_abs_effect(inDF=leaflitter_pool_ann, var.col=15)
+delta_leaflitter_pool_ann <- make_delta_leaflitter_pool_treatment_abs_effect(inDF=leaflitter_pool_ann, var.col=11)
 
-delta_insect_pool_ann <- make_delta_insect_pool_treatment_abs_effect(inDF=insect_pool_ann, var.col=12)
+delta_insect_pool_ann <- make_delta_insect_pool_treatment_abs_effect(inDF=insect_pool_ann, var.col=8)
 
-delta_ground_dwelling_insect_pool_ann <- make_delta_ground_dwelling_insect_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool_ann, var.col=12)
+delta_ground_dwelling_insect_pool_ann <- make_delta_ground_dwelling_insect_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool_ann, var.col=8)
 
 
 ###### ----------Make summary tables-------------- ######

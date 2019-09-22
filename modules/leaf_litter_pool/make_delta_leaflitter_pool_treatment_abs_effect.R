@@ -38,7 +38,7 @@ make_delta_leaflitter_pool_treatment_abs_effect <- function(inDF,var.col) {
     }
     
     delta <- subset(delta, Year > 2012)
-
+    
     
     #- format dataframe to return
     out <- delta[,c("Start_date", "End_date", "End_date", "Ring", "delta")]

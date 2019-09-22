@@ -10,44 +10,26 @@ make_delta_fineroot_pool_treatment_abs_effect_2 <- function(inDF,var.col) {
     colnames(inDF)[var.col] <- "Value"
     
     ### 
-    subDF1 <- subset(inDF, Date%in%c("2014-06-01","2015-05-01"))
-    subDF2 <- subset(inDF, Date%in%c("2014-09-01","2015-09-01"))
+    subDF <- subset(inDF, Date%in%c("2014-02-18","2016-02-26"))
     
     ### date list
-    d.list1 <- unique(subDF1$Date)
-    d.list1 <- d.list1[order(d.list1)]
-    
-    d.list2 <- unique(subDF2$Date)
-    d.list2 <- d.list2[order(d.list2)]
+    d.list <- unique(subDF$Date)
+    d.list <- d.list[order(d.list)]
     
     ### as. date
-    subDF1$Date <- as.Date(subDF1$Date)
-    subDF2$Date <- as.Date(subDF2$Date)
+    subDF$Date <- as.Date(subDF$Date)
     
     ### create delta df
-    delta1 <- subset(subDF1, Date != d.list1[1])
-    delta1$Start_date <- delta1$Date  
-    
-    delta2 <- subset(subDF2, Date != d.list2[1])
-    delta2$Start_date <- delta2$Date  
-    
+    delta <- subset(subDF, Date != d.list[1])
+    delta$Start_date <- delta$Date  
     
     #### calculate differences
-    for (i in 1:length(delta1$Date)) {
-        delta1$Start_date[i] <- d.list1[which(d.list1 == delta1$Date[i]) - 1]
-        delta1$prev_biom[i] <- subDF1$Value[subDF1$Ring == delta1$Ring[i] &
-                                                as.numeric(subDF1$Date-delta1$Start_date[i])==0]
+    for (i in 1:length(delta$Date)) {
+        delta$Start_date[i] <- d.list[which(d.list == delta$Date[i]) - 1]
+        delta$prev_biom[i] <- subDF$Value[subDF$Ring == delta$Ring[i] &
+                                              as.numeric(subDF$Date-delta$Start_date[i])==0]
     }
     
-    for (i in 1:length(delta2$Date)) {
-        delta2$Start_date[i] <- d.list2[which(d.list2 == delta2$Date[i]) - 1]
-        delta2$prev_biom[i] <- subDF2$Value[subDF2$Ring == delta2$Ring[i] &
-                                                as.numeric(subDF2$Date-delta2$Start_date[i])==0]
-    }
-    
-    
-    ### combine
-    delta <- rbind(delta1, delta2)
     
     ### Length of period
     delta$length <- as.numeric(delta$Date - delta$Start_date)
@@ -62,4 +44,5 @@ make_delta_fineroot_pool_treatment_abs_effect_2 <- function(inDF,var.col) {
     names(out) <- c("Start_date", "End_date", "Date", "Ring", "predicted")
     
     return(out)
+
 }
