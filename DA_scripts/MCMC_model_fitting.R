@@ -118,11 +118,6 @@ MCMC_model_fitting <- function(params,
             
             # Accepting or rejecting the candidate vector
             if ( log(runif(1, min = 0, max =1)) < logalpha && candidatepValues[1] + candidatepValues[2] + candidatepValues[3] <= 1
-                 #&& abs(out.cand$delta.Cleaf) <= obs$C.leaf.mean 
-                 #&& abs(out.cand$delta.Cfroot) <= obs$C.froot.mean 
-                 #&& abs(out.cand$delta.Cmyco) <= obs$C.myco.mean 
-                 #&& abs(out.cand$delta.Cmicr) <= obs$C.micr.mean 
-                 #&& abs(out.cand$delta.Csoil) <= (obs$C.soil.mean * 0.1)
                  && candidatepValues[3] >= 0) {
                 
                 params <- candidatepValues
@@ -143,7 +138,7 @@ MCMC_model_fitting <- function(params,
     pChain <- as.data.frame(pChain)
     
     ### assign names
-    names(pChain) <- c("alloc.leaf", "alloc.wood", "alloc.froot", "alloc.myco",
+    names(pChain) <- c("alloc.leaf", "alloc.wood", "alloc.froot", #"alloc.myco",
                        "tau.leaf", "tau.froot", "tau.myco",
                        "tau.bg.lit", "tau.micr", "tau.soil", 
                        "C.ag.lit", "C.bg.lit",
@@ -154,6 +149,8 @@ MCMC_model_fitting <- function(params,
                        "delta.Cag", "delta.Cbg",
                        "delta.Cmicr", "delta.Csoil", "Rhet", 
                        "Prior","aic", "bic")
+    
+    pChain$alloc.myco <- pChain$NPP.myco/pChain$NPP
     
     
     nAccepted <- length(unique(pChain[,1]))

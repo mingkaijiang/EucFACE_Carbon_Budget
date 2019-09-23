@@ -53,5 +53,8 @@ generate_most_likely_outcome <- function(inDF, obs) {
     
     outDF$Rhet[outDF$Cat=="Observed"] <- obs$Rhet.mean
     
+    outDF$alloc.myco[outDF$Cat=="Observed"] <- NA
+    
+    
     print(outDF)
 }

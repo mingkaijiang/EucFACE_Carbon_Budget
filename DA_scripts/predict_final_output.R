@@ -7,13 +7,13 @@ predict_final_output <- function(pChain,
     param.SD = apply(pChain[ , 1:no.var], 2, sd)
     param.final = data.frame(matrix(ncol = (no.var)*2, nrow = 1))
     
-    names(param.final) <- c("alloc.leaf", "alloc.wood", "alloc.froot","alloc.myco",
+    names(param.final) <- c("alloc.leaf", "alloc.wood", "alloc.froot",#"alloc.myco",
                             "tau.leaf", "tau.froot", "tau.myco", 
                             "tau.bg.lit", 
                             "tau.micr", "tau.soil", 
                             "C.ag.lit", "C.bg.lit",
                             "frac.myco", "frac.ag.lit", "frac.bg.lit", "frac.micr",
-                            "alloc.leaf.sd", "alloc.wood.sd", "alloc.froot.sd","alloc.myco.sd",
+                            "alloc.leaf.sd", "alloc.wood.sd", "alloc.froot.sd",#"alloc.myco.sd",
                             "tau.leaf.sd", "tau.froot.sd", "tau.myco.sd",
                             "tau.bg.lit.sd", 
                             "tau.micr.sd", "tau.soil.sd", 

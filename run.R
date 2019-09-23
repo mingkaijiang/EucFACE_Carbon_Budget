@@ -651,37 +651,56 @@ set.seed(15)
 ### set up distribution type for parameter space
 dist.type <- "uniform"
 
-#### B. Estimate prefit allocation parameter uncertainties for ambient CO2 treatment
-### step B1: 
 ### prepare the input dataframe for aCO2 and eCO2 treatment
 obsDF <- initialize_obs_amb_dataframe()
 eco2DF <- initialize_obs_ele_dataframe()
 
+### set up prefit options
+## two options:
+## 1. perform prefitting, for allocation and plant turnover coefficients (prefit);
+##    this option saves computation time!
+## 2. use wide parameter space to fit all coefficients together (wide);
+##    this option takes a long time to run!!!
+prefit.option <- "prefit"
+prefit.option <- "wide"
 
-### step B2:
+#### B. Estimate prefit allocation parameter uncertainties for ambient CO2 treatment
+### step B1:
 ## this initial parameters explore prefit parameter space
-#init.parameters <- run_prefit_program_MCMC(dist.type=dist.type, 
-#                                           obsDF=obsDF,
-#                                           eco2DF=eco2DF,
-#                                           range.option="sd")
-
-### step B3: initialize parameters the remaining parameters
-#source("definitions/initialize_aCO2_parameters.R")
-#source("definitions/initialize_eCO2_parameters.R")
-
-source("definitions/initialize_aCO2_parameters_wide.R")
-source("definitions/initialize_eCO2_parameters_wide.R")
+init.parameters <- run_prefit_program_MCMC(dist.type=dist.type, 
+                                           obsDF=obsDF,
+                                           eco2DF=eco2DF,
+                                           range.option="sd")
 
 ########################################################################################
 #### C. Estimate remaining parameter uncertainties for ambient CO2 treatment
 ### step C1: set up 
+## initialize parameters 
+if (prefit.option == "prefit") {
+    ## based on prefit parameters
+    source("definitions/initialize_aCO2_parameters.R")
+    source("definitions/initialize_eCO2_parameters.R")
 
-### Assign chain length for MCMC parameter fitting
-chainLength <- 500000
+    ### Assign chain length for MCMC parameter fitting
+    chainLength <- 5000
+} else if (prefit.option == "wide") {
+    ## initialize parameters
+    ## based on standardized initial parameter space
+    source("definitions/initialize_aCO2_parameters_wide.R")
+    source("definitions/initialize_eCO2_parameters_wide.R")
+    
+    ### Assign chain length for MCMC parameter fitting
+    chainLength <- 50000
+}
 
 ### step C2: fitting
 ## Ring 2
-step.size.aCO2 <- 0.05 
+if (prefit.option == "prefit") {
+    step.size.aCO2 <- 0.05 
+} else if (prefit.option == "wide") {
+    step.size.aCO2 <- 0.005 
+}
+
 pChain_aCO2_1 <- MCMC_model_fitting(params = params.aCO2.R2, 
                                     params.lower = params.aCO2.lower.R2,
                                     params.upper = params.aCO2.upper.R2,
@@ -706,7 +725,12 @@ plot_parameter_trace_within_parameter_space(params= params.aCO2.R2,
 
 
 # Ring 3
-step.size.aCO2 <- 0.05 
+if (prefit.option == "prefit") {
+    step.size.aCO2 <- 0.05 
+} else if (prefit.option == "wide") {
+    step.size.aCO2 <- 0.005 
+}
+
 pChain_aCO2_2 <- MCMC_model_fitting(params = params.aCO2.R3, 
                                     params.lower = params.aCO2.lower.R3,
                                     params.upper = params.aCO2.upper.R3,
@@ -729,7 +753,12 @@ plot_parameter_trace_within_parameter_space(params= params.aCO2.R3,
                                             Trt = "aCO2_2")
 
 # Ring 6
-step.size.aCO2 <- 0.008 
+if (prefit.option == "prefit") {
+    step.size.aCO2 <- 0.0008 
+} else if (prefit.option == "wide") {
+    step.size.aCO2 <- 0.002 
+}
+
 pChain_aCO2_3 <- MCMC_model_fitting(params = params.aCO2.R6, 
                                     params.lower = params.aCO2.lower.R6,
                                     params.upper = params.aCO2.upper.R6,
@@ -741,7 +770,6 @@ pChain_aCO2_3 <- MCMC_model_fitting(params = params.aCO2.R6,
 
 generate_most_likely_outcome(inDF=pChain_aCO2_3,
                              obs=obsDF[3,])
-
 
 
 plot_parameter_trace_within_parameter_space(params= params.aCO2.R6, 
@@ -779,12 +807,21 @@ predict_final_output(pChain = pChain.aCO2,
 
 ### step D2: 
 ### set up step size for aCO2 and eCO2 
-chainLength <- 5000
+if (prefit.option == "prefit") {
+    chainLength <- 5000
+} else if (prefit.option == "wide") {
+    chainLength <- 50000
+}
 
 ### step D3:
 ### fit the model with eCO2 parameter space to get parameter uncertainties
 # Ring 1
-step.size.eCO2 <- 0.006 
+if (prefit.option == "prefit") {
+    step.size.eCO2 <- 0.006 
+} else if (prefit.option == "wide") {
+    step.size.eCO2 <- 0.006 
+}
+
 pChain_eCO2_1 <- MCMC_model_fitting(params = params.eCO2.R1, 
                                     params.lower = params.eCO2.lower.R1,
                                     params.upper = params.eCO2.upper.R1,
@@ -807,7 +844,12 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R1,
 
 
 # ring 4
-step.size.eCO2 <- 0.002 
+if (prefit.option == "prefit") {
+    step.size.eCO2 <- 0.002 
+} else if (prefit.option == "wide") {
+    step.size.eCO2 <- 0.002 
+}
+
 pChain_eCO2_2 <- MCMC_model_fitting(params = params.eCO2.R4, 
                                     params.lower = params.eCO2.lower.R4,
                                     params.upper = params.eCO2.upper.R4,
@@ -831,7 +873,12 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R4,
 
 
 # ring 5
-step.size.eCO2 <- 0.007 
+if (prefit.option == "prefit") {
+    step.size.eCO2 <- 0.007 
+} else if (prefit.option == "wide") {
+    step.size.eCO2 <- 0.007 
+}
+
 pChain_eCO2_3 <- MCMC_model_fitting(params = params.eCO2.R5, 
                                     params.lower = params.eCO2.lower.R5,
                                     params.upper = params.eCO2.upper.R5,
@@ -867,11 +914,6 @@ plot_posterior(inDF = pChain.eCO2, Trt = "eCO2", dist.type = dist.type,
 predict_final_output(pChain = pChain.eCO2, 
                      obs = eco2DF[4,],
                      return.option = "Check result")
-
-
-#### E: Make aCO2 and eCO2 comparison summaries
-### compute a output table to summarize parameters and their uncertainties
-make_parameter_summary_table()
 
 
 ########################################################################################
