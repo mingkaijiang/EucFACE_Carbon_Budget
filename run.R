@@ -655,18 +655,10 @@ dist.type <- "uniform"
 obsDF <- initialize_obs_amb_dataframe()
 eco2DF <- initialize_obs_ele_dataframe()
 
-### set up prefit options
-## two options:
-## 1. perform prefitting, for allocation and plant turnover coefficients (prefit);
-##    this option saves computation time!
-## 2. use wide parameter space to fit all coefficients together (wide);
-##    this option takes a long time to run!!!
-prefit.option <- "prefit"
-prefit.option <- "wide"
-
 #### B. Estimate prefit allocation parameter uncertainties for ambient CO2 treatment
 ### step B1:
-## this initial parameters explore prefit parameter space
+## this prefitting function explores allocation and turnover rates for several parameters
+## to better constrain their initial values and distributions
 init.parameters <- run_prefit_program_MCMC(dist.type=dist.type, 
                                            obsDF=obsDF,
                                            eco2DF=eco2DF,
@@ -676,22 +668,13 @@ init.parameters <- run_prefit_program_MCMC(dist.type=dist.type,
 #### C. Estimate remaining parameter uncertainties for ambient CO2 treatment
 ### step C1: set up 
 ## initialize parameters 
-if (prefit.option == "prefit") {
-    ## based on prefit parameters
-    source("definitions/initialize_aCO2_parameters.R")
-    source("definitions/initialize_eCO2_parameters.R")
+## based on prefit parameters
+source("definitions/initialize_aCO2_parameters.R")
+source("definitions/initialize_eCO2_parameters.R")
 
-    ### Assign chain length for MCMC parameter fitting
-    chainLength <- 5000
-} else if (prefit.option == "wide") {
-    ## initialize parameters
-    ## based on standardized initial parameter space
-    source("definitions/initialize_aCO2_parameters_wide.R")
-    source("definitions/initialize_eCO2_parameters_wide.R")
-    
-    ### Assign chain length for MCMC parameter fitting
-    chainLength <- 50000
-}
+### Assign chain length for MCMC parameter fitting
+chainLength <- 5000
+
 
 ### step C2: fitting
 ## Ring 2
@@ -754,7 +737,7 @@ plot_parameter_trace_within_parameter_space(params= params.aCO2.R3,
 
 # Ring 6
 if (prefit.option == "prefit") {
-    step.size.aCO2 <- 0.0008 
+    step.size.aCO2 <- 0.0009 
 } else if (prefit.option == "wide") {
     step.size.aCO2 <- 0.002 
 }

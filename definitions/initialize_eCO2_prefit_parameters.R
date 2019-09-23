@@ -4,26 +4,26 @@
 
 ### R1
 prefit.params.eCO2.R1 <- c(0.45,          # alloc leaf
-                           0.2,          # alloc wood 
-                           0.15,
+                           0.2,           # alloc wood 
+                           0.12,
                            1.25,          # tau leaf
-                           1.3,          # tau froot
+                           1.3,           # tau froot
                            38.0)
 
-prefit.params.eCO2.lower.R1 <- c(0.4,
-                                 0.15,
-                                 0.1,
-                                 1.0,          # tau leaf
-                                 1.0,          # tau froot
-                                 0.0)
+prefit.params.eCO2.lower.R1 <- c(0.3,          # alloc leaf
+                                 0.1,          # alloc wood
+                                 0.05,         # alloc froot
+                                 0.95,         # tau leaf
+                                 0.8,          # tau froot
+                                 2.0)          # tau myco
 
 
-prefit.params.eCO2.upper.R1 <- c(0.5,
-                                 0.3,
-                                 0.3,
+prefit.params.eCO2.upper.R1 <- c(0.6,          # alloc leaf
+                                 0.3,          # alloc wood
+                                 0.2,          # alloc froot
                                  1.5,          # tau leaf
                                  2.0,          # tau froot
-                                 50.0)        
+                                 80.0)         # tau myco
 
 
 ### R4
@@ -34,20 +34,20 @@ prefit.params.eCO2.R4 <- c(0.5,          # alloc leaf
                            1.2,          # tau froot
                            30.0)
 
-prefit.params.eCO2.lower.R4 <- c(0.45,
-                                 0.15,
-                                 0.1,
-                                 1.0,          # tau leaf
-                                 1.0,          # tau froot
-                                 0.0)
+prefit.params.eCO2.lower.R4 <- c(0.3,          # alloc leaf
+                                 0.1,          # alloc wood
+                                 0.05,         # alloc froot
+                                 0.95,         # tau leaf
+                                 0.8,          # tau froot
+                                 2.0)
 
 
-prefit.params.eCO2.upper.R4 <- c(0.6,
-                                 0.3,
-                                 0.3,
+prefit.params.eCO2.upper.R4 <- c(0.6,          # alloc leaf
+                                 0.3,          # alloc wood
+                                 0.2,          # alloc froot
                                  1.5,          # tau leaf
                                  2.0,          # tau froot
-                                 50.0)        
+                                 80.0)        
 
 
 ### R5
@@ -58,17 +58,17 @@ prefit.params.eCO2.R5 <- c(0.35,          # alloc leaf
                            1.2,          # tau froot
                            80.0)
 
-prefit.params.eCO2.lower.R5 <- c(0.35,
-                                 0.1,
-                                 0.05,
-                                 1.0,          # tau leaf
-                                 1.0,          # tau froot
-                                 70)
+prefit.params.eCO2.lower.R5 <- c(0.3,          # alloc leaf
+                                 0.1,          # alloc wood
+                                 0.05,         # alloc froot
+                                 0.95,         # tau leaf
+                                 0.8,          # tau froot
+                                 2.0)
 
 
-prefit.params.eCO2.upper.R5 <- c(0.4,
-                                 0.16,
-                                 0.1,
+prefit.params.eCO2.upper.R5 <- c(0.6,          # alloc leaf
+                                 0.3,          # alloc wood
+                                 0.2,          # alloc froot
                                  1.5,          # tau leaf
                                  2.0,          # tau froot
                                  80.0)        

@@ -4,7 +4,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
                                     range.option) {
     
     ### Assign chain length for MCMC parameter fitting
-    chainLength <- 5000
+    chainLength <- 10000
     
     ### step 1:
     ## this initial parameters explore prefit parameter space
@@ -28,7 +28,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     
     
     # Ring 3
-    step.size.aCO2 <- 0.008 
+    step.size.aCO2 <- 0.007 
     pChain_aCO2_2 <- prefit_MCMC_model_fitting(params = prefit.params.aCO2.R3, 
                                                params.lower = prefit.params.aCO2.lower.R3,
                                                params.upper = prefit.params.aCO2.upper.R3,
@@ -42,7 +42,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     
     
     # Ring 6
-    step.size.aCO2 <- 0.008 
+    step.size.aCO2 <- 0.004 
     pChain_aCO2_3 <- prefit_MCMC_model_fitting(params = prefit.params.aCO2.R6, 
                                                params.lower = prefit.params.aCO2.lower.R6,
                                                params.upper = prefit.params.aCO2.upper.R6,
@@ -65,7 +65,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     ### step 4:
     ### fit the model with eCO2 parameter space to get parameter uncertainties
     # Ring 1
-    step.size.eCO2 <- 0.0004
+    step.size.eCO2 <- 0.0003
     pChain_eCO2_1 <- prefit_MCMC_model_fitting(params = prefit.params.eCO2.R1, 
                                                params.lower = prefit.params.eCO2.lower.R1,
                                                params.upper = prefit.params.eCO2.upper.R1,
@@ -80,7 +80,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     
     
     ## ring 4
-    step.size.eCO2 <- 0.0004
+    step.size.eCO2 <- 0.0003
     pChain_eCO2_2 <- prefit_MCMC_model_fitting(params = prefit.params.eCO2.R4, 
                                                params.lower = prefit.params.eCO2.lower.R4,
                                                params.upper = prefit.params.eCO2.upper.R4,
@@ -96,7 +96,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     
     
     # ring 5
-    step.size.eCO2 <- 0.001
+    step.size.eCO2 <- 0.0003
     pChain_eCO2_3 <- prefit_MCMC_model_fitting(params = prefit.params.eCO2.R5, 
                                                params.lower = prefit.params.eCO2.lower.R5,
                                                params.upper = prefit.params.eCO2.upper.R5,
