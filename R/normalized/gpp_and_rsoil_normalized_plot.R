@@ -1,4 +1,4 @@
-gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
+gpp_and_rsoil_normalized_plot <- function(inDF) {
     
     ### subseting DF
     temDF1 <- inDF$npp[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2")]
@@ -453,7 +453,7 @@ gpp_and_rsoil_gap_unbootstrap_plot_2 <- function(inDF) {
     require(grid)
     require(cowplot)
     
-    pdf("output/GPP_Rsoil_gap_bootstrap_plots.pdf", width=12,height=10)
+    pdf("output/GPP_Rsoil_normalized_plots.pdf", width=12,height=10)
     plot_grid(p1, p2, p3, p4, labels="", ncol=2, align="v", axis="l",
                   rel_widths=c(1,1.2))
     dev.off()

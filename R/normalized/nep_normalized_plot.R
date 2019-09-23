@@ -1,4 +1,4 @@
-nep_gap_unbootstrap_plot_3 <- function(inDF) {
+nep_normalized_plot <- function(inDF) {
     
     ### subseting each method
     inoutDF <- as.data.frame(inDF$inout[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6")])
@@ -236,7 +236,7 @@ nep_gap_unbootstrap_plot_3 <- function(inDF) {
     #plot(p1)
     
     
-    pdf("Output/nep_gap_individiual_bootstrapped.pdf", width=8, height=8)
+    pdf("Output/nep_normalized_plot.pdf", width=8, height=8)
     plot(p1)
     dev.off()
     

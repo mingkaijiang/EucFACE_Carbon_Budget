@@ -901,17 +901,17 @@ inDF <- tables_by_ring_predicted
 
 ### GPP and Rsoil
 ###    Need to go into function to plot
-source("R/normalized/gpp_and_rsoil_gap_unbootstrap_plot_2.R")
-gpp_and_rsoil_gap_unbootstrap_plot_2(inDF=tables_by_ring_predicted)
+source("R/normalized/gpp_and_rsoil_normalized_plot.R")
+gpp_and_rsoil_normalized_plot(inDF=tables_by_ring_predicted)
 
 ### NEP gaps   
 ###    Need to go into function to plot
-source("R/normalized/nep_gap_unbootstrap_plot_3.R")
-nep_gap_unbootstrap_plot_3(inDF=tables_by_ring_predicted)
+source("R/normalized/nep_normalized_plot.R")
+nep_normalized_plot(inDF=tables_by_ring_predicted)
 
 ### CUE
-source("R/normalized/cue_unbootstrapped_calculation.R")
-cueDF <- cue_unbootstrapped_calculation(inDF=tables_by_ring_predicted)
+source("R/normalized/cue_calculation.R")
+cueDF <- cue_calculation(inDF=tables_by_ring_predicted)
 
 ### all eCO2 effect on a single vertical plot
 ###    Need to go into function to plot

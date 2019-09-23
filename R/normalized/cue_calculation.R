@@ -1,4 +1,4 @@
-cue_unbootstrapped_calculation <- function(inDF) {
+cue_calculation <- function(inDF) {
     
     ### subseting DF
     temDF1 <- inDF$npp[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2")]
