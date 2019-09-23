@@ -1,4 +1,4 @@
-nep_normalized_plot <- function(inDF) {
+nep_normalized_plot_with_NPPmyco <- function(inDF) {
     
     ### subseting each method
     inoutDF <- as.data.frame(inDF$inout[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6")])
@@ -54,37 +54,37 @@ nep_normalized_plot <- function(inDF) {
     
     
     ### create dataframe to hold bootstrap results - npp
-    out$R1[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_1"] + 
+    out$R1[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_1"] + nppDF[nppDF$term=="Mycorrhizal production", "Ring_1"] +
         nppDF[nppDF$term=="Stem NPP", "Ring_1"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_1"]) +
         nppDF[nppDF$term=="Coarse Root NPP", "Ring_1"] + nppDF[nppDF$term=="Other NPP", "Ring_1"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_1"] + nppDF[nppDF$term=="Leaf consumption", "Ring_1"] -
         nppDF[nppDF$term=="R hetero", "Ring_1"] 
     
-    out$R2[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_2"] + 
+    out$R2[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_2"] + nppDF[nppDF$term=="Mycorrhizal production", "Ring_2"] +
         nppDF[nppDF$term=="Stem NPP", "Ring_2"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_2"]) +
         nppDF[nppDF$term=="Coarse Root NPP", "Ring_2"] + nppDF[nppDF$term=="Other NPP", "Ring_2"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_2"] + nppDF[nppDF$term=="Leaf consumption", "Ring_2"] -
         nppDF[nppDF$term=="R hetero", "Ring_2"] 
     
-    out$R3[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_3"] + 
+    out$R3[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_3"] + nppDF[nppDF$term=="Mycorrhizal production", "Ring_3"] +
         nppDF[nppDF$term=="Stem NPP", "Ring_3"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_3"]) +
         nppDF[nppDF$term=="Coarse Root NPP", "Ring_3"] + nppDF[nppDF$term=="Other NPP", "Ring_3"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_3"] + nppDF[nppDF$term=="Leaf consumption", "Ring_3"] -
         nppDF[nppDF$term=="R hetero", "Ring_3"] 
     
-    out$R4[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_4"] + 
+    out$R4[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_4"] + nppDF[nppDF$term=="Mycorrhizal production", "Ring_4"] +
         nppDF[nppDF$term=="Stem NPP", "Ring_4"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_4"]) +
         nppDF[nppDF$term=="Coarse Root NPP", "Ring_4"] + nppDF[nppDF$term=="Other NPP", "Ring_4"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_4"] + nppDF[nppDF$term=="Leaf consumption", "Ring_4"] -
         nppDF[nppDF$term=="R hetero", "Ring_4"] 
     
-    out$R5[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_5"] + 
+    out$R5[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_5"] + nppDF[nppDF$term=="Mycorrhizal production", "Ring_5"] +
         nppDF[nppDF$term=="Stem NPP", "Ring_5"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_5"]) +
         nppDF[nppDF$term=="Coarse Root NPP", "Ring_5"] + nppDF[nppDF$term=="Other NPP", "Ring_5"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_5"] + nppDF[nppDF$term=="Leaf consumption", "Ring_5"] -
         nppDF[nppDF$term=="R hetero", "Ring_5"] 
     
-    out$R6[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_6"] + 
+    out$R6[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_6"] + nppDF[nppDF$term=="Mycorrhizal production", "Ring_6"] +
         nppDF[nppDF$term=="Stem NPP", "Ring_6"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_6"]) +
         nppDF[nppDF$term=="Coarse Root NPP", "Ring_6"] + nppDF[nppDF$term=="Other NPP", "Ring_6"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_6"] + nppDF[nppDF$term=="Leaf consumption", "Ring_6"] -
@@ -148,7 +148,7 @@ nep_normalized_plot <- function(inDF) {
     out$aCO2_sd <- rowSds(as.matrix(subset(out, select=c(R2, R3, R6)), na.rm=T))
     out$eCO2_sd <- rowSds(as.matrix(subset(out, select=c(R1, R4, R5)), na.rm=T))
     
-    write.csv(out, "R_other/NEP_normalized_method_comparison.csv", row.names=F)
+    write.csv(out, "R_other/NEP_normalized_method_comparison_with_NPPmyco.csv", row.names=F)
     
     
     ### prepare plotDF
@@ -173,7 +173,7 @@ nep_normalized_plot <- function(inDF) {
     plotDF$pos <- plotDF$NEP + plotDF$NEP_conf
     plotDF$neg <- plotDF$NEP - plotDF$NEP_conf
     
-    write.csv(plotDF, "Output/nep_normalized_summary.csv", row.names=F)
+    write.csv(plotDF, "Output/nep_normalized_summary_with_NPPmyco.csv", row.names=F)
     
     ### compute overall NEP
     oDF <- data.frame(c("aCO2", "eCO2"), NA, NA, NA, NA)
@@ -233,10 +233,10 @@ nep_normalized_plot <- function(inDF) {
                            breaks=c(-500, -250, -100, 0, 100, 250, 500),
                            labels=c(-500, -250, -100, 0, 100, 250, 500))
     
-    #plot(p1)
+    plot(p1)
     
     
-    pdf("Output/nep_normalized_plot.pdf", width=8, height=8)
+    pdf("Output/nep_normalized_plot_with_NPPmyco.pdf", width=8, height=8)
     plot(p1)
     dev.off()
     

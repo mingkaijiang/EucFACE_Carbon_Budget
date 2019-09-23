@@ -1,6 +1,6 @@
-make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
+make_statistical_comparison_normalized_plots <- function(inDF) {
   
-    ######### 7. Plot abs, no interactions, and change in pools, with covariates
+    #########. Plot abs, no interactions, and change in pools, with covariates
     ### read in the csv file to plot the treatment effect and confidence interval
     myDF <- rbind(inDF$inout, inDF$npp, inDF$pool, inDF$delta_pool)
     
@@ -265,7 +265,7 @@ make_statistical_comparison_plots_based_on_ring_level_data <- function(inDF) {
     #          gp=gpar(fontsize=16, col="black", fontface="bold"))
     #dev.off()
     
-    pdf("output/treatment_effect_abs_no_interaction_change_in_pool_with_covariate.pdf", width=8, height=12)
+    pdf("output/statistical_comparison_normalized_plots.pdf", width=8, height=12)
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 

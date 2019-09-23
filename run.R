@@ -904,31 +904,41 @@ inDF <- tables_by_ring_predicted
 source("R/normalized/gpp_and_rsoil_normalized_plot.R")
 gpp_and_rsoil_normalized_plot(inDF=tables_by_ring_predicted)
 
+
+source("R/normalized/gpp_and_rsoil_normalized_plot_with_NPPmyco.R")
+gpp_and_rsoil_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
+
+
 ### NEP gaps   
 ###    Need to go into function to plot
 source("R/normalized/nep_normalized_plot.R")
 nep_normalized_plot(inDF=tables_by_ring_predicted)
 
+
+source("R/normalized/nep_normalized_plot_with_NPPmyco.R")
+nep_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
+
 ### CUE
 source("R/normalized/cue_calculation.R")
 cueDF <- cue_calculation(inDF=tables_by_ring_predicted)
 
+### make a summary table for all key values used in the manuscript
+source("R/report_key_values_for_manuscript.R")
+report_key_values_for_manuscript()
+
 ### all eCO2 effect on a single vertical plot
 ###    Need to go into function to plot
-source("R/normalized/make_statistical_comparison_plots_based_on_ring_level_data.R")
-make_statistical_comparison_plots_based_on_ring_level_data(inDF=tables_by_ring_predicted)
+source("R/normalized/make_statistical_comparison_normalized_plots.R")
+make_statistical_comparison_normalized_plots(inDF=tables_by_ring_predicted)
 
 ### eCO2 effect on fate of carbon
 ###    Need to go into function to plot
-source("R/normalized/make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2.R")
-make_eCO2_effect_on_GPP_plot_with_covariate_predicted_alternative_plot_color_based_on_ring_level_data_2(inDF=tables_by_ring_predicted)
+source("R/normalized/make_eCO2_effect_on_GPP_normalized_plot.R")
+make_eCO2_effect_on_GPP_normalized_plot(inDF=tables_by_ring_predicted)
 
 ### all supplementary figures
 source("R/plot_combined_figures.R")
 
-### make a summary table for all key values used in the manuscript
-source("R/report_key_values_for_manuscript.R")
-report_key_values_for_manuscript()
 
 
 

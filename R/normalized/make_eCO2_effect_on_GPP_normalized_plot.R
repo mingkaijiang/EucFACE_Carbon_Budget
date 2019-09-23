@@ -1,4 +1,4 @@
-make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
+make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     
     ######### Plot abs, no interactions, and change in pools
     ### read in the csv file to plot the treatment effect and confidence interval
@@ -436,7 +436,7 @@ make_eCO2_effect_on_GPP_plot_predicted <- function(inDF) {
     require(cowplot)
     
     ### Plotting
-    pdf("Output/eco2_effect_on_gpp_predicted.pdf", width=16, height=6)
+    pdf("Output/eco2_effect_on_gpp_normalized_plot.pdf", width=16, height=6)
     plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
               rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()
