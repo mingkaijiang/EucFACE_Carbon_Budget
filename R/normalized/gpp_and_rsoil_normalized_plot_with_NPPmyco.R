@@ -18,6 +18,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                      temDF1[temDF1$term == "Other NPP","aCO2"],
                      temDF1[temDF1$term == "Understorey NPP","aCO2"],
                      temDF1[temDF1$term == "Leaf consumption","aCO2"],
+                     temDF1[temDF1$term == "Mycorrhizal production","aCO2"],
                      temDF2[temDF2$term == "Ra leaf","aCO2"],
                      temDF2[temDF2$term == "Ra stem","aCO2"],
                      temDF2[temDF2$term == "Ra root","aCO2"],
@@ -34,16 +35,18 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                      temDF1[temDF1$term == "Other NPP","eCO2"],
                      temDF1[temDF1$term == "Understorey NPP","eCO2"],
                      temDF1[temDF1$term == "Leaf consumption","eCO2"],
+                     temDF1[temDF1$term == "Mycorrhizal production","eCO2"],
                      temDF2[temDF2$term == "Ra leaf","eCO2"],
                      temDF2[temDF2$term == "Ra stem","eCO2"],
                      temDF2[temDF2$term == "Ra root","eCO2"],
                      temDF2[temDF2$term == "Ra understorey","eCO2"],
                      temDF2[temDF2$term == "Rgrowth","eCO2"],
                      temDF2[temDF2$term == "VOC", "eCO2"])
-    plotDF1$cat <- plotDF2$cat <- c(rep("MAESPA", 2), rep("NPP+Ra", 13))
+    plotDF1$cat <- plotDF2$cat <- c(rep("MAESPA", 2), rep("NPP+Ra", 14))
     plotDF1$term <- plotDF2$term <- c("GPP overstorey", "GPP understorey",
                                       "Leaf NPP","Stem NPP","Fine Root NPP","Coarse Root NPP","Other NPP",
-                                      "Understorey NPP","Leaf consumption","Ra leaf","Ra stem","Ra root",
+                                      "Understorey NPP","Leaf consumption", "Mycorrhizal NPP",
+                                      "Ra leaf","Ra stem","Ra root",
                                       "Ra understorey","Rgrowth","VOC")
     
     plotDF1$term <- factor(plotDF1$term, levels=unique(plotDF1$term))
@@ -70,6 +73,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                 temDF1[temDF1$term == "Other NPP","Ring_2"],
                                                 temDF1[temDF1$term == "Understorey NPP","Ring_2"],
                                                 temDF1[temDF1$term == "Leaf consumption","Ring_2"],
+                                                temDF1[temDF1$term == "Mycorrhizal production","Ring_2"],
                                                 temDF2[temDF2$term == "Ra leaf","Ring_2"],
                                                 temDF2[temDF2$term == "Ra stem","Ring_2"],
                                                 temDF2[temDF2$term == "Ra root","Ring_2"],
@@ -85,6 +89,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                 temDF1[temDF1$term == "Other NPP","Ring_3"],
                                                 temDF1[temDF1$term == "Understorey NPP","Ring_3"],
                                                 temDF1[temDF1$term == "Leaf consumption","Ring_3"],
+                                              temDF1[temDF1$term == "Mycorrhizal production","Ring_3"],
                                                 temDF2[temDF2$term == "Ra leaf","Ring_3"],
                                                 temDF2[temDF2$term == "Ra stem","Ring_3"],
                                                 temDF2[temDF2$term == "Ra root","Ring_3"],
@@ -100,6 +105,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                 temDF1[temDF1$term == "Other NPP","Ring_6"],
                                                 temDF1[temDF1$term == "Understorey NPP","Ring_6"],
                                                 temDF1[temDF1$term == "Leaf consumption","Ring_6"],
+                                              temDF1[temDF1$term == "Mycorrhizal production","Ring_6"],
                                                 temDF2[temDF2$term == "Ra leaf","Ring_6"],
                                                 temDF2[temDF2$term == "Ra stem","Ring_6"],
                                                 temDF2[temDF2$term == "Ra root","Ring_6"],
@@ -116,6 +122,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                 temDF1[temDF1$term == "Other NPP","Ring_1"],
                                                 temDF1[temDF1$term == "Understorey NPP","Ring_1"],
                                                 temDF1[temDF1$term == "Leaf consumption","Ring_1"],
+                                              temDF1[temDF1$term == "Mycorrhizal production","Ring_1"],
                                                 temDF2[temDF2$term == "Ra leaf","Ring_1"],
                                                 temDF2[temDF2$term == "Ra stem","Ring_1"],
                                                 temDF2[temDF2$term == "Ra root","Ring_1"],
@@ -131,6 +138,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                 temDF1[temDF1$term == "Other NPP","Ring_4"],
                                                 temDF1[temDF1$term == "Understorey NPP","Ring_4"],
                                                 temDF1[temDF1$term == "Leaf consumption","Ring_4"],
+                                              temDF1[temDF1$term == "Mycorrhizal production","Ring_4"],
                                                 temDF2[temDF2$term == "Ra leaf","Ring_4"],
                                                 temDF2[temDF2$term == "Ra stem","Ring_4"],
                                                 temDF2[temDF2$term == "Ra root","Ring_4"],
@@ -146,6 +154,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                 temDF1[temDF1$term == "Other NPP","Ring_5"],
                                                 temDF1[temDF1$term == "Understorey NPP","Ring_5"],
                                                 temDF1[temDF1$term == "Leaf consumption","Ring_5"],
+                                              temDF1[temDF1$term == "Mycorrhizal production","Ring_5"],
                                                 temDF2[temDF2$term == "Ra leaf","Ring_5"],
                                                 temDF2[temDF2$term == "Ra stem","Ring_5"],
                                                 temDF2[temDF2$term == "Ra root","Ring_5"],
@@ -194,7 +203,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                   expression(NPP[ol]), expression(NPP[stem]),
                   expression(NPP[froot]), expression(NPP[croot]),
                   expression(NPP[other]), expression(NPP[ua]),
-                  expression(NPP[ins]), 
+                  expression(NPP[ins]), expression(NPP[myco]),
                   expression(R[ol]),
                   expression(R[stem]), expression(R[root]),
                   expression(R[ua]), 
@@ -202,7 +211,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
     
     ### Prepare variable colors
     require(viridis)
-    col.list1 <- viridis(15)
+    col.list1 <- viridis(16)
     
     ### make the bar plot
     p1 <- ggplot(plotDF1,
@@ -271,6 +280,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                      temDF1[temDF1$term == "Other NPP","aCO2"],
                      temDF1[temDF1$term == "Understorey NPP","aCO2"],
                      temDF1[temDF1$term == "Frass production","aCO2"],
+                     temDF1[temDF1$term == "Mycorrhizal production","aCO2"],
                      temDF2[temDF2$term == "Ra root","aCO2"],
                      temDF2[temDF2$term == "Rsoil","aCO2"])
     
@@ -280,12 +290,13 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                      temDF1[temDF1$term == "Other NPP","eCO2"],
                      temDF1[temDF1$term == "Understorey NPP","eCO2"],
                      temDF1[temDF1$term == "Frass production","eCO2"],
+                     temDF1[temDF1$term == "Mycorrhizal production","eCO2"],
                      temDF2[temDF2$term == "Ra root","eCO2"],
                      temDF2[temDF2$term == "Rsoil","eCO2"])
     
-    plotDF1$cat <- plotDF2$cat <- c(rep("Litter+Rroot", 7), rep("Rsoil", 1))
+    plotDF1$cat <- plotDF2$cat <- c(rep("Litter+Rroot", 8), rep("Rsoil", 1))
     plotDF1$term <- plotDF2$term <- c("Leaf NPP","Fine Root NPP","Coarse Root NPP","Other NPP",
-                                      "Understorey NPP","Frass production","Ra root",
+                                      "Understorey NPP","Frass production","Mycorrhizal NPP", "Ra root",
                                       "Rsoil")
     
     plotDF1$term <- factor(plotDF1$term, levels=unique(plotDF1$term))
@@ -312,6 +323,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                     temDF1[temDF1$term == "Other NPP","Ring_2"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_2"],
                                                     temDF1[temDF1$term == "Frass production","Ring_2"],
+                                                    temDF1[temDF1$term == "Mycorrhizal production","Ring_2"],
                                                     temDF2[temDF2$term == "Ra root","Ring_2"])
 
     errDF1[errDF1$cat=="Litter+Rroot", "R3"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_3"],
@@ -320,6 +332,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                     temDF1[temDF1$term == "Other NPP","Ring_3"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_3"],
                                                     temDF1[temDF1$term == "Frass production","Ring_3"],
+                                                    temDF1[temDF1$term == "Mycorrhizal production","Ring_3"],
                                                     temDF2[temDF2$term == "Ra root","Ring_3"])
     
     errDF1[errDF1$cat=="Litter+Rroot", "R6"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_6"],
@@ -328,6 +341,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                     temDF1[temDF1$term == "Other NPP","Ring_6"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_6"],
                                                     temDF1[temDF1$term == "Frass production","Ring_6"],
+                                                    temDF1[temDF1$term == "Mycorrhizal production","Ring_6"],
                                                     temDF2[temDF2$term == "Ra root","Ring_6"])
     
     ## eCO2
@@ -337,6 +351,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                     temDF1[temDF1$term == "Other NPP","Ring_1"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_1"],
                                                     temDF1[temDF1$term == "Frass production","Ring_1"],
+                                                    temDF1[temDF1$term == "Mycorrhizal production","Ring_1"],
                                                     temDF2[temDF2$term == "Ra root","Ring_1"])
     
     errDF2[errDF2$cat=="Litter+Rroot", "R4"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_4"],
@@ -345,6 +360,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                     temDF1[temDF1$term == "Other NPP","Ring_4"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_4"],
                                                     temDF1[temDF1$term == "Frass production","Ring_4"],
+                                                    temDF1[temDF1$term == "Mycorrhizal production","Ring_4"],
                                                     temDF2[temDF2$term == "Ra root","Ring_4"])
     
     errDF2[errDF2$cat=="Litter+Rroot", "R5"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_5"],
@@ -353,6 +369,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                                     temDF1[temDF1$term == "Other NPP","Ring_5"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_5"],
                                                     temDF1[temDF1$term == "Frass production","Ring_5"],
+                                                    temDF1[temDF1$term == "Mycorrhizal production","Ring_5"],
                                                     temDF2[temDF2$term == "Ra root","Ring_5"])
     
     ### Rsoil
@@ -384,11 +401,12 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
     var.labs2 <- c(expression(NPP[ol]), expression(NPP[froot]),
                   expression(NPP[croot]),expression(NPP[other]), 
                   expression(NPP[ua]),expression(Frass), 
+                  expression(NPP[myco]),
                   expression(R[root]),
                   expression(R[soil]))
     
     ### Prepare variable colors
-    col.list2 <- viridis(8)
+    col.list2 <- viridis(9)
     
     ### make the bar plot
     p3 <- ggplot(plotDF1,

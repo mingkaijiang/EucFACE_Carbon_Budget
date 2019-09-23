@@ -59,19 +59,19 @@ make_root_respiration_flux_3 <- function(){
   
   ### Calculate R root
   for (i in c(2,3,6)) {
-    tempDF$a.fr <- 1.1265
-    tempDF$b.fr <- 0.0455
+    tempDF$a.fr[tempDF$Ring==i] <- 1.1265
+    tempDF$b.fr[tempDF$Ring==i] <- 0.0455
     
-    tempDF$a.cr <- 0.6472
-    tempDF$b.cr <- 0.0702
+    tempDF$a.cr[tempDF$Ring==i] <- 0.6472
+    tempDF$b.cr[tempDF$Ring==i] <- 0.0702
   }
   
   for (i in c(1,4,5)) {
-    tempDF$a.fr <- 1.2303
-    tempDF$b.fr <- 0.0451
+    tempDF$a.fr[tempDF$Ring==i] <- 1.2303
+    tempDF$b.fr[tempDF$Ring==i] <- 0.0451
     
-    tempDF$a.cr <- 0.8697
-    tempDF$b.cr <- 0.0581
+    tempDF$a.cr[tempDF$Ring==i] <- 0.8697
+    tempDF$b.cr[tempDF$Ring==i] <- 0.0581
   }
   
   
@@ -81,20 +81,7 @@ make_root_respiration_flux_3 <- function(){
   
   ### convert from nmol CO2 g-1 s-1 to mg C m-2 15min-1
   tempDF$Rroot_mg_m2 <- tempDF$Rroot*60*15*1e-9*12.01*1000
-  
-  
-  #test <- summaryBy(cr_biomass~Ring, FUN=mean, data=tempDF, keep.names=T)
-  #test$CO2[test$Ring%in%c(2,3,6)] <- "amb"
-  #test$CO2[test$Ring%in%c(1,4,5)] <- "ele"
-  #
-  #summaryBy(cr_biomass~CO2, FUN=mean, data=test)
-  #
-  #test <- summaryBy(fr_biomass~Ring, FUN=mean, data=tempDF, keep.names=T)
-  #test$CO2[test$Ring%in%c(2,3,6)] <- "amb"
-  #test$CO2[test$Ring%in%c(1,4,5)] <- "ele"
-  #
-  #summaryBy(fr_biomass~CO2, FUN=mean, data=test)
-  
+
 
   ### sum across dates and plots
   tempDF.out <- summaryBy(Rroot_mg_m2~Date+Ring,data=tempDF,FUN=sum,keep.names=T)
@@ -106,6 +93,6 @@ make_root_respiration_flux_3 <- function(){
   tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date) + 1
   tempDF.out <- tempDF.out[,c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")]
   
-  
+
   return(tempDF.out)
 }

@@ -923,18 +923,24 @@ source("R/normalized/cue_calculation.R")
 cueDF <- cue_calculation(inDF=tables_by_ring_predicted)
 
 ### make a summary table for all key values used in the manuscript
-source("R/report_key_values_for_manuscript.R")
-report_key_values_for_manuscript()
+#source("R/report_key_values_for_manuscript.R")
+#report_key_values_for_manuscript()
+
+
+### eCO2 effect on fate of carbon
+###    Need to go into function to plot
+source("R/normalized/make_eCO2_effect_on_GPP_normalized_plot.R")
+make_eCO2_effect_on_GPP_normalized_plot(inDF=tables_by_ring_predicted)
+
+source("R/normalized/make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco.R")
+make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
+
 
 ### all eCO2 effect on a single vertical plot
 ###    Need to go into function to plot
 source("R/normalized/make_statistical_comparison_normalized_plots.R")
 make_statistical_comparison_normalized_plots(inDF=tables_by_ring_predicted)
 
-### eCO2 effect on fate of carbon
-###    Need to go into function to plot
-source("R/normalized/make_eCO2_effect_on_GPP_normalized_plot.R")
-make_eCO2_effect_on_GPP_normalized_plot(inDF=tables_by_ring_predicted)
 
 ### all supplementary figures
 source("R/plot_combined_figures.R")
