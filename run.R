@@ -684,7 +684,7 @@ chainLength <- 5000
 
 ### step C2: fitting
 ## Ring 2
-step.size.aCO2 <- 0.03 
+step.size.aCO2 <- 0.05 
 pChain_aCO2_1 <- MCMC_model_fitting(params = params.aCO2.R2, 
                                     params.lower = params.aCO2.lower.R2,
                                     params.upper = params.aCO2.upper.R2,
@@ -835,7 +835,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R4,
 
 
 # ring 5
-step.size.eCO2 <- 0.01 
+step.size.eCO2 <- 0.007 
 pChain_eCO2_3 <- MCMC_model_fitting(params = params.eCO2.R5, 
                                     params.lower = params.eCO2.lower.R5,
                                     params.upper = params.eCO2.upper.R5,

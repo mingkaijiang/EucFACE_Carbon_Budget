@@ -104,10 +104,10 @@ params.aCO2.upper.R3 <- c(init.parameters$alloc.pos.leaf[init.parameters$Ring=="
                           0.20,         # tau.soil.lit
                           250.0,        # C.ag.lit
                           100.0,        # C.bg.lit
-                          0.9,          # frac.myco
+                          0.5,          # frac.myco
                           0.5,          # frac.ag
                           0.5,          # frac.bg
-                          0.9)          # frac.micr
+                          0.5)          # frac.micr
 
 
 ### Ring 6
@@ -153,15 +153,15 @@ params.aCO2.upper.R6 <- c(init.parameters$alloc.pos.leaf[init.parameters$Ring=="
                           init.parameters$tau.pos.leaf[init.parameters$Ring=="6"],
                           init.parameters$tau.pos.froot[init.parameters$Ring=="6"],
                           init.parameters$tau.pos.myco[init.parameters$Ring=="6"],
-                          8.0,          # tau.bg.lit
+                          4.0,          # tau.bg.lit
                           40.0,         # tau.micr.lit
                           0.2,          # tau.soil.lit
                           350.0,        # C.ag.lit
                           150.0,        # C.bg.lit
-                          0.9,          # frac.myco
-                          0.8,          # frac.ag
-                          0.8,          # frac.bg
-                          0.9)          # frac.micr
+                          0.6,          # frac.myco
+                          0.6,          # frac.ag
+                          0.6,          # frac.bg
+                          0.6)          # frac.micr
 
 ### set number of parameter variables
 no.var <- length(params.aCO2.R2)

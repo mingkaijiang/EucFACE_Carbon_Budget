@@ -71,8 +71,8 @@ params.eCO2.R4 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="4"],
                     150.0,        # C.ag.lit
                     50.0,         # C.bg.lit
                     0.6,          # frac.myco
-                    0.8,          # frac.ag
-                    0.8,          # frac.bg
+                    0.6,          # frac.ag
+                    0.6,          # frac.bg
                     0.6)          # frac.micr
 
 params.eCO2.lower.R4 <- c(init.parameters$alloc.neg.leaf[init.parameters$Ring=="4"],
@@ -87,10 +87,10 @@ params.eCO2.lower.R4 <- c(init.parameters$alloc.neg.leaf[init.parameters$Ring=="
                           0.1,          # tau.soil.lit
                           100.0,        # C.ag.lit
                           50.0,         # C.bg.lit
-                          0.3,          # frac.myco
+                          0.5,          # frac.myco
                           0.5,          # frac.ag
                           0.5,          # frac.bg
-                          0.3)          # frac.micr
+                          0.5)          # frac.micr
 
 
 params.eCO2.upper.R4 <- c(init.parameters$alloc.pos.leaf[init.parameters$Ring=="4"],
