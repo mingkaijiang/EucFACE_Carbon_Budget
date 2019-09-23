@@ -4,7 +4,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
                                     range.option) {
     
     ### Assign chain length for MCMC parameter fitting
-    chainLength <- 10000
+    chainLength <- 5000
     
     ### step 1:
     ## this initial parameters explore prefit parameter space
