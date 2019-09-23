@@ -35,7 +35,9 @@
 ####                                   |
 ####                                   |
 ####                                  Ready
+####                                   |
 ####                                 Steady
+####                                   |
 ####                                   Go!
 ####                                   |
 ###########################################################################
@@ -509,13 +511,6 @@ heterotrophic_respiration_flux_ann <- make_rh_treatment_abs_effect_statistics(in
                                                                               stat.model="no_interaction_with_covariate",
                                                                               return.outcome="predicted")
 
-### Mycorrhizal production
-#mycorrhizal_c_production_flux_ann <- make_myc_production_treatment_abs_effect_statistics(inDF=mycorrhizal_c_production_flux, 
-#                                                                              var.cond="flux", var.col=5,
-#                                                                              date.as.factor=T,
-#                                                                              stat.model="no_interaction_with_covariate",
-#                                                                              return.outcome="predicted")
-
 ### Soil C
 soil_c_pool_ann <- make_soilc_treatment_abs_effect_statistics(inDF=soil_c_pool, 
                                                               var.cond="pool", var.col=3,
@@ -665,22 +660,24 @@ eco2DF <- initialize_obs_ele_dataframe()
 
 ### step B2:
 ## this initial parameters explore prefit parameter space
-init.parameters <- run_prefit_program_MCMC(dist.type=dist.type, 
-                                           obsDF=obsDF,
-                                           eco2DF=eco2DF,
-                                           range.option="sd")
+#init.parameters <- run_prefit_program_MCMC(dist.type=dist.type, 
+#                                           obsDF=obsDF,
+#                                           eco2DF=eco2DF,
+#                                           range.option="sd")
 
 ### step B3: initialize parameters the remaining parameters
+#source("definitions/initialize_aCO2_parameters.R")
+#source("definitions/initialize_eCO2_parameters.R")
+
 source("definitions/initialize_aCO2_parameters_wide.R")
 source("definitions/initialize_eCO2_parameters_wide.R")
-
 
 ########################################################################################
 #### C. Estimate remaining parameter uncertainties for ambient CO2 treatment
 ### step C1: set up 
 
 ### Assign chain length for MCMC parameter fitting
-chainLength <- 5000
+chainLength <- 500000
 
 ### step C2: fitting
 ## Ring 2
@@ -768,7 +765,6 @@ plot_posterior(inDF = pChain.aCO2, Trt = "aCO2", dist.type = dist.type,
 ### predict final output, at mean aCO2
 ### print out the final predicted results 
 ### check if the Rhet is OKish?
-#pChain.aCO2 <- read.csv("output/posterior_parameters_aCO2_uniform_5e+05.csv")
 predict_final_output(pChain = pChain.aCO2, 
                      obs = obsDF[4,],
                      return.option = "Check result")
@@ -873,12 +869,12 @@ predict_final_output(pChain = pChain.eCO2,
                      return.option = "Check result")
 
 
-########################################################################################
 #### E: Make aCO2 and eCO2 comparison summaries
 ### compute a output table to summarize parameters and their uncertainties
 make_parameter_summary_table()
 
 
+########################################################################################
 #### F: generate model-data comparison on allocation and turnover coefficients
 ####    Need to go into function to plot
 combine_all_model_output()

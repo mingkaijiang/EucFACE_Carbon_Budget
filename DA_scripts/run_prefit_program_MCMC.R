@@ -8,7 +8,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     
     ### step 1:
     ## this initial parameters explore prefit parameter space
-    source("definitions/initialize_aCO2_prefit_parameters_wide.R")
+    source("definitions/initialize_aCO2_prefit_parameters.R")
     
     ### step 2:
     ### Run MCMC for prefit parameters - at aCO2 for each ring
@@ -59,7 +59,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     ########################################################################################
     ### step 3: 
     ### read in parameter space for eCO2 treatment
-    source("definitions/initialize_eCO2_prefit_parameters_wide.R")
+    source("definitions/initialize_eCO2_prefit_parameters.R")
     
     
     ### step 4:
