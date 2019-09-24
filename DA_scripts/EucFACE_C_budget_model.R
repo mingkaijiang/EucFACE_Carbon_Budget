@@ -22,10 +22,9 @@ EucFACE_C_budget_model <- function(params,
   C.ag.lit <- params[10]
   C.bg.lit <- params[11]
   
-  frac.myco <- params[12]
-  frac.ag <- params[13]
-  frac.bg <- params[14]
-  frac.micr <- params[15]
+  frac.ag <- params[12]
+  frac.bg <- params[13]
+  frac.micr <- params[14]
   
   ### get total NPP
   NPP.tot <- obs$GPP.mean - obs$Ra.mean
@@ -58,9 +57,9 @@ EucFACE_C_budget_model <- function(params,
   delta.C.ag.lit <- tau.leaf * C.leaf - tau.ag.lit * C.ag.lit
   
   ### this is unconstrained
-  delta.C.bg.lit <- tau.froot * C.froot - tau.bg.lit * C.bg.lit
+  delta.C.bg.lit <- tau.myco + C.myco + tau.froot * C.froot - tau.bg.lit * C.bg.lit
   
-  delta.C.micr <- frac.ag * tau.ag.lit * C.ag.lit + frac.bg * tau.bg.lit * C.bg.lit + frac.myco * tau.myco * C.myco - tau.micr * C.micr
+  delta.C.micr <- frac.ag * tau.ag.lit * C.ag.lit + frac.bg * tau.bg.lit * C.bg.lit - tau.micr * C.micr
   
   delta.C.soil <- frac.micr * tau.micr * C.micr - tau.soil * C.soil
   
@@ -70,7 +69,6 @@ EucFACE_C_budget_model <- function(params,
   Rhet <- round(C.ag.lit * (1 - frac.ag) * tau.ag.lit +
                   C.bg.lit * (1 - frac.bg) * tau.bg.lit +
                   C.micr * (1 - frac.micr) * tau.micr +
-                  C.myco * (1 - frac.myco) * tau.myco + 
                   C.soil * tau.soil, 2)
   
   #browser()

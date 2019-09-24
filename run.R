@@ -673,7 +673,8 @@ source("definitions/initialize_aCO2_parameters.R")
 source("definitions/initialize_eCO2_parameters.R")
 
 ### Assign chain length for MCMC parameter fitting
-chainLength <- 10000
+chainLength <- 100000
+# run longer chain to see if the Rhet decreases and other fluxes match?
 
 
 ### step C2: fitting
@@ -728,7 +729,7 @@ plot_parameter_trace_within_parameter_space(params= params.aCO2.R3,
                                             Trt = "aCO2_2")
 
 # Ring 6
-step.size.aCO2 <- 0.002 
+step.size.aCO2 <- 0.003 
 
 pChain_aCO2_3 <- MCMC_model_fitting(params = params.aCO2.R6, 
                                     params.lower = params.aCO2.lower.R6,
@@ -778,20 +779,13 @@ predict_final_output(pChain = pChain.aCO2,
 
 ### step D2: 
 ### set up step size for aCO2 and eCO2 
-if (prefit.option == "prefit") {
-    chainLength <- 5000
-} else if (prefit.option == "wide") {
-    chainLength <- 50000
-}
+chainLength <- 10000
+
 
 ### step D3:
 ### fit the model with eCO2 parameter space to get parameter uncertainties
 # Ring 1
-if (prefit.option == "prefit") {
-    step.size.eCO2 <- 0.006 
-} else if (prefit.option == "wide") {
-    step.size.eCO2 <- 0.006 
-}
+step.size.eCO2 <- 0.006 
 
 pChain_eCO2_1 <- MCMC_model_fitting(params = params.eCO2.R1, 
                                     params.lower = params.eCO2.lower.R1,
@@ -815,11 +809,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R1,
 
 
 # ring 4
-if (prefit.option == "prefit") {
-    step.size.eCO2 <- 0.002 
-} else if (prefit.option == "wide") {
-    step.size.eCO2 <- 0.002 
-}
+step.size.eCO2 <- 0.002 
 
 pChain_eCO2_2 <- MCMC_model_fitting(params = params.eCO2.R4, 
                                     params.lower = params.eCO2.lower.R4,
@@ -844,11 +834,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R4,
 
 
 # ring 5
-if (prefit.option == "prefit") {
-    step.size.eCO2 <- 0.007 
-} else if (prefit.option == "wide") {
-    step.size.eCO2 <- 0.007 
-}
+step.size.eCO2 <- 0.007 
 
 pChain_eCO2_3 <- MCMC_model_fitting(params = params.eCO2.R5, 
                                     params.lower = params.eCO2.lower.R5,
