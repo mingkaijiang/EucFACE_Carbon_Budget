@@ -779,13 +779,13 @@ predict_final_output(pChain = pChain.aCO2,
 
 ### step D2: 
 ### set up step size for aCO2 and eCO2 
-chainLength <- 10000
+chainLength <- 100000
 
 
 ### step D3:
 ### fit the model with eCO2 parameter space to get parameter uncertainties
 # Ring 1
-step.size.eCO2 <- 0.006 
+step.size.eCO2 <- 0.0002 
 
 pChain_eCO2_1 <- MCMC_model_fitting(params = params.eCO2.R1, 
                                     params.lower = params.eCO2.lower.R1,
@@ -809,7 +809,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R1,
 
 
 # ring 4
-step.size.eCO2 <- 0.002 
+step.size.eCO2 <- 0.0004 
 
 pChain_eCO2_2 <- MCMC_model_fitting(params = params.eCO2.R4, 
                                     params.lower = params.eCO2.lower.R4,
@@ -834,7 +834,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R4,
 
 
 # ring 5
-step.size.eCO2 <- 0.007 
+step.size.eCO2 <- 0.0003 
 
 pChain_eCO2_3 <- MCMC_model_fitting(params = params.eCO2.R5, 
                                     params.lower = params.eCO2.lower.R5,

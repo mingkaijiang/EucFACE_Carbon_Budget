@@ -12,13 +12,13 @@ predict_final_output <- function(pChain,
                             "tau.bg.lit", 
                             "tau.micr", "tau.soil", 
                             "C.ag.lit", "C.bg.lit",
-                            "frac.myco", "frac.ag.lit", "frac.bg.lit", "frac.micr",
+                            "frac.ag.lit", "frac.bg.lit", "frac.micr",
                             "alloc.leaf.sd", "alloc.wood.sd", "alloc.froot.sd",#"alloc.myco.sd",
                             "tau.leaf.sd", "tau.froot.sd", "tau.myco.sd",
                             "tau.bg.lit.sd", 
                             "tau.micr.sd", "tau.soil.sd", 
                             "C.ag.lit.sd", "C.bg.lit.sd",
-                            "frac.myco.sd", "frac.ag.lit.sd", "frac.bg.lit.sd", "frac.micr.sd")
+                            "frac.ag.lit.sd", "frac.bg.lit.sd", "frac.micr.sd")
     
     param.final[,1:no.var] = param.set
     param.final[,(no.var+1):(no.var*2)] = param.SD
