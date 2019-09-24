@@ -20,12 +20,12 @@ params.eCO2.R1 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="1"],
                     0.8,          # frac.bg
                     0.6)          # frac.micr
 
-params.eCO2.lower.R1 <- c(0.3,          # alloc leaf
-                          0.1,          # alloc wood
-                          0.05,         # alloc froot
-                          0.95,         # tau leaf
-                          0.8,          # tau froot
-                          2.0,
+params.eCO2.lower.R1 <- c(init.parameters$alloc.neg.leaf[init.parameters$Ring=="1"],
+                          init.parameters$alloc.neg.wood[init.parameters$Ring=="1"],
+                          init.parameters$alloc.neg.froot[init.parameters$Ring=="1"],
+                          init.parameters$tau.neg.leaf[init.parameters$Ring=="1"],
+                          init.parameters$tau.neg.froot[init.parameters$Ring=="1"],
+                          init.parameters$tau.neg.myco[init.parameters$Ring=="1"],
                           0.5,          # tau.bg.lit
                           2.0,          # tau.micr.lit
                           0.1,         # tau.soil.lit
@@ -37,12 +37,12 @@ params.eCO2.lower.R1 <- c(0.3,          # alloc leaf
                           0.3)          # frac.micr
 
 
-params.eCO2.upper.R1 <- c(0.6,          # alloc leaf
-                          0.3,          # alloc wood
-                          0.2,          # alloc froot
-                          1.5,          # tau leaf
-                          2.0,          # tau froot
-                          80.0,
+params.eCO2.upper.R1 <- c(init.parameters$alloc.pos.leaf[init.parameters$Ring=="1"],
+                          init.parameters$alloc.pos.wood[init.parameters$Ring=="1"],
+                          init.parameters$alloc.pos.froot[init.parameters$Ring=="1"],
+                          init.parameters$tau.pos.leaf[init.parameters$Ring=="1"],
+                          init.parameters$tau.pos.froot[init.parameters$Ring=="1"],
+                          init.parameters$tau.pos.myco[init.parameters$Ring=="1"],
                           1.0,          # tau.bg.lit
                           6.0,          # tau.micr.lit
                           0.20,         # tau.soil.lit
@@ -71,12 +71,12 @@ params.eCO2.R4 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="4"],
                     0.6,          # frac.bg
                     0.6)          # frac.micr
 
-params.eCO2.lower.R4 <- c(0.3,          # alloc leaf
-                          0.1,          # alloc wood
-                          0.05,         # alloc froot
-                          0.95,         # tau leaf
-                          0.8,          # tau froot
-                          2.0,
+params.eCO2.lower.R4 <- c(init.parameters$alloc.neg.leaf[init.parameters$Ring=="4"],
+                          init.parameters$alloc.neg.wood[init.parameters$Ring=="4"],
+                          init.parameters$alloc.neg.froot[init.parameters$Ring=="4"],
+                          init.parameters$tau.neg.leaf[init.parameters$Ring=="4"],
+                          init.parameters$tau.neg.froot[init.parameters$Ring=="4"],
+                          init.parameters$tau.neg.myco[init.parameters$Ring=="4"],
                           2.0,          # tau.bg.lit
                           6.0,          # tau.micr.lit
                           0.1,          # tau.soil.lit
@@ -88,12 +88,12 @@ params.eCO2.lower.R4 <- c(0.3,          # alloc leaf
                           0.5)          # frac.micr
 
 
-params.eCO2.upper.R4 <- c(0.6,          # alloc leaf
-                          0.3,          # alloc wood
-                          0.2,          # alloc froot
-                          1.5,          # tau leaf
-                          2.0,          # tau froot
-                          80.0,
+params.eCO2.upper.R4 <- c(init.parameters$alloc.pos.leaf[init.parameters$Ring=="4"],
+                          init.parameters$alloc.pos.wood[init.parameters$Ring=="4"],
+                          init.parameters$alloc.pos.froot[init.parameters$Ring=="4"],
+                          init.parameters$tau.pos.leaf[init.parameters$Ring=="4"],
+                          init.parameters$tau.pos.froot[init.parameters$Ring=="4"],
+                          init.parameters$tau.pos.myco[init.parameters$Ring=="4"],
                           6.0,          # tau.bg.lit
                           40.0,         # tau.micr.lit
                           0.3,          # tau.soil.lit
@@ -122,12 +122,12 @@ params.eCO2.R5 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="5"],
                     0.8,          # frac.bg
                     0.6)          # frac.micr
 
-params.eCO2.lower.R5 <- c(0.3,          # alloc leaf
-                          0.1,          # alloc wood
-                          0.05,         # alloc froot
-                          0.95,         # tau leaf
-                          0.8,          # tau froot
-                          2.0,
+params.eCO2.lower.R5 <- c(init.parameters$alloc.neg.leaf[init.parameters$Ring=="5"],
+                          init.parameters$alloc.neg.wood[init.parameters$Ring=="5"],
+                          init.parameters$alloc.neg.froot[init.parameters$Ring=="5"],
+                          init.parameters$tau.neg.leaf[init.parameters$Ring=="5"],
+                          init.parameters$tau.neg.froot[init.parameters$Ring=="5"],
+                          init.parameters$tau.neg.myco[init.parameters$Ring=="5"],
                           0.5,          # tau.bg.lit
                           2.0,          # tau.micr.lit
                           0.01,         # tau.soil.lit
@@ -139,12 +139,12 @@ params.eCO2.lower.R5 <- c(0.3,          # alloc leaf
                           0.3)          # frac.micr
 
 
-params.eCO2.upper.R5 <- c(0.6,          # alloc leaf
-                          0.3,          # alloc wood
-                          0.2,          # alloc froot
-                          1.5,          # tau leaf
-                          2.0,          # tau froot
-                          80.0,
+params.eCO2.upper.R5 <- c(init.parameters$alloc.pos.leaf[init.parameters$Ring=="5"],
+                          init.parameters$alloc.pos.wood[init.parameters$Ring=="5"],
+                          init.parameters$alloc.pos.froot[init.parameters$Ring=="5"],
+                          init.parameters$tau.pos.leaf[init.parameters$Ring=="5"],
+                          init.parameters$tau.pos.froot[init.parameters$Ring=="5"],
+                          init.parameters$tau.pos.myco[init.parameters$Ring=="5"],
                           1.0,          # tau.bg.lit
                           6.0,         # tau.micr.lit
                           0.20,         # tau.soil.lit

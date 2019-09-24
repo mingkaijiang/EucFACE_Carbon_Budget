@@ -673,16 +673,12 @@ source("definitions/initialize_aCO2_parameters.R")
 source("definitions/initialize_eCO2_parameters.R")
 
 ### Assign chain length for MCMC parameter fitting
-chainLength <- 5000
+chainLength <- 10000
 
 
 ### step C2: fitting
 ## Ring 2
-if (prefit.option == "prefit") {
-    step.size.aCO2 <- 0.05 
-} else if (prefit.option == "wide") {
-    step.size.aCO2 <- 0.005 
-}
+step.size.aCO2 <- 0.0035 
 
 pChain_aCO2_1 <- MCMC_model_fitting(params = params.aCO2.R2, 
                                     params.lower = params.aCO2.lower.R2,
@@ -708,11 +704,7 @@ plot_parameter_trace_within_parameter_space(params= params.aCO2.R2,
 
 
 # Ring 3
-if (prefit.option == "prefit") {
-    step.size.aCO2 <- 0.05 
-} else if (prefit.option == "wide") {
-    step.size.aCO2 <- 0.005 
-}
+step.size.aCO2 <- 0.0035 
 
 pChain_aCO2_2 <- MCMC_model_fitting(params = params.aCO2.R3, 
                                     params.lower = params.aCO2.lower.R3,
@@ -736,11 +728,7 @@ plot_parameter_trace_within_parameter_space(params= params.aCO2.R3,
                                             Trt = "aCO2_2")
 
 # Ring 6
-if (prefit.option == "prefit") {
-    step.size.aCO2 <- 0.0009 
-} else if (prefit.option == "wide") {
-    step.size.aCO2 <- 0.002 
-}
+step.size.aCO2 <- 0.002 
 
 pChain_aCO2_3 <- MCMC_model_fitting(params = params.aCO2.R6, 
                                     params.lower = params.aCO2.lower.R6,
