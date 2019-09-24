@@ -779,7 +779,7 @@ predict_final_output(pChain = pChain.aCO2,
 
 ### step D2: 
 ### set up step size for aCO2 and eCO2 
-chainLength <- 100000
+chainLength <- 200000
 
 
 ### step D3:
@@ -809,7 +809,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R1,
 
 
 # ring 4
-step.size.eCO2 <- 0.0004 
+step.size.eCO2 <- 0.0003 
 
 pChain_eCO2_2 <- MCMC_model_fitting(params = params.eCO2.R4, 
                                     params.lower = params.eCO2.lower.R4,
@@ -873,14 +873,19 @@ predict_final_output(pChain = pChain.eCO2,
                      return.option = "Check result")
 
 
+#### E: Make aCO2 and eCO2 comparison summaries
+### compute a output table to summarize parameters and their uncertainties
+make_parameter_summary_table()
+
+
 ########################################################################################
 #### F: generate model-data comparison on allocation and turnover coefficients
 ####    Need to go into function to plot
-combine_all_model_output()
+#combine_all_model_output()
 
 #### G: model-data comparison based on traceability framework
 ####    Need to go into function to plot
-compare_data_model_traceability()
+#compare_data_model_traceability()
 
 
 ###########################################################################
@@ -888,6 +893,7 @@ compare_data_model_traceability()
 ###                         prepare summary tables and figures          ###
 ###########################################################################
 ### add NPP myco flux to the dataframe
+source("R/add_NPPmyco_to_summary_table.R")
 tables_by_ring_predicted <- add_NPPmyco_to_summary_table(inDF = tables_by_ring_predicted,
                                                          pChain.aCO2 = pChain.aCO2,
                                                          pChain.eCO2 = pChain.eCO2)
