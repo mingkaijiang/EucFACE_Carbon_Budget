@@ -343,10 +343,8 @@ tables_by_ring <- make_table_by_ring()
 #source("R/un_normalized/nep_gap_plot.R")
 #nep_gap_plot(inDF=tables_by_ring)
 
-source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
-make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
-
-
+#source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
+#make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 
 ###########################################################################

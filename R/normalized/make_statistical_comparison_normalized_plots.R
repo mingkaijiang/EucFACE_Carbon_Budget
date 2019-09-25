@@ -15,7 +15,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                    "doc", "soil_respiration", "growth_respiration",
                    "leaf_prod", "wood_prod", "fineroot_prod",
                    "coarseroot_prod", "other_prod", "understorey_prod", 
-                   "understorey_lit", "frass_prod", "herb_consump", #"mycorrhizal_prod",
+                   "understorey_lit", "frass_prod", "herb_consump", "mycorrhizal_prod",
                    "hetero_respiration", "over_leaf", "wood", "und_aboveground",
                    "fineroot", "coarseroot", "litter", "cwd", "microbe",
                    "soil", "mycorrhizae", "insects", 
@@ -29,7 +29,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                        rep("resp", 10), 
                        rep("prod", 6),
                        rep("litter", 2), 
-                       rep("prod", 1), 
+                       rep("prod", 2), 
                        rep("resp", 1), 
                        rep("pool", 11), 
                        rep("change_in_pool", 10))  
@@ -63,7 +63,6 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         }
     }
     
-    #xticks.brk <- xticks <- c(-400, -200, -50, -25, 0, 25, 50, 150, 300, 600)
     xticks.brk <- xticks <- c(-200,-50, -25, 0, 25, 50, 200, 400)
     
     #Transform the data onto the display scale
@@ -121,6 +120,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                 "growth_respiration"=expression(R[grow]))
     
     y.lab3 <- c("herb_consump"=expression(NPP[ins]),
+                "mycorrhizal_prod"=expression(NPP[myco]),
                 "lerp_prod"=expression(NPP[lerp]),
                 "leaf_prod"=expression(NPP[ol]),
                 "other_prod"=expression(NPP[other]),
@@ -252,18 +252,6 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
         scale_y_discrete(labels=y.lab2)
     
-    #grid.labs <- c("(a)", "(b)", "(c)")
-    
-    #require(grid)
-    
-    ## plot 
-    #pdf("R_other/treatment_effect_abs_no_interaction_change_in_pool.pdf", width=8, height=10)
-    #grid.newpage()
-    #grid.draw(rbind(ggplotGrob(p8), ggplotGrob(p5), ggplotGrob(p6), 
-    #                ggplotGrob(p7), size="last"))
-    #grid.text(grid.labs,x = 0.95, y = c(0.95, 0.63, 0.32),
-    #          gp=gpar(fontsize=16, col="black", fontface="bold"))
-    #dev.off()
     
     pdf("output/statistical_comparison_normalized_plots.pdf", width=8, height=12)
     require(cowplot)    
