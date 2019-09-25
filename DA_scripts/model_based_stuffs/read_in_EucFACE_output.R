@@ -11,7 +11,7 @@ read_in_EucFACE_output <- function() {
     colnames(outDF) <- c("CO2", "variable", "value", "sd")
     
     ### read in MCMC output
-    inDF <-read.csv("output/set_aside_runs/parameter_summary_table.csv")
+    inDF <-read.csv("DA_output/parameter_summary_table.csv")
     inDF$tau.ag.lit[1] <- 365 * mean(c(0.0059, 0.0035, 0.0072))
     inDF$tau.ag.lit[2] <- 365 * mean(c(0.0056, 0.0079, 0.0083))
     

@@ -103,7 +103,7 @@ combine_all_model_output <- function() {
     
     ### color blind friendly
     library(RColorBrewer)
-    display.brewer.all(colorblindFriendly = TRUE)
+    #display.brewer.all(colorblindFriendly = TRUE)
     f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)
     cols <- f("Set2")
 
@@ -201,7 +201,7 @@ combine_all_model_output <- function() {
         scale_x_discrete("",  
                          limits=c("tau_SOIL"),
                          labels=c("Soil"))+
-        scale_y_continuous(limits=c(0, 0.2), 
+        scale_y_continuous(limits=c(0, 0.22), 
                            breaks=c(0, 0.1, 0.2),
                            labels=c(0, 0.1, 0.2))+
         scale_fill_manual(values=c("CABL"=cols[1], "CLM4"=cols[2],"CLMP"=cols[3],
@@ -220,7 +220,7 @@ combine_all_model_output <- function() {
     
     
     ### output
-    pdf("output/model_data_comparison.pdf", width=8, height=10)
+    pdf("DA_output/model_data_comparison.pdf", width=8, height=10)
     plot_grid(p1, combined_plots, legend_shared, 
               labels=c("A","",""),
               ncol=1, rel_heights=c(1,1,0.3))

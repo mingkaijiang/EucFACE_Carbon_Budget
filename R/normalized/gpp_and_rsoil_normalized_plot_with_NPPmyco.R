@@ -1,10 +1,10 @@
 gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
     
     ### subseting DF
-    temDF1 <- inDF$npp[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2")]
-    temDF2 <- inDF$inout[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2")]
-    temDF3 <- inDF$pool[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2")]
-    temDF4 <- inDF$delta_pool[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2")]
+    temDF1 <- inDF$npp[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2", "aCO2_sd", "eCO2_sd")]
+    temDF2 <- inDF$inout[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2", "aCO2_sd", "eCO2_sd")]
+    temDF3 <- inDF$pool[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2", "aCO2_sd", "eCO2_sd")]
+    temDF4 <- inDF$delta_pool[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", "aCO2", "eCO2", "aCO2_sd", "eCO2_sd")]
     
     
     ### create data frames to store ring average for aCO2 and eCO2
@@ -114,6 +114,21 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                               temDF2[temDF2$term == "Rgrowth","Ring_6"],
                                               temDF2[temDF2$term == "VOC","Ring_6"])
     
+    #errDF1[errDF1$cat=="NPP+Ra", "aCO2_sd"] <- sqrt(sum(temDF1[temDF1$term == "Leaf NPP","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Stem NPP","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Fine Root NPP","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Coarse Root NPP","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Other NPP","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Understorey NPP","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Leaf consumption","aCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Mycorrhizal production","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra leaf","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra stem","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra root","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra understorey","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Rgrowth","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "VOC","aCO2_sd"]^2) / nrow(plotDF1[plotDF1$cat=="NPP+Ra",]))
+    
     
     ## eCO2
     errDF2[errDF2$cat=="NPP+Ra", "R1"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_1"],
@@ -163,6 +178,22 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                                               temDF2[temDF2$term == "Rgrowth","Ring_5"],
                                               temDF2[temDF2$term == "VOC","Ring_5"])
     
+    
+    #errDF2[errDF2$cat=="NPP+Ra", "eCO2_sd"] <- sqrt(sum(temDF1[temDF1$term == "Leaf NPP","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Stem NPP","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Fine Root NPP","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Coarse Root NPP","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Other NPP","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Understorey NPP","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Leaf consumption","eCO2_sd"]^2,
+    #                                                    temDF1[temDF1$term == "Mycorrhizal production","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra leaf","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra stem","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra root","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Ra understorey","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "Rgrowth","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "VOC","eCO2_sd"]^2) / nrow(plotDF2[plotDF2$cat=="NPP+Ra",]))
+    
     ### calculate sum of GPP for each ring
     ## aCO2
     errDF1[errDF1$cat=="MAESPA", "R2"] <- sum(temDF2[temDF2$term == "GPP overstorey","Ring_2"],
@@ -174,6 +205,9 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
     errDF1[errDF1$cat=="MAESPA", "R6"] <- sum(temDF2[temDF2$term == "GPP overstorey","Ring_6"],
                                               temDF2[temDF2$term == "GPP understorey","Ring_6"])
     
+    #errDF1[errDF1$cat=="MAESPA", "aCO2_sd"] <- sqrt(sum(temDF2[temDF2$term == "GPP overstorey","aCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "GPP understorey","aCO2_sd"]^2) / nrow(plotDF1[plotDF1$cat=="MAESPA",]))
+    
     ## eCO2
     errDF2[errDF2$cat=="MAESPA", "R1"] <- sum(temDF2[temDF2$term == "GPP overstorey","Ring_1"],
                                               temDF2[temDF2$term == "GPP understorey","Ring_1"])
@@ -184,12 +218,17 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
     errDF2[errDF2$cat=="MAESPA", "R5"] <- sum(temDF2[temDF2$term == "GPP overstorey","Ring_5"],
                                               temDF2[temDF2$term == "GPP understorey","Ring_5"])
     
+    #errDF2[errDF2$cat=="MAESPA", "eCO2_sd"] <- sqrt(sum(temDF2[temDF2$term == "GPP overstorey","eCO2_sd"]^2,
+    #                                                    temDF2[temDF2$term == "GPP understorey","eCO2_sd"]^2) / nrow(plotDF2[plotDF2$cat=="MAESPA",]))
+    
     
     ## calculate means and sd, convert unit from g C to kg C
     errDF1$aCO2 <- rowMeans(subset(errDF1, select=c(R2, R3, R6)), na.rm=T)/1000
+    #errDF1$aCO2_sd <- errDF1$aCO2_sd/1000
     errDF1$aCO2_sd <- rowSds(as.matrix(subset(errDF1, select=c(R2, R3, R6)), na.rm=T))/1000
     
     errDF2$eCO2 <- rowMeans(subset(errDF2, select=c(R1, R4, R5)), na.rm=T)/1000
+    #errDF2$eCO2_sd <- errDF2$eCO2_sd/1000
     errDF2$eCO2_sd <- rowSds(as.matrix(subset(errDF2, select=c(R1, R4, R5)), na.rm=T))/1000
     
     errDF1$pos <- errDF1$aCO2+errDF1$aCO2_sd
@@ -458,10 +497,10 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                  aes(cat, eCO2)) +
         geom_bar(stat = "identity", aes(fill=term, color=term),
                  position="stack") +
-        geom_segment(data=errDF2, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="black")+
         geom_point(data=errDF2, mapping=aes(x=cat, y=eCO2), 
                    size=4, shape=21, fill="white")+
+        geom_segment(data=errDF2, aes(x=cat, xend=cat, y=neg, yend=pos), 
+                     colour="black")+
         xlab("") + ylab(expression(paste(R[soil], " (kg C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c(expression(paste("Litter+", R[root])),
                                   expression(R[soil])))+

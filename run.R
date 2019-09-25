@@ -17,7 +17,7 @@
 ####       Return units: Pools - g C m-2, fluxes - mg C m-2 d-1
 ###########################################################################
 ###########################################################################
-#### Code structure
+#### Code structure:
 #### There are in total 8 chunk steps:
 #### Step 1: Prepare the basics, including R package, constants, sourcing code scripts;
 #### Step 2: (Optional) Prepare met data for simulations;
@@ -29,6 +29,14 @@
 #### Step 7: Perform data assimilation to estimate uncertainties,
 ####         and NPPmyco;
 #### Step 8: Return to C budget and generate figures.
+####
+###########################################################################
+###########################################################################
+#### Notes:
+#### 1. functions that take a long time to run:
+####    make_leafc_treatment_abs_effect_statistics()
+####    DA fitting functions (if long chain is used)
+#### 2. to plot figures, we need to go into functions itself for many plotting scripts
 ####
 ###########################################################################
 ###########################################################################
@@ -881,11 +889,11 @@ make_parameter_summary_table()
 ########################################################################################
 #### F: generate model-data comparison on allocation and turnover coefficients
 ####    Need to go into function to plot
-#combine_all_model_output()
+combine_all_model_output()
 
 #### G: model-data comparison based on traceability framework
 ####    Need to go into function to plot
-#compare_data_model_traceability()
+compare_data_model_traceability()
 
 
 ###########################################################################
