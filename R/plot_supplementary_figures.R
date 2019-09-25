@@ -108,7 +108,7 @@ p3 <- ggplot(leafc.tr, aes(Date))+
 grid.labs <- c("(a)", "(b)", "(c)")
 
 ## plot 
-pdf("output/LAI_SLA_LeafC_time_series.pdf", width=10,height=8)
+pdf("output/Figure_S3.pdf", width=10,height=8)
 grid.newpage()
 grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), 
                 ggplotGrob(p3), size="last"))
@@ -171,98 +171,10 @@ p1 <- ggplot(uac2.yr, aes(x=as.character(year), y=avg.mean))+
 
 plot(p1)
 
-pdf("output/Understorey_C_pool_stereo_camera.pdf")
+pdf("output/Figure_S5.pdf")
 plot(p1)
 dev.off()
-#
-#uac1.live.tr$Class <- "Live"
-#uac1.dead.tr$Class <- "Dead"
-#uac1.class.tr <- rbind(uac1.live.tr, uac1.dead.tr)
-#
-### uac1 plot
-#p1 <- ggplot(uac1.tr, aes(Date))+
-#    #geom_ribbon(data=uac1.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-#    geom_segment(data=uac1.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
-#    geom_point(data=uac1.tr, aes(y=avg, color=factor(Treatment)))+
-#    #geom_smooth(method="loess", aes(y=Total_g_C_m2, color=factor(Ring)))+
-#    labs(x="Date", y=expression(paste(C[ua1], " (g C ", m^-2, ")")))+
-#    scale_x_date(date_breaks = "6 month", 
-#                 date_labels="%b-%Y",
-#                 limits = as.Date(c('2015-01-01','2017-05-01')))+
-#    theme_linedraw() +
-#    theme(panel.grid.minor=element_blank(),
-#          axis.title.x = element_blank(), 
-#          axis.text.x = element_blank(),
-#          axis.text.y=element_text(size=12),
-#          axis.title.y=element_text(size=14),
-#          legend.text=element_text(size=12),
-#          legend.title=element_text(size=14),
-#          panel.grid.major=element_blank(),
-#          legend.position="right")+
-#    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-#                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-#    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-#                      labels=c(expression(aCO[2]), expression(eCO[2])))
-#
-### uac2 plot
-p2 <- ggplot(uac2.tr, aes(Date))+
-    #geom_ribbon(data=uac2.tr,aes(ymin=neg, ymax=pos, fill=factor(Treatment)))+
-    geom_segment(data=uac2.tr, aes(x=Date, y=neg, xend=Date, yend=pos, color=factor(Treatment)))+
-    #geom_smooth(method="loess", aes(y=avg, color=factor(Treatment), fill=factor(Treatment)))+
-    geom_point(data=uac2.tr, aes(y=avg, color=factor(Treatment)))+
-    labs(x="Date", y=expression(paste(C[ua2], " (g C ", m^-2, ")")))+
-    scale_x_date(date_breaks = "6 month", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2015-01-01','2016-12-31')))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
 
-### uac1 live and dead bar plot
-#p3 <- ggplot(uac1.class.tr, aes(x=Date, y=avg, fill=Class))+
-#    geom_bar(stat="identity", position="stack")+facet_grid(~Treatment)+
-#    labs(x="Date", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
-#    theme_linedraw() +
-#    theme(panel.grid.minor=element_blank(),
-#          axis.title.x = element_text(size=14), 
-#          axis.text.x = element_text(size=12),
-#          axis.text.y=element_text(size=12),
-#          axis.title.y=element_text(size=14),
-#          legend.text=element_text(size=12),
-#          legend.title=element_text(size=14),
-#          panel.grid.major=element_blank(),
-#          legend.position="right")+
-#    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-#                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-#    scale_fill_manual(name="Vegetation", values = c("Live" = "green", "Dead" = "orange"),
-#                      labels=c("Live","Dead"))
-#
-#grid.labs <- c("(a)", "(b)", "(c)", "(d)")
-#
-#require(cowplot)
-#
-### plot 
-#pdf("output/Understorey_C_pool_stereo_camera.pdf")
-#plot(p2)
-#dev.off()
-##grid.newpage()
-##grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p2), ggplotGrob(p3),
-##                size="last"))
-#grid.text(grid.labs,x = c(0.1,0.1,0.1,0.5), y = c(0.95, 0.62, 0.28, 0.28),
-#          gp=gpar(fontsize=16, col="black", fontface="bold"))
-#dev.off()
-#
 
 ###################---------------------######################
 ### Wood C pool
@@ -396,231 +308,12 @@ p5 <- ggplot(woodc.ring, aes(x=Date, y=Wood_Stock_gCm2, color=as.factor(Ring)))+
 grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/Wood_C_time_series.pdf", width=6,height=6)
+pdf("output/Figure_S4.pdf", width=6,height=6)
 plot_grid(p4, p5, labels="", ncol=1, align="v", axis = "b")
 grid.text(grid.labs,x = 0.2, y = c(0.96, 0.46),
           gp=gpar(fontsize=14, col="black", fontface="bold"))
 dev.off()
 
-###################---------------------######################
-### Wood C tree plot
-##  generate treatment effect df for each variable
-wood.stock <- make_dbh_and_wood_stock(include.bark.effect=TRUE)
-wood.stock.tr <- make_treatment_effect_df_2(inDF=wood.stock)
-wood.stock.tr$Wood_Stock <- wood.stock.tr$Wood_Stock / 1000
-
-require(plot3D)
-tmp <- subset(wood.stock.tr, Date == "2012-12-20")
-
-#### Get xlim, ylim and zlim
-#h.range <- c(min(tmp$Height), max(tmp$Height))
-#d.range <- c(min(tmp$Diameter), max(tmp$Diameter))
-#b.range <- c(min(tmp$Wood_Stock), max(tmp$Wood_Stock))
-#
-#### Exact individual rings
-#R1 <- subset(tmp, Ring == 1)
-#R2 <- subset(tmp, Ring == 2)
-#R3 <- subset(tmp, Ring == 3)
-#R4 <- subset(tmp, Ring == 4)
-#R5 <- subset(tmp, Ring == 5)
-#R6 <- subset(tmp, Ring == 6)
-#
-#p1 <- with(R1, scatter3D(Height, Diameter, Wood_Stock,  type = "h", phi=0,
-#               ticktype = "detailed", pch = 19, cex = 0.5,
-#               xlab = "HEight (m)", ylab = "Diameter (cm)", 
-#               zlab = "Biomass (kg C)", xlim = h.range,
-#               ylim = d.range, zlim = b.range))
-#
-#p2 <- with(R2, scatter3D(Height, Diameter, Wood_Stock,  type = "h", phi=0,
-#                         ticktype = "detailed", pch = 19, cex = 0.5,
-#                         xlab = "HEight (m)", ylab = "Diameter (cm)", 
-#                         zlab = "Biomass (kg C)", xlim = h.range,
-#                         ylim = d.range, zlim = b.range))
-#
-#p3 <- with(R3, scatter3D(Height, Diameter, Wood_Stock,  type = "h", phi=0,
-#                         ticktype = "detailed", pch = 19, cex = 0.5,
-#                         xlab = "HEight (m)", ylab = "Diameter (cm)", 
-#                         zlab = "Biomass (kg C)", xlim = h.range,
-#                         ylim = d.range, zlim = b.range))
-#
-#p4 <- with(R4, scatter3D(Height, Diameter, Wood_Stock,  type = "h", phi=0,
-#                         ticktype = "detailed", pch = 19, cex = 0.5,
-#                         xlab = "HEight (m)", ylab = "Diameter (cm)", 
-#                         zlab = "Biomass (kg C)", xlim = h.range,
-#                         ylim = d.range, zlim = b.range))
-#
-#p5 <- with(R5, scatter3D(Height, Diameter, Wood_Stock,  type = "h", phi=0,
-#                         ticktype = "detailed", pch = 19, cex = 0.5,
-#                         xlab = "HEight (m)", ylab = "Diameter (cm)", 
-#                         zlab = "Biomass (kg C)", xlim = h.range,
-#                         ylim = d.range, zlim = b.range))
-#
-#p6 <- with(R6, scatter3D(Height, Diameter, Wood_Stock,  type = "h", phi=0,
-#                         ticktype = "detailed", pch = 19, cex = 0.5,
-#                         xlab = "HEight (m)", ylab = "Diameter (cm)", 
-#                         zlab = "Biomass (kg C)", xlim = h.range,
-#                         ylim = d.range, zlim = b.range))
-
-# c1 <- colorRamps::blue2red(6)
-c1 <- c("#FFAA00", "#0000FF", "#0080FF", "#FF5500", "#FF0000", "#00FFFF")
-colors <- c1[as.numeric(tmp$Ring)]
-
-require(scatterplot3d)
-
-pdf("output/3d_wood_relationships.pdf")
-s3d <- scatterplot3d(tmp[,4:6], pch = 16, color=colors, type="h",
-                     xlab="Height (m)", ylab = "Diameter (cm)",
-                     zlab="Biomass (kg C)")
-
-legend(s3d$xyz.convert(0, 10, 800), legend = c("R1","R2","R3","R4","R5","R6"),
-       col = c("#FFAA00", "#0000FF", "#0080FF", "#FF5500", "#FF0000", "#00FFFF"), 
-       pch = 16, horiz = F)
-dev.off()
-
-
-#with(tmp, scatter3d(x = Height, y = Diameter, z = Wood_Stock, 
-#                    groups = as.factor(as.character(tmp$Ring)),
-#                    surface=F, type="h"))
-
-###################---------------------######################
-### Understorey C, Harvest data
-uac1.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=5, cond=1)
-uac1.live.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=3, cond=1)
-uac1.dead.tr <- make_treatment_effect_df(inDF=understorey_aboveground_c_pool, v=4, cond=1)
-
-uac1.live.tr$Class <- "Live"
-uac1.dead.tr$Class <- "Dead"
-uac1.class.tr <- rbind(uac1.live.tr, uac1.dead.tr)
-
-## uac1 plot
-p1 <- ggplot(uac1.tr, aes(as.character(Date), avg))+
-    #geom_errorbar(data=uac1.tr, mapping=aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
-    #               width=0.6, size=0.4) +    
-    #geom_point(data=uac1.tr, aes(y=avg, color=factor(Treatment)),size=4, shape=21, fill="white")+
-    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
-    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
-                  position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="Date", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
-    #scale_x_date(date_breaks = "6 month", 
-    #             date_labels="%b-%Y",
-    #             limits = as.Date(c('2015-01-01','2016-12-01')))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
-
-
-## uac1 live and dead bar plot
-p2 <- ggplot(uac1.class.tr, aes(Class, avg, color=as.factor(Treatment)))+
-    geom_boxplot()+
-    labs(x="Vegetation class", y=expression(paste(C[ua], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))
-    #scale_fill_manual(name="Vegetation", values = c("Live" = "green", "Dead" = "orange"),
-    #                  labels=c("Live","Dead"))
-
-plot(p2)
-
-grid.labs <- c("(a)", "(b)")
-
-require(cowplot)
-
-## plot 
-pdf("output/Understorey_C_pool_time_series.pdf", width=10,height=8)
-plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l")
-
-grid.text(grid.labs,x = c(0.1,0.1), y = c(0.95, 0.45),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
-dev.off()
-
-
-###################---------------------######################
-### Coarse root C pool
-##  generate treatment effect df for each variable
-crc1.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_1)
-crc2.tr <- make_treatment_effect_df_2(inDF=coarse_root_c_pool_2)
-
-## long format
-crc1.tr$total_root_pool <- NULL
-crc1.tr$Method <- "A"
-crc2.tr$Method <- "B"
-colnames(crc1.tr) <- c("Date", "Ring", "coarse_root_pool", "Treatment", "Method")
-crc.tr <- rbind(crc1.tr, crc2.tr)
-
-## wide format
-temDF <- merge(crc1.tr, crc2.tr, by=c("Ring", "Date"), all=T)
-crc.tr.w <- temDF[,c("Ring", "Date", "coarse_root_pool.x", "coarse_root_pool.y",
-                     "Treatment.x")]
-colnames(crc.tr.w) <- c("Ring", "Date", "M1", "M2", "Treatment")
-
-## plotting
-p1 <- ggplot(crc1.tr, aes(x=as.character(Date),y=coarse_root_pool,fill=as.factor(Treatment)))+
-    geom_boxplot(position=position_dodge(1))+
-    labs(x="Date", y=expression(paste(C[cr], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="bottom")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
-
-p2 <- ggplot(crc.tr.w)+
-    geom_point(aes(x=M1, y=M2, color=factor(Treatment)))+
-    labs(x=expression(paste(C[croot1], " (g C ", m^-2, ")")), 
-         y=expression(paste(C[croot2], " (g C ", m^-2, ")")))+
-    geom_abline(intercept = 0, slope = 1, color="grey", 
-                linetype="dashed", size=1.5)+
-    xlim(600, 1400)+ylim(600,1400)+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="bottom")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
-
-grid.labs <- c("(a)", "(b)")
-
-pdf("output/coarseroot_biomass_method_comparison.pdf", width=6, height=8)
-plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l")
-grid.text(grid.labs,x = 0.2, y = c(0.95, 0.46),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
-dev.off()
 
 ###################---------------------######################
 ### Plot coarse root and fine root together for each ring
@@ -665,7 +358,7 @@ p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
 
 #plot(p)
 
-pdf("output/root_per_ring_summary.pdf", width=8, height=6)
+pdf("output/Figure_S6.pdf", width=8, height=6)
 plot(p)
 dev.off()
 
@@ -859,588 +552,13 @@ p6 <- ggplot(soilc.cp)+
 grid.labs <- c("(a)", "(b)", "(c)", "(d)", "(e)")
 
 ## plot 
-pdf("output/Soil_C_time_series.pdf", width=8,height=10)
+pdf("output/Figure_S2.pdf", width=8,height=10)
 plot_grid(p2, p3, p4, p5, p6, labels="", ncol=1, align="v", axis = "l",
           rel_heights = c(0.8, 0.8, 0.8, 0.8, 1))
 grid.text(grid.labs,x = 0.135, y = c(0.97, 0.79, 0.59, 0.4, 0.215),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
-###################---------------------######################
-### Soil bulk density and soil moisture at different depths
-##  generate treatment effect df for each variable
-soil.bk.tr <- soil_bulk_density_variable
-soil.bk.tr[soil.bk.tr$ring== 2|soil.bk.tr$ring==3|soil.bk.tr$ring==6,"Treatment"] <- "aCO2"
-soil.bk.tr[soil.bk.tr$ring== 1|soil.bk.tr$ring==4|soil.bk.tr$ring==5,"Treatment"] <- "eCO2"
-
-soil.bk.tr[soil.bk.tr$Depth == "0-10cm", "d.factor"] <- "0-10"
-soil.bk.tr[soil.bk.tr$Depth == "10-20cm", "d.factor"] <- "10-20"
-soil.bk.tr[soil.bk.tr$Depth == "20-30cm", "d.factor"] <- "20-30"
-
-soil.bk.tr <- soil.bk.tr[complete.cases(soil.bk.tr),]
-
-### Soil moisture content at different depths and over time
-## read in soil moisture data, takes a long time!
-smDF <- prepare_soil_moisture_data(plot.image = F, monthly=T)
-
-### Depth for ring 1, 3, 4, 5, 6
-depth <- c(5, 30, 35, 75)
-
-
-### combine all rings together
-myDF <- rbind(smDF[[1]],smDF[[2]],smDF[[3]],smDF[[4]],smDF[[5]],smDF[[6]])
-myDF$Month <- format(as.Date(myDF$Date), "%Y-%m")
-myDF$Month <- as.Date(paste0(myDF$Month,"-1"), format = "%Y-%m-%d") 
-myDF$Ring <- c(rep(1, length(smDF$R1$Date)),rep(2, length(smDF$R2$Date)),rep(3, length(smDF$R3$Date)),
-               rep(4, length(smDF$R4$Date)),rep(5, length(smDF$R5$Date)),rep(6, length(smDF$R6$Date)))
-
-### Calculate monthly average
-mDF <- summaryBy(Theta5_1_Avg+Theta30_1_Avg+ThetaHL_1_Avg+Theta75_1_Avg~Month+Ring, 
-                 data=myDF,FUN=mean, na.rm=T, keep.names=T)
-
-### Monthly time series
-m.series <- unique(mDF$Month)
-x.m <- c(1:length(m.series))
-d.l <- length(m.series)
-
-### convert data into long format
-plotDF <- data.frame(rep(m.series, 4), rep(depth, each=d.l), NA)
-colnames(plotDF) <- c("Date", "Depth", "Theta")
-
-### Subset data and assign data - ring 1
-sub.mDF <- subset(mDF, Ring==1)
-plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
-plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
-plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
-plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
-
-## Subset soil bulk density plot
-bkDF <- subset(soil.bk.tr, ring==1)
-
-## ggplot of soil bulk density
-p1 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
-                                               "20-30" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))
-
-## ggplot of soil moisture profile
-p2 <- ggplot(plotDF) + 
-    aes(x = Date, y = Depth, z = Theta) + 
-    ylim(5,75)+
-    geom_tile(aes(fill=Theta)) + 
-    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
-    geom_contour(color="white", alpha=0.5) +
-    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
-    theme_bw()+
-    labs(x="Date", y="Depth (cm)")+
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          legend.position="none")+
-    scale_x_date(date_breaks = "1 year", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-09-01','2017-08-31')))
-
-
-### Subset data and assign data - ring 3
-sub.mDF <- subset(mDF, Ring==3)
-plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
-plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
-plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
-plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
-
-## Subset soil bulk density plot
-bkDF <- subset(soil.bk.tr, ring==3)
-
-## ggplot of soil bulk density
-p5 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
-                                               "20-30" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))
-
-## ggplot of soil moisture profile
-p6 <- ggplot(plotDF) + 
-    aes(x = Date, y = Depth, z = Theta) + 
-    ylim(5,75)+
-    geom_tile(aes(fill=Theta)) + 
-    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
-    geom_contour(color="white", alpha=0.5) +
-    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
-    theme_bw()+
-    labs(x="Date", y="Depth (cm)")+
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          legend.position="none")+
-    scale_x_date(date_breaks = "1 year", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-09-01','2017-08-31')))
-
-
-### Subset data and assign data - ring 4
-sub.mDF <- subset(mDF, Ring==4)
-plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
-plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
-plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
-plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
-
-## Subset soil bulk density plot
-bkDF <- subset(soil.bk.tr, ring==4)
-
-## ggplot of soil bulk density
-p7 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
-                                               "20-30" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))
-
-## ggplot of soil moisture profile
-p8 <- ggplot(plotDF) + 
-    aes(x = Date, y = Depth, z = Theta) + 
-    ylim(5,75)+
-    geom_tile(aes(fill=Theta)) + 
-    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
-    geom_contour(color="white", alpha=0.5) +
-    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
-    theme_bw()+
-    labs(x="Date", y="Depth (cm)")+
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          legend.position="none")+
-    scale_x_date(date_breaks = "1 year", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-09-01','2017-08-31')))
-
-
-### Subset data and assign data - ring 5
-sub.mDF <- subset(mDF, Ring==5)
-plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
-plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
-plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
-plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
-
-## Subset soil bulk density plot
-bkDF <- subset(soil.bk.tr, ring==5)
-
-## ggplot of soil bulk density
-p9 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("Bulk density (kg ", m^-3, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
-                                               "20-30" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))
-
-## ggplot of soil moisture profile
-p10 <- ggplot(plotDF) + 
-    aes(x = Date, y = Depth, z = Theta) + 
-    ylim(5,75)+
-    geom_tile(aes(fill=Theta)) + 
-    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
-    geom_contour(color="white", alpha=0.5) +
-    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
-    theme_bw()+
-    labs(x="Date", y="Depth (cm)")+
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          legend.position="none")+
-    scale_x_date(date_breaks = "1 year", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-09-01','2017-08-31')))
-
-### convert data into long format
-plotDF <- data.frame(rep(m.series, 4), rep(depth, each=d.l), NA)
-colnames(plotDF) <- c("Date", "Depth", "Theta")
-
-### Subset data and assign data - ring 6
-sub.mDF <- subset(mDF, Ring==6)
-plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
-plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
-plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
-plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
-
-## Subset soil bulk density plot
-bkDF <- subset(soil.bk.tr, ring==6)
-
-## ggplot of soil bulk density
-p11 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
-                                               "20-30" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))
-
-## ggplot of soil moisture profile
-p12 <- ggplot(plotDF) + 
-    aes(x = Date, y = Depth, z = Theta) + 
-    ylim(5,75)+
-    geom_tile(aes(fill=Theta)) + 
-    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
-    geom_contour(color="white", alpha=0.5) +
-    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
-    theme_bw()+
-    labs(x="Date", y="Depth (cm)")+
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          legend.position="bottom")+
-    scale_x_date(date_breaks = "1 year", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-09-01','2017-08-31')))
-
-
-### convert data into long format - note, depth for ring 2 is different
-depth <- c(5, 30, 44, 75)
-plotDF <- data.frame(rep(m.series, 4), rep(depth, each=d.l), NA)
-colnames(plotDF) <- c("Date", "Depth", "Theta")
-
-### Subset data and assign data - ring 2
-sub.mDF <- subset(mDF, Ring==2)
-plotDF$Theta[plotDF$Depth==depth[1]] <- sub.mDF$Theta5_1_Avg
-plotDF$Theta[plotDF$Depth==depth[2]] <- sub.mDF$Theta30_1_Avg
-plotDF$Theta[plotDF$Depth==depth[3]] <- sub.mDF$ThetaHL_1_Avg
-plotDF$Theta[plotDF$Depth==depth[4]] <- sub.mDF$Theta75_1_Avg
-
-## Subset soil bulk density plot
-bkDF <- subset(soil.bk.tr, ring==2)
-
-## ggplot of soil bulk density
-p3 <- ggplot(bkDF, aes(x=as.character(d.factor),y=bulk_density_kg_m3, fill=as.factor(d.factor)))+
-    geom_bar(stat="identity", position="stack")+
-    labs(x="Depth", y=expression(paste("BK (kg ", m^-3, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Depth", values = c("0-10" = "green","10-20" = "orange", 
-                                               "20-30" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))
-
-## ggplot of soil moisture profile
-p4 <- ggplot(plotDF) + 
-    aes(x = Date, y = Depth, z = Theta) + 
-    ylim(5,75)+
-    geom_tile(aes(fill=Theta)) + 
-    stat_contour(aes(fill=..level..), geom="polygon", binwidth=0.005) + 
-    geom_contour(color="white", alpha=0.5) +
-    scale_fill_distiller(name="Soil Moisture", palette="RdBu", na.value="white", limits=c(40,0)) + 
-    theme_bw()+
-    labs(x="Date", y="Depth (cm)")+
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_blank(),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          legend.position="none")+
-    scale_x_date(date_breaks = "1 year", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-09-01','2017-08-31')))
-
-
-
-#grid.labs <- c("(a)", "(b)")
-require(cowplot)
-
-## plot 
-pdf("output/Soil_Profile_bk_sm.pdf", width=8,height=12)
-plot_grid(p1, p2, 
-          p3, p4, 
-          p5, p6, 
-          p7, p8, 
-          p9, p10, 
-          p11, p12,
-          labels="", ncol=2, align="v", axis = "l",
-          rel_widths=c(1,1.8))
-#grid.text(grid.labs,x = 0.1, y = c(0.97, 0.48),
-#          gp=gpar(fontsize=16, col="black", fontface="bold"))
-dev.off()
-
-###################---------------------######################
-#### plotting fineroot C pool, at different depths
-###  generate treatment effect df for each variable
-froot.tr <- fineroot_c_pool
-froot.tr[froot.tr$Ring== 2|froot.tr$Ring==3|froot.tr$Ring==6,"Treatment"] <- "aCO2"
-froot.tr[froot.tr$Ring== 1|froot.tr$Ring==4|froot.tr$Ring==5,"Treatment"] <- "eCO2"
-
-frDF <- reshape(froot.tr,idvar=c("Ring", "Date", "Treatment"),
-                varying=list(3:5),
-                direction="long")
-l <- length(froot.tr$Date)
-
-frDF$Depth <- c(rep(c("total", "0-10cm","10-30cm"), each=l))
-
-plotDF <- frDF[frDF$Depth != "total",]
-
-p <- ggplot(plotDF, aes(x=Treatment, y=fineroot_pool, fill=Depth))+
-    geom_bar(stat="identity", position="stack")+facet_grid(~Date)+
-    labs(x="Treatment", y=expression(paste(C[froot], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-30cm" = "orange"),
-                      labels=c("0-10cm","10-30cm"))+
-    scale_x_discrete(limit=c("aCO2", "eCO2"),
-                     labels=c(expression(aCO[2]), expression(eCO[2])))
-
-pdf("output/fineroot_c_pool_of_depth.pdf", width=8, height=6)
-plot(p)
-dev.off()
-
-###################---------------------######################
-#### plotting soil content and soil c pool
-###  generate treatment effect df for each variable
-froot.tr <- fineroot_c_pool
-froot.tr[froot.tr$Ring== 2|froot.tr$Ring==3|froot.tr$Ring==6,"Treatment"] <- "aCO2"
-froot.tr[froot.tr$Ring== 1|froot.tr$Ring==4|froot.tr$Ring==5,"Treatment"] <- "eCO2"
-
-frDF <- reshape(froot.tr,idvar=c("Ring", "Date", "Treatment"),
-                varying=list(3:5),
-                direction="long")
-l <- length(froot.tr$Date)
-
-frDF$Depth <- c(rep(c("total", "0-10cm","10-30cm"), each=l))
-
-plotDF <- frDF[frDF$Depth != "total",]
-
-p <- ggplot(plotDF, aes(x=Treatment, y=fineroot_pool, fill=Depth))+
-    geom_bar(stat="identity", position="stack")+facet_grid(~Date)+
-    labs(x="Treatment", y=expression(paste(C[froot], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-30cm" = "orange"),
-                      labels=c("0-10cm","10-30cm"))+
-    scale_x_discrete(limit=c("aCO2", "eCO2"),
-                     labels=c(expression(aCO[2]), expression(eCO[2])))
-
-pdf("output/fineroot_c_pool_of_depth.pdf", width=8, height=6)
-plot(p)
-dev.off()
-
-###################---------------------######################
-### Soil C pool, pH, CN and CP ratios, by depth
-soilc.tr <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
-                                       return="by_depths")
-
-soilc.tr[soilc.tr$Ring== 2|soilc.tr$Ring==3|soilc.tr$Ring==6,"Treatment"] <- "aCO2"
-soilc.tr[soilc.tr$Ring== 1|soilc.tr$Ring==4|soilc.tr$Ring==5,"Treatment"] <- "eCO2"
-
-plotDF1 <- summaryBy(soil_carbon_pool+ph+cn+cp~Date+Treatment+Depth, 
-                    data=soilc.tr,FUN=mean, na.rm=T, keep.names=T)
-
-## plotting soil c pool
-p1 <- ggplot(plotDF1, aes(x=Treatment, y=soil_carbon_pool, fill=Depth))+
-    geom_bar(stat="identity", position="stack")+facet_grid(~Date)+
-    labs(x="Treatment", y=expression(paste(C[soil], " (g C ", m^-2, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=10),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_fill_manual(name="Depth", values = c("0-10cm" = "green", "10-20cm" = "orange", "20-30cm" = "brown"),
-                      labels=c("0-10cm","10-20cm","20-30cm"))+
-    scale_x_discrete(limit=c("aCO2", "eCO2"),
-                     labels=c(expression(aCO[2]), expression(eCO[2])))
-
-## prepare soil ph df
-plotDF2 <- make_treatment_effect_df(inDF=soilc.tr, v=5, cond=2)
-
-## ph
-p2 <- ggplot(plotDF2, aes(x=Date))+
-    geom_point(data=plotDF2, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=plotDF2, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
-    labs(x="Treatment", y="pH")+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_x_date(date_breaks = "6 months", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-05-01','2014-04-30')))
-
-
-## soil CN 
-plotDF3 <- make_treatment_effect_df(inDF=soilc.tr, v=6, cond=2)
-plotDF3 <- plotDF3[complete.cases(plotDF3),]
-p3 <- ggplot(plotDF3, aes(x=Date))+
-    geom_point(data=plotDF3, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=plotDF3, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
-    labs(x="Treatment", y="CN ratio")+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_x_date(date_breaks = "6 months", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-05-01','2014-04-30')))
-
-## soil CP 
-plotDF4 <- make_treatment_effect_df(inDF=soilc.tr, v=7, cond=2)
-plotDF4 <- plotDF4[complete.cases(plotDF4),]
-
-p4 <- ggplot(plotDF4, aes(x=Date))+
-    geom_point(data=plotDF4, aes(y=avg, color=factor(Treatment)))+
-    geom_segment(data=plotDF4, aes(x=Date, y=avg-se, xend=Date, yend=avg+se, color=factor(Treatment)))+
-    labs(x="Date", y="CP ratio")+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="right")+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_x_date(date_breaks = "6 months", 
-                 date_labels="%b-%Y",
-                 limits = as.Date(c('2012-05-01','2014-04-30')))
-
-grid.labs <- c("(a)", "(b)", "(c)", "(d)")
-
-require(gridExtra)
-
-## plot 
-pdf("output/Soil_C_pool_time_series.pdf", width=12,height=8)
-grid.arrange(p1, rbind(ggplotGrob(p2), 
-                       ggplotGrob(p3), ggplotGrob(p4), size="last"), 
-             ncol=1)
-grid.text(grid.labs,x = c(0.09, 0.075, 0.075, 0.075), y = c(0.93, 0.46, 0.31, 0.15),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
-dev.off()
 
 ###################---------------------######################
 ### Microbial and Mycorrhizal pools
@@ -1520,7 +638,7 @@ p3 <- ggplot(myc.prop, aes(x=as.character(Ring), y=myc.prop*100, fill=factor(Trt
 grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/microbial_and_mycorrhizal_pool.pdf", width=9,height=6)
+pdf("output/Figure_S7.pdf", width=9,height=6)
 #grid.newpage()
 #grid.draw(rbind(ggplotGrob(p1), ggplotGrob(p3), size="last"))
 plot_grid(p1, p3, labels="", ncol=1, align="v", axis = "l")
@@ -1548,7 +666,6 @@ decp.avg$se <- decp.se$coef
 
 ### Litter, CWD and insect
 lit.tr <- make_treatment_effect_df(inDF=leaflitter_pool, v=6, cond=1)
-cwd.tr <- make_treatment_effect_df(inDF=standing_dead_c_pool, v=3, cond=2)
 
 lit.pool <- leaflitter_pool
 lit.pool[lit.pool$Ring== 2|lit.pool$Ring==3|lit.pool$Ring==6,"Treatment"] <- "aCO2"
@@ -1665,7 +782,7 @@ p5 <- ggplot(lit.avg, aes(x=as.character(Ring), y=leaflitter_pool, fill=factor(T
 grid.labs <- c("(a)", "(b)", "(c)")
 
 ## plot 
-pdf("output/leaflitter_pool_and_decomposition_rate.pdf", width=6,height=8)
+pdf("output/Figure_S8.pdf", width=6,height=8)
 #top_row <- plot_grid(p1, p2, align = 'h')
 #plot_grid(top_row, p3, ncol = 1, rel_heights = c(1, 1.2))
 #grid.text(grid.labs,x = c(0.14, 0.625, 0.13), y = c(0.97, 0.97, 0.50),
@@ -1715,7 +832,7 @@ p1 <- ggplot(plotDF1, aes(Treatment, insect_pool))+
                      labels=c(expression(aCO[2]),
                               expression(eCO[2])))
 
-pdf("output/insect_pool.pdf", width=5,height=4)
+pdf("output/Figure_S9.pdf", width=5,height=4)
 plot(p1)
 dev.off()
 
@@ -1768,62 +885,13 @@ p2 <- ggplot(data = u.gpp.tr, aes(x = interaction(year, Ring, lex.order = TRUE),
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
     
-pdf("output/gpp_fluxes.pdf", width=9,height=6)
+pdf("output/Figure_S10.pdf", width=9,height=6)
 plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
           rel_heights=c(1, 1.1))
 grid.text(grid.labs, x = 0.14, y = c(0.85, 0.45),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
-### Plot
-#p1 <- ggplot(o.gpp.tr, aes(x=year, y=GPP))+
-#    geom_bar(stat = "identity", aes(fill=Ring), position="dodge")+
-#    labs(x="Year", y=expression(paste(GPP[o], " (g C ", m^-2, " ", yr^-1, ")")))+
-#    theme_linedraw() +
-#    theme(panel.grid.minor=element_blank(),
-#          axis.title.x = element_blank(), 
-#          axis.text.x = element_blank(),
-#          axis.text.y=element_text(size=12),
-#          axis.title.y=element_text(size=14),
-#          legend.text=element_text(size=12),
-#          legend.title=element_text(size=14),
-#          panel.grid.major=element_blank(),
-#          legend.position="none")+
-#    scale_y_continuous(position="left")+
-#    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
-#                                              "3" = "cyan", "4" = "pink",
-#                                              "5" = "orange", "6" = "darkblue"),
-#                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
-#
-#p2 <- ggplot(u.gpp.tr, aes(x=year, y=GPP))+
-#    geom_bar(stat = "identity", aes(fill=as.factor(Ring)), position="dodge")+
-#    labs(x="Year", y=expression(paste(GPP[u], " (g C ", m^-2, " ", yr^-1, ")")))+
-#    theme_linedraw() +
-#    theme(panel.grid.minor=element_blank(),
-#          axis.title.x = element_text(size=14), 
-#          axis.text.x = element_text(size=12),
-#          axis.text.y=element_text(size=12),
-#          axis.title.y=element_text(size=14),
-#          legend.text=element_text(size=12),
-#          legend.title=element_text(size=14),
-#          panel.grid.major=element_blank(),
-#          legend.position="bottom")+
-#    #scale_y_continuous(position="left")+
-#    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
-#                                              "3" = "cyan", "4" = "pink",
-#                                              "5" = "orange", "6" = "darkblue"),
-#                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
-#
-#
-#grid.labs <- c("(a)", "(b)")
-#
-### plot 
-#pdf("output/gpp_fluxes.pdf", width=9,height=6)
-#plot_grid(p1, p2, labels="", ncol=1, align="v", axis = "l",
-#          rel_heights=c(0.7, 1))
-#grid.text(grid.labs, x = 0.14, y = c(0.95, 0.55),
-#          gp=gpar(fontsize=16, col="black", fontface="bold"))
-#dev.off()
 
 
 ###################---------------------######################
@@ -2039,83 +1107,12 @@ p8 <- ggplot(plotDF2, aes(x=Year, y=seed_lit))+
 grid.labs <- c("(a)", "(b)", "(c)", "(d)")
 
 ## plot 
-pdf("output/NPP_litter.pdf", width=8,height=12)
+pdf("output/Figure_S12.pdf", width=8,height=12)
 plot_grid(p5, p6, 
           p7, p8, 
           labels="", ncol=1, align="v", axis = "l", 
           rel_heights=c(0.7, 0.7, 0.7, 1))
 grid.text(grid.labs,x = 0.12, y = c(0.97, 0.74, 0.51, 0.29),
-          gp=gpar(fontsize=16, col="black", fontface="bold"))
-dev.off()
-
-
-###################---------------------######################
-### NPP wood and coarseroot
-wood.prod <- make_treatment_effect_df(inDF=wood_production_flux, v=5, cond=1)
-croot.prod <- make_treatment_effect_df(inDF=coarse_root_production_flux_1, v=5, cond=1)
-
-wood.prod$avg <- wood.prod$avg * 365 / 1000
-wood.prod$pos <- wood.prod$pos * 365 / 1000
-wood.prod$neg <- wood.prod$neg * 365 / 1000
-
-croot.prod$avg <- croot.prod$avg * 365 / 1000
-croot.prod$pos <- croot.prod$pos * 365 / 1000
-croot.prod$neg <- croot.prod$neg * 365 / 1000
-
-wood.prod$Yr <- year(wood.prod$Date)
-croot.prod$Yr <- year(croot.prod$Date)
-
-### plot
-p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
-    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
-    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
-                  position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[stem], " (g C ", m^-2, " ", yr^-1, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="none")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))
-
-p2 <- ggplot(croot.prod, aes(x=as.character(Yr), y=avg))+
-    geom_bar(stat = "identity", aes(fill=Treatment), position="dodge") +
-    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Treatment)), 
-                  position = position_dodge(0.9), width=0.2, size=0.4) +
-    labs(x="", y=expression(paste(NPP[croot], " (g C ", m^-2, " ", yr^-1, ")")))+
-    theme_linedraw() +
-    theme(panel.grid.minor=element_blank(),
-          axis.title.x = element_text(size=14), 
-          axis.text.x = element_text(size=12),
-          axis.text.y=element_text(size=12),
-          axis.title.y=element_text(size=14),
-          legend.text=element_text(size=12),
-          legend.title=element_text(size=14),
-          panel.grid.major=element_blank(),
-          legend.position="bottom")+
-    scale_y_continuous(position="left")+
-    scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))+
-    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
-                        labels=c(expression(aCO[2]), expression(eCO[2])))
-
-grid.labs <- c("(a)", "(b)")
-
-## plot 
-pdf("output/NPP_wood_croot.pdf", width=8,height=6)
-plot_grid(p1, p2, 
-          labels="", ncol=1, align="v", axis = "l", 
-          rel_heights=c(0.7, 1))
-grid.text(grid.labs,x = 0.12, y = c(0.97,0.55),
           gp=gpar(fontsize=16, col="black", fontface="bold"))
 dev.off()
 
@@ -2153,7 +1150,7 @@ p1 <- ggplot(wood.prod, aes(x=as.character(Yr), y=avg))+
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
 ## plot 
-pdf("output/NPP_wood.pdf", width=6,height=4)
+pdf("output/Figure_S13.pdf", width=6,height=4)
 plot(p1)
 dev.off()
 
@@ -2224,7 +1221,7 @@ p1 <- ggplot(root.plot, aes(x=component, y=value))+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
-pdf("output/NPP_croot_froot.pdf", width=6,height=4)
+pdf("output/Figure_S14.pdf", width=6,height=4)
 plot(p1)
 dev.off()
 
@@ -2272,7 +1269,7 @@ p1 <- ggplot(und.avg, aes(x=as.character(Yr), y=value))+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
 
-pdf("output/NPP_understorey_aboveground.pdf", width=6,height=4)
+pdf("output/Figure_S15.pdf", width=6,height=4)
 plot(p1)
 dev.off()
 
@@ -2409,7 +1406,7 @@ p3 <- ggplot(frass.avg, aes(x=as.character(Yr), y=value))+
 grid.labs <- c("(a)", "(b)", "(c)")
 
 
-pdf("output/NPP_hb_leaf_consumption.pdf", width=6,height=8)
+pdf("output/Figure_S16.pdf", width=6,height=8)
 plot_grid(p1, p2, p3, labels="", ncol=1, align="v", axis = "l",
           rel_heights=c(0.7, 0.7, 1))
 grid.text(grid.labs, x = 0.14, y = c(0.96, 0.675, 0.38),
@@ -2589,7 +1586,7 @@ p4 <- ggplot(root.resp.avg, aes(x=as.character(year), y=value))+
 grid.labs <- c("(a)", "(b)", "(c)", "(d)")
 
 ## plot 
-pdf("output/Ra_flux.pdf", width=8,height=12)
+pdf("output/Figure_S17.pdf", width=8,height=12)
 plot_grid(p1, p2, 
           p3, p4, 
           labels="", ncol=1, align="v", axis = "l", 
@@ -2636,7 +1633,7 @@ p1 <- ggplot(g.resp, aes(x=as.character(Trt), y=value))+
                      labels=c(expression(aCO[2]),
                               expression(eCO[2])))
 
-pdf("output/Rgrowth_flux.pdf", width=4,height=4)
+pdf("output/Figure_S18.pdf", width=4,height=4)
 plot(p1)
 dev.off()
 
@@ -2738,7 +1735,7 @@ p2 <- ggplot(rh.resp.avg, aes(x=as.character(year), y=value))+
 grid.labs <- c("(a)", "(b)")
 
 ## plot 
-pdf("output/Rsoil_and_Rh_flux.pdf", width=8,height=6)
+pdf("output/Figure_S19.pdf", width=8,height=6)
 plot_grid(p1, p2, 
           labels="", ncol=1, align="v", axis = "l", 
           rel_heights=c(0.7, 1))
@@ -2823,7 +1820,7 @@ p1 <- ggplot(plot.df, aes(x=as.character(component), y=value))+
                               expression(DOC)))
 
 ## plot 
-pdf("output/DOC_CH4_flux.pdf", width=6,height=4)
+pdf("output/Figure_S11.pdf", width=6,height=4)
 plot(p1)
 dev.off()
 
@@ -2858,27 +1855,7 @@ p1 <- ggplot(data = o.voc.tr, aes(x = interaction(year, Ring, lex.order = TRUE),
                       labels=c(expression(aCO[2]), expression(eCO[2])))
 
 
-### Plot
-#p1 <- ggplot(o.voc.tr, aes(x=year, y=voc_flux))+
-#    geom_bar(stat = "identity", aes(fill=as.character(Ring)), position="dodge")+
-#    labs(x="Year", y=expression(paste("VC (g C ", m^-2, " ", yr^-1, ")")))+
-#    theme_linedraw() +
-#    theme(panel.grid.minor=element_blank(),
-#          axis.title.x = element_text(size=14), 
-#          axis.text.x = element_text(size=12),
-#          axis.text.y=element_text(size=12),
-#          axis.title.y=element_text(size=14),
-#          legend.text=element_text(size=12),
-#          legend.title=element_text(size=14),
-#          panel.grid.major=element_blank(),
-#          legend.position="bottom")+
-#    scale_fill_manual(name="Ring", values = c("1" = "red", "2" = "blue",
-#                                              "3" = "cyan", "4" = "pink",
-#                                              "5" = "orange", "6" = "darkblue"),
-#                      labels=c("R1", "R2", "R3", "R4", "R5", "R6"))
-#
-
 ## plot 
-pdf("output/voc_fluxes.pdf", width=9,height=6)
+pdf("output/Figure_S20.pdf", width=9,height=6)
 plot(p1)
 dev.off()

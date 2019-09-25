@@ -950,7 +950,7 @@ make_statistical_comparison_normalized_plots(inDF=tables_by_ring_predicted)
 
 
 ### all supplementary figures
-source("R/plot_combined_figures.R")
+source("R/plot_supplementary_figures.R")
 
 
 
