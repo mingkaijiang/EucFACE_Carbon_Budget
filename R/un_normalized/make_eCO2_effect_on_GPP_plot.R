@@ -190,6 +190,8 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     
     ### Simplify the plot by eleminating fluxes that has CO2 effect < 1 g m-2 yr-1
     plotDF2 <- subset(plotDF, abs(effect_size) >= 5)
+    subDF <- subset(plotDF, Variable == "Change_in_pools")
+    plotDF2 <- rbind(subDF, plotDF2)
     
     ### Order plot DF
     plotDF2 <- plotDF2[order(plotDF2$plot.cat2),]
@@ -198,35 +200,28 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     plotDF2$var.order <- 1:length(plotDF2$plot.cat2)
     
     library(viridis)
+    library(RColorBrewer)
     
     ## gpp
-    colfunc.inf <- colorRampPalette(c( "grey21","dimgrey"))
-    A.col.list <- colfunc.inf(2)
+    A.col.list <- viridis(6)[1:2] 
     
     # 2nd column bar - NPP + Ra 
-    colfunc.inf <- colorRampPalette(c("green4", "orange"))
-    B.col.list <- colfunc.inf(2)
+    B.col.list <- viridis(6)[3:4] 
     
     # 3rd column bar - Change in pools + all R
-    colfunc.inf <- colorRampPalette(c("blue", "orangered"))
-    C.col.list <- colfunc.inf(2)
+    C.col.list <- viridis(6)[5:6] 
     
     ## NPP
-    #colfunc.npp <- colorRampPalette(c("seagreen", "green", "yellowgreen"))
-    #D.col.list <- colfunc.npp(9)
-    D.col.list <- c("darkgreen", "seagreen", "chartreuse3", "yellowgreen", "chartreuse1")#, "springgreen3")
+    D.col.list <- brewer.pal(5,"Greens")[2:5]
     
     ## R
-    colfunc.R <- colorRampPalette(c("darkred", "pink"))
-    E.col.list <- colfunc.R(5)
+    E.col.list <- brewer.pal(6,"YlOrRd")[2:6]
     
     ### Change in pools
-    colfunc.delta <- colorRampPalette(c("darkblue", "cyan"))
-    F.col.list <- colfunc.delta(6)
+    F.col.list <- brewer.pal(5,"Blues")[2:5]
     
     v.list <- viridis(25)
-    #v.list <- rainbow(26)
-    
+
     ### Combine all color list
     col.list2 <- c("over_gpp"=A.col.list[1],                    
                    "understorey_gpp"=A.col.list[2], 
@@ -236,25 +231,17 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                    "total_outflux"=C.col.list[2],
                    "leaf_prod"=D.col.list[1],                
                    "wood_prod"=D.col.list[2],               
-                   #"fineroot_prod"=D.col.list[3],           
-                   #"other_prod"=D.col.list[4],                
                    "understorey_prod"=D.col.list[3], 
-                   #"herb_consump"=D.col.list[6],           
-                   #"over_leaf_respiration"=E.col.list[4], 
+                   "fineroot_prod"=D.col.list[4], 
                    "over_leaf_respiration"=E.col.list[1],
                    "wood_respiration"=E.col.list[2],           
                    "understorey_respiration"=E.col.list[3], 
-                   "growth_respiration"=E.col.list[4],
+                   "root_respiration"=E.col.list[4],
                    "hetero_respiration"=E.col.list[5],    
                    "delta_leaf_c"=F.col.list[1],  
                    "delta_wood_c"=F.col.list[2],        
-                   "delta_fineroot_c"=F.col.list[3],    
-                   #"delta_litter_c"=F.col.list[4],
-                   "delta_microbial_c"=F.col.list[4],
-                   "delta_understorey_c"=F.col.list[6],
-                   "delta_soil_c"=F.col.list[5])#,
-    #"delta_mycorrhizal_c"=F.col.list[7],
-    #"delta_insect_c"=F.col.list[6])     
+                   "delta_understorey_c"=F.col.list[3],
+                   "delta_microbial_c"=F.col.list[4]) 
     
     
     # y label
@@ -266,21 +253,17 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                 "total_outflux"="R",                              # 4
                 "leaf_prod"=expression(NPP[ol]),                # 7
                 "wood_prod"=expression(NPP[stem]),                # 11
-                "understorey_prod"=expression(NPP[ua]),           # 14
+                "understorey_prod"=expression(NPP[ua]),           
+                "fineroot_prod"=expression(NPP[froot]),
                 "over_leaf_respiration"=expression(R[ol]),      # 18
                 "wood_respiration"=expression(R[stem]),           # 19
                 "understorey_respiration"=expression(R[ua]),      # 16
-                "growth_respiration"=expression(R[grow]),      # 
+                "root_respiration"=expression(R[root]),      # 
                 "hetero_respiration"=expression(R[hetero]),            # 17
                 "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
-                "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
-                #"delta_litter_c"=expression(Delta*C[lit]),
                 "delta_microbial_c"=expression(Delta*C[micr]),
-                "delta_understorey_c"=expression(Delta*C[ua]),
-                "delta_soil_c"=expression(Delta*C[soil]))#,
-    #"delta_mycorrhizal_c"=expression(Delta*C[myco]),
-    #"delta_insect_c"=expression(Delta*C[ins]))     # 25
+                "delta_understorey_c"=expression(Delta*C[ua]))
     
     ### split the groups and make separate plots
     plotDF.sub1 <- subset(plotDF2, plot.cat2%in%c("A", "B", "C"))
@@ -431,7 +414,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     require(cowplot)
     
     ### Plotting
-    pdf("Output/eco2_effect_on_gpp_and_subsequent_fluxes_pools.pdf", width=16, height=6)
+    pdf("Output/eco2_effect_on_gpp_unnormalized_plot.pdf", width=16, height=6)
     plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
               rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()
