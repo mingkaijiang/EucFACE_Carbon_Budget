@@ -1,4 +1,4 @@
-make_coarse_root_pool_1 <- function(c_frac, fr_pool) {
+make_bole_root_pool <- function(c_frac, fr_pool) {
     ### Method 1 of making total root biomass pool
     ### Based on Snowdon et al., 2000. National Carbon accounting system:
     ### synthesis of allometrics, review of root biomass and design of future woody biomass sampling strategies.

@@ -245,20 +245,18 @@ herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herb
                                                               method="diff")
 
 
-### Coarse root C pool 
-coarse_root_c_pool_1 <- make_coarse_root_pool_1(c_fraction_croot, fr_pool=fineroot_c_pool) 
-#coarse_root_c_pool_2 <- make_coarse_root_pool_2(c_fraction_croot) 
+### Bole root C pool 
+bole_root_c_pool_1 <- make_bole_root_pool(c_fraction_croot, fr_pool=fineroot_c_pool) 
 
-
-#### Coarse root C production
-coarse_root_production_flux_1 <- make_coarse_root_production_flux(coarse_root_c_pool_1) 
+#### Bole root C production
+bole_root_production_flux <- make_bole_root_production_flux(bole_root_c_pool) 
 
 ### Root respiration flux
 #root_respiration_flux_old <- make_root_respiration_flux(fineroot_c_pool, 
 #                                                    coarse_root_c_pool_1)
 
-root_respiration_flux_old <- make_root_respiration_flux_2(fr_pool=fineroot_c_pool, 
-                                                          cr_pool=coarse_root_c_pool_1)
+#root_respiration_flux_old <- make_root_respiration_flux_2(fr_pool=fineroot_c_pool, 
+#                                                          cr_pool=bole_root_c_pool)
 
 
 root_respiration_flux <- make_root_respiration_flux_3()
@@ -298,7 +296,7 @@ delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 #delta_fineroot_c_pool_old <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_pool, var.col=3)
 delta_fineroot_c_pool <- make_delta_fineroot_pool_function_3(inDF=fineroot_c_pool, var.col=3)
 
-delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarse_root_c_pool_1, var.col=3)
+delta_bole_root_c_pool <- make_delta_boleroot_pool_function(inDF=bole_root_c_pool, var.col=3)
 
 delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
 
@@ -490,8 +488,8 @@ fineroot_production_flux_ann <- make_froot_prod_treatment_abs_effect_statistics(
                                                                                 stat.model="no_interaction_with_covariate",
                                                                                 return.outcome="predicted") 
 
-### Coarseroot production
-coarse_root_production_flux_ann <- make_croot_prod_treatment_abs_effect_statistics(inDF=coarse_root_production_flux_1, 
+### Boleroot production
+bole_root_production_flux_ann <- make_broot_prod_treatment_abs_effect_statistics(inDF=bole_root_production_flux, 
                                                                                    var.cond="flux", var.col=5,
                                                                                    date.as.factor=T,
                                                                                    stat.model="no_interaction_with_covariate",
@@ -545,8 +543,8 @@ fineroot_c_pool_ann <- make_frootc_treatment_abs_effect_statistics(inDF=fineroot
                                                                    stat.model="no_interaction_with_covariate",
                                                                    return.outcome="predicted")
 
-### Coarseroot C pool
-coarse_root_c_pool_ann <- make_crootc_treatment_abs_effect_statistics(inDF=coarse_root_c_pool_1, 
+### Boleroot C pool
+bole_root_c_pool_ann <- make_brootc_treatment_abs_effect_statistics(inDF=bole_root_c_pool, 
                                                                       var.cond="pool", var.col=3,
                                                                       date.as.factor=T,
                                                                       stat.model="no_interaction_with_covariate",
@@ -614,7 +612,7 @@ delta_wood_c_pool_ann <- make_delta_wood_pool_treatment_abs_effect(inDF=wood_c_p
 
 delta_fineroot_c_pool_ann <- make_delta_fineroot_pool_treatment_abs_effect_2(inDF=fineroot_c_pool_ann, var.col=10)
 
-delta_coarse_root_c_pool_ann <- make_delta_coarseroot_pool_treatment_abs_effect(inDF=coarse_root_c_pool_ann, var.col=8)
+delta_bole_root_c_pool_ann <- make_delta_boleroot_pool_treatment_abs_effect(inDF=bole_root_c_pool_ann, var.col=8)
 
 delta_understorey_aboveground_c_pool_ann <- make_delta_ua_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_ann, var.col=10)
 

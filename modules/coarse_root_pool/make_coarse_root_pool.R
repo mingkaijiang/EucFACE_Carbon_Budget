@@ -1,26 +1,20 @@
-make_coarse_root_pool_2 <- function(c_frac) {
-    ### Method 1 of making coarse root biomass pool
-    ### Based on Forrester et al. 2006, developed by Misra et al., 1998 for
-    ### Eucalyptus nitens. This is an allometric relationship between
-    ### coarse root C (roots > 3 mm in diameter) and aboveground stem volume. 
-    ### This relatinship was not affected by age, fertiliser or irrigation traetments. 
-    ### ln(RB) = 0.75 ln(V)
-    ### where RB is coarse root biomass (g), and V is volume (cm3), as
-    ### V = D^2 * H, where D is stem diameter (cm) at height of 15 cm, and H is tree height (cm).
-    ### D at 15 cm can be derived by:
-    ### D = 0.555 + 1.577Dx, where Dx is diameter at 130 cm. 
+make_coarse_root_pool <- function(c_frac, fr_pool) {
+    ### Method 1 of making total root biomass pool
+    ### Based on Snowdon et al., 2000. National Carbon accounting system:
+    ### synthesis of allometrics, review of root biomass and design of future woody biomass sampling strategies.
+    ### Australian Greenhouse Office. Technical Report No. 17.
+    ### Relationship: ln(root biomass) = 0.787 * ln(stand basal area) + 1.218
+    ### Root biomass in t/ha, basal area in m2/ha.
     
     #- download the data from HIEv
     download_diameter_data()
-    
-    #c_frac <- 0.46
     
     #- read in 2012-15 data sets
     f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
     f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
     f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
-    
+
     # this file is not on HIEv yet!
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     
@@ -76,38 +70,63 @@ make_coarse_root_pool_2 <- function(c_frac) {
     
     long$diam <- as.numeric(long$diam)
     
-    # add biomass to long-form dataframe
-    long$biom <- allom_agb(long$diam)  # in kg DM
-    
-    # convert diam fro breast height to 15 cm
-    long$d15 <- 0.555 + 1.1577 * long$diam 
-    
-    # calculate volume
-    long$volume <- (long$d15^2) * (long$Height * 100)
-    
-    # calculate coarseroot biomass pool, unit of g
-    long$coarse_biomass <- exp(0.75 * log(long$volume))
+    # Calculate Basal area, m2
+    long$ba <- 0.00007854 * (long$diam)^2 
     
     dates <- c(as.Date("2012-12-20"),as.Date("2013-12-20"),
                as.Date("2014-12-23"),as.Date("2015-12-14"),
                as.Date("2016-12-21"))
     data <- long[long$Date %in% dates,]
     
+    data$ba2 <- data$ba 
+    data$biomass <- exp(0.787 * log(data$ba2) + 1.218) 
+    
+    # convert from g matter m-2 to g C m-2
+    data$total_root_c_pool <- data$biomass * c_frac * water_frac * 1000000
+    
+    
     # sum across rings and dates
-    data.m <- summaryBy(coarse_biomass~Date+Ring,data=data,FUN=sum,keep.names=T,na.rm=T)
+    data.m <- summaryBy(ba~Date+Ring,data=data,FUN=sum,keep.names=T,na.rm=T)
     
-    # divide by ring area to get biomass per m2
-    data.m$coarse_root_biomass <- data.m$coarse_biomass / ring_area
+    # convert into m2/ha
+    data.m$ba2 <- data.m$ba / (ring_area / 10000)
     
-    # convert from g DM m-2 to g C m-2
-    data.m$coarse_root_pool <- data.m$coarse_root_biomass * c_frac
+    # Calculate root biomass, return in t/ha, then convert to g/m2
+    data.m$biomass <- exp(0.787 * log(data.m$ba2) + 1.218) * 100
     
+    # calculate fineroot biomass
+    fr_pool$c_frac[fr_pool$Ring==1] <- 0.426
+    fr_pool$c_frac[fr_pool$Ring==2] <- 0.413
+    fr_pool$c_frac[fr_pool$Ring==3] <- 0.399
+    fr_pool$c_frac[fr_pool$Ring==4] <- 0.415
+    fr_pool$c_frac[fr_pool$Ring==5] <- 0.42
+    fr_pool$c_frac[fr_pool$Ring==6] <- 0.401
+    
+    fr_pool$biomass <- fr_pool$fineroot_pool/fr_pool$c_frac
+    
+    fr.ring <- summaryBy(biomass~Ring, data=fr_pool, FUN=mean, keep.names=T, na.rm=T)
+    
+    # convert from g matter m-2 to g C m-2
+    data.m$total_root_biomass <- data.m$biomass * water_frac
+    
+    # subtract fineroot biomass out, assuming one froot value per ring
+    for (i in 1:6) {
+        data.m$coarseroot_biomass[data.m$Ring == i] <- data.m$total_root_biomass[data.m$Ring == i] - fr.ring$biomass[fr.ring$Ring == i]
+            
+    }
+    
+    data.m$coarseroot_c_pool <- data.m$coarseroot_biomass * c_frac
+
     # output
-    cr_pool <- data.m[,c("Date","Ring","coarse_root_pool")]
+    cr_pool <- data.m[,c("Date","Ring","coarseroot_c_pool")]
+    
+    colnames(cr_pool) <- c("Date", "Ring", "coarse_root_pool")
     
     # Only use data period 2012-2016
     cr_pool <- cr_pool[cr_pool$Date<="2016-12-31",]
-    
+
+    ### Decision on what to return
     return(cr_pool)
+
     
 }
