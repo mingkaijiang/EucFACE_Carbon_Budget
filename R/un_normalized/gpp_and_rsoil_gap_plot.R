@@ -15,6 +15,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF1[temDF1$term == "Stem NPP","aCO2"],
                      temDF1[temDF1$term == "Fine Root NPP","aCO2"],
                      temDF1[temDF1$term == "Coarse Root NPP","aCO2"],
+                     temDF1[temDF1$term == "Bole Root NPP","aCO2"],
                      temDF1[temDF1$term == "Other NPP","aCO2"],
                      temDF1[temDF1$term == "Understorey NPP","aCO2"],
                      temDF1[temDF1$term == "Leaf consumption","aCO2"],
@@ -31,6 +32,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF1[temDF1$term == "Stem NPP","eCO2"],
                      temDF1[temDF1$term == "Fine Root NPP","eCO2"],
                      temDF1[temDF1$term == "Coarse Root NPP","eCO2"],
+                     temDF1[temDF1$term == "Bole Root NPP","eCO2"],
                      temDF1[temDF1$term == "Other NPP","eCO2"],
                      temDF1[temDF1$term == "Understorey NPP","eCO2"],
                      temDF1[temDF1$term == "Leaf consumption","eCO2"],
@@ -42,7 +44,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF2[temDF2$term == "VOC", "eCO2"])
     plotDF1$cat <- plotDF2$cat <- c(rep("MAESPA", 2), rep("NPP+Ra", 13))
     plotDF1$term <- plotDF2$term <- c("GPP overstorey", "GPP understorey",
-                                      "Leaf NPP","Stem NPP","Fine Root NPP","Coarse Root NPP","Other NPP",
+                                      "Leaf NPP","Stem NPP","Fine Root NPP","Coarse Root NPP","Bole Root NPP", "Other NPP",
                                       "Understorey NPP","Leaf consumption","Ra leaf","Ra stem","Ra root",
                                       "Ra understorey","Rgrowth","VOC")
     
@@ -67,6 +69,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                                               temDF1[temDF1$term == "Stem NPP","Ring_2"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_2"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_2"],
+                                              temDF1[temDF1$term == "Bole Root NPP","Ring_2"],
                                               temDF1[temDF1$term == "Other NPP","Ring_2"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_2"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_2"],
@@ -82,6 +85,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                                               temDF1[temDF1$term == "Stem NPP","Ring_3"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_3"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_3"],
+                                              temDF1[temDF1$term == "Bole Root NPP","Ring_3"],
                                               temDF1[temDF1$term == "Other NPP","Ring_3"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_3"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_3"],
@@ -97,6 +101,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                                               temDF1[temDF1$term == "Stem NPP","Ring_6"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_6"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_6"],
+                                              temDF1[temDF1$term == "Bole Root NPP","Ring_6"],
                                               temDF1[temDF1$term == "Other NPP","Ring_6"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_6"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_6"],
@@ -113,6 +118,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                                               temDF1[temDF1$term == "Stem NPP","Ring_1"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_1"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_1"],
+                                              temDF1[temDF1$term == "Bole Root NPP","Ring_1"],
                                               temDF1[temDF1$term == "Other NPP","Ring_1"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_1"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_1"],
@@ -128,6 +134,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                                               temDF1[temDF1$term == "Stem NPP","Ring_4"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_4"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_4"],
+                                              temDF1[temDF1$term == "Bole Root NPP","Ring_4"],
                                               temDF1[temDF1$term == "Other NPP","Ring_4"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_4"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_4"],
@@ -143,6 +150,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                                               temDF1[temDF1$term == "Stem NPP","Ring_5"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_5"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_5"],
+                                              temDF1[temDF1$term == "Bole Root NPP","Ring_5"],
                                               temDF1[temDF1$term == "Other NPP","Ring_5"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_5"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_5"],
@@ -193,6 +201,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
                    expression(NPP[ol]), expression(NPP[stem]),
                    expression(NPP[froot]), expression(NPP[croot]),
+                   expression(NPP[broot]),
                    expression(NPP[other]), expression(NPP[ua]),
                    expression(NPP[hb]), 
                    expression(R[ol]),
@@ -202,7 +211,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     ### Prepare variable colors
     require(viridis)
-    col.list1 <- viridis(15)
+    col.list1 <- viridis(16)
     
     ### make the bar plot
     p1 <- ggplot(plotDF1,

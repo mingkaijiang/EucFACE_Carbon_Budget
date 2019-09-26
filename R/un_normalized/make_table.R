@@ -9,7 +9,7 @@ make_EucFACE_table <- function() {
     ##############################################
     #### Define dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
-              "Coarse Root NPP", "Other NPP",
+              "Coarse Root NPP", "Bole Root NPP", "Other NPP",
               "Understorey NPP",
               "Frass production", "R hetero", "Leaf consumption",
               "Mycorrhizal production", "Flower production")
@@ -50,14 +50,25 @@ make_EucFACE_table <- function() {
     npp$processing_notes[npp$term == "Fine Root NPP"] <- "No info on mortality and turnover"
     
     ### Coarse root NPP
-    cr_prod <- with(coarse_root_production_flux_1,
+    cr_prod <- with(coarseroot_production_flux,
                       sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
     npp$value[npp$term == "Coarse Root NPP"] <- cr_prod
-    npp$start_year[npp$term == "Coarse Root NPP"] <- min(year(coarse_root_production_flux_1$Start_date))
-    npp$end_year[npp$term == "Coarse Root NPP"] <- max(year(coarse_root_production_flux_1$End_date))
-    npp$timepoint[npp$term == "Coarse Root NPP"] <- length(unique(coarse_root_production_flux_1$Date))
-    npp$data_notes[npp$term == "Coarse Root NPP"] <- "Used literature value based on Eucalyptus nitens"
-    npp$processing_notes[npp$term == "Coarse Root NPP"] <- "Scaled with DBH"
+    npp$start_year[npp$term == "Coarse Root NPP"] <- min(year(coarseroot_production_flux$Start_date))
+    npp$end_year[npp$term == "Coarse Root NPP"] <- max(year(coarseroot_production_flux$End_date))
+    npp$timepoint[npp$term == "Coarse Root NPP"] <- length(unique(coarseroot_production_flux$Date))
+    npp$data_notes[npp$term == "Coarse Root NPP"] <- ""
+    npp$processing_notes[npp$term == "Coarse Root NPP"] <- ""
+    
+    
+    ### Bole root NPP
+    br_prod <- with(bole_root_production_flux,
+                    sum(bole_root_production_flux*ndays)/sum(ndays)) * conv
+    npp$value[npp$term == "Bole Root NPP"] <- br_prod
+    npp$start_year[npp$term == "Bole Root NPP"] <- min(year(bole_root_production_flux$Start_date))
+    npp$end_year[npp$term == "Bole Root NPP"] <- max(year(bole_root_production_flux$End_date))
+    npp$timepoint[npp$term == "Bole Root NPP"] <- length(unique(bole_root_production_flux$Date))
+    npp$data_notes[npp$term == "Bole Root NPP"] <- ""
+    npp$processing_notes[npp$term == "Bole Root NPP"] <- ""
     
     ### twigs, barks and seeds NPP
     other_prod <- with(leaflitter_flux,sum((bark_flux+seed_flux+twig_flux)*ndays)/sum(ndays)) * conv
@@ -113,8 +124,8 @@ make_EucFACE_table <- function() {
     #npp$start_year[npp$term == "Mycorrhizal production"] <- min(year(mycorrhizal_c_production_flux$Start_date))
     #npp$end_year[npp$term == "Mycorrhizal production"] <- max(year(mycorrhizal_c_production_flux$End_date))
     #npp$timepoint[npp$term == "Mycorrhizal production"] <- length(unique(mycorrhizal_c_production_flux$Date))
-    npp$data_notes[npp$term == "Mycorrhizal production"] <- "Data not on HIEv"
-    npp$processing_notes[npp$term == "Mycorrhizal production"] <- "assumption based on cumulative biomass"  
+    npp$data_notes[npp$term == "Mycorrhizal production"] <- ""
+    npp$processing_notes[npp$term == "Mycorrhizal production"] <- ""  
     
     ### Flower production
     npp$data_notes[npp$term == "Flower production"] <- "No data yet"
@@ -254,7 +265,8 @@ make_EucFACE_table <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Litter", "Coarse woody debris", 
+              "Fine Root", "Coarse Root", "Bole Root",
+              "Litter", "Coarse woody debris", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     pool <- data.frame(term)
     pool$value <- rep(NA, length(pool$term))
@@ -297,12 +309,20 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Fine Root"] <- "Assume a constant C fraction"
     
     ### Coarse root
-    pool$value[pool$term == "Coarse Root"] <- mean(coarse_root_c_pool_1$coarse_root_pool)
-    pool$start_year[pool$term == "Coarse Root"] <- min(year(coarse_root_c_pool_1$Date))
-    pool$end_year[pool$term == "Coarse Root"] <- max(year(coarse_root_c_pool_1$Date))
-    pool$timepoint[pool$term == "Coarse Root"] <- length(unique(coarse_root_c_pool_1$Date))
-    pool$data_notes[pool$term == "Coarse Root"] <- "No direct measurement"
-    pool$processing_notes[pool$term == "Coarse Root"] <- "Allometric relationship with DBH"
+    pool$value[pool$term == "Coarse Root"] <- mean(coarseroot_c_pool$coarse_root_pool)
+    pool$start_year[pool$term == "Coarse Root"] <- min(year(coarseroot_c_pool$Date))
+    pool$end_year[pool$term == "Coarse Root"] <- max(year(coarseroot_c_pool$Date))
+    pool$timepoint[pool$term == "Coarse Root"] <- length(unique(coarseroot_c_pool$Date))
+    pool$data_notes[pool$term == "Coarse Root"] <- ""
+    pool$processing_notes[pool$term == "Coarse Root"] <- ""
+    
+    ### Bole root
+    pool$value[pool$term == "Bole Root"] <- mean(bole_root_c_pool$bole_root_pool)
+    pool$start_year[pool$term == "Bole Root"] <- min(year(bole_root_c_pool$Date))
+    pool$end_year[pool$term == "Bole Root"] <- max(year(bole_root_c_pool$Date))
+    pool$timepoint[pool$term == "Bole Root"] <- length(unique(bole_root_c_pool$Date))
+    pool$data_notes[pool$term == "Bole Root"] <- ""
+    pool$processing_notes[pool$term == "Bole Root"] <- ""
     
     ### Soil C
     pool$value[pool$term == "Soil C"] <- mean(soil_c_pool$soil_carbon_pool)
@@ -335,14 +355,6 @@ make_EucFACE_table <- function() {
     pool$timepoint[pool$term == "Insects"] <- length(unique(insect_pool$Date))
     pool$data_notes[pool$term == "Insects"] <- "taken from litter basket"
     pool$processing_notes[pool$term == "Insects"]  <- "Assume in equilibrium"
-    
-    ### CWD or standing dead
-    #pool$value[pool$term == "Coarse woody debris"]  <- mean(standing_dead_c_pool$wood_pool)
-    #pool$start_year[pool$term == "Coarse woody debris"] <- min(year(standing_dead_c_pool$Date))
-    #pool$end_year[pool$term == "Coarse woody debris"] <- max(year(standing_dead_c_pool$Date))
-    #pool$timepoint[pool$term == "Coarse woody debris"] <- length(unique(standing_dead_c_pool$Date))
-    #pool$data_notes[pool$term == "Coarse woody debris"] <- "Used wood diameter data"
-    #pool$processing_notes[pool$term == "Coarse woody debris"]  <- "Taken from the standing dead pool"
     
     ### Litter
     pool$value[pool$term == "Litter"]  <- mean(leaflitter_pool$leaflitter_pool)

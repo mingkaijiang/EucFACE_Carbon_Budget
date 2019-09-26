@@ -9,7 +9,7 @@ make_EucFACE_table_by_year <- function() {
     #### NPP fluxes (Method 3 of getting NEP)
     ##############################################
     #### Define dataframe
-    term <- c("LeafNPP", "StemNPP", "FineRootNPP", "CoarseRootNPP",
+    term <- c("LeafNPP", "StemNPP", "FineRootNPP", "CoarseRootNPP", "BoleRootNPP",
               "OtherNPP", "UnderstoreyNPP", "FrassProduction", "LeafConsumption",
               "RHetero", "MycorrhizalProduction",
               "FlowerProduction")
@@ -45,11 +45,20 @@ make_EucFACE_table_by_year <- function() {
     }
 
     ### Coarse root NPP
-    coarse_root_production_flux_1$year <- year(coarse_root_production_flux_1$Date)
+    coarseroot_production_flux$year <- year(coarseroot_production_flux$Date)
     for(i in yr.list) {
-        croot_prod <- with(coarse_root_production_flux_1[coarse_root_production_flux_1$year == i, ],
+        croot_prod <- with(coarseroot_production_flux[coarseroot_production_flux$year == i, ],
                           sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
         npp$CoarseRootNPP[npp$year == i] <- round(croot_prod,2)
+    }
+    
+    
+    ### Bole root NPP
+    bole_root_production_flux$year <- year(bole_root_production_flux$Date)
+    for(i in yr.list) {
+        broot_prod <- with(bole_root_production_flux[bole_root_production_flux$year == i, ],
+                           sum(bole_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
+        npp$BoleRootNPP[npp$year == i] <- round(broot_prod,2)
     }
     
     ### leaf NPP
@@ -89,16 +98,6 @@ make_EucFACE_table_by_year <- function() {
         under_prod <- with(understorey_aboveground_production_flux[understorey_aboveground_production_flux$year == i, ],
                            sum(understorey_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
     }
-    
-    ### MycorrhizalProduction
-    #mycorrhizal_c_production_flux$year <- year(mycorrhizal_c_production_flux$Date)
-    #for(i in yr.list) {
-    #    myc_prod <- with(mycorrhizal_c_production_flux[mycorrhizal_c_production_flux$year == i, ],
-    #                       sum(mycorrhizal_production*ndays, na.rm=T)/sum(ndays, na.rm=T)) * conv 
-    #}
-    
-    ### FlowerProduction
-    
     
         
     ##############################################
@@ -192,7 +191,8 @@ make_EucFACE_table_by_year <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("OverstoreyLeaf", "OverstoreyWood", "UnderstoreyAboveground",
-              "FineRoot", "CoarseRoot", "Litter", "CoarseWoodyDebris", 
+              "FineRoot", "CoarseRoot", "BoleRoot",
+              "Litter", "CoarseWoodyDebris", 
               "MicrobialBiomass", "SoilC", "Mycorrhizae", "Insects")
     
     pool <- matrix(nrow=length(yr.list), ncol=length(term)+1)
@@ -227,9 +227,15 @@ make_EucFACE_table_by_year <- function() {
     }
     
     ### Coarse root
-    coarse_root_c_pool_1$year <- year(coarse_root_c_pool_1$Date) 
+    coarseroot_c_pool$year <- year(coarseroot_c_pool$Date) 
     for (i in yr.list) {
-        pool$CoarseRoot[pool$year == i] <- round(mean(coarse_root_c_pool_1[coarse_root_c_pool_1$year == i, "coarse_root_pool"]), 2)
+        pool$CoarseRoot[pool$year == i] <- round(mean(coarseroot_c_pool[coarseroot_c_pool$year == i, "coarse_root_pool"]), 2)
+    }
+    
+    ### Bole root
+    bole_root_c_pool$year <- year(bole_root_c_pool$Date) 
+    for (i in yr.list) {
+        pool$BoleRoot[pool$year == i] <- round(mean(bole_root_c_pool[bole_root_c_pool$year == i, "bole_root_pool"]), 2)
     }
 
     ### Soil C
@@ -261,12 +267,6 @@ make_EucFACE_table_by_year <- function() {
     for (i in yr.list) {
         pool$Insects[pool$year == i]  <- round(mean(insect_pool[insect_pool$year == i, "insect_pool"]), 2)
     }
-    
-    ### CWD
-    #standing_dead_c_pool$year <- year(standing_dead_c_pool$Date)
-    #for (i in yr.list) {
-    #    pool$CoarseWoodyDebris[pool$year == i]  <- round(mean(standing_dead_c_pool[standing_dead_c_pool$year == i, "wood_pool"]), 2)
-    #}
     
     
     ##### output tables

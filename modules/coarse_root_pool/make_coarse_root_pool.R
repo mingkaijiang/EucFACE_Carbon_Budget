@@ -8,13 +8,15 @@ make_coarse_root_pool <- function(froot) {
     myDF <- subset(myDF, Depth == 0)
     
     
-    ### if se is within 80% of mean, replace data points with treatment means
-    myDF$CRB2 <- ifelse(myDF$CRB * 0.8 < myDF$se, NA, myDF$CRB)
+    ### if se is within 75 % of mean, replace data points with treatment means
+    myDF$CRB2 <- ifelse(myDF$CRB * 0.75 < myDF$se, NA, myDF$CRB)
     myDF$CRB2[myDF$Ring==5 & myDF$Date=="14-Feb"] <- mean(myDF$CRB2[myDF$Date=="14-Feb"&myDF$Ring%in%c(1,4,5)], na.rm=T)
     myDF$CRB2[myDF$Ring==1 & myDF$Date=="14-Jun"] <- myDF$CRB[myDF$Date=="14-Jun"&myDF$Ring==1]
     myDF$CRB2[myDF$Ring==2 & myDF$Date=="14-Jun"] <- mean(myDF$CRB2[myDF$Date=="14-Jun"&myDF$Ring%in%c(2,3,6)], na.rm=T)
     myDF$CRB2[myDF$Ring==2 & myDF$Date=="14-Dec"] <- mean(myDF$CRB2[myDF$Date=="14-Dec"&myDF$Ring%in%c(2,3,6)], na.rm=T)
     
+    myDF$CRB2[myDF$Ring==3 & myDF$Date=="14-Sep"] <- mean(myDF$CRB2[myDF$Date=="14-Sep"&myDF$Ring%in%c(2,3,6)], na.rm=T)
+
     ### get the date right
     frb1 <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")
     frb1$Date <- as.Date(frb1$Dateform, format="%d-%m-%Y")
@@ -45,6 +47,12 @@ make_coarse_root_pool <- function(froot) {
     colnames(outDF) <- c("Date", "Ring", "coarseroot_pool_0_10cm", "coarseroot_pool_10_30cm", "coarse_root_pool")
     outDF <- outDF[,c("Date", "Ring", "coarse_root_pool", "coarseroot_pool_0_10cm", "coarseroot_pool_10_30cm")]
     
+    
+    test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
+    test$trt[test$Ring%in%c(2,3,6)] <- "amb"
+    test$trt[test$Ring%in%c(1,4,5)] <- "ele"
+    summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
+
     ### return
     return(outDF)
 

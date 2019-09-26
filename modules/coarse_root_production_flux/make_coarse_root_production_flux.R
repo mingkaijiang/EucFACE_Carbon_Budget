@@ -1,32 +1,39 @@
 make_coarse_root_production_flux <- function(cr_pool) {
-
-    dates <- unique(cr_pool$Date)
-    dates <- dates[order(dates)]
     
-    prod <- subset(cr_pool, Date != dates[1])
-    prod$Start_date <- prod$Date  # just to make this a date format! 
-    for (i in 1:length(prod$Date)) {
-        prod$Start_date[i] <- dates[which(dates == prod$Date[i]) - 1]
-        prod$prev_biom[i] <- cr_pool$coarse_root_pool[cr_pool$Ring == prod$Ring[i] &
-                                            as.numeric(cr_pool$Date-prod$Start_date[i])==0]
-    }
     
-    # Length of period
-    prod$length <- as.numeric(prod$Date - prod$Start_date)
+    ### obtain global coarseroot turnover rate from 
+    ### Zhang and Wang, 2015. The decomposition of fine and coarse roots, global patterns and their controlling factors
+    ### Scientific Reports, 5: 09940.
+    gDF <- read.csv("data/Zhang_Wang_2015_Global_Coarseroot.csv")
     
-    # C increment in mg C d-1
-    prod$cr_production_flux <- (prod$coarse_root_pool - prod$prev_biom) * 1000/prod$length
+    head(gDF)
+    subDF <- subset(gDF, Size%in%c("coarse root", "coarse root 2-5 mm"))
+    subDF <- subset(subDF, Life.form == "Evergreen broadleaf")
     
-    # format dataframe to return
-    cr.out <- prod[,c("Start_date", "Date", "Date", "Ring", "cr_production_flux")]
+    tau.croot <- mean(subDF$K.value_yr.1_)
     
-    names(cr.out) <- c("Start_date", "End_date", "Date", "Ring", "coarse_root_production_flux")
+    ### just calculate production over a year
+    cr_pool$Date <- as.character(cr_pool$Date)
+    eDF <- subset(cr_pool, Date == "2014-09-22")
+    lDF <- subset(cr_pool, Date == "2015-09-23")
     
-    cr.out$ndays <- as.numeric(cr.out$End_date - cr.out$Start_date) + 1
+    eDF$late <- lDF$coarse_root_pool
+    eDF$ndays <- as.numeric(as.Date("2015-09-23") - as.Date("2014-09-22")) + 1
+    eDF$diff <- eDF$late - eDF$coarse_root_pool
+    eDF$tau <- tau.croot
     
-    # Only use data period 2012-2016
-    cr.out <- cr.out[cr.out$Date<="2016-12-31",]
+    eDF$influx <- with(eDF, diff + coarse_root_pool * tau)
     
-    return(cr.out)
+    ### calculate coarseroot production as the difference over two periods
+    eDF$coarse_root_production_flux <- eDF$influx / 365 * 1000
+    
+    
+    ### prepare output
+    outDF <- eDF[,c("Date", "Ring", "coarse_root_production_flux", "ndays")]
+    outDF$End_date <- as.Date("2015-09-23")
+    outDF$Start_date <- outDF$Date
+    outDF <- outDF[,c("Start_date", "End_date", "Date", "Ring", "coarse_root_production_flux", "ndays")]
+    
+    return(outDF)
     
 }

@@ -300,6 +300,8 @@ delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 #delta_fineroot_c_pool_old <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_pool, var.col=3)
 delta_fineroot_c_pool <- make_delta_fineroot_pool_function_3(inDF=fineroot_c_pool, var.col=3)
 
+delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarseroot_c_pool, var.col=3)
+
 delta_bole_root_c_pool <- make_delta_boleroot_pool_function(inDF=bole_root_c_pool, var.col=3)
 
 delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
@@ -339,15 +341,14 @@ tables_by_ring <- make_table_by_ring()
 ###### ----------Check for C gaps-------------- ######
 ### Plot a combined gpp and rsoil gap plot
 ### To plot, you need to go into the function
-#source("R/un_normalized/gpp_and_rsoil_gap_plot.R")
-#gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
-#
-#source("R/un_normalized/nep_gap_plot.R")
-#nep_gap_plot(inDF=tables_by_ring)
+source("R/un_normalized/gpp_and_rsoil_gap_plot.R")
+gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
 
-#source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
-#make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
+source("R/un_normalized/nep_gap_plot.R")
+nep_gap_plot(inDF=tables_by_ring)
 
+source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
+make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 ###########################################################################
 ###    Step 5: Normalize response with LAI as a covariate               ###
