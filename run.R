@@ -142,12 +142,18 @@ leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
                               sla_option = "variable")
 
 
-### Fine root pool
-### reads in ring-specific c fraction information
+### Fine root pool (< 2 mm)
 fineroot_c_pool <- make_fineroot_pool_2()
 
 ### fineroot c production flux
 fineroot_production_flux <- make_fineroot_production_flux_2()
+
+### Coarseroot pool (> 2 mm)
+coarseroot_c_pool <- make_coarse_root_pool(froot=fineroot_c_pool)
+
+### coarseroot c production
+coarseroot_production_flux <- make_coarse_root_production_flux(cr_pool=coarseroot_c_pool)
+
 
 ### frass c production flux
 frass_production_flux <- make_frass_production_flux()
@@ -246,24 +252,22 @@ herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herb
 
 
 ### Bole root C pool 
-bole_root_c_pool_1 <- make_bole_root_pool(c_fraction_croot, fr_pool=fineroot_c_pool) 
+bole_root_c_pool <- make_bole_root_pool(c_fraction_croot, fr_pool=fineroot_c_pool,
+                                        cr_pool=coarseroot_c_pool) 
 
 #### Bole root C production
 bole_root_production_flux <- make_bole_root_production_flux(bole_root_c_pool) 
 
 ### Root respiration flux
-#root_respiration_flux_old <- make_root_respiration_flux(fineroot_c_pool, 
-#                                                    coarse_root_c_pool_1)
-
-#root_respiration_flux_old <- make_root_respiration_flux_2(fr_pool=fineroot_c_pool, 
-#                                                          cr_pool=bole_root_c_pool)
-
-
-root_respiration_flux <- make_root_respiration_flux_3()
+## based on treatment-specific respiration rates
+root_respiration_flux_old <- make_root_respiration_flux_1(froot=fineroot_c_pool, 
+                                                          croot=coarseroot_c_pool)
+## based on average respiration rates
+root_respiration_flux <- make_root_respiration_flux_2(froot=fineroot_c_pool, 
+                                                      croot=coarseroot_c_pool)
 
 compare_Rroot(nDF=root_respiration_flux,
               oDF=root_respiration_flux_old)
-
 
 ### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 

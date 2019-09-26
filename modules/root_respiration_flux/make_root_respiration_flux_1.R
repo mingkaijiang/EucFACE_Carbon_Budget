@@ -1,22 +1,27 @@
 
-make_root_respiration_flux_3 <- function(){
+make_root_respiration_flux_1 <- function(froot, croot){
   #### Estimate root respiration based on temperature-dependent function
   #### temperature data downloaded in soil respiration module
   #### temperature function derived from EucFACE
   #### based on NamJin's EucFACE data
-  #### and based on 40/60 froot croot distribution
+
+  ### convert from g C to c DM
+  croot$c_frac <- c_fraction_croot
   
-  ### read in froot biomass data
-  frb1 <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")
-  frb1$Date <- as.Date(frb1$Dateform, format="%d-%m-%Y")
-  frb1$frb_tot <- with(frb1, FRB_0.10cm + FRB_10.30cm)
+  froot$c_frac[froot$Ring==1] <- 0.426
+  froot$c_frac[froot$Ring==2] <- 0.413
+  froot$c_frac[froot$Ring==3] <- 0.399
+  froot$c_frac[froot$Ring==4] <- 0.415
+  froot$c_frac[froot$Ring==5] <- 0.42
+  froot$c_frac[froot$Ring==6] <- 0.401
   
-  # average across rings and dates
-  fr_pool <- summaryBy(frb_tot~Date+Ring,data=frb1,FUN=mean,keep.names=T)
-  colnames(fr_pool) <- c("Date", "Ring", "fineroot_pool")
+  croot$biomass <- croot$coarse_root_pool/croot$c_frac
+  froot$biomass <- froot$fineroot_pool/croot$c_frac
   
+  crDF <- summaryBy(biomass~Ring, data=croot, FUN=mean, keep.names=T)
+  frDF <- summaryBy(biomass~Ring, data=froot, FUN=mean, keep.names=T)
   
-  #- download soil temperature
+  ### download soil temperature
   tempDF <- download_soil_temperature()
   
   ### read in temperature data
@@ -35,7 +40,7 @@ make_root_respiration_flux_3 <- function(){
   
   ### calculate mean soil temperature
   tempDF$T5_avg <- rowMeans(tempDF[,c("T20cm_1_Avg", "T20cm_2_Avg")], na.rm=T)
-
+  
   ### extract useful columns
   tempDF2 <- tempDF[,c("DateTime", "Date", "Ring", "T5_avg")]
   
@@ -44,17 +49,14 @@ make_root_respiration_flux_3 <- function(){
   
   ### replace NA with row before
   tempDF2$T5_avg <- na.locf(tempDF2$T5_avg)
-
+  
   ### 
   tempDF <- tempDF2
   
-  ### get ring-average root biomass data
-  fr_biomass <- summaryBy(fineroot_pool~Ring, data=fr_pool, keep.names=T, FUN=mean)
-
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {
-      tempDF[tempDF$Ring == i, "fr_biomass"] <- fr_biomass[fr_biomass$Ring == i, "fineroot_pool"]
-      tempDF[tempDF$Ring == i, "cr_biomass"] <- fr_biomass[fr_biomass$Ring == i, "fineroot_pool"] / (40/60) # froot vs. croot fraction in NamJin's dataset
+    tempDF[tempDF$Ring == i, "fr_biomass"] <- frDF[frDF$Ring == i, "biomass"]
+    tempDF[tempDF$Ring == i, "cr_biomass"] <- crDF[crDF$Ring == i, "biomass"] 
   }
   
   ### Calculate R root
@@ -81,8 +83,7 @@ make_root_respiration_flux_3 <- function(){
   
   ### convert from nmol CO2 g-1 s-1 to mg C m-2 15min-1
   tempDF$Rroot_mg_m2 <- tempDF$Rroot*60*15*1e-9*12.01*1000
-
-
+  
   ### sum across dates and plots
   tempDF.out <- summaryBy(Rroot_mg_m2~Date+Ring,data=tempDF,FUN=sum,keep.names=T)
   
@@ -93,6 +94,6 @@ make_root_respiration_flux_3 <- function(){
   tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date) + 1
   tempDF.out <- tempDF.out[,c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")]
   
-
+  
   return(tempDF.out)
 }

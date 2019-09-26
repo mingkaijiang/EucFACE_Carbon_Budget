@@ -1,4 +1,4 @@
-make_bole_root_pool <- function(c_frac, fr_pool) {
+make_bole_root_pool <- function(c_frac, fr_pool, cr_pool) {
     ### Method 1 of making total root biomass pool
     ### Based on Snowdon et al., 2000. National Carbon accounting system:
     ### synthesis of allometrics, review of root biomass and design of future woody biomass sampling strategies.
@@ -106,27 +106,35 @@ make_bole_root_pool <- function(c_frac, fr_pool) {
     
     fr.ring <- summaryBy(biomass~Ring, data=fr_pool, FUN=mean, keep.names=T, na.rm=T)
     
+    
+    # calculate coarseroot biomass
+    cr_pool$c_frac <- c_fraction_croot
+    
+    cr_pool$biomass <- cr_pool$coarse_root_pool/cr_pool$c_frac
+    
+    cr.ring <- summaryBy(biomass~Ring, data=cr_pool, FUN=mean, keep.names=T, na.rm=T)
+    
     # convert from g matter m-2 to g C m-2
     data.m$total_root_biomass <- data.m$biomass * water_frac
     
     # subtract fineroot biomass out, assuming one froot value per ring
     for (i in 1:6) {
-        data.m$coarseroot_biomass[data.m$Ring == i] <- data.m$total_root_biomass[data.m$Ring == i] - fr.ring$biomass[fr.ring$Ring == i]
+        data.m$boleroot_biomass[data.m$Ring == i] <- data.m$total_root_biomass[data.m$Ring == i] - fr.ring$biomass[fr.ring$Ring == i] - cr.ring$biomass[cr.ring$Ring == i]
             
     }
     
-    data.m$coarseroot_c_pool <- data.m$coarseroot_biomass * c_frac
+    data.m$boleroot_c_pool <- data.m$boleroot_biomass * c_frac
 
     # output
-    cr_pool <- data.m[,c("Date","Ring","coarseroot_c_pool")]
+    out <- data.m[,c("Date","Ring","boleroot_c_pool")]
     
-    colnames(cr_pool) <- c("Date", "Ring", "coarse_root_pool")
+    colnames(out) <- c("Date", "Ring", "bole_root_pool")
     
     # Only use data period 2012-2016
-    cr_pool <- cr_pool[cr_pool$Date<="2016-12-31",]
+    out <- out[out$Date<="2016-12-31",]
 
     ### Decision on what to return
-    return(cr_pool)
+    return(out)
 
     
 }
