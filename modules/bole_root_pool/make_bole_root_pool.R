@@ -108,7 +108,12 @@ make_bole_root_pool <- function(c_frac, fr_pool, cr_pool) {
     
     
     # calculate coarseroot biomass
-    cr_pool$c_frac <- c_fraction_croot
+    cr_pool$c_frac[cr_pool$Ring==1] <- 0.426
+    cr_pool$c_frac[cr_pool$Ring==2] <- 0.413
+    cr_pool$c_frac[cr_pool$Ring==3] <- 0.399
+    cr_pool$c_frac[cr_pool$Ring==4] <- 0.415
+    cr_pool$c_frac[cr_pool$Ring==5] <- 0.42
+    cr_pool$c_frac[cr_pool$Ring==6] <- 0.401
     
     cr_pool$biomass <- cr_pool$coarse_root_pool/cr_pool$c_frac
     

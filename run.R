@@ -148,8 +148,24 @@ fineroot_c_pool <- make_fineroot_pool_2()
 ### fineroot c production flux
 fineroot_production_flux <- make_fineroot_production_flux_2()
 
-### Coarseroot pool (> 2 mm)
-coarseroot_c_pool <- make_coarse_root_pool(froot=fineroot_c_pool)
+### Coarseroot pool (2 - 3 mm)
+### Note:
+### both Juan and Johanna's data gives similar result,
+### in terms of the Froot/Croot fraction, 
+### despite they have slightly different definitions of croot.
+### This in turn means we have higher Rroot (~ 600 g C m-2 yr-1), 
+### about more than half in aCO2 rings, and about half in eCO2 rings. 
+### We have a pretty good estimate of the Froot/Croot fraction in top soil, 
+### in that the variability is relatively low. 
+### The variability of coarseroot biomass in 10 - 30 cm soil is large. 
+### The problem is deeper depth (10 - 30 cm)
+#coarseroot_c_pool_old <- make_coarse_root_pool(froot=fineroot_c_pool)
+#coarseroot_c_pool_2 <- make_coarse_root_pool_2()
+#coarseroot_c_pool_3 <- make_coarse_root_pool_3()
+
+### estimate coarseroot pool based on a relationship 
+### between f/c ~ fineroot biomass, at two depths
+coarseroot_c_pool <- make_coarse_root_pool_4(bkDF=soil_bulk_density_variable)
 
 ### coarseroot c production
 coarseroot_production_flux <- make_coarse_root_production_flux(cr_pool=coarseroot_c_pool)
@@ -260,14 +276,17 @@ bole_root_production_flux <- make_bole_root_production_flux(bole_root_c_pool)
 
 ### Root respiration flux
 ## based on treatment-specific respiration rates
-root_respiration_flux_old <- make_root_respiration_flux_1(froot=fineroot_c_pool, 
-                                                          croot=coarseroot_c_pool)
+#root_respiration_flux_old <- make_root_respiration_flux_1(froot=fineroot_c_pool, 
+#                                                          croot=coarseroot_c_pool)
 ## based on average respiration rates
+#root_respiration_flux_old <- make_root_respiration_flux_2(froot=fineroot_c_pool, 
+#                                                      croot=coarseroot_c_pool_old)
+
 root_respiration_flux <- make_root_respiration_flux_2(froot=fineroot_c_pool, 
                                                       croot=coarseroot_c_pool)
 
-compare_Rroot(nDF=root_respiration_flux,
-              oDF=root_respiration_flux_old)
+#compare_Rroot(nDF=root_respiration_flux,
+#              oDF=root_respiration_flux_old)
 
 ### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
