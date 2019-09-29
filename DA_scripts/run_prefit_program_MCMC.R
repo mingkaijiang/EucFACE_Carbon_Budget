@@ -13,7 +13,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     ### step 2:
     ### Run MCMC for prefit parameters - at aCO2 for each ring
     ## Ring 2
-    step.size.aCO2 <- 0.006 
+    step.size.aCO2 <- 0.005 
     pChain_aCO2_1 <- prefit_MCMC_model_fitting(params = prefit.params.aCO2.R2, 
                                                params.lower = prefit.params.aCO2.lower.R2,
                                                params.upper = prefit.params.aCO2.upper.R2,
@@ -28,7 +28,7 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     
     
     # Ring 3
-    step.size.aCO2 <- 0.007 
+    step.size.aCO2 <- 0.006 
     pChain_aCO2_2 <- prefit_MCMC_model_fitting(params = prefit.params.aCO2.R3, 
                                                params.lower = prefit.params.aCO2.lower.R3,
                                                params.upper = prefit.params.aCO2.upper.R3,
@@ -112,10 +112,10 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
     ########################################################################################
     outDF <- data.frame(c(1:6), NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
                         NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
-    colnames(outDF) <- c("Ring", "alloc.leaf", "alloc.wood", "alloc.froot", "tau.leaf", "tau.froot", "tau.myco", "alloc.myco", 
-                         "alloc.sd.leaf", "alloc.sd.wood", "alloc.sd.froot", "tau.sd.leaf", "tau.sd.froot", "tau.sd.myco", "alloc.sd.myco", 
-                         "alloc.pos.leaf", "alloc.pos.wood", "alloc.pos.froot", "tau.pos.leaf", "tau.pos.froot", "tau.pos.myco", "alloc.pos.myco", 
-                         "alloc.neg.leaf", "alloc.neg.wood", "alloc.neg.froot", "tau.neg.leaf", "tau.neg.froot", "tau.neg.myco", "alloc.neg.myco")
+    colnames(outDF) <- c("Ring", "alloc.leaf", "alloc.wood", "alloc.root", "tau.leaf", "tau.root", "tau.myco", "alloc.myco", 
+                         "alloc.sd.leaf", "alloc.sd.wood", "alloc.sd.root", "tau.sd.leaf", "tau.sd.root", "tau.sd.myco", "alloc.sd.myco", 
+                         "alloc.pos.leaf", "alloc.pos.wood", "alloc.pos.root", "tau.pos.leaf", "tau.pos.root", "tau.pos.myco", "alloc.pos.myco", 
+                         "alloc.neg.leaf", "alloc.neg.wood", "alloc.neg.root", "tau.neg.leaf", "tau.neg.root", "tau.neg.myco", "alloc.neg.myco")
     
     ### ring 1
     outDF[outDF$Ring=="1", 2:(no.var+2)] <- colMeans(pChain_eCO2_1[, 1:(no.var+1)])
@@ -150,8 +150,8 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
         outDF$alloc.pos.wood <- outDF$alloc.wood + outDF$alloc.sd.wood
         outDF$alloc.neg.wood <- outDF$alloc.wood - outDF$alloc.sd.wood
         
-        outDF$alloc.pos.froot <- outDF$alloc.froot + outDF$alloc.sd.froot
-        outDF$alloc.neg.froot <- outDF$alloc.froot - outDF$alloc.sd.froot
+        outDF$alloc.pos.root <- outDF$alloc.root + outDF$alloc.sd.root
+        outDF$alloc.neg.root <- outDF$alloc.root - outDF$alloc.sd.root
         
         outDF$alloc.pos.myco <- outDF$alloc.myco + outDF$alloc.sd.myco
         outDF$alloc.neg.myco <- outDF$alloc.myco - outDF$alloc.sd.myco
@@ -160,8 +160,8 @@ run_prefit_program_MCMC <- function(dist.type, obsDF, eco2DF,
         outDF$tau.pos.leaf <- outDF$tau.leaf + outDF$tau.sd.leaf
         outDF$tau.neg.leaf <- outDF$tau.leaf - outDF$tau.sd.leaf
         
-        outDF$tau.pos.froot <- outDF$tau.froot + outDF$tau.sd.froot
-        outDF$tau.neg.froot <- outDF$tau.froot - outDF$tau.sd.froot
+        outDF$tau.pos.root <- outDF$tau.root + outDF$tau.sd.root
+        outDF$tau.neg.root <- outDF$tau.root - outDF$tau.sd.root
         
         outDF$tau.pos.myco <- outDF$tau.myco + outDF$tau.sd.myco
         outDF$tau.neg.myco <- outDF$tau.myco - outDF$tau.sd.myco

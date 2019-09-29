@@ -168,7 +168,8 @@ fineroot_production_flux <- make_fineroot_production_flux_2()
 coarseroot_c_pool <- make_coarse_root_pool_4(bkDF=soil_bulk_density_variable)
 
 ### coarseroot c production
-coarseroot_production_flux <- make_coarse_root_production_flux(cr_pool=coarseroot_c_pool)
+#coarseroot_production_flux <- make_coarse_root_production_flux(cr_pool=coarseroot_c_pool)
+coarseroot_production_flux <- make_coarse_root_production_flux_2(inDF=coarseroot_c_pool)
 
 
 ### frass c production flux
@@ -360,14 +361,14 @@ tables_by_ring <- make_table_by_ring()
 ###### ----------Check for C gaps-------------- ######
 ### Plot a combined gpp and rsoil gap plot
 ### To plot, you need to go into the function
-source("R/un_normalized/gpp_and_rsoil_gap_plot.R")
-gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
-
-source("R/un_normalized/nep_gap_plot.R")
-nep_gap_plot(inDF=tables_by_ring)
-
-source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
-make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
+#source("R/un_normalized/gpp_and_rsoil_gap_plot.R")
+#gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
+#
+#source("R/un_normalized/nep_gap_plot.R")
+#nep_gap_plot(inDF=tables_by_ring)
+#
+#source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
+#make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 ###########################################################################
 ###    Step 5: Normalize response with LAI as a covariate               ###
@@ -512,6 +513,14 @@ fineroot_production_flux_ann <- make_froot_prod_treatment_abs_effect_statistics(
                                                                                 stat.model="no_interaction_with_covariate",
                                                                                 return.outcome="predicted") 
 
+
+### Coarseroot production flux
+coarseroot_production_flux_ann <- make_croot_prod_treatment_abs_effect_statistics(inDF=coarseroot_production_flux, 
+                                                                                var.cond="flux", var.col=5,
+                                                                                date.as.factor=T,
+                                                                                stat.model="no_interaction_with_covariate",
+                                                                                return.outcome="predicted") 
+
 ### Boleroot production
 bole_root_production_flux_ann <- make_broot_prod_treatment_abs_effect_statistics(inDF=bole_root_production_flux, 
                                                                                    var.cond="flux", var.col=5,
@@ -562,6 +571,14 @@ wood_c_pool_ann <- make_woodc_treatment_abs_effect_statistics(inDF=wood_c_pool,
 
 ### Fineroot C pool
 fineroot_c_pool_ann <- make_frootc_treatment_abs_effect_statistics(inDF=fineroot_c_pool, 
+                                                                   var.cond="pool", var.col=3,
+                                                                   date.as.factor=T,
+                                                                   stat.model="no_interaction_with_covariate",
+                                                                   return.outcome="predicted")
+
+
+### Coarseroot C pool
+coarseroot_c_pool_ann <- make_crootc_treatment_abs_effect_statistics(inDF=coarseroot_c_pool, 
                                                                    var.cond="pool", var.col=3,
                                                                    date.as.factor=T,
                                                                    stat.model="no_interaction_with_covariate",
@@ -635,6 +652,8 @@ delta_leaf_c_pool_ann <- make_delta_leaf_pool_treatment_abs_effect(inDF=leaf_c_p
 delta_wood_c_pool_ann <- make_delta_wood_pool_treatment_abs_effect(inDF=wood_c_pool_ann, var.col=10)
 
 delta_fineroot_c_pool_ann <- make_delta_fineroot_pool_treatment_abs_effect_2(inDF=fineroot_c_pool_ann, var.col=10)
+
+delta_coarseroot_c_pool_ann <- make_delta_coarseroot_pool_treatment_abs_effect(inDF=coarseroot_c_pool_ann, var.col=10)
 
 delta_bole_root_c_pool_ann <- make_delta_boleroot_pool_treatment_abs_effect(inDF=bole_root_c_pool_ann, var.col=8)
 

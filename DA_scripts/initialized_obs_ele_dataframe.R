@@ -6,11 +6,11 @@ initialize_obs_ele_dataframe <- function() {
     deltaDF1 <- read.csv("output/delta_pool.csv")
     
     deltaDF2 <- as.data.frame(matrix(ncol=12, nrow = 4))
-    colnames(deltaDF2) <- c("delta.C.leaf.mean", "delta.C.wood.mean", "delta.C.froot.mean",
-                            "delta.C.myco.mean", #"delta.C.ag.lit.mean", 
+    colnames(deltaDF2) <- c("delta.C.leaf.mean", "delta.C.wood.mean", "delta.C.root.mean",
+                            "delta.C.myco.mean", 
                             "delta.C.micr.mean", "delta.C.soil.mean", 
-                            "delta.C.leaf.sd", "delta.C.wood.sd", "delta.C.froot.sd",
-                            "delta.C.myco.sd", #"delta.C.ag.lit.sd", 
+                            "delta.C.leaf.sd", "delta.C.wood.sd", "delta.C.root.sd",
+                            "delta.C.myco.sd", 
                             "delta.C.micr.sd", "delta.C.soil.sd")
     
     ### Ring 1, means
@@ -19,9 +19,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[1,"delta.C.wood.mean"] <- sum(deltaDF1$Ring_1[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                              "Bole Root")])
     
-    deltaDF2[1,"delta.C.froot.mean"] <- sum(deltaDF1$Ring_1[deltaDF1$term=="Fine Root"])
+    deltaDF2[1,"delta.C.root.mean"] <- sum(deltaDF1$Ring_1[deltaDF1$term%in%c("Fine Root",
+                                                                              "Coarse Root")])
     
     deltaDF2[1,"delta.C.myco.mean"] <- sum(deltaDF1$Ring_1[deltaDF1$term=="Mycorrhizae"])
     
@@ -38,9 +39,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[2,"delta.C.wood.mean"] <- sum(deltaDF1$Ring_4[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                              "Bole Root")])
     
-    deltaDF2[2,"delta.C.froot.mean"] <- sum(deltaDF1$Ring_4[deltaDF1$term=="Fine Root"])
+    deltaDF2[2,"delta.C.root.mean"] <- sum(deltaDF1$Ring_4[deltaDF1$term%in%c("Fine Root",
+                                                                              "Coarse Root")])
     
     deltaDF2[2,"delta.C.myco.mean"] <- sum(deltaDF1$Ring_4[deltaDF1$term=="Mycorrhizae"])
     
@@ -57,9 +59,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[3,"delta.C.wood.mean"] <- sum(deltaDF1$Ring_5[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                              "Bole Root")])
     
-    deltaDF2[3,"delta.C.froot.mean"] <- sum(deltaDF1$Ring_5[deltaDF1$term=="Fine Root"])
+    deltaDF2[3,"delta.C.root.mean"] <- sum(deltaDF1$Ring_5[deltaDF1$term%in%c("Fine Root",
+                                                                              "Coarse Root")])
     
     deltaDF2[3,"delta.C.myco.mean"] <- sum(deltaDF1$Ring_5[deltaDF1$term=="Mycorrhizae"])
     
@@ -76,9 +79,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[4,"delta.C.wood.mean"] <- sum(deltaDF1$eCO2[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                            "Bole Root")])
     
-    deltaDF2[4,"delta.C.froot.mean"] <- sum(deltaDF1$eCO2[deltaDF1$term=="Fine Root"])
+    deltaDF2[4,"delta.C.root.mean"] <- sum(deltaDF1$eCO2[deltaDF1$term%in%c("Fine Root",
+                                                                              "Coarse Root")])
     
     deltaDF2[4,"delta.C.myco.mean"] <- sum(deltaDF1$eCO2[deltaDF1$term=="Mycorrhizae"])
     
@@ -97,9 +101,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[1,"delta.C.wood.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                             "Bole Root")])
     
-    deltaDF2[1,"delta.C.froot.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Fine Root"])
+    deltaDF2[1,"delta.C.root.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Fine Root",
+                                                                              "Coarse Root")])
     
     deltaDF2[1,"delta.C.myco.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Mycorrhizae"])
     
@@ -116,9 +121,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[2,"delta.C.wood.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                             "Bole Root")])
     
-    deltaDF2[2,"delta.C.froot.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Fine Root"])
+    deltaDF2[2,"delta.C.root.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Fine Root",
+                                                                             "Coarse Root")])
     
     deltaDF2[2,"delta.C.myco.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Mycorrhizae"])
     
@@ -135,9 +141,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                               "Insects")])
     
     deltaDF2[3,"delta.C.wood.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Overstorey wood", 
-                                                                              "Coarse Root")])
+                                                                             "Bole Root")])
     
-    deltaDF2[3,"delta.C.froot.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Fine Root"])
+    deltaDF2[3,"delta.C.root.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Fine Root",
+                                                                             "Coarse Root")])
     
     deltaDF2[3,"delta.C.myco.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Mycorrhizae"])
     
@@ -155,9 +162,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                              "Insects")])
     
     deltaDF2[4,"delta.C.wood.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Overstorey wood", 
-                                                                             "Coarse Root")])
+                                                                             "Bole Root")])
     
-    deltaDF2[4,"delta.C.froot.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Fine Root"])
+    deltaDF2[4,"delta.C.root.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term%in%c("Fine Root",
+                                                                             "Coarse Root")])
     
     deltaDF2[4,"delta.C.myco.sd"] <- sum(deltaDF1$eCO2_sd[deltaDF1$term=="Mycorrhizae"])
 
@@ -172,7 +180,7 @@ initialize_obs_ele_dataframe <- function() {
     nppDF1 <- read.csv("output/npp.csv")
     
     nppDF2 <- as.data.frame(matrix(ncol=6, nrow = 4))
-    colnames(nppDF2) <- c("NPP.leaf.mean", "NPP.wood.mean", "NPP.froot.mean",
+    colnames(nppDF2) <- c("NPP.leaf.mean", "NPP.wood.mean", "NPP.root.mean",
                           "NPP.leaf.sd", "NPP.wood.sd", "NPP.froot.sd")
     
     ### Ring 1, means
@@ -180,10 +188,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[1,"NPP.wood.mean"] <- sum(nppDF1$Ring_1[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
+    nppDF2[1,"NPP.wood.mean"] <- sum(nppDF1$Ring_1[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
                                                                     "Other NPP")])
     
-    nppDF2[1,"NPP.froot.mean"] <- sum(nppDF1$Ring_1[nppDF1$term=="Fine Root NPP"])
+    nppDF2[1,"NPP.root.mean"] <- sum(nppDF1$Ring_1[nppDF1$term%in%c("Fine Root NPP",
+                                                                    "Coarse Root NPP")])
     
     
     ### Ring 4, means
@@ -191,10 +200,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[2,"NPP.wood.mean"] <- sum(nppDF1$Ring_4[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
+    nppDF2[2,"NPP.wood.mean"] <- sum(nppDF1$Ring_4[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
                                                                     "Other NPP")])
     
-    nppDF2[2,"NPP.froot.mean"] <- sum(nppDF1$Ring_4[nppDF1$term=="Fine Root NPP"])
+    nppDF2[2,"NPP.root.mean"] <- sum(nppDF1$Ring_4[nppDF1$term%in%c("Fine Root NPP",
+                                                                    "Coarse Root NPP")])
     
     
     ### Ring 5, means
@@ -202,10 +212,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[3,"NPP.wood.mean"] <- sum(nppDF1$Ring_5[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
+    nppDF2[3,"NPP.wood.mean"] <- sum(nppDF1$Ring_5[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
                                                                     "Other NPP")])
     
-    nppDF2[3,"NPP.froot.mean"] <- sum(nppDF1$Ring_5[nppDF1$term=="Fine Root NPP"])
+    nppDF2[3,"NPP.root.mean"] <- sum(nppDF1$Ring_5[nppDF1$term%in%c("Fine Root NPP",
+                                                                    "Coarse Root NPP")])
     
     
     ### eCO2, means
@@ -213,10 +224,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[4,"NPP.wood.mean"] <- sum(nppDF1$eCO2[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
-                                                                    "Other NPP")])
+    nppDF2[4,"NPP.wood.mean"] <- sum(nppDF1$eCO2[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
+                                                                  "Other NPP")])
     
-    nppDF2[4,"NPP.froot.mean"] <- sum(nppDF1$eCO2[nppDF1$term=="Fine Root NPP"])
+    nppDF2[4,"NPP.root.mean"] <- sum(nppDF1$eCO2[nppDF1$term%in%c("Fine Root NPP",
+                                                                    "Coarse Root NPP")])
     
     
     
@@ -225,10 +237,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[1,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
-                                                                    "Other NPP")])
+    nppDF2[1,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
+                                                                   "Other NPP")])
     
-    nppDF2[1,"NPP.froot.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term=="Fine Root NPP"])
+    nppDF2[1,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
+                                                                    "Coarse Root NPP")])
     
     
     ### Ring 4, sd
@@ -236,10 +249,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[2,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
-                                                                    "Other NPP")])
+    nppDF2[2,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
+                                                                   "Other NPP")])
     
-    nppDF2[2,"NPP.froot.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term=="Fine Root NPP"])
+    nppDF2[2,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
+                                                                   "Coarse Root NPP")])
     
     
     ### Ring 5, sd
@@ -247,10 +261,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Understorey NPP",
                                                                     "Leaf consumption")])
     
-    nppDF2[3,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
-                                                                    "Other NPP")])
+    nppDF2[3,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
+                                                                   "Other NPP")])
     
-    nppDF2[3,"NPP.froot.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term=="Fine Root NPP"])
+    nppDF2[3,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
+                                                                   "Coarse Root NPP")])
     
     
     ### eCO2, sd
@@ -258,10 +273,11 @@ initialize_obs_ele_dataframe <- function() {
                                                                    "Understorey NPP",
                                                                    "Leaf consumption")])
     
-    nppDF2[4,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Coarse Root NPP", 
+    nppDF2[4,"NPP.wood.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Stem NPP", "Bole Root NPP", 
                                                                    "Other NPP")])
     
-    nppDF2[4,"NPP.froot.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term=="Fine Root NPP"])
+    nppDF2[4,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
+                                                                   "Coarse Root NPP")])
     
     
     
@@ -367,10 +383,10 @@ initialize_obs_ele_dataframe <- function() {
     poolDF1 <- read.csv("output/pool.csv")
     
     poolDF2 <- as.data.frame(matrix(ncol=12, nrow = 4))
-    colnames(poolDF2) <- c("C.leaf.mean", "C.wood.mean", "C.froot.mean",
+    colnames(poolDF2) <- c("C.leaf.mean", "C.wood.mean", "C.root.mean",
                             "C.myco.mean", #"C.ag.lit.mean", 
                            "C.micr.mean","C.soil.mean", 
-                            "C.leaf.sd", "C.wood.sd", "C.froot.sd",
+                            "C.leaf.sd", "C.wood.sd", "C.root.sd",
                             "C.myco.sd", #"C.ag.lit.sd", 
                            "C.micr.sd", "C.soil.sd")
     
@@ -380,9 +396,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                      "Insects")])
     
     poolDF2[1,"C.wood.mean"] <- sum(poolDF1$Ring_1[poolDF1$term%in%c("Overstorey wood", 
-                                                                     "Coarse Root")])
+                                                                     "Bole Root")])
     
-    poolDF2[1,"C.froot.mean"] <- sum(poolDF1$Ring_1[poolDF1$term=="Fine Root"])
+    poolDF2[1,"C.root.mean"] <- sum(poolDF1$Ring_1[poolDF1$term%in%c("Fine Root",
+                                                                     "Coarse Root")])
     
     poolDF2[1,"C.myco.mean"] <- sum(poolDF1$Ring_1[poolDF1$term=="Mycorrhizae"])
     
@@ -399,9 +416,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                      "Insects")])
     
     poolDF2[2,"C.wood.mean"] <- sum(poolDF1$Ring_4[poolDF1$term%in%c("Overstorey wood", 
-                                                                     "Coarse Root")])
+                                                                     "Bole Root")])
     
-    poolDF2[2,"C.froot.mean"] <- sum(poolDF1$Ring_4[poolDF1$term=="Fine Root"])
+    poolDF2[2,"C.root.mean"] <- sum(poolDF1$Ring_4[poolDF1$term%in%c("Fine Root",
+                                                                     "Coarse Root")])
     
     poolDF2[2,"C.myco.mean"] <- sum(poolDF1$Ring_4[poolDF1$term=="Mycorrhizae"])
     
@@ -418,9 +436,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                      "Insects")])
     
     poolDF2[3,"C.wood.mean"] <- sum(poolDF1$Ring_5[poolDF1$term%in%c("Overstorey wood", 
-                                                                     "Coarse Root")])
+                                                                     "Bole Root")])
     
-    poolDF2[3,"C.froot.mean"] <- sum(poolDF1$Ring_5[poolDF1$term=="Fine Root"])
+    poolDF2[3,"C.root.mean"] <- sum(poolDF1$Ring_5[poolDF1$term%in%c("Fine Root",
+                                                                     "Coarse Root")])
     
     poolDF2[3,"C.myco.mean"] <- sum(poolDF1$Ring_5[poolDF1$term=="Mycorrhizae"])
     
@@ -437,9 +456,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                      "Insects")])
     
     poolDF2[4,"C.wood.mean"] <- sum(poolDF1$eCO2[poolDF1$term%in%c("Overstorey wood", 
-                                                                     "Coarse Root")])
+                                                                   "Bole Root")])
     
-    poolDF2[4,"C.froot.mean"] <- sum(poolDF1$eCO2[poolDF1$term=="Fine Root"])
+    poolDF2[4,"C.root.mean"] <- sum(poolDF1$eCO2[poolDF1$term%in%c("Fine Root",
+                                                                     "Coarse Root")])
     
     poolDF2[4,"C.myco.mean"] <- sum(poolDF1$eCO2[poolDF1$term=="Mycorrhizae"])
     
@@ -457,9 +477,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Insects")])
     
     poolDF2[1,"C.wood.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Overstorey wood", 
-                                                                    "Coarse Root")])
+                                                                    "Bole Root")])
     
-    poolDF2[1,"C.froot.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Fine Root"])
+    poolDF2[1,"C.root.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Fine Root",
+                                                                     "Coarse Root")])
     
     poolDF2[1,"C.myco.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Mycorrhizae"])
     
@@ -476,9 +497,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Insects")])
     
     poolDF2[2,"C.wood.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Overstorey wood", 
-                                                                    "Coarse Root")])
+                                                                    "Bole Root")])
     
-    poolDF2[2,"C.froot.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Fine Root"])
+    poolDF2[2,"C.root.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Fine Root",
+                                                                    "Coarse Root")])
     
     poolDF2[2,"C.myco.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Mycorrhizae"])
     
@@ -495,9 +517,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Insects")])
     
     poolDF2[3,"C.wood.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Overstorey wood", 
-                                                                    "Coarse Root")])
+                                                                    "Bole Root")])
     
-    poolDF2[3,"C.froot.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Fine Root"])
+    poolDF2[3,"C.root.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Fine Root",
+                                                                    "Coarse Root")])
     
     poolDF2[3,"C.myco.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Mycorrhizae"])
     
@@ -514,9 +537,10 @@ initialize_obs_ele_dataframe <- function() {
                                                                     "Insects")])
     
     poolDF2[4,"C.wood.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Overstorey wood", 
-                                                                    "Coarse Root")])
+                                                                    "Bole Root")])
     
-    poolDF2[4,"C.froot.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Fine Root"])
+    poolDF2[4,"C.root.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term%in%c("Fine Root",
+                                                                    "Coarse Root")])
     
     poolDF2[4,"C.myco.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Mycorrhizae"])
     

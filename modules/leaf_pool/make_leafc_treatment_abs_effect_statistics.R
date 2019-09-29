@@ -31,11 +31,13 @@ make_leafc_treatment_abs_effect_statistics <- function(inDF, var.cond,
     #### dataframe 
     tDF <- inDF
     
+    tDF$Yrf <- as.numeric(year(tDF$Date))
     
     ### Analyse the variable model
     ## model 1: no interaction, year as factor, ring random factor, include pre-treatment effect
     int.m1 <- "non-interative_with_covariate"
-    modelt1 <- lmer(Value~Trt + Datef + Cov2 + (1|Ring),data=tDF)
+    #modelt1 <- lmer(Value~Trt + Datef + Cov2 + (1|Ring),data=tDF)
+    modelt1 <- lmer(Value~Trt + Yrf + Cov2 + (1|Ring),data=tDF)
     
     ## anova
     m1.anova <- Anova(modelt1, test="F")

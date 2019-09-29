@@ -6,7 +6,6 @@ make_coarse_root_production_flux <- function(cr_pool) {
     ### Scientific Reports, 5: 09940.
     gDF <- read.csv("data/Zhang_Wang_2015_Global_Coarseroot.csv")
     
-    head(gDF)
     subDF <- subset(gDF, Size%in%c("coarse root", "coarse root 2-5 mm"))
     subDF <- subset(subDF, Life.form == "Evergreen broadleaf")
     
