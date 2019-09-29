@@ -14,8 +14,8 @@ plot_parameter_trace_within_parameter_space <- function(params,
     
     
     ### define names
-    names <- c("alloc.leaf", "alloc.froot", "alloc.myco",
-               "tau.leaf", "tau.froot", "tau.myco",
+    names <- c("alloc.leaf", "alloc.root", "alloc.myco",
+               "tau.leaf", "tau.root", "tau.myco",
                "tau.ag.lit", "tau.bg.lit", "tau.micr", "tau.soil", 
                "C.bg.lit", "frac.myco", "frac.ag.lit", "frac.bg.lit", "frac.micr")
     

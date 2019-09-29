@@ -1,14 +1,14 @@
 make_parameter_summary_table <- function() {
     
     ### calculate CUE
-    cue.aco2.old <- with(pChain.aCO2, (NPP.leaf + NPP.wood + NPP.froot) / GPP)
+    cue.aco2.old <- with(pChain.aCO2, (NPP.leaf + NPP.wood + NPP.root) / GPP)
     cue.aco2.old.mean <- mean(cue.aco2.old)
     cue.aco2.old.sd <- sd(cue.aco2.old)
     
     cue.aco2.new.mean <- mean(pChain.aCO2$CUE)
     cue.aco2.new.sd <- sd(pChain.aCO2$CUE)
     
-    cue.eco2.old <- with(pChain.eCO2, (NPP.leaf + NPP.wood + NPP.froot) / GPP)
+    cue.eco2.old <- with(pChain.eCO2, (NPP.leaf + NPP.wood + NPP.root) / GPP)
     cue.eco2.old.mean <- mean(cue.eco2.old)
     cue.eco2.old.sd <- sd(cue.eco2.old)
     
@@ -57,12 +57,12 @@ make_parameter_summary_table <- function() {
     out[out$Trt=="eCO2", "alloc.myco.sd"] <- alloc.myco.eco2.sd
     
     ## arrange
-    out <- out[,c("alloc.leaf", "alloc.wood", "alloc.froot", "alloc.myco",
-                  "tau.leaf", "tau.froot", "tau.myco", "tau.bg.lit",
+    out <- out[,c("alloc.leaf", "alloc.wood", "alloc.root", "alloc.myco",
+                  "tau.leaf", "tau.root", "tau.myco", "tau.bg.lit",
                   "tau.micr", "tau.soil", "C.ag.lit", "C.bg.lit",
                   "frac.ag.lit", "frac.bg.lit", "frac.micr", 
-                  "alloc.leaf.sd", "alloc.wood.sd", "alloc.froot.sd", "alloc.myco.sd",
-                  "tau.leaf.sd", "tau.froot.sd", "tau.myco.sd", "tau.bg.lit.sd",
+                  "alloc.leaf.sd", "alloc.wood.sd", "alloc.root.sd", "alloc.myco.sd",
+                  "tau.leaf.sd", "tau.root.sd", "tau.myco.sd", "tau.bg.lit.sd",
                   "tau.micr.sd", "tau.soil.sd", "C.ag.lit.sd", "C.bg.lit.sd",
                   "frac.ag.lit.sd", "frac.bg.lit.sd", "frac.micr.sd", 
                   "Trt", "CUE.old", "CUE.new", "CUE.old.sd", "CUE.new.sd")]

@@ -35,15 +35,15 @@ generate_most_likely_outcome <- function(inDF, obs) {
     
     outDF$NPP.leaf[outDF$Cat=="Observed"] <- obs$NPP.leaf.mean
     outDF$NPP.wood[outDF$Cat=="Observed"] <- obs$NPP.wood.mean
-    outDF$NPP.froot[outDF$Cat=="Observed"] <- obs$NPP.froot.mean
-    outDF$NPP.myco[outDF$Cat=="Observed"] <- obs$GPP.mean - obs$Ra.mean - obs$NPP.leaf.mean - obs$NPP.wood.mean - obs$NPP.froot.mean
-    outDF$NPP[outDF$Cat=="Observed"] <- outDF$NPP.leaf[outDF$Cat=="Observed"] + outDF$NPP.wood[outDF$Cat=="Observed"] + outDF$NPP.froot[outDF$Cat=="Observed"] + outDF$NPP.myco[outDF$Cat=="Observed"]
+    outDF$NPP.root[outDF$Cat=="Observed"] <- obs$NPP.root.mean
+    outDF$NPP.myco[outDF$Cat=="Observed"] <- obs$GPP.mean - obs$Ra.mean - obs$NPP.leaf.mean - obs$NPP.wood.mean - obs$NPP.root.mean
+    outDF$NPP[outDF$Cat=="Observed"] <- outDF$NPP.leaf[outDF$Cat=="Observed"] + outDF$NPP.wood[outDF$Cat=="Observed"] + outDF$NPP.root[outDF$Cat=="Observed"] + outDF$NPP.myco[outDF$Cat=="Observed"]
     
     outDF$CUE[outDF$Cat=="Observed"] <- 1 - (obs$Ra.mean/obs$GPP.mean) 
     
     
     outDF$delta.Cleaf[outDF$Cat=="Observed"] <- obs$delta.C.leaf.mean
-    outDF$delta.Cfroot[outDF$Cat=="Observed"] <- obs$delta.C.froot.mean
+    outDF$delta.Croot[outDF$Cat=="Observed"] <- obs$delta.C.root.mean
     outDF$delta.Cmyco[outDF$Cat=="Observed"] <- obs$delta.C.myco.mean
     outDF$delta.Cag[outDF$Cat=="Observed"] <- 0.0
     outDF$delta.Cbg[outDF$Cat=="Observed"] <- 0.0

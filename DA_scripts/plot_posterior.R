@@ -7,14 +7,14 @@ plot_posterior <- function(inDF, Trt, dist.type, chainLength) {
     col <- ncol(inDF)
     #apply(pChain, 2, sd)
     
-    names <- c("alloc.leaf", "alloc.froot", "alloc.myco",
-               "tau.leaf", "tau.froot", "tau.myco",
+    names <- c("alloc.leaf", "alloc.root", "alloc.myco",
+               "tau.leaf", "tau.root", "tau.myco",
                "tau.ag.lit", "tau.bg.lit", "tau.micr", "tau.soil", 
                "C.bg.lit",
                "frac.myco", "frac.ag.lit", "frac.bg.lit", "frac.micr",
                "logli", "GPP", "NPP", "CUE",
-               "NPP.leaf", "NPP.wood", "NPP.froot", "NPP.myco",
-               "delta.Cleaf", "delta.Cfroot", "delta.Cmyco", 
+               "NPP.leaf", "NPP.wood", "NPP.root", "NPP.myco",
+               "delta.Cleaf", "delta.Croot", "delta.Cmyco", 
                "delta.Cag", "delta.Cbg",
                "delta.Cmicr", "delta.Csoil", "Rhet", 
                "Prior","aic", "bic")
