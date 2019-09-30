@@ -15,7 +15,7 @@ prefit.params.aCO2.lower.R2 <- c(0.3,          # alloc leaf
                                  0.1,          # alloc wood
                                  0.05,         # alloc root
                                  0.95,         # tau leaf
-                                 0.6,          # tau root
+                                 0.3,          # tau root
                                  2.0)          # tau myco
 
 
@@ -44,7 +44,7 @@ prefit.params.aCO2.lower.R3 <- c(0.3,          # alloc leaf
                                  0.1,          # alloc wood
                                  0.05,         # alloc root
                                  0.95,         # tau leaf
-                                 0.6,          # tau root
+                                 0.3,          # tau root
                                  2.0)          # tau myco
 
 
@@ -68,7 +68,7 @@ prefit.params.aCO2.lower.R6 <- c(0.3,          # alloc leaf
                                  0.1,          # alloc wood
                                  0.05,         # alloc root
                                  0.95,         # tau leaf
-                                 0.6,          # tau root
+                                 0.3,          # tau root
                                  2.0)          # tau myco
 
 

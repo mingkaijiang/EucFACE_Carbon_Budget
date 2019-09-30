@@ -91,6 +91,8 @@ options(warn=-1)
 ### Calculate mean annual temperature and precipitation
 #met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
+### Make a Whitaker diagram to show EucFACE in the context of global temperature and precipitation
+make_whitaker_diagram()
 
 
 ###########################################################################
@@ -721,8 +723,6 @@ source("definitions/initialize_eCO2_parameters.R")
 
 ### Assign chain length for MCMC parameter fitting
 chainLength <- 100000
-# run longer chain to see if the Rhet decreases and other fluxes match?
-
 
 ### step C2: fitting
 ## Ring 2
