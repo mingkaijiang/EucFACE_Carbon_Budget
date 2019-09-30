@@ -932,7 +932,7 @@ combine_all_model_output()
 
 #### G: model-data comparison based on traceability framework
 ####    Need to go into function to plot
-compare_data_model_traceability()
+#compare_data_model_traceability()
 
 
 ###########################################################################

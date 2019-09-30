@@ -257,7 +257,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         scale_y_discrete(labels=y.lab2)
     
     
-    pdf("output/statistical_comparison_normalized_plots.pdf", width=8, height=12)
+    pdf("output/ED_Figure_4.pdf", width=8, height=12)
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 

@@ -65,7 +65,7 @@ make_whitaker_diagram <- function() {
                                              colour=col.list)))
     
     
-    pdf("output/whitaker_diagram.pdf", width=16, height=10)
+    pdf("output/ED_Figure_7.pdf", width=16, height=10)
     plot(p1)
     
     dev.off()

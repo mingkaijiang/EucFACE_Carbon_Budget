@@ -217,10 +217,10 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     C.col.list <- viridis(6)[5:6] 
     
     ## NPP
-    D.col.list <- brewer.pal(5,"Greens")[2:5]
+    D.col.list <- brewer.pal(6,"Greens")[2:6]
     
     ## R
-    E.col.list <- brewer.pal(5,"YlOrRd")[2:5]
+    E.col.list <- brewer.pal(6,"YlOrRd")[2:6]
     
     ### Change in pools
     F.col.list <- brewer.pal(5,"Blues")[2:5]
@@ -237,10 +237,12 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                    "other_prod"=D.col.list[2],
                    "fineroot_prod"=D.col.list[3],           
                    "understorey_prod"=D.col.list[4], 
+                   "coarseroot_prod"=D.col.list[5], 
                    "wood_respiration"=E.col.list[1],           
                    "root_respiration"=E.col.list[2],           
-                   "understorey_respiration"=E.col.list[3],      
-                   "hetero_respiration"=E.col.list[4],    
+                   "understorey_respiration"=E.col.list[3], 
+                   "growth_respiration"=E.col.list[4],   
+                   "hetero_respiration"=E.col.list[5],    
                    "delta_wood_c"=F.col.list[1],        
                    "delta_understorey_c"=F.col.list[2],
                    "delta_fineroot_c"=F.col.list[3],    
@@ -257,11 +259,13 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                 "leaf_prod"=expression(NPP[ol]),                # 7
                 "wood_prod"=expression(NPP[stem]),                # 11
                 "fineroot_prod"=expression(NPP[froot]),           # 12
+                "coarseroot_prod"=expression(NPP[croot]),           # 12
                 "other_prod"=expression(NPP[other]),                # 8
                 "understorey_prod"=expression(NPP[ua]),           # 14
                 "wood_respiration"=expression(R[stem]),           # 19
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16
+                "growth_respiration"=expression(R[grow]),      # 16
                 "hetero_respiration"=expression(R[hetero]),            # 17
                 "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
@@ -270,8 +274,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                 "delta_understorey_c"=expression(Delta*C[ua]),
                 "delta_soil_c"=expression(Delta*C[soil]))
     
-    plotDF2[plotDF2$Variable=="fineroot_prod", "var.order"] <- 10
-    plotDF2[plotDF2$Variable=="other_prod", "var.order"] <- 9
+    #plotDF2[plotDF2$Variable=="fineroot_prod", "var.order"] <- 10
+    #plotDF2[plotDF2$Variable=="other_prod", "var.order"] <- 9
     plotDF2 <- plotDF2[order(plotDF2$var.order),]
     
     ### split the groups and make separate plots
@@ -384,7 +388,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
         scale_y_continuous(limits=c(-205, 500), 
                            breaks=c(-200, -100, 0, 100, 200, 400, 600),
                            labels=c(-200, -100, 0, 100, 200, 400, 600))+
-        guides(fill=guide_legend(ncol=2, nrow=2))+
+        guides(fill=guide_legend(ncol=2, nrow=3))+
         annotate(geom="text",x=0.5, y=500, label="c", size=7)
     
     

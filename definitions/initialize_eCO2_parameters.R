@@ -60,7 +60,7 @@ params.eCO2.R4 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="4"],
                     init.parameters$tau.myco[init.parameters$Ring=="4"],
                     2.0,          # tau.bg.lit
                     20.0,         # tau.micr
-                    0.15,          # tau.soil
+                    0.12,          # tau.soil
                     150.0,        # C.ag.lit
                     150.0,         # C.bg.lit
                     0.3,          # frac.ag
@@ -108,7 +108,7 @@ params.eCO2.R5 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="5"],
                     init.parameters$tau.myco[init.parameters$Ring=="5"],
                     1.0,          # tau.bg.lit
                     2,            # tau.micr
-                    0.1,          # tau.soil
+                    0.08,          # tau.soil
                     150.0,        # C.ag.lit
                     150.0,         # C.bg.lit
                     0.3,          # frac.ag

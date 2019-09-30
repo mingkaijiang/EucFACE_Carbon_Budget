@@ -28,9 +28,10 @@ combine_all_model_output <- function() {
     
     
     ### grouping allocation
-    outDF$AWOOD_2 <- outDF$AWOOD + outDF$ACROOT  # CABLE has a large Froot pool, so Croot is part of it!
+    outDF$AROOT <- outDF$AFROOT # + outDF$ACROOT  # CABLE has a large Froot pool, so Croot is part of it!
     outDF$tau_MYCO <- NA
     outDF$tau_MICR <- NA
+    outDF$tau_ROOT <- outDF$tau_FROOT
     
     outDF[mapply(is.infinite, outDF)] <- NA
 
@@ -47,13 +48,13 @@ combine_all_model_output <- function() {
     subDF1 <- subset(outDF, CO2=="aCO2")
     subDF2 <- subset(outDF, CO2=="eCO2")
     
-    subDF1 <- subDF1[,c("ALEAF", "AWOOD_2", "AFROOT", "AOTHER", 
-                        "tau_LEAF", "tau_FROOT", "tau_MYCO",
+    subDF1 <- subDF1[,c("ALEAF", "AWOOD", "AROOT", "AOTHER", 
+                        "tau_LEAF", "tau_ROOT", "tau_MYCO",
                         "tau_CFLITA", "tau_CFLITB", "tau_MICR",
                         "tau_SOIL", "model")]
     
-    subDF2 <- subDF2[,c("ALEAF", "AWOOD_2", "AFROOT", "AOTHER", 
-                        "tau_LEAF", "tau_FROOT", "tau_MYCO",
+    subDF2 <- subDF2[,c("ALEAF", "AWOOD", "AROOT", "AOTHER", 
+                        "tau_LEAF", "tau_ROOT", "tau_MYCO",
                         "tau_CFLITA", "tau_CFLITB", "tau_MICR",
                         "tau_SOIL", "model")]
     
@@ -75,7 +76,7 @@ combine_all_model_output <- function() {
     pctDF$CO2 <- "pct"
     
     mmDF <- rbind(mmDF, pctDF)
-    mmDF$variable <- gsub("AWOOD_2", "AWOOD", mmDF$variable)
+    #mmDF$variable <- gsub("AWOOD_2", "AWOOD", mmDF$variable)
     colnames(mmDF) <- c("Model", "variable", "value", "CO2")
     mmDF$sd <- "NA"
     mmDF$Source <- "Model"
@@ -90,8 +91,8 @@ combine_all_model_output <- function() {
     colnames(plotDF) <- c("Model", "variable", "value", "Trt", "sd", "Source")
     
     ### get the dataframes
-    plotDF1 <- plotDF[plotDF$Trt%in%c("aCO2", "eCO2") & plotDF$variable %in%c("ALEAF", "AWOOD", "AFROOT", "AOTHER"), ]
-    plotDF2 <- plotDF[plotDF$Trt%in%c("aCO2", "eCO2") & plotDF$variable %in%c("tau_LEAF", "tau_FROOT", #"tau_MYCO", 
+    plotDF1 <- plotDF[plotDF$Trt%in%c("aCO2", "eCO2") & plotDF$variable %in%c("ALEAF", "AWOOD", "AROOT", "AOTHER"), ]
+    plotDF2 <- plotDF[plotDF$Trt%in%c("aCO2", "eCO2") & plotDF$variable %in%c("tau_LEAF", "tau_ROOT", #"tau_MYCO", 
                                                                    "tau_CFLITA", "tau_CFLITB"), ]
     
     plotDF3 <- plotDF[plotDF$Trt%in%c("aCO2", "eCO2") & plotDF$variable=="tau_SOIL", ]
@@ -128,11 +129,11 @@ combine_all_model_output <- function() {
         scale_x_discrete("",  
                          limits=c("ALEAF",
                                   "AWOOD",
-                                  "AFROOT",
+                                  "AROOT",
                                   "AOTHER"),
                          labels=c("Leaf",
                                   "Wood",
-                                  "Froot",
+                                  "Root",
                                   "Other"))+
         scale_y_continuous(limits=c(-0.02, 0.8), 
                            breaks=c(0.0, 0.2, 0.4, 0.6, 0.8),
@@ -163,11 +164,11 @@ combine_all_model_output <- function() {
               legend.position="none")+
         scale_x_discrete("",  
                          limits=c("tau_LEAF",
-                                  "tau_FROOT",
+                                  "tau_ROOT",
                                   "tau_CFLITA",
                                   "tau_CFLITB"),
                          labels=c("Leaf",
-                                  "Froot",
+                                  "Root",
                                   "Aglit",
                                   "Bglit"))+
         scale_y_continuous(limits=c(0, 4), 

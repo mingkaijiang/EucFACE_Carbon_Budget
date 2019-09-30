@@ -282,7 +282,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                           values = col.list1,
                           labels=var.labs1) +
         scale_color_manual(name="GPP", 
-                          values = c(NA, NA, "black", rep(NA, 13)),
+                          values = c(NA, NA, "black", rep(NA, 14)),
                           labels=var.labs1) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -315,7 +315,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                           values = col.list1,
                           labels=var.labs1) +
         scale_color_manual(name="GPP", 
-                           values = c(NA, NA, "black", rep(NA, 13)),
+                           values = c(NA, NA, "black", rep(NA, 14)),
                            labels=var.labs1) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -494,7 +494,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                           values = col.list2,
                           labels=var.labs2) +
         scale_color_manual(name="Rsoil", 
-                           values = c("black", rep(NA, 8)),
+                           values = c("black", rep(NA, 9)),
                            labels=var.labs2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -528,7 +528,7 @@ gpp_and_rsoil_normalized_plot_with_NPPmyco <- function(inDF) {
                           values = col.list2,
                           labels=var.labs2) +
         scale_color_manual(name="Rsoil", 
-                           values = c("black", rep(NA, 8)),
+                           values = c("black", rep(NA, 9)),
                            labels=var.labs2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),

@@ -221,10 +221,10 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
     C.col.list <- viridis(6)[5:6] 
     
     ## NPP
-    D.col.list <- c(brewer.pal(5,"Greens")[2:5],"grey")
+    D.col.list <- c(brewer.pal(6,"Greens")[2:6],"grey")
     
     ## R
-    E.col.list <- brewer.pal(5,"YlOrRd")[2:5]
+    E.col.list <- brewer.pal(6,"YlOrRd")[2:6]
     
     ### Change in pools
     F.col.list <- brewer.pal(5,"Blues")[2:5]
@@ -239,13 +239,15 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                    "total_outflux"=C.col.list[2],
                    "leaf_prod"=D.col.list[1],                
                    "other_prod"=D.col.list[2],
-                   "fineroot_prod"=D.col.list[3],           
-                   "understorey_prod"=D.col.list[4],
-                   "mycorrhizal_prod"=D.col.list[5],
+                   "fineroot_prod"=D.col.list[3],   
+                   "coarseroot_prod"=D.col.list[4], 
+                   "understorey_prod"=D.col.list[5],
+                   "mycorrhizal_prod"=D.col.list[6],
                    "wood_respiration"=E.col.list[1],           
                    "root_respiration"=E.col.list[2],           
-                   "understorey_respiration"=E.col.list[3],      
-                   "hetero_respiration"=E.col.list[4],    
+                   "understorey_respiration"=E.col.list[3],   
+                   "growth_respiration"=E.col.list[4],  
+                   "hetero_respiration"=E.col.list[5],    
                    "delta_leaf_c"=F.col.list[1],        
                    "delta_wood_c"=F.col.list[2],
                    "delta_understorey_c"=F.col.list[3],    
@@ -260,14 +262,15 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                 "Change_in_pools"=expression(Delta*C[pools]),
                 "total_outflux"="R",                              # 4
                 "leaf_prod"=expression(NPP[ol]),                # 7
-                "wood_prod"=expression(NPP[stem]),                # 11
                 "fineroot_prod"=expression(NPP[froot]),           # 12
+                "coarseroot_prod"=expression(NPP[croot]),           # 12
                 "other_prod"=expression(NPP[other]),                # 8
                 "mycorrhizal_prod"=expression(NPP[myco]),
                 "understorey_prod"=expression(NPP[ua]),           # 14
                 "wood_respiration"=expression(R[stem]),           # 19
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16
+                "growth_respiration"=expression(R[grow]),      
                 "hetero_respiration"=expression(R[hetero]),            # 17
                 "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
@@ -278,11 +281,11 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
 
     
     ### update variable ordering in the plots
-    plotDF2[plotDF2$Variable=="leaf_prod", "var.order"] <- 7
-    plotDF2[plotDF2$Variable=="fineroot_prod", "var.order"] <- 8
-    plotDF2[plotDF2$Variable=="other_prod", "var.order"] <- 9
-    plotDF2[plotDF2$Variable=="understorey_prod", "var.order"] <- 10
-    plotDF2[plotDF2$Variable=="mycorrhizal_prod", "var.order"] <- 11
+    #plotDF2[plotDF2$Variable=="leaf_prod", "var.order"] <- 7
+    #plotDF2[plotDF2$Variable=="fineroot_prod", "var.order"] <- 8
+    #plotDF2[plotDF2$Variable=="other_prod", "var.order"] <- 9
+    #plotDF2[plotDF2$Variable=="understorey_prod", "var.order"] <- 10
+    #plotDF2[plotDF2$Variable=="mycorrhizal_prod", "var.order"] <- 11
     
     plotDF2 <- plotDF2[order(plotDF2$var.order),]
     
@@ -353,7 +356,7 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                         labels=y.lab2) +
       scale_color_manual(name="", 
                         breaks = plotDF2$Variable,
-                        values = c(rep(NA, 4), "black"),
+                        values = c(rep(NA, 5), "black"),
                         labels=y.lab2) +
       theme_linedraw() +
       theme(panel.grid.minor=element_blank(),
@@ -401,7 +404,7 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
       scale_y_continuous(limits=c(-205, 500), 
                          breaks=c(-200, -100, 0, 100, 200, 400, 600),
                          labels=c(-200, -100, 0, 100, 200, 400, 600))+
-      guides(fill=guide_legend(ncol=2, nrow=2))+
+      guides(fill=guide_legend(ncol=2, nrow=3))+
       annotate(geom="text",x=0.5, y=500, label="c", size=7)
     
     

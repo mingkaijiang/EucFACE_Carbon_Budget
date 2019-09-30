@@ -1,8 +1,8 @@
 read_in_EucFACE_output <- function() {
     
     ### prepare dataframe
-    var.list <- c("ALEAF", "AWOOD", "AFROOT", "AOTHER",
-                  "tau_LEAF", "tau_FROOT", "tau_MYCO",
+    var.list <- c("ALEAF", "AWOOD", "AROOT", "AOTHER",
+                  "tau_LEAF", "tau_ROOT", "tau_MYCO",
                   "tau_CFLITA", "tau_CFLITB", "tau_MICR", "tau_SOIL")
     
     outDF <- data.frame(rep(c("aCO2", "eCO2"), each = 11),
@@ -21,30 +21,30 @@ read_in_EucFACE_output <- function() {
     ### assign values
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="ALEAF"] <- round(inDF$alloc.leaf[1], 3)
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="AWOOD"] <- round(inDF$alloc.wood[1], 3)
-    outDF$value[outDF$CO2=="aCO2"&outDF$variable=="AFROOT"] <- round(inDF$alloc.froot[1], 3)
+    outDF$value[outDF$CO2=="aCO2"&outDF$variable=="AROOT"] <- round(inDF$alloc.root[1], 3)
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="AOTHER"] <- round(inDF$alloc.myco[1], 3)
     
     
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="ALEAF"] <- round(inDF$alloc.leaf[2], 3)
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="AWOOD"] <- round(inDF$alloc.wood[2], 3)
-    outDF$value[outDF$CO2=="eCO2"&outDF$variable=="AFROOT"] <- round(inDF$alloc.froot[2], 3)
+    outDF$value[outDF$CO2=="eCO2"&outDF$variable=="AROOT"] <- round(inDF$alloc.root[2], 3)
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="AOTHER"] <- round(inDF$alloc.myco[2], 3)
     
     
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="ALEAF"] <- round(inDF$alloc.leaf.sd[1], 3)
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="AWOOD"] <- round(inDF$alloc.wood.sd[1], 3)
-    outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="AFROOT"] <- round(inDF$alloc.froot.sd[1], 3)
+    outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="AROOT"] <- round(inDF$alloc.root.sd[1], 3)
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="AOTHER"] <- round(inDF$alloc.myco.sd[1], 3)
     
     
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="ALEAF"] <- round(inDF$alloc.leaf.sd[2], 3)
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="AWOOD"] <- round(inDF$alloc.wood.sd[2], 3)
-    outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="AFROOT"] <- round(inDF$alloc.froot.sd[2], 3)
+    outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="AROOT"] <- round(inDF$alloc.root.sd[2], 3)
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="AOTHER"] <- round(inDF$alloc.myco.sd[2], 3)
     
     
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_LEAF"] <- round(inDF$tau.leaf[1], 3)
-    outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_FROOT"] <- round(inDF$tau.froot[1], 3)
+    outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_ROOT"] <- round(inDF$tau.root[1], 3)
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_MYCO"] <- round(inDF$tau.myco[1], 3)
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_CFLITA"] <- round(inDF$tau.ag.lit[1], 3)
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_CFLITB"] <- round(inDF$tau.bg.lit[1], 3)
@@ -52,7 +52,7 @@ read_in_EucFACE_output <- function() {
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="tau_SOIL"] <- round(inDF$tau.soil[1], 3)
     
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="tau_LEAF"] <- round(inDF$tau.leaf[2], 3)
-    outDF$value[outDF$CO2=="eCO2"&outDF$variable=="tau_FROOT"] <- round(inDF$tau.froot[2], 3)
+    outDF$value[outDF$CO2=="eCO2"&outDF$variable=="tau_ROOT"] <- round(inDF$tau.root[2], 3)
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="tau_MYCO"] <- round(inDF$tau.myco[2], 3)
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="tau_CFLITA"] <- round(inDF$tau.ag.lit[2], 3)
     outDF$value[outDF$CO2=="eCO2"&outDF$variable=="tau_CFLITB"] <- round(inDF$tau.bg.lit[2], 3)
@@ -61,7 +61,7 @@ read_in_EucFACE_output <- function() {
     
     
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_LEAF"] <- round(inDF$tau.leaf.sd[1], 3)
-    outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_FROOT"] <- round(inDF$tau.froot.sd[1], 3)
+    outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_ROOT"] <- round(inDF$tau.root.sd[1], 3)
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_MYCO"] <- round(inDF$tau.myco.sd[1], 3)
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_CFLITA"] <- round(inDF$tau.ag.lit.sd[1], 3)
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_CFLITB"] <- round(inDF$tau.bg.lit.sd[1], 3)
@@ -69,7 +69,7 @@ read_in_EucFACE_output <- function() {
     outDF$sd[outDF$CO2=="aCO2"&outDF$variable=="tau_SOIL"] <- round(inDF$tau.soil.sd[1], 3)
     
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="tau_LEAF"] <- round(inDF$tau.leaf.sd[2], 3)
-    outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="tau_FROOT"] <- round(inDF$tau.froot.sd[2], 3)
+    outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="tau_ROOT"] <- round(inDF$tau.root.sd[2], 3)
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="tau_MYCO"] <- round(inDF$tau.myco.sd[2], 3)
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="tau_CFLITA"] <- round(inDF$tau.ag.lit.sd[2], 3)
     outDF$sd[outDF$CO2=="eCO2"&outDF$variable=="tau_CFLITB"] <- round(inDF$tau.bg.lit.sd[2], 3)

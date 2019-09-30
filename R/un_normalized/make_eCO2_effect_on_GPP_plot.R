@@ -190,8 +190,10 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     
     ### Simplify the plot by eleminating fluxes that has CO2 effect < 1 g m-2 yr-1
     plotDF2 <- subset(plotDF, abs(effect_size) >= 5)
-    subDF <- subset(plotDF, Variable == "Change_in_pools")
-    plotDF2 <- rbind(subDF, plotDF2)
+    subDF1 <- subset(plotDF, Variable == "Change_in_pools")
+    subDF2 <- subset(plotDF, Variable == "Ra")
+    
+    plotDF2 <- rbind(subDF1, subDF2, plotDF2)
     
     ### Order plot DF
     plotDF2 <- plotDF2[order(plotDF2$plot.cat2),]

@@ -243,7 +243,9 @@ nep_normalized_plot <- function(inDF) {
                                   expression(Delta*C[pools])))+
         scale_y_continuous(limits=c(-400, 500), 
                            breaks=c(-500, -250, -100, 0, 100, 250, 500),
-                           labels=c(-500, -250, -100, 0, 100, 250, 500))
+                           labels=c(-500, -250, -100, 0, 100, 250, 500))+
+        guides(fill = guide_legend(ncol=1, override.aes = 
+                                       list(colour=c("blue2", "red3"))))
     
     #plot(p1)
     
