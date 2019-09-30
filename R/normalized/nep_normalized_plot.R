@@ -56,37 +56,43 @@ nep_normalized_plot <- function(inDF) {
     ### create dataframe to hold bootstrap results - npp
     out$R1[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_1"] + 
         nppDF[nppDF$term=="Stem NPP", "Ring_1"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_1"]) +
-        nppDF[nppDF$term=="Coarse Root NPP", "Ring_1"] + nppDF[nppDF$term=="Other NPP", "Ring_1"] + 
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_1"] + nppDF[nppDF$term=="Bole Root NPP", "Ring_1"] + 
+        nppDF[nppDF$term=="Other NPP", "Ring_1"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_1"] + nppDF[nppDF$term=="Leaf consumption", "Ring_1"] -
         nppDF[nppDF$term=="R hetero", "Ring_1"] 
     
     out$R2[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_2"] + 
         nppDF[nppDF$term=="Stem NPP", "Ring_2"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_2"]) +
-        nppDF[nppDF$term=="Coarse Root NPP", "Ring_2"] + nppDF[nppDF$term=="Other NPP", "Ring_2"] + 
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_2"] + nppDF[nppDF$term=="Bole Root NPP", "Ring_2"] + 
+        nppDF[nppDF$term=="Other NPP", "Ring_2"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_2"] + nppDF[nppDF$term=="Leaf consumption", "Ring_2"] -
         nppDF[nppDF$term=="R hetero", "Ring_2"] 
     
     out$R3[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_3"] + 
         nppDF[nppDF$term=="Stem NPP", "Ring_3"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_3"]) +
-        nppDF[nppDF$term=="Coarse Root NPP", "Ring_3"] + nppDF[nppDF$term=="Other NPP", "Ring_3"] + 
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_3"] + nppDF[nppDF$term=="Bole Root NPP", "Ring_3"] + 
+        nppDF[nppDF$term=="Other NPP", "Ring_3"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_3"] + nppDF[nppDF$term=="Leaf consumption", "Ring_3"] -
         nppDF[nppDF$term=="R hetero", "Ring_3"] 
     
     out$R4[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_4"] + 
         nppDF[nppDF$term=="Stem NPP", "Ring_4"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_4"]) +
-        nppDF[nppDF$term=="Coarse Root NPP", "Ring_4"] + nppDF[nppDF$term=="Other NPP", "Ring_4"] + 
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_4"] + nppDF[nppDF$term=="Bole Root NPP", "Ring_4"] + 
+        nppDF[nppDF$term=="Other NPP", "Ring_4"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_4"] + nppDF[nppDF$term=="Leaf consumption", "Ring_4"] -
         nppDF[nppDF$term=="R hetero", "Ring_4"] 
     
     out$R5[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_5"] + 
         nppDF[nppDF$term=="Stem NPP", "Ring_5"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_5"]) +
-        nppDF[nppDF$term=="Coarse Root NPP", "Ring_5"] + nppDF[nppDF$term=="Other NPP", "Ring_5"] + 
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_5"] + nppDF[nppDF$term=="Bole Root NPP", "Ring_5"] + 
+        nppDF[nppDF$term=="Other NPP", "Ring_5"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_5"] + nppDF[nppDF$term=="Leaf consumption", "Ring_5"] -
         nppDF[nppDF$term=="R hetero", "Ring_5"] 
     
     out$R6[out$Method=="NPP-Rh"] <- nppDF[nppDF$term=="Leaf NPP", "Ring_6"] + 
         nppDF[nppDF$term=="Stem NPP", "Ring_6"] + abs(nppDF[nppDF$term=="Fine Root NPP", "Ring_6"]) +
-        nppDF[nppDF$term=="Coarse Root NPP", "Ring_6"] + nppDF[nppDF$term=="Other NPP", "Ring_6"] + 
+        nppDF[nppDF$term=="Coarse Root NPP", "Ring_6"] + nppDF[nppDF$term=="Bole Root NPP", "Ring_6"] + 
+        nppDF[nppDF$term=="Other NPP", "Ring_6"] + 
         nppDF[nppDF$term=="Understorey NPP", "Ring_6"] + nppDF[nppDF$term=="Leaf consumption", "Ring_6"] -
         nppDF[nppDF$term=="R hetero", "Ring_6"] 
     
@@ -96,6 +102,7 @@ nep_normalized_plot <- function(inDF) {
     out$R1[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_1"] + 
         deltaDF[deltaDF$term=="Overstorey wood", "Ring_1"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_1"] +
         deltaDF[deltaDF$term=="Fine Root", "Ring_1"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_1"] + 
+        deltaDF[deltaDF$term=="Bole Root", "Ring_1"] + 
         deltaDF[deltaDF$term=="Litter", "Ring_1"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_1"] +
         deltaDF[deltaDF$term=="Soil C", "Ring_1"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_1"] +
         deltaDF[deltaDF$term=="Insects", "Ring_1"] 
@@ -103,6 +110,7 @@ nep_normalized_plot <- function(inDF) {
     out$R2[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_2"] + 
         deltaDF[deltaDF$term=="Overstorey wood", "Ring_2"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_2"] +
         deltaDF[deltaDF$term=="Fine Root", "Ring_2"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_2"] + 
+        deltaDF[deltaDF$term=="Bole Root", "Ring_2"] + 
         deltaDF[deltaDF$term=="Litter", "Ring_2"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_2"] +
         deltaDF[deltaDF$term=="Soil C", "Ring_2"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_2"] +
         deltaDF[deltaDF$term=="Insects", "Ring_2"] 
@@ -110,6 +118,7 @@ nep_normalized_plot <- function(inDF) {
     out$R3[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_3"] + 
         deltaDF[deltaDF$term=="Overstorey wood", "Ring_3"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_3"] +
         deltaDF[deltaDF$term=="Fine Root", "Ring_3"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_3"] + 
+        deltaDF[deltaDF$term=="Bole Root", "Ring_3"] + 
         deltaDF[deltaDF$term=="Litter", "Ring_3"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_3"] +
         deltaDF[deltaDF$term=="Soil C", "Ring_3"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_3"] +
         deltaDF[deltaDF$term=="Insects", "Ring_3"] 
@@ -117,6 +126,7 @@ nep_normalized_plot <- function(inDF) {
     out$R4[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_4"] + 
         deltaDF[deltaDF$term=="Overstorey wood", "Ring_4"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_4"] +
         deltaDF[deltaDF$term=="Fine Root", "Ring_4"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_4"] + 
+        deltaDF[deltaDF$term=="Bole Root", "Ring_4"] + 
         deltaDF[deltaDF$term=="Litter", "Ring_4"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_4"] +
         deltaDF[deltaDF$term=="Soil C", "Ring_4"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_4"] +
         deltaDF[deltaDF$term=="Insects", "Ring_4"] 
@@ -124,6 +134,7 @@ nep_normalized_plot <- function(inDF) {
     out$R5[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_5"] + 
         deltaDF[deltaDF$term=="Overstorey wood", "Ring_5"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_5"] +
         deltaDF[deltaDF$term=="Fine Root", "Ring_5"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_5"] + 
+        deltaDF[deltaDF$term=="Bole Root", "Ring_5"] + 
         deltaDF[deltaDF$term=="Litter", "Ring_5"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_5"] +
         deltaDF[deltaDF$term=="Soil C", "Ring_5"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_5"] +
         deltaDF[deltaDF$term=="Insects", "Ring_5"] 
@@ -131,6 +142,7 @@ nep_normalized_plot <- function(inDF) {
     out$R6[out$Method=="Pool"] <- deltaDF[deltaDF$term=="Overstorey leaf", "Ring_6"] + 
         deltaDF[deltaDF$term=="Overstorey wood", "Ring_6"] + deltaDF[deltaDF$term=="Understorey above-ground", "Ring_6"] +
         deltaDF[deltaDF$term=="Fine Root", "Ring_6"] + deltaDF[deltaDF$term=="Coarse Root", "Ring_6"] + 
+        deltaDF[deltaDF$term=="Bole Root", "Ring_6"] + 
         deltaDF[deltaDF$term=="Litter", "Ring_6"] + deltaDF[deltaDF$term=="Microbial biomass", "Ring_6"] +
         deltaDF[deltaDF$term=="Soil C", "Ring_6"] + deltaDF[deltaDF$term=="Mycorrhizae", "Ring_6"] +
         deltaDF[deltaDF$term=="Insects", "Ring_6"] 

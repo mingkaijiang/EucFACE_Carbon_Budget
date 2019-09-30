@@ -58,7 +58,7 @@ params.eCO2.R4 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="4"],
                     init.parameters$tau.leaf[init.parameters$Ring=="4"],
                     init.parameters$tau.root[init.parameters$Ring=="4"],
                     init.parameters$tau.myco[init.parameters$Ring=="4"],
-                    4.0,          # tau.bg.lit
+                    2.0,          # tau.bg.lit
                     20.0,         # tau.micr
                     0.15,          # tau.soil
                     150.0,        # C.ag.lit

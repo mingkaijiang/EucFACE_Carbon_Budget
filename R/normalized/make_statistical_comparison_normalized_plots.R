@@ -14,25 +14,27 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                    "understorey_respiration","voc", "herbivory_respiration",
                    "doc", "soil_respiration", "growth_respiration",
                    "leaf_prod", "wood_prod", "fineroot_prod",
-                   "coarseroot_prod", "other_prod", "understorey_prod", 
+                   "coarseroot_prod", "boleroot_prod",
+                   "other_prod", "understorey_prod", 
                    "understorey_lit", "frass_prod", "herb_consump", "mycorrhizal_prod",
                    "hetero_respiration", "over_leaf", "wood", "und_aboveground",
-                   "fineroot", "coarseroot", "litter", "cwd", "microbe",
+                   "fineroot", "coarseroot","boleroot",
+                   "litter", "cwd", "microbe",
                    "soil", "mycorrhizae", "insects", 
                    "delta_leaf_c", "delta_wood_c", "delta_understorey_c",
-                   "delta_fineroot_c", "delta_coarseroot_c", 
+                   "delta_fineroot_c", "delta_coarseroot_c", "delta_boleroot_c",
                    "delta_litter_c","delta_microbial_c","delta_soil_c",
                    "delta_mycorrhizal_c", "delta_insect_c")
     
     #### exclude all pools
     myDF$Category <- c(rep("gpp", 2),  
                        rep("resp", 10), 
-                       rep("prod", 6),
+                       rep("prod", 7),
                        rep("litter", 2), 
                        rep("prod", 2), 
                        rep("resp", 1), 
-                       rep("pool", 11), 
-                       rep("change_in_pool", 10))  
+                       rep("pool", 12), 
+                       rep("change_in_pool", 11))  
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, term != c("understorey_lit"))
@@ -99,6 +101,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                 "delta_wood_c"=expression(Delta*C[stem]),
                 "delta_fineroot_c"=expression(Delta*C[froot]),
                 "delta_coarseroot_c"=expression(Delta*C[croot]),
+                "delta_boleroot_c"=expression(Delta*C[broot]),
                 "delta_understorey_c"=expression(Delta*C[ua]),
                 "delta_understorey_c_live"=expression(Delta*C[ua_live]),
                 "delta_understorey_c_dead"=expression(Delta*C[ua_dead]),
@@ -127,6 +130,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                 "wood_prod"=expression(NPP[stem]),
                 "fineroot_prod"=expression(NPP[froot]),
                 "coarseroot_prod"=expression(NPP[croot]),
+                "boleroot_prod"=expression(NPP[broot]),
                 "understorey_prod"=expression(NPP[ua]))
     
     y.lab4 <- c("over_gpp"=expression(GPP[o]),

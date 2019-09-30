@@ -323,8 +323,8 @@ frDF <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=mea
 frDF.se <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=se, data=fineroot_c_pool,
                   keep.names=T)
 
-crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarse_root_c_pool_1, keep.names=T)
-crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarse_root_c_pool_1, keep.names=T)
+crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarse_root_c_pool, keep.names=T)
+crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarse_root_c_pool, keep.names=T)
 
 plotDF <- data.frame(rep(1:6, 3), NA, NA, NA)
 colnames(plotDF) <- c("Ring", "Value", "Tissue", "Sd")
