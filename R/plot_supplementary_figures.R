@@ -323,20 +323,23 @@ frDF <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=mea
 frDF.se <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=se, data=fineroot_c_pool,
                   keep.names=T)
 
-crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarse_root_c_pool, keep.names=T)
-crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarse_root_c_pool, keep.names=T)
+crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarseroot_c_pool, keep.names=T)
+crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarseroot_c_pool, keep.names=T)
+
+brDF <- summaryBy(bole_root_pool~Ring, FUN=mean, data=bole_root_c_pool, keep.names=T)
+brDF.se <- summaryBy(bole_root_pool~Ring, FUN=se, data=bole_root_c_pool, keep.names=T)
 
 plotDF <- data.frame(rep(1:6, 3), NA, NA, NA)
 colnames(plotDF) <- c("Ring", "Value", "Tissue", "Sd")
-plotDF$Component <- rep(c("fr0_10", "fr10_30", "cr"), each=6)
+plotDF$Component <- rep(c("fr", "cr", "br"), each=6)
 
-plotDF$Value[plotDF$Component=="fr0_10"] <- frDF$fineroot_0_10_cm
-plotDF$Value[plotDF$Component=="fr10_30"] <- frDF$fineroot_10_30_cm
+plotDF$Value[plotDF$Component=="fr"] <- frDF$fineroot_pool
 plotDF$Value[plotDF$Component=="cr"] <- crDF$coarse_root_pool
+plotDF$Value[plotDF$Component=="br"] <- brDF$bole_root_pool
 
-plotDF$Se[plotDF$Component=="fr0_10"] <- frDF.se$fineroot_0_10_cm
-plotDF$Se[plotDF$Component=="fr10_30"] <- frDF.se$fineroot_10_30_cm
+plotDF$Se[plotDF$Component=="fr"] <- frDF.se$fineroot_pool
 plotDF$Se[plotDF$Component=="cr"] <- crDF.se$coarse_root_pool
+plotDF$Se[plotDF$Component=="br"] <- brDF.se$bole_root_pool
 
 
 p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
@@ -352,9 +355,9 @@ p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
           legend.title=element_text(size=14),
           panel.grid.major=element_blank(),
           legend.position="right")+
-    scale_fill_manual(limit=c("fr0_10", "fr10_30", "cr"),
+    scale_fill_manual(limit=c("fr", "cr", "br"),
                       values=c("orange", "green", "brown"),
-                      labels=c(expression(C[fr0_10]), expression(C[fr10_30]), expression(C[croot])))
+                      labels=c(expression(C[froot]), expression(C[croot]), expression(C[broot])))
 
 #plot(p)
 
@@ -1155,10 +1158,30 @@ plot(p1)
 dev.off()
 
 ###################---------------------######################
-### NPP for fineroot and coarseroot
+### NPP for fineroot, coarseroot, boleroot
+
+### Boleroot
+broot.prod <- bole_root_production_flux
+broot.prod$Yr <- year(broot.prod$Date)
+y.list <- unique(broot.prod$Yr)
+broot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(broot.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        broot.ann$value[broot.ann$Ring==i&broot.ann$Yr==j] <- with(broot.prod[broot.prod$Yr==j&broot.prod$Ring==i, ],
+                                                                   sum(bole_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+broot.ann$Trt[broot.ann$Ring%in%c(2,3,6)] <- "aCO2"
+broot.ann$Trt[broot.ann$Ring%in%c(1,4,5)] <- "eCO2"
+broot.avg <- summaryBy(value~Trt, FUN=mean, data=broot.ann, keep.names=T, na.rm=T)
+broot.se <- summaryBy(value~Trt, FUN=se, data=broot.ann, keep.names=T, na.rm=T)
+broot.avg$se <- broot.se$value
+broot.avg$component <- "boleroot"
+
 
 ### Coarseroot
-croot.prod <- coarse_root_production_flux_1
+croot.prod <- coarseroot_production_flux
 croot.prod$Yr <- year(croot.prod$Date)
 y.list <- unique(croot.prod$Yr)
 croot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
@@ -1195,7 +1218,7 @@ froot.se <- summaryBy(value~Trt, FUN=se, data=froot.ann, keep.names=T, na.rm=T)
 froot.avg$se <- froot.se$value
 froot.avg$component <- "fineroot"
 
-root.plot <- rbind(croot.avg, froot.avg)
+root.plot <- rbind(broot.avg, croot.avg, froot.avg)
 root.plot$pos <- with(root.plot, value + se)
 root.plot$neg <- with(root.plot, value - se)
 
@@ -1220,6 +1243,9 @@ p1 <- ggplot(root.plot, aes(x=component, y=value))+
                       labels=c(expression(aCO[2]), expression(eCO[2])))+
     scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
                         labels=c(expression(aCO[2]), expression(eCO[2])))
+
+
+#plot(p1)
 
 pdf("output/Figure_S14.pdf", width=6,height=4)
 plot(p1)
