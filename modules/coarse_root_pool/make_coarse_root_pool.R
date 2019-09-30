@@ -48,10 +48,10 @@ make_coarse_root_pool <- function(froot) {
     outDF <- outDF[,c("Date", "Ring", "coarse_root_pool", "coarseroot_pool_0_10cm", "coarseroot_pool_10_30cm")]
     
     
-    test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
-    test$trt[test$Ring%in%c(2,3,6)] <- "amb"
-    test$trt[test$Ring%in%c(1,4,5)] <- "ele"
-    summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
+    #test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
+    #test$trt[test$Ring%in%c(2,3,6)] <- "amb"
+    #test$trt[test$Ring%in%c(1,4,5)] <- "ele"
+    #summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
 
     ### return
     return(outDF)

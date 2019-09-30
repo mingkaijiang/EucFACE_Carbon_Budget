@@ -160,10 +160,7 @@ fineroot_production_flux <- make_fineroot_production_flux_2()
 ### We have a pretty good estimate of the Froot/Croot fraction in top soil, 
 ### in that the variability is relatively low. 
 ### The variability of coarseroot biomass in 10 - 30 cm soil is large. 
-### The problem is deeper depth (10 - 30 cm)
 #coarseroot_c_pool_old <- make_coarse_root_pool(froot=fineroot_c_pool)
-#coarseroot_c_pool_2 <- make_coarse_root_pool_2()
-#coarseroot_c_pool_3 <- make_coarse_root_pool_3()
 
 ### estimate coarseroot pool based on a relationship 
 ### between f/c ~ fineroot biomass, at two depths

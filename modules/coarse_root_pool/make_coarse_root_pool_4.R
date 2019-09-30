@@ -27,26 +27,24 @@ make_coarse_root_pool_4 <- function(bkDF) {
     ### fit linear relationship for each depth
     fit1 <- lm(f_c_1~f_biomass, data=myDF[myDF$depth=="0-10 cm",])
     fit2 <- lm(f_c_1~f_biomass, data=myDF[myDF$depth=="10-30 cm",])
-    
-    with(myDF[myDF$depth=="0-10 cm",], plot(f_c_1~f_biomass))
-    with(myDF[myDF$depth=="10-30 cm",], plot(f_c_1~f_biomass))
-    
-    
+
     ### get the fineroot biomass data
     frbDF <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")
     frbDF$Date <- as.Date(frbDF$Dateform, format="%d-%m-%Y")
     
     frbDF$fc1 <- frbDF$FRB_0.10cm * coefficients(fit1)[[2]] + coefficients(fit1)[[1]]
     frbDF$fc2 <- frbDF$FRB_10.30cm * coefficients(fit2)[[2]] + coefficients(fit2)[[1]]
-    
+
     ### get coarseroot biomass
     frbDF$CRB_0.10cm <- frbDF$FRB_0.10cm / frbDF$fc1
     frbDF$CRB_10.30cm <- frbDF$FRB_10.30cm / frbDF$fc2
     
-    
     ### calculate c cotent, based on fineroot content
     frbDF$coarseroot_pool_0_10cm <- frbDF$CRB_0.10cm * frbDF$C0_0.10cm / 100
     frbDF$coarseroot_pool_10_30cm <- frbDF$CRB_10.30cm * frbDF$C0_10.30cm / 100
+    
+    #frbDF$coarseroot_pool_0_10cm <- frbDF$CRB_0.10cm * c_fraction_croot
+    #frbDF$coarseroot_pool_10_30cm <- frbDF$CRB_10.30cm * c_fraction_croot
     
     frbDF$coarse_root_pool <- frbDF$coarseroot_pool_0_10cm + frbDF$coarseroot_pool_10_30cm
     
@@ -54,11 +52,12 @@ make_coarse_root_pool_4 <- function(bkDF) {
     outDF <- frbDF[,c("Date", "Ring", "coarse_root_pool", "coarseroot_pool_0_10cm", "coarseroot_pool_10_30cm")]
 
     
-    test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
-    test$trt[test$Ring%in%c(2,3,6)] <- "amb"
-    test$trt[test$Ring%in%c(1,4,5)] <- "ele"
-    summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
+    #test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
+    #test$trt[test$Ring%in%c(2,3,6)] <- "amb"
+    #test$trt[test$Ring%in%c(1,4,5)] <- "ele"
+    #summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
 
+    
     ### return
     return(outDF)
 
