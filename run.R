@@ -91,9 +91,6 @@ options(warn=-1)
 ### Calculate mean annual temperature and precipitation
 #met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
-### Make a Whitaker diagram to show EucFACE in the context of global temperature and precipitation
-make_whitaker_diagram()
-
 
 ###########################################################################
 ###          Step 3: Compute C fluxes, pools & variables                ###
@@ -991,6 +988,8 @@ make_statistical_comparison_normalized_plots(inDF=tables_by_ring_predicted)
 source("R/plot_supplementary_figures.R")
 
 
+### Make a Whitaker diagram to show EucFACE in the context of global temperature and precipitation
+make_whitaker_diagram()
 
 
 

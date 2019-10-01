@@ -35,7 +35,8 @@ pacman::p_load(dplyr,
                pbkrtest,    # For stats
                cowplot,
                viridis,
-               sciplot)    
+               sciplot,
+               RColorBrewer)    
 
 
 #### Loading constants
