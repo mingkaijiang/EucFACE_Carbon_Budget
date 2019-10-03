@@ -211,7 +211,10 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
     
     ### Prepare variable colors
     require(viridis)
-    col.list1 <- viridis(16)
+    #col.list1 <- viridis(16)
+    
+    col.list1 <- c(viridis(12)[1:2], # GPP
+                   colorRampPalette(c("#3794bf", "#FFFFFF", "#df8640"))(14))
     
     ### make the bar plot
     p1 <- ggplot(plotDF1,
@@ -238,8 +241,8 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
-        ylim(0, 3)+
-        annotate(geom="text", x=0.6, y=2.9, label="(a)", size=7)
+        ylim(0, 2.5)+
+        annotate(geom="text", x=0.6, y=2.4, label="(a)", size=7)
         
     
     ### make the bar plot
@@ -267,8 +270,8 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)+
-        ylim(0, 3)+
-        annotate(geom="text", x=0.6, y=2.9, label="(b)", size=7)
+        ylim(0, 2.5)+
+        annotate(geom="text", x=0.6, y=2.4, label="(b)", size=7)
     
     
     
@@ -434,8 +437,8 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
-        ylim(0, 1.6)+
-        annotate(geom="text", x=0.6, y=1.5, label="(c)", size=7)
+        ylim(0, 1.4)+
+        annotate(geom="text", x=0.6, y=1.3, label="(c)", size=7)
     
     
     ### make the bar plot
@@ -464,14 +467,14 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)+
-        ylim(0, 1.6)+
-        annotate(geom="text", x=0.6, y=1.5, label="(d)", size=7)
+        ylim(0, 1.4)+
+        annotate(geom="text", x=0.6, y=1.3, label="(d)", size=7)
     
 
     require(grid)
     require(cowplot)
     
-    pdf("output/GPP_Rsoil_normalized_plots.pdf", width=12,height=10)
+    pdf("output/ED_Figure_2.pdf", width=12,height=10)
     plot_grid(p1, p2, p3, p4, labels="", ncol=2, align="v", axis="l",
                   rel_widths=c(1,1.2))
     dev.off()

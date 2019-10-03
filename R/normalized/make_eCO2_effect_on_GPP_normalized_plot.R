@@ -16,9 +16,9 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                    "leaf_prod", "wood_prod", "fineroot_prod",
                    "coarseroot_prod", "boleroot_prod",
                    "other_prod", "understorey_prod", 
-                   "understorey_lit", "frass_prod", "herb_consump", #"mycorrhizal_prod",
-                    "hetero_respiration", "over_leaf", "wood", "und_aboveground",
-                   "fineroot", "coarseroot", "boleroot", "litter", "cwd", "microbe",
+                   "understorey_lit", "frass_prod", "herb_consump", 
+                   "hetero_respiration", "mycorrhizal_prod", "over_leaf", "wood", "und_aboveground",
+                   "fineroot", "coarseroot", "boleroot", "litter", "microbe",
                    "soil", "mycorrhizae", "insects", 
                    "delta_leaf_c", "delta_wood_c", "delta_understorey_c",
                    "delta_fineroot_c", "delta_coarseroot_c", "delta_boleroot_c",
@@ -32,7 +32,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                        rep("litter", 2), 
                        rep("prod", 1), 
                        rep("resp", 1), 
-                       rep("pool", 12), 
+                       rep("prod", 1),
+                       rep("pool", 11), 
                        rep("change_in_pool", 11))  
     
     ### Drop redundant pools and fluxes
@@ -40,6 +41,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     
     ### Drop CWD - confidence interval too large
     myDF <- subset(myDF, term != c("cwd"))
+    
+    myDF <- subset(myDF, term != "mycorrhizal_prod")
     
     myDF <- myDF[,c("term", "Ring_1", "Ring_2", "Ring_3", "Ring_4", "Ring_5", "Ring_6", 
                     "diff_mean", "diff_sd", "Category")]
@@ -236,8 +239,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                    "leaf_prod"=D.col.list[1],                
                    "other_prod"=D.col.list[2],
                    "fineroot_prod"=D.col.list[3],           
-                   "understorey_prod"=D.col.list[4], 
-                   "coarseroot_prod"=D.col.list[5], 
+                   "coarseroot_prod"=D.col.list[4], 
+                   "understorey_prod"=D.col.list[5], 
                    "wood_respiration"=E.col.list[1],           
                    "root_respiration"=E.col.list[2],           
                    "understorey_respiration"=E.col.list[3], 
@@ -267,10 +270,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                 "understorey_respiration"=expression(R[ua]),      # 16
                 "growth_respiration"=expression(R[grow]),      # 16
                 "hetero_respiration"=expression(R[hetero]),            # 17
-                "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
-                "delta_microbial_c"=expression(Delta*C[micr]),
                 "delta_understorey_c"=expression(Delta*C[ua]),
                 "delta_soil_c"=expression(Delta*C[soil]))
     
@@ -427,7 +428,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     require(cowplot)
     
     ### Plotting
-    pdf("Output/eco2_effect_on_gpp_normalized_plot.pdf", width=16, height=6)
+    pdf("Output/Figure_2.pdf", width=16, height=6)
     plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
               rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()

@@ -215,18 +215,18 @@ nep_normalized_plot_with_NPPmyco <- function(inDF) {
         geom_bar(data=plotDF, stat = "identity", aes(Method, NEP, color=Trt, fill=Trt), 
                  position="dodge", alpha=0.2) +
         geom_point(data=plotDF2, mapping=aes(x=Method, y=NEP, shape=Method, fill=Trt), 
-                   size=4, position = position_dodge(0.9), color="black")+
+                   size=1, position = position_dodge(0.9), color="black")+
         xlab("") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=18),
-              axis.text.y=element_text(size=16),
-              axis.title.y=element_text(size=18),
-              legend.text=element_text(size=16),
-              legend.title=element_text(size=18),
+              axis.title.x = element_text(size=10),
+              axis.text.x = element_text(size=8),
+              axis.text.y=element_text(size=8),
+              axis.title.y=element_blank(), 
+              legend.text=element_text(size=8),
+              legend.title=element_text(size=10),
               panel.grid.major=element_blank(),
-              legend.position="bottom",
+              legend.position="none",
               legend.text.align=0,
               legend.direction="vertical")+
         scale_fill_manual(name="Treatment", values = c("aCO2" = "blue2", "eCO2" = "red3"),
@@ -241,18 +241,20 @@ nep_normalized_plot_with_NPPmyco <- function(inDF) {
                          labels=c("In - Out",
                                   expression(paste("NPP - ", R[h])),
                                   expression(Delta*C[pools])))+
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-500, -250, -100, 0, 100, 250, 500),
-                           labels=c(-500, -250, -100, 0, 100, 250, 500))+
+        scale_y_continuous(limits=c(-400, 800), 
+                           breaks=c(-400, -200, 0, 200, 400, 600),
+                           labels=c(-400, -200, 0, 200, 400, 600))+
         guides(fill = guide_legend(ncol=1, override.aes = 
                                         list(colour=c("blue2", "red3"))))
     
     #plot(p1)
     
     
-    pdf("Output/nep_normalized_plot_with_NPPmyco.pdf", width=8, height=8)
-    plot(p1)
-    dev.off()
+    #pdf("Output/nep_normalized_plot_with_NPPmyco.pdf", width=8, height=8)
+    #plot(p1)
+    #dev.off()
+    
+    return(p1)
     
     
     

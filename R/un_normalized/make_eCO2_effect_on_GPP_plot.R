@@ -14,7 +14,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                    "doc", "soil_respiration", "growth_respiration",
                    "leaf_prod", "wood_prod", "fineroot_prod",
                    "coarseroot_prod", "boleroot_prod", "other_prod", "understorey_prod", 
-                   "frass_prod", "herb_consump", #"mycorrhizal_prod",
+                   "frass_prod", "herb_consump",
                    "hetero_respiration", "over_leaf", "wood", "und_aboveground",
                    "fineroot", "coarseroot", "boleroot", "litter", "microbe",
                    "soil", "mycorrhizae", "insects", 
@@ -416,7 +416,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     require(cowplot)
     
     ### Plotting
-    pdf("Output/eco2_effect_on_gpp_unnormalized_plot.pdf", width=16, height=6)
+    pdf("Output/ED_Figure_3.pdf", width=16, height=6)
     plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
               rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()

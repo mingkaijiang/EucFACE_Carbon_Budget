@@ -223,8 +223,8 @@ nep_normalized_plot <- function(inDF) {
               axis.text.x = element_text(size=18),
               axis.text.y=element_text(size=16),
               axis.title.y=element_text(size=18),
-              legend.text=element_text(size=16),
-              legend.title=element_text(size=18),
+              legend.text=element_text(size=12),
+              legend.title=element_text(size=14),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0,
@@ -241,19 +241,31 @@ nep_normalized_plot <- function(inDF) {
                          labels=c("In - Out",
                                   expression(paste("NPP - ", R[h])),
                                   expression(Delta*C[pools])))+
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-500, -250, -100, 0, 100, 250, 500),
-                           labels=c(-500, -250, -100, 0, 100, 250, 500))+
+        scale_y_continuous(limits=c(-400, 800), 
+                           breaks=c(-400, -200, 0, 200, 400, 600),
+                           labels=c(-400, -200, 0, 200, 400, 600))+
         guides(fill = guide_legend(ncol=1, override.aes = 
                                        list(colour=c("blue2", "red3"))))
     
     #plot(p1)
     
+    ### prepare inset figure
+    source("R/normalized/nep_normalized_plot_with_NPPmyco.R")
+    p2 <- nep_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
     
-    pdf("Output/nep_normalized_plot.pdf", width=8, height=8)
-    plot(p1)
-    dev.off()
     
+    plot.with.inset <-
+        ggdraw() +
+        draw_plot(p1) +
+        draw_plot(p2, x = 0.58, y = .68, width = .4, height = .3)
+    
+    
+    ggsave(filename = "output/Figure_3.pdf", 
+           plot = plot.with.inset,
+           width = 16, 
+           height = 16,
+           units = "cm",
+           dpi = 300)
     
     
 }

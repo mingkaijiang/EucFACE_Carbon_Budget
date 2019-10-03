@@ -17,9 +17,8 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                    "coarseroot_prod", "boleroot_prod",
                    "other_prod", "understorey_prod", 
                    "understorey_lit", "frass_prod", "herb_consump", 
-                    "hetero_respiration", "mycorrhizal_prod", "over_leaf", "wood", "und_aboveground",
-                   "fineroot", "coarseroot", "boleroot",
-                   "litter", "cwd", "microbe",
+                   "hetero_respiration", "mycorrhizal_prod", "over_leaf", "wood", "und_aboveground",
+                   "fineroot", "coarseroot", "boleroot", "litter", "microbe",
                    "soil", "mycorrhizae", "insects", 
                    "delta_leaf_c", "delta_wood_c", "delta_understorey_c",
                    "delta_fineroot_c", "delta_coarseroot_c", "delta_boleroot_c",
@@ -34,7 +33,7 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                        rep("prod", 1), 
                        rep("resp", 1), 
                        rep("prod", 1),
-                       rep("pool", 12), 
+                       rep("pool", 11), 
                        rep("change_in_pool", 11))  
     
     ### Drop redundant pools and fluxes
@@ -198,10 +197,9 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
     
     ### Simplify the plot by eleminating fluxes that has CO2 effect < 1 g m-2 yr-1
     plotDF2 <- subset(plotDF, abs(effect_size) >= 5)
-    
-    ### Order plot DF
     subDF <- subset(plotDF, Variable == "Change_in_pools")
     plotDF2 <- rbind(subDF, plotDF2)
+    
     
     plotDF2 <- plotDF2[order(plotDF2$plot.cat2),]
     
@@ -248,10 +246,10 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                    "understorey_respiration"=E.col.list[3],   
                    "growth_respiration"=E.col.list[4],  
                    "hetero_respiration"=E.col.list[5],    
-                   "delta_leaf_c"=F.col.list[1],        
-                   "delta_wood_c"=F.col.list[2],
-                   "delta_understorey_c"=F.col.list[3],    
-                   "delta_microbial_c"=F.col.list[4])  
+                   "delta_wood_c"=F.col.list[1],        
+                   "delta_understorey_c"=F.col.list[2],
+                   "delta_fineroot_c"=F.col.list[3],    
+                   "delta_soil_c"=F.col.list[4])  
     
     
     # y label
@@ -262,20 +260,18 @@ make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco <- function(inDF) {
                 "Change_in_pools"=expression(Delta*C[pools]),
                 "total_outflux"="R",                              # 4
                 "leaf_prod"=expression(NPP[ol]),                # 7
-                "fineroot_prod"=expression(NPP[froot]),           # 12
-                "coarseroot_prod"=expression(NPP[croot]),           # 12
-                "other_prod"=expression(NPP[other]),                # 8
+                "other_prod"=expression(NPP[other]),              
+                "fineroot_prod"=expression(NPP[froot]),           
+                "coarseroot_prod"=expression(NPP[croot]),           
+                "understorey_prod"=expression(NPP[ua]),           
                 "mycorrhizal_prod"=expression(NPP[myco]),
-                "understorey_prod"=expression(NPP[ua]),           # 14
                 "wood_respiration"=expression(R[stem]),           # 19
                 "root_respiration"=expression(R[root]),           # 15
                 "understorey_respiration"=expression(R[ua]),      # 16
                 "growth_respiration"=expression(R[grow]),      
                 "hetero_respiration"=expression(R[hetero]),            # 17
-                "delta_leaf_c"=expression(Delta*C[ol]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
-                "delta_microbial_c"=expression(Delta*C[micr]),
                 "delta_understorey_c"=expression(Delta*C[ua]),
                 "delta_soil_c"=expression(Delta*C[soil]))
 

@@ -716,7 +716,7 @@ source("definitions/initialize_aCO2_parameters.R")
 source("definitions/initialize_eCO2_parameters.R")
 
 ### Assign chain length for MCMC parameter fitting
-chainLength <- 100000
+chainLength <- 200000
 
 ### step C2: fitting
 ## Ring 2
@@ -820,7 +820,7 @@ predict_final_output(pChain = pChain.aCO2,
 
 ### step D2: 
 ### set up step size for aCO2 and eCO2 
-chainLength <- 200000
+chainLength <- 500000
 
 
 ### step D3:
@@ -918,6 +918,9 @@ predict_final_output(pChain = pChain.eCO2,
 ### compute a output table to summarize parameters and their uncertainties
 make_parameter_summary_table()
 
+pChain.aCO2 <- read.csv("DA_output/posterior_parameters_aCO2_uniform_2e+05.csv")
+pChain.eCO2 <- read.csv("DA_output/posterior_parameters_eCO2_uniform_5e+05.csv")
+
 
 ########################################################################################
 #### F: generate model-data comparison on allocation and turnover coefficients
@@ -946,21 +949,17 @@ inDF <- tables_by_ring_predicted
 source("R/normalized/gpp_and_rsoil_normalized_plot.R")
 gpp_and_rsoil_normalized_plot(inDF=tables_by_ring_predicted)
 
-
+###    Need to go into function to plot
 source("R/normalized/gpp_and_rsoil_normalized_plot_with_NPPmyco.R")
 gpp_and_rsoil_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
 
 
 ### NEP gaps   
-###    Need to go into function to plot
 source("R/normalized/nep_normalized_plot.R")
 nep_normalized_plot(inDF=tables_by_ring_predicted)
 
 
-source("R/normalized/nep_normalized_plot_with_NPPmyco.R")
-nep_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
-
-### CUE
+### CUE - this is data based CUE estimate - slightly different to data assimilation based CUE, because DA assumed simplified structure
 source("R/normalized/cue_calculation.R")
 cueDF <- cue_calculation(inDF=tables_by_ring_predicted)
 

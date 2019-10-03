@@ -39,8 +39,11 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, term != c("understorey_lit"))
     
-    ### Drop CWD - confidence interval too large
+    ### Drop CWD 
     myDF <- subset(myDF, term != c("cwd"))
+    
+    ### Drop mycorrhizal production - inferred flux
+    myDF <- subset(myDF, term != c("mycorrhizal_prod"))
     
     myDF <- myDF[,c("term", "diff_mean", "diff_sd", "Category")]
     colnames(myDF) <- c("Variable", "effect_size", "sd", "Category")
@@ -123,7 +126,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                 "growth_respiration"=expression(R[grow]))
     
     y.lab3 <- c("herb_consump"=expression(NPP[ins]),
-                "mycorrhizal_prod"=expression(NPP[myco]),
+                #"mycorrhizal_prod"=expression(NPP[myco]),
                 "lerp_prod"=expression(NPP[lerp]),
                 "leaf_prod"=expression(NPP[ol]),
                 "other_prod"=expression(NPP[other]),
