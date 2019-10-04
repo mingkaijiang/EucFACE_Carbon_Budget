@@ -151,7 +151,7 @@ combine_met_data <- function() {
     require(grid)
     
     ## plot 
-    pdf("output/Monthly_met_time_series.pdf", width=10,height=8)
+    pdf("output/Figure_S1.pdf", width=10,height=8)
  
     
     grid.newpage()
