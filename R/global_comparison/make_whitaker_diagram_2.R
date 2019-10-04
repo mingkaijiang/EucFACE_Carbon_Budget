@@ -12,11 +12,11 @@ make_whitaker_diagram_2 <- function() {
     ################################### Prepare MAT and MAP, FACE sites
     ### prepare storage DF
     faceDF <- data.frame(c("EucFACE", "DukeFACE", "ORNLFACE", "AspenFACE", "PopFACE",
-                           "WebFACE", "FlakalidenWTC"), 
+                           "WebFACE", "AmazonFACE", "BioForFACE", "FlakalidenWTC"), 
                           NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(faceDF) <- c("Site", "Biome", "Lat", "Lon", "MAT", "MAP", "Age", "soilN", "soilP", "NPP", 
                           "MAT_sd", "MAP_sd", "soilN_sd", "soilP_sd", "NPP_sd")
-    faceDF$Biome <- c(15:21)
+    faceDF$Biome <- c(15:23)
     
     faceDF$Lat[faceDF$Site=="EucFACE"] <- -33.36
     faceDF$Lon[faceDF$Site=="EucFACE"] <- 150.44
@@ -35,6 +35,12 @@ make_whitaker_diagram_2 <- function() {
     
     faceDF$Lat[faceDF$Site=="WebFACE"] <- 47.33
     faceDF$Lon[faceDF$Site=="WebFACE"] <- 7.36
+    
+    faceDF$Lat[faceDF$Site=="BioForFACE"] <- 52.801
+    faceDF$Lon[faceDF$Site=="BioForFACE"] <- -2.301
+    
+    faceDF$Lat[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$Lon[faceDF$Site=="AmazonFACE"] <- NA
     
     faceDF$Lat[faceDF$Site=="FlakalidenWTC"] <- 64.07
     faceDF$Lon[faceDF$Site=="FlakalidenWTC"] <- 19.27
@@ -164,6 +170,35 @@ make_whitaker_diagram_2 <- function() {
     faceDF$soilP_sd[faceDF$Site=="WebFACE"] <- NA
     faceDF$NPP_sd[faceDF$Site=="WebFACE"] <- NA
     
+    ### assign values - BioForFACE
+    faceDF$MAT[faceDF$Site=="BioForFACE"] <- 9
+    faceDF$MAP[faceDF$Site=="BioForFACE"] <- 690
+    faceDF$Age[faceDF$Site=="BioForFACE"] <- 150
+    faceDF$soilN[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$soilP[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$NPP[faceDF$Site=="BioForFACE"] <- NA
+    
+    faceDF$MAT_sd[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$MAP_sd[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$soilN_sd[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$soilP_sd[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$NPP_sd[faceDF$Site=="BioForFACE"] <- NA
+    
+    
+    ### assign values - AmazonFACE
+    faceDF$MAT[faceDF$Site=="AmazonFACE"] <- 26.7
+    faceDF$MAP[faceDF$Site=="AmazonFACE"] <- 2400
+    faceDF$Age[faceDF$Site=="AmazonFACE"] <- 200
+    faceDF$soilN[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$soilP[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$NPP[faceDF$Site=="AmazonFACE"] <- NA
+    
+    faceDF$MAT_sd[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$MAP_sd[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$soilN_sd[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$soilP_sd[faceDF$Site=="AmazonFACE"] <- NA
+    faceDF$NPP_sd[faceDF$Site=="AmazonFACE"] <- NA
+    
     
     ### assign values - FlakalidenWTC
     faceDF$MAT[faceDF$Site=="FlakalidenWTC"] <-  2.3
@@ -195,7 +230,7 @@ make_whitaker_diagram_2 <- function() {
     
     ### this is just the forest plot
     plotDF1 <- subset(plotDF1, Biome%in%c(1,2,3,4,5,6,12, 
-                                         15:21))
+                                         15:23))
     
     forests <- c("Tropical moist broadleaf",            
                  "Tropical dry broadleaf",            
@@ -210,11 +245,13 @@ make_whitaker_diagram_2 <- function() {
                  "AspenFACE",
                  "PopFACE",
                  "WebFACE",
+                 "AmazonFACE",
+                 "BioForFACE",
                  "FlakalidenWTC")      
     
     
     ### create plotting settings
-    col.list <- c(viridis(7), "red", brewer.pal(6,"Set2"))
+    col.list <- c(viridis(7), "red", brewer.pal(8,"Set2"))
     
     p1 <- ggplot() +
         geom_point(plotDF1, mapping=aes(MAT, MAP, 
@@ -222,12 +259,6 @@ make_whitaker_diagram_2 <- function() {
                                        color=factor(Biome),
                                        shape=factor(Biome), 
                                        size = factor(Biome)))+
-        #geom_errorbar(data=plotDF1, 
-        #              mapping=aes(x=MAT, ymin=MAP_neg, ymax=MAP_pos), 
-        #              width=2, size=1, color="black") + 
-        #geom_errorbarh(data=plotDF1, 
-        #              mapping=aes(y=MAP, xmax=MAT_pos, xmin=MAT_neg), 
-        #              height=200, size=1, color="black") + 
         xlab(expression("MAT (" * degree * "C)")) + 
         ylab("MAP (mm)") +
         scale_fill_manual(name="", 
@@ -236,9 +267,9 @@ make_whitaker_diagram_2 <- function() {
         scale_color_manual(name="", 
                           values=col.list,
                           labels=forests) +
-        scale_shape_manual(values=c(rep(21, 7), 24, rep(22, 6)),
+        scale_shape_manual(values=c(rep(21, 7), 24, rep(22, 8)),
                            labels=forests) +
-        scale_size_manual(values=c(rep(1, 7), rep(4, 7)),
+        scale_size_manual(values=c(rep(1, 7), rep(4, 9)),
                           labels=forests)+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
@@ -255,13 +286,13 @@ make_whitaker_diagram_2 <- function() {
                shape = "none",
                color = "none",
                fill = guide_legend(ncol=4, override.aes = 
-                                        list(size = 4, shape=c(rep(21, 7), 24, rep(22, 6)), 
+                                        list(size = 4, shape=c(rep(21, 7), 24, rep(22, 8)), 
                                              colour=col.list)))
     
     #plot(p1)
     
     ### prepare NPP vs. age
-    col.list <- c("red", brewer.pal(6,"Set2"))
+    col.list <- c("red", brewer.pal(8,"Set2"))
         
     fit <- lm(NPP ~ Age, data=faceDF)
     
@@ -270,7 +301,7 @@ make_whitaker_diagram_2 <- function() {
                                        shape=as.factor(Biome)), size=2)+
         geom_abline(intercept = coefficients(fit)[[1]], slope = coefficients(fit)[[2]],
                     lty=2)+
-        annotate(geom="text", x=60, y=1400, 
+        annotate(geom="text", x=140, y=1400, 
                  label=paste0("y = ", round(coefficients(fit)[[2]], 2), "x + ", 
                               round(coefficients(fit)[[1]],2)),
                   color="black")+
@@ -279,7 +310,7 @@ make_whitaker_diagram_2 <- function() {
         theme_linedraw() +
         scale_fill_manual(name="Sites", 
                            values=col.list) +
-        scale_shape_manual(values=c(24, rep(22, 6)),
+        scale_shape_manual(values=c(24, rep(22, 8)),
                            labels="") +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=8), 
@@ -294,7 +325,7 @@ make_whitaker_diagram_2 <- function() {
         scale_y_continuous(limits=c(0, 1500),
                            breaks = c(0,500,1000,1500))
     
-    plot(p2)
+    #plot(p2)
     
     plot.with.inset <-
         ggdraw() +

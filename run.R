@@ -988,8 +988,8 @@ source("R/plot_supplementary_figures.R")
 
 
 ### Make a Whitaker diagram to show EucFACE in the context of global temperature and precipitation
-source("R/global_comparison/make_whitaker_diagram.R")
-make_whitaker_diagram()
+source("R/global_comparison/make_whitaker_diagram_2.R")
+make_whitaker_diagram_2()
 
 
 
