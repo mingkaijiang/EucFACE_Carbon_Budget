@@ -98,6 +98,7 @@ make_table_by_ring_predicted <- function() {
                                                         npp[npp$term == "Stem NPP", i+1] + 
                                                         npp[npp$term == "Fine Root NPP", i+1] +
                                                         npp[npp$term == "Coarse Root NPP", i+1] +
+                                                        npp[npp$term == "Bole Root NPP", i+1] +
                                                         #npp[npp$term == "Understorey NPP", i+1] + 
                                                         npp[npp$term == "Other NPP", i+1] +
                                                         npp[npp$term == "Leaf consumption", i+1])
