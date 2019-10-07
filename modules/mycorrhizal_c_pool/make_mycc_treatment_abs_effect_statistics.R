@@ -1,6 +1,6 @@
-make_mycc_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                      var.col, date.as.factor,
-                                                      stat.model, return.outcome) {
+make_mycc_treatment_abs_effect_statistics <- function(inDF, 
+                                                      var.col, 
+                                                      return.outcome) {
     
     ### subset pre-treatment data
     preDF <- subset(inDF, Date=="2012-06-13")

@@ -1,6 +1,6 @@
-make_frass_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                       var.col, date.as.factor,
-                                                       stat.model, return.outcome) {
+make_frass_treatment_abs_effect_statistics <- function(inDF, 
+                                                       var.col,
+                                                       return.outcome) {
     
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {

@@ -1,6 +1,6 @@
-make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, var.cond, 
-                                                                var.col, date.as.factor,
-                                                                stat.model, return.outcome) {
+make_overstorey_gpp_treatment_abs_effect_statistics <- function(inDF, 
+                                                                var.col, 
+                                                                return.outcome) {
     
     inDF$Ring <- as.numeric(inDF$Ring)
     
