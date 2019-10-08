@@ -50,6 +50,11 @@ make_whitaker_diagram_2 <- function() {
     faceDF$Lon[faceDF$Site=="FlakalidenWTC"] <- 19.27
     
     
+    ### cuedata
+    cueDF <- read.csv("data/DeLucia2007.csv")
+    cueDF$Age <- as.numeric(as.character(cueDF$Age))
+    fit.cue <- lm(NPP ~ Age, data=cueDF)
+    
     
     ### prepare input files - EucFACE
     ### Read input - climate
@@ -316,18 +321,29 @@ make_whitaker_diagram_2 <- function() {
         
     fit <- lm(NPP ~ Age, data=faceDF)
     
+    ### prepare NPP vs. age using West 2019 data
+    fit2 <- data.frame(c(10:200), 10, NA)
+    colnames(fit2) <- c("Age", "Temp", "NPP")
+    fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
+    fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
+    
+
     p2 <- ggplot() +
+        geom_point(data=cueDF, aes(Age, NPP), col="grey", size=1)+
         geom_point(data=faceDF, aes(Age, NPP, fill=as.factor(Biome),
                                        shape=as.factor(Biome)), size=2)+
-        geom_abline(intercept = coefficients(fit)[[1]], slope = coefficients(fit)[[2]],
+        #geom_abline(intercept = coefficients(fit)[[1]], slope = coefficients(fit)[[2]],
+        #            lty=1)+
+        geom_abline(intercept = coefficients(fit.cue)[[1]], slope = coefficients(fit.cue)[[2]],
                     lty=2)+
-        annotate(geom="text", x=130, y=1400, 
-                 label=paste0("y = ", round(coefficients(fit)[[2]], 2), "x + ", 
-                              round(coefficients(fit)[[1]],2)),
-                  color="black")+
+        #annotate(geom="text", x=130, y=1400, 
+        #         label=paste0("y = ", round(coefficients(fit)[[2]], 2), "x + ", 
+        #                      round(coefficients(fit)[[1]],2)),
+        #          color="black")+
         ylab(expression("NPP (g" * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
         theme_linedraw() +
+        xlim(0, 500)+
         scale_fill_manual(name="Sites", 
                            values=col.list) +
         scale_shape_manual(values=c(24, rep(22, 9)),
@@ -345,7 +361,7 @@ make_whitaker_diagram_2 <- function() {
         scale_y_continuous(limits=c(0, 1500),
                            breaks = c(0,500,1000,1500))
     
-    #plot(p2)
+    plot(p2)
     
     plot.with.inset <-
         ggdraw() +

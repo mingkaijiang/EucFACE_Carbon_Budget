@@ -6,7 +6,7 @@ make_delta_fineroot_pool_treatment_abs_effect_2 <- function(inDF,var.col) {
     inDF <- inDF[order(inDF$Date),]
     inDF$Date <- as.character(inDF$Date)
     
-    ### Change column name of value variable
+    ### Change column name of Value variable
     colnames(inDF)[var.col] <- "Value"
     
     ### 

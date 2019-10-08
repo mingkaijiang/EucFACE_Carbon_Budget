@@ -533,8 +533,11 @@ understorey_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=un
 
 ### Delta pools
 delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=7)
+#delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect_2(inDF=delta_soil_c_pool, 
+#                                                                     return.outcome="predicted")
 
-delta_leaf_c_pool_ann <- make_delta_leaf_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=7)
+
+delta_leaf_c_pool_ann <- make_delta_leaf_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=8)
 
 delta_wood_c_pool_ann <- make_delta_wood_pool_treatment_abs_effect(inDF=wood_c_pool_ann, var.col=10)
 

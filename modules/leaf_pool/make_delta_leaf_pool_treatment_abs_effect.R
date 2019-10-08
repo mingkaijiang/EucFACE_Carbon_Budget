@@ -24,7 +24,7 @@ make_delta_leaf_pool_treatment_abs_effect <- function(inDF,var.col) {
     delta <- data.frame(rep(c(1:6), each=l1), rep(yr.list1, 6), NA, NA, NA)
     colnames(delta) <- c("Ring", "Year", "Start_date", "End_date", "delta")
     
-    ### assign values
+    ### assign Values
     for (i in 2:5) {
         ### per ring
         for (j in 1:6) {
