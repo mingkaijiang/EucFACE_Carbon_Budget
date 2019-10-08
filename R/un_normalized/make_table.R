@@ -349,11 +349,11 @@ make_EucFACE_table <- function() {
     pool$processing_notes[pool$term == "Mycorrhizae"]  <- "For 0 - 10 cm depth, used sand bulk density"
     
     ### Insects
-    pool$value[pool$term == "Insects"]  <- mean(insect_pool$insect_pool)
-    pool$start_year[pool$term == "Insects"] <- min(year(insect_pool$Date))
-    pool$end_year[pool$term == "Insects"] <- max(year(insect_pool$Date))
-    pool$timepoint[pool$term == "Insects"] <- length(unique(insect_pool$Date))
-    pool$data_notes[pool$term == "Insects"] <- "taken from litter basket"
+    pool$value[pool$term == "Insects"]  <- mean(insect_pool$insect_pool) + mean(understorey_insect_pool$insect_pool)
+    pool$start_year[pool$term == "Insects"] <- min(c(year(insect_pool$Date), year(understorey_insect_pool$Date)))
+    pool$end_year[pool$term == "Insects"] <- max(c(year(insect_pool$Date), year(understorey_insect_pool$Date)))
+    pool$timepoint[pool$term == "Insects"] <- length(c(unique(insect_pool$Date), unique(insect_pool$Date)))
+    pool$data_notes[pool$term == "Insects"] <- "litter basket & vacuum suction"
     pool$processing_notes[pool$term == "Insects"]  <- "Assume in equilibrium"
     
     ### Litter

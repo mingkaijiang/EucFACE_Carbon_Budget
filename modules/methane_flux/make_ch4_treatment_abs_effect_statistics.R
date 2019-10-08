@@ -2,6 +2,12 @@ make_ch4_treatment_abs_effect_statistics <- function(inDF,
                                                      var.col, 
                                                      return.outcome) {
     
+    inDF$Yr <- year(inDF$Date)
+    
+    ### year 2016 is partial, remove
+    inDF <- inDF[inDF$Yr < 2016, ]
+    
+    
     #### Assign amb and ele factor
     for (i in (1:length(inDF$Ring))) {
         if (inDF$Ring[i]==2|inDF$Ring[i]==3|inDF$Ring[i]==6) {
@@ -13,7 +19,6 @@ make_ch4_treatment_abs_effect_statistics <- function(inDF,
     
     #### Assign factors
     inDF$Trt <- as.factor(inDF$Trt)
-    inDF$Yr <- year(inDF$Date)
     inDF$Ring <- as.factor(inDF$Ring)
     inDF$Datef <- as.factor(inDF$Date)
     

@@ -170,7 +170,8 @@ make_table_by_ring_predicted <- function() {
         pool[pool$term == "Mycorrhizae", i+1]  <- mean(mycorrhizal_c_pool_ann$predicted[mycorrhizal_c_pool_ann$Ring == i], na.rm=T)
         
         # Insects
-        pool[pool$term == "Insects", i+1] <- mean(insect_pool_ann$predicted[insect_pool_ann$Ring == i], na.rm=T)
+        pool[pool$term == "Insects", i+1] <- mean(insect_pool_ann$predicted[insect_pool_ann$Ring == i], na.rm=T) + 
+            mean(understorey_insect_pool_ann$predicted[understorey_insect_pool_ann$Ring == i], na.rm=T)
         
         # Litter
         pool[pool$term == "Litter", i+1]  <- mean(leaflitter_pool_ann$predicted[leaflitter_pool_ann$Ring == i], na.rm=T)

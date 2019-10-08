@@ -43,5 +43,7 @@ make_delta_insect_pool_function <- function(inDF,var.col) {
     
     names(out) <- c("Start_date", "End_date", "Date", "Ring", "delta")
     
+    out <- out[complete.cases(out$delta),]
+    
     return(out)
 }

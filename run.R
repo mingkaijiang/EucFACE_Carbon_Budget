@@ -164,8 +164,8 @@ fineroot_production_flux <- make_fineroot_production_flux_2()
 coarseroot_c_pool <- make_coarse_root_pool_4(bkDF=soil_bulk_density_variable)
 
 ### coarseroot c production
-#coarseroot_production_flux <- make_coarse_root_production_flux(cr_pool=coarseroot_c_pool)
-coarseroot_production_flux <- make_coarse_root_production_flux_2(inDF=coarseroot_c_pool)
+coarseroot_production_flux <- make_coarse_root_production_flux(inDF=coarseroot_c_pool)
+#coarseroot_production_flux <- make_coarse_root_production_flux_2(inDF=coarseroot_c_pool)
 
 
 ### frass c production flux
@@ -176,9 +176,6 @@ frass_production_flux <- make_frass_production_flux()
 herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla=sla_variable, 
                                                                         frass_flux=frass_production_flux)
 
-### lerp production flux
-### reads in c_fraction_lp from constant
-lerp_production_flux <- make_lerp_production_flux(c_fraction_lp)
 
 ### DOC leaching flux
 ### Can return shallow, deep and all_depths result
@@ -203,7 +200,6 @@ leaflitter_pool <- make_leaflitter_pool(c_fraction)
 ### ground dwelling is based on pitfall data
 insect_pool <- make_insect_pool(c_fraction_ins)
 understorey_insect_pool <- make_understorey_insect_pool(c_frac=c_fraction_ins)
-ground_dwelling_insect_pool <- make_ground_dwelling_insect_pool(c_frac=c_fraction_ins)
 
 ### sapwood C and N fraction
 sapwood_cn_fraction <- make_sapwood_c_n_fraction()
@@ -249,14 +245,9 @@ microbial_c_pool <- make_microbial_pool(soil_bulk_density_variable)
 ### Soil mycorrhizae pool
 mycorrhizal_c_pool <- make_mycorrhizal_c_pool(micDF=microbial_c_pool)
 
-### Soil mycorrhizae production
-#mycorrhizal_c_production_flux <- make_mycorrhizal_production_flux(soil_bulk_density_variable)
-
 ### Soil methane C flux
-## This is a simplified version because we didn't fill the gaps
 methane_c_flux <- make_methane_flux()
-## This is the version with gap-filled data, using DAMM
-#methane_c_flux2 <- make_methane_flux2()
+
 
 ### Herbivory respiration flux
 herbivory_respiration_flux <- make_herbivory_respiration_flux(leaf_consumed=herbivory_leaf_consumption_flux,
@@ -272,18 +263,9 @@ bole_root_c_pool <- make_bole_root_pool(c_fraction_croot, fr_pool=fineroot_c_poo
 bole_root_production_flux <- make_bole_root_production_flux(bole_root_c_pool) 
 
 ### Root respiration flux
-## based on treatment-specific respiration rates
-#root_respiration_flux_old <- make_root_respiration_flux_1(froot=fineroot_c_pool, 
-#                                                          croot=coarseroot_c_pool)
-## based on average respiration rates
-#root_respiration_flux_old <- make_root_respiration_flux_2(froot=fineroot_c_pool, 
-#                                                      croot=coarseroot_c_pool_old)
-
 root_respiration_flux <- make_root_respiration_flux_2(froot=fineroot_c_pool, 
                                                       croot=coarseroot_c_pool)
 
-#compare_Rroot(nDF=root_respiration_flux,
-#              oDF=root_respiration_flux_old)
 
 ### Rh C flux
 heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respiration_flux, 
@@ -313,7 +295,6 @@ delta_leaf_c_pool <- make_delta_leaf_pool_function_2(inDF=leaf_c_pool, var.col=3
 
 delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 
-#delta_fineroot_c_pool_old <- make_delta_fineroot_pool_function_2(inDF=fineroot_c_pool, var.col=3)
 delta_fineroot_c_pool <- make_delta_fineroot_pool_function_3(inDF=fineroot_c_pool, var.col=3)
 
 delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarseroot_c_pool, var.col=3)
@@ -332,8 +313,7 @@ delta_leaflitter_pool <- make_delta_leaflitter_pool_function(inDF=leaflitter_poo
 
 delta_insect_pool <- make_delta_insect_pool_function(inDF=insect_pool, var.col=3)
 
-delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_function(inDF=ground_dwelling_insect_pool, var.col=3)
-
+delta_understorey_insect_pool <- make_delta_insect_pool_function(inDF=understorey_insect_pool, var.col=3)
 
 
 ###########################################################################
@@ -345,10 +325,6 @@ delta_ground_dwelling_insect_pool <- make_delta_ground_dwelling_insect_pool_func
 ### Generate overall summary table (ignoring rings and time)
 source("R/un_normalized/make_table.R")
 overall_tables <- make_EucFACE_table()
-
-### Generate per year table (ignore ring variability)
-source("R/un_normalized/make_table_by_year.R")
-tables_by_year <- make_EucFACE_table_by_year()
 
 ### Generate ring-specific table (ignoring time variable)
 source("R/un_normalized/make_table_by_ring.R")
@@ -413,11 +389,6 @@ herbivory_leaf_consumption_flux_ann <- make_hb_cons_treatment_abs_effect_statist
 herbivory_respiration_flux_ann <- make_r_hb_treatment_abs_effect_statistics(inDF=herbivory_respiration_flux, 
                                                                             var.col=5,
                                                                             return.outcome="predicted")
-
-### Lerp production
-lerp_production_flux_ann <- make_lp_treatment_abs_effect_statistics(inDF=lerp_production_flux, 
-                                                                    var.col=5,
-                                                                    return.outcome="predicted")
 
 ### soil respiration
 soil_respiration_flux_ann <- make_rsoil_treatment_abs_effect_statistics(inDF=soil_respiration_flux, 
@@ -559,9 +530,6 @@ understorey_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=un
                                                                          var.col=3,
                                                                          return.outcome="predicted")
 
-ground_dwelling_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=ground_dwelling_insect_pool, 
-                                                                             var.col=3,
-                                                                             return.outcome="predicted")
 
 ### Delta pools
 delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=7)
@@ -588,7 +556,7 @@ delta_leaflitter_pool_ann <- make_delta_leaflitter_pool_treatment_abs_effect(inD
 
 delta_insect_pool_ann <- make_delta_insect_pool_treatment_abs_effect(inDF=insect_pool_ann, var.col=8)
 
-delta_ground_dwelling_insect_pool_ann <- make_delta_ground_dwelling_insect_pool_treatment_abs_effect(inDF=ground_dwelling_insect_pool_ann, var.col=8)
+delta_understorey_insect_pool_ann <- make_delta_insect_pool_treatment_abs_effect(inDF=understorey_insect_pool_ann, var.col=8)
 
 
 ###########################################################################
