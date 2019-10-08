@@ -221,7 +221,7 @@ combine_all_model_output <- function() {
     
     
     ### output
-    pdf("output/ED_Figure_6.pdf", width=8, height=10)
+    pdf("output/ED_Figure_7.pdf", width=8, height=10)
     plot_grid(p1, combined_plots, legend_shared, 
               labels=c("A","",""),
               ncol=1, rel_heights=c(1,1,0.3))

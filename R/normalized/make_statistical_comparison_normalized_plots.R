@@ -5,7 +5,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
     myDF <- rbind(inDF$inout, inDF$npp, inDF$pool, inDF$delta_pool)
     
     myDF$diff_mean <- myDF$eCO2 - myDF$aCO2
-    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2)/3 + (myDF$eCO2_sd^2)/3)
+    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2 + myDF$eCO2_sd^2 ) / 2)
     
     myDF <- myDF[complete.cases(myDF$diff_mean),]
     
@@ -260,7 +260,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         scale_y_discrete(labels=y.lab2)
     
     
-    pdf("output/ED_Figure_4.pdf", width=8, height=12)
+    pdf("output/ED_Figure_5.pdf", width=8, height=12)
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 

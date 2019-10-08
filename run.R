@@ -351,6 +351,10 @@ overstorey_gpp_flux_ann <- make_overstorey_gpp_treatment_abs_effect_statistics(i
                                                                                var.col=3,
                                                                                return.outcome="predicted")
 
+test <- make_overstorey_gpp_treatment_abs_effect_statistics(inDF=overstorey_gpp_flux, 
+                                                            var.col=3,
+                                                            return.outcome="model")
+
 ### Understorey GPP
 understorey_gpp_flux_ann <- make_understorey_gpp_treatment_abs_effect_statistics(inDF=understorey_gpp_flux, 
                                                                                  var.col=3,

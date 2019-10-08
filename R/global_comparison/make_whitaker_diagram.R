@@ -248,7 +248,7 @@ make_whitaker_diagram <- function() {
         draw_plot(p2, x = 0.12, y = .68, width = .4, height = .3)
     
 
-    ggsave(filename = "output/ED_Figure_7.pdf", 
+    ggsave(filename = "output/ED_Figure_2.pdf", 
            plot = plot.with.inset,
            width = 17, 
            height = 12,

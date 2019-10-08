@@ -474,7 +474,7 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
     require(grid)
     require(cowplot)
     
-    pdf("output/ED_Figure_2.pdf", width=12,height=10)
+    pdf("output/ED_Figure_3.pdf", width=12,height=10)
     plot_grid(p1, p2, p3, p4, labels="", ncol=2, align="v", axis="l",
                   rel_widths=c(1,1.2))
     dev.off()

@@ -5,7 +5,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     myDF <- rbind(inDF$inout, inDF$npp, inDF$pool, inDF$delta_pool)
     
     myDF$diff_mean <- myDF$eCO2 - myDF$aCO2
-    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2)/3 + (myDF$eCO2_sd^2)/3)
+    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2 + myDF$eCO2_sd^2)/2)
     
     myDF <- myDF[complete.cases(myDF$diff_mean),]
     
@@ -220,7 +220,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     C.col.list <- viridis(6)[5:6] 
     
     ## NPP
-    D.col.list <- brewer.pal(6,"Greens")[2:6]
+    D.col.list <- brewer.pal(5,"Greens")[2:5]
     
     ## R
     E.col.list <- brewer.pal(6,"YlOrRd")[2:6]
@@ -239,8 +239,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                    "leaf_prod"=D.col.list[1],                
                    "other_prod"=D.col.list[2],
                    "fineroot_prod"=D.col.list[3],           
-                   "coarseroot_prod"=D.col.list[4], 
-                   "understorey_prod"=D.col.list[5], 
+                   "understorey_prod"=D.col.list[4], 
                    "wood_respiration"=E.col.list[1],           
                    "root_respiration"=E.col.list[2],           
                    "understorey_respiration"=E.col.list[3], 
@@ -262,7 +261,6 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                 "leaf_prod"=expression(NPP[ol]),                # 7
                 "wood_prod"=expression(NPP[stem]),                # 11
                 "fineroot_prod"=expression(NPP[froot]),           # 12
-                "coarseroot_prod"=expression(NPP[croot]),           # 12
                 "other_prod"=expression(NPP[other]),                # 8
                 "understorey_prod"=expression(NPP[ua]),           # 14
                 "wood_respiration"=expression(R[stem]),           # 19
