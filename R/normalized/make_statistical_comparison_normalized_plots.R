@@ -9,6 +9,9 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
     
     myDF <- myDF[complete.cases(myDF$diff_mean),]
     
+    ### Drop mycorrhizal production - inferred flux
+    myDF <- subset(myDF, term != c("mycorrhizal_prod"))
+    
     myDF$term <- c("over_gpp", "understorey_gpp", "ch4",
                    "over_leaf_respiration", "wood_respiration", "root_respiration",
                    "understorey_respiration","voc", "herbivory_respiration",
@@ -16,10 +19,10 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                    "leaf_prod", "wood_prod", "fineroot_prod",
                    "coarseroot_prod", "boleroot_prod",
                    "other_prod", "understorey_prod", 
-                   "understorey_lit", "frass_prod", "herb_consump", "mycorrhizal_prod",
+                   "understorey_lit", "frass_prod", "herb_consump", 
                    "hetero_respiration", "over_leaf", "wood", "und_aboveground",
                    "fineroot", "coarseroot","boleroot",
-                   "litter", "cwd", "microbe",
+                   "litter", "microbe",
                    "soil", "mycorrhizae", "insects", 
                    "delta_leaf_c", "delta_wood_c", "delta_understorey_c",
                    "delta_fineroot_c", "delta_coarseroot_c", "delta_boleroot_c",
@@ -31,19 +34,13 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
                        rep("resp", 10), 
                        rep("prod", 7),
                        rep("litter", 2), 
-                       rep("prod", 2), 
+                       rep("prod", 1), 
                        rep("resp", 1), 
-                       rep("pool", 12), 
+                       rep("pool", 11), 
                        rep("change_in_pool", 11))  
     
     ### Drop redundant pools and fluxes
     myDF <- subset(myDF, term != c("understorey_lit"))
-    
-    ### Drop CWD 
-    myDF <- subset(myDF, term != c("cwd"))
-    
-    ### Drop mycorrhizal production - inferred flux
-    myDF <- subset(myDF, term != c("mycorrhizal_prod"))
     
     myDF <- myDF[,c("term", "diff_mean", "diff_sd", "Category")]
     colnames(myDF) <- c("Variable", "effect_size", "sd", "Category")

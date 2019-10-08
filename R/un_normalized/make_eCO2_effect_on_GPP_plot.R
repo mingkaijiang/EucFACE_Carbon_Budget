@@ -4,7 +4,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     myDF <- rbind(inDF$inout, inDF$npp, inDF$pool, inDF$delta_pool)
     
     myDF$diff_mean <- myDF$eCO2 - myDF$aCO2
-    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2)/3 + (myDF$eCO2_sd^2)/3)
+    myDF$diff_sd <- sqrt((myDF$aCO2_sd^2 + myDF$eCO2_sd^2)/2)
     
     myDF <- myDF[complete.cases(myDF$diff_mean),]
     
