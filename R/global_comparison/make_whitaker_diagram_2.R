@@ -321,7 +321,7 @@ make_whitaker_diagram_2 <- function() {
                                        shape=as.factor(Biome)), size=2)+
         geom_abline(intercept = coefficients(fit)[[1]], slope = coefficients(fit)[[2]],
                     lty=2)+
-        annotate(geom="text", x=140, y=1400, 
+        annotate(geom="text", x=130, y=1400, 
                  label=paste0("y = ", round(coefficients(fit)[[2]], 2), "x + ", 
                               round(coefficients(fit)[[1]],2)),
                   color="black")+

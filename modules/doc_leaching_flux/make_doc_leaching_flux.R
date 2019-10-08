@@ -45,10 +45,6 @@ make_doc_leaching_flux <- function(depth){
     out <- out[out$Date<="2016-12-31",]
     
     inDF$ndays <- 1
-    sDF <- subset(inDF, depth == "deep")
-    colnames(sDF) <- c("Date", "Ring", "Plot", "Depth", "nitrate", "ammonium",
-                       "phosphate", "organic_carbon", "total_carbon", "inorganic_carbon",
-                       "total_nitrogen", "ndays")
     
     ### Decision on what to return
     return(out)
