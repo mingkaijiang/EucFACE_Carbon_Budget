@@ -51,8 +51,26 @@ make_whitaker_diagram_2 <- function() {
     
     
     ### cuedata
-    cueDF <- read.csv("data/DeLucia2007.csv")
+    deluciaDF <- read.csv("data/DeLucia2007.csv")
+
+    collatiDF <- read.csv("data/Collati2019.csv")
+    
+    MichaletzDF <- read.csv("data/Michaletz2014.csv")
+    
+    sub1 <- data.frame(deluciaDF$NPP, deluciaDF$Age)
+    colnames(sub1)<- c("NPP", "Age")
+    sub2 <- data.frame(collatiDF$NPP, collatiDF$Age)
+    colnames(sub2)<- c("NPP", "Age")
+    
+    sub3 <- MichaletzDF[MichaletzDF$Source!="Luo (1996); Ni et al. (2001)",]
+    sub3 <- data.frame(sub3$NPPTotal_gm2y, sub3$Age_yr)
+    colnames(sub3)<- c("NPP", "Age")
+    sub3$NPP <- sub3$NPP / 2
+    
+    cueDF <- rbind(sub1, sub2, sub3)
+    cueDF$NPP <- as.numeric(cueDF$NPP)
     cueDF$Age <- as.numeric(as.character(cueDF$Age))
+    
     fit.cue <- lm(NPP ~ Age, data=cueDF)
     
     
@@ -322,12 +340,14 @@ make_whitaker_diagram_2 <- function() {
     fit <- lm(NPP ~ Age, data=faceDF)
     
     ### prepare NPP vs. age using West 2019 data
-    fit2 <- data.frame(c(10:200), 10, NA)
-    colnames(fit2) <- c("Age", "Temp", "NPP")
-    fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
-    fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
+    #fit2 <- data.frame(c(10:200), 10, NA)
+    #colnames(fit2) <- c("Age", "Temp", "NPP")
+    #fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
+    #fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
     
-
+    r2value <- round(summary(fit.cue)$r.squared,3)
+    pvalue <- round(summary(fit.cue)$coefficients[,4][2], 3)
+    
     p2 <- ggplot() +
         geom_point(data=cueDF, aes(Age, NPP), col="grey", size=1)+
         geom_point(data=faceDF, aes(Age, NPP, fill=as.factor(Biome),
@@ -336,10 +356,16 @@ make_whitaker_diagram_2 <- function() {
         #            lty=1)+
         geom_abline(intercept = coefficients(fit.cue)[[1]], slope = coefficients(fit.cue)[[2]],
                     lty=2)+
-        #annotate(geom="text", x=130, y=1400, 
-        #         label=paste0("y = ", round(coefficients(fit)[[2]], 2), "x + ", 
-        #                      round(coefficients(fit)[[1]],2)),
-        #          color="black")+
+        annotate(geom="text", x=270, y=1400, 
+                 label=paste0("NPP = ", round(coefficients(fit.cue)[[2]], 2), "A + ", 
+                              round(coefficients(fit.cue)[[1]],2)),
+                  color="black")+
+        #annotate(geom="text", x=270, y=1300, 
+        #         label=expression(r^2, "= 0.037"),
+        #         color="black")+
+        annotate(geom="text", x=410, y=1200, 
+                 label=paste0("p = ", pvalue),
+                 color="black")+
         ylab(expression("NPP (g" * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
         theme_linedraw() +
@@ -361,7 +387,7 @@ make_whitaker_diagram_2 <- function() {
         scale_y_continuous(limits=c(0, 1500),
                            breaks = c(0,500,1000,1500))
     
-    plot(p2)
+    #plot(p2)
     
     plot.with.inset <-
         ggdraw() +
