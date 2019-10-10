@@ -8,7 +8,7 @@ make_table_by_ring <- function() {
     ##############################################
     ### set up dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
-              "Coarse Root NPP", "Bole Root NPP",
+              "Intermediate Root NPP", "Coarse Root NPP",
               "Other NPP",
               "Understorey NPP",
               "Frass production", "Leaf consumption", "R hetero", 
@@ -32,13 +32,13 @@ make_table_by_ring <- function() {
         npp[npp$term == "Fine Root NPP", i+1] <- with(fineroot_production_flux[fineroot_production_flux$Ring ==i,],
                                                           sum(fineroot_production_flux*ndays)/sum(ndays)) * conv
         
-        # Coarse Root NPP
-        npp[npp$term == "Coarse Root NPP", i+1] <- with(coarseroot_production_flux[coarseroot_production_flux$Ring ==i,],
-                                                          sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
+        # Intermediate Root NPP
+        npp[npp$term == "Intermediate Root NPP", i+1] <- with(intermediate_root_production_flux[intermediate_root_production_flux$Ring ==i,],
+                                                          sum(intermediate_root_production_flux*ndays)/sum(ndays)) * conv
         
-        # Bole Root NPP
-        npp[npp$term == "Bole Root NPP", i+1] <- with(bole_root_production_flux[bole_root_production_flux$Ring ==i,],
-                                                        sum(bole_root_production_flux*ndays)/sum(ndays)) * conv
+        # Coarse Root NPP
+        npp[npp$term == "Coarse Root NPP", i+1] <- with(coarse_root_production_flux[coarse_root_production_flux$Ring ==i,],
+                                                        sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
         
         # Other NPP (i.e. twigs, barks and seeds)
         npp[npp$term == "Other NPP", i+1] <- with(leaflitter_flux[leaflitter_flux$Ring ==i,],
@@ -134,7 +134,7 @@ make_table_by_ring <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Bole Root", "Litter", "Coarse woody debris", 
+              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", "Coarse woody debris", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
@@ -151,11 +151,11 @@ make_table_by_ring <- function() {
         # Fine Root
         pool[pool$term == "Fine Root", i+1] <- mean(fineroot_c_pool[fineroot_c_pool$Ring == i, "fineroot_pool"], na.rm=T)
         
-        # Coarse Root
-        pool[pool$term == "Coarse Root", i+1] <- mean(coarseroot_c_pool[coarseroot_c_pool$Ring == i, "coarse_root_pool"], na.rm=T)
+        # Intermediate Root
+        pool[pool$term == "Intermediate Root", i+1] <- mean(intermediate_root_c_pool[intermediate_root_c_pool$Ring == i, "intermediate_root_pool"], na.rm=T)
         
-        # Bole Root
-        pool[pool$term == "Bole Root", i+1] <- mean(bole_root_c_pool[bole_root_c_pool$Ring == i, "bole_root_pool"], na.rm=T)
+        # Coarse Root
+        pool[pool$term == "Coarse Root", i+1] <- mean(coarse_root_c_pool[coarse_root_c_pool$Ring == i, "coarse_root_pool"], na.rm=T)
         
         # Understorey above-ground
         pool[pool$term == "Understorey above-ground", i+1] <- mean(understorey_aboveground_c_pool_2[understorey_aboveground_c_pool_2$Ring == i, 
@@ -186,7 +186,7 @@ make_table_by_ring <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Bole Root", "Litter", 
+              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     delta_pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(delta_pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
@@ -204,11 +204,11 @@ make_table_by_ring <- function() {
         # Fine Root
         delta_pool[delta_pool$term == "Fine Root", i+1] <- mean(delta_fineroot_c_pool$delta[delta_fineroot_c_pool$Ring == i], na.rm=T)
         
+        # Intermediate Root
+        delta_pool[delta_pool$term == "Intermediate Root", i+1] <- mean(delta_intermediate_root_c_pool$delta[delta_intermediate_root_c_pool$Ring == i], na.rm=T)
+        
         # Coarse Root
         delta_pool[delta_pool$term == "Coarse Root", i+1] <- mean(delta_coarse_root_c_pool$delta[delta_coarse_root_c_pool$Ring == i], na.rm=T)
-        
-        # Bole Root
-        delta_pool[delta_pool$term == "Bole Root", i+1] <- mean(delta_bole_root_c_pool$delta[delta_bole_root_c_pool$Ring == i], na.rm=T)
         
         # Understorey above-ground
         delta_pool[delta_pool$term == "Understorey above-ground", i+1] <- mean(delta_understorey_aboveground_c_pool_2$delta[delta_understorey_aboveground_c_pool_2$Ring == i], na.rm=T)

@@ -1853,33 +1853,39 @@ dev.off()
 
 ###################---------------------######################
 ### VOC
-o.voc.tr <- voc_emission_flux
+
+o.voc.tr <- read.csv("data/VOC_emissions.csv")
 o.voc.tr$Trt[o.voc.tr$Ring%in%c(2,3,6)] <- "aCO2"
 o.voc.tr$Trt[o.voc.tr$Ring%in%c(1,4,5)] <- "eCO2"
-o.voc.tr$year <- as.character(year(o.voc.tr$Date))
 
-p1 <- ggplot(data = o.voc.tr, aes(x = interaction(year, Ring, lex.order = TRUE), 
-                                  y = voc_flux)) +
-    geom_bar(stat = "identity", aes(fill=Trt), position="dodge")+
-    annotate(geom = "text", x = seq_len(nrow(o.voc.tr)), y = -0.2, label = rep(c(1:6),4), size = 4) +
-    annotate(geom = "text", x = 3.5 + 6 * (0:3), y = -0.6, label = unique(o.voc.tr$year), size = 6) +
-    coord_cartesian(ylim = c(0, 6), expand = FALSE, clip = "off")+
-    labs(x="Year", y=expression(paste("VC (g C ", m^-2, " ", yr^-1, ")")))+
+o.voc.plot <- summaryBy(Flux_g_C_m2_yr~FluxName+Trt, data=o.voc.tr, FUN=c(mean,se))
+o.voc.plot$pos <- with(o.voc.plot, Flux_g_C_m2_yr.mean + Flux_g_C_m2_yr.se)
+o.voc.plot$neg <- with(o.voc.plot, Flux_g_C_m2_yr.mean - Flux_g_C_m2_yr.se)
+
+p1 <- ggplot(o.voc.plot, aes(x=FluxName, y=Flux_g_C_m2_yr.mean))+
+    geom_bar(stat = "identity", aes(fill=Trt), position="dodge") +
+    geom_errorbar(aes(ymax=pos, ymin=neg, color=factor(Trt)), 
+                  position = position_dodge(0.9), width=0.2, size=0.4) +
+    labs(x="", y=expression(paste("VC (g C ", m^-2, " ", yr^-1, ")")))+
     theme_linedraw() +
-    theme(plot.margin = unit(c(1, 1, 4, 1), "lines"),
-          panel.grid.minor=element_blank(),
-          axis.title.x = element_blank(), 
-          axis.text.x = element_blank(),
+    theme(panel.grid.minor=element_blank(),
+          axis.title.x = element_text(size=14), 
+          axis.text.x = element_text(size=12),
           axis.text.y=element_text(size=12),
           axis.title.y=element_text(size=14),
           legend.text=element_text(size=12),
           legend.title=element_text(size=14),
           panel.grid.major=element_blank(),
-          legend.position="top")+
-    scale_y_continuous(position="left")+
+          legend.position="bottom")+
+    #ylim(0, 1500)+
+    #scale_y_continuous(position="left")+
     scale_fill_manual(name="Treatment", values = c("aCO2" = "cyan", "eCO2" = "pink"),
-                      labels=c(expression(aCO[2]), expression(eCO[2])))
+                      labels=c(expression(aCO[2]), expression(eCO[2])))+
+    scale_colour_manual(name="Treatment", values = c("aCO2" = "blue", "eCO2" = "red"),
+                        labels=c(expression(aCO[2]), expression(eCO[2])))
 
+
+#plot(p1)
 
 ## plot 
 pdf("output/Figure_S20.pdf", width=9,height=6)

@@ -21,7 +21,7 @@ cue_calculation <- function(inDF) {
                                            temDF1[temDF1$term == "Stem NPP","Ring_2"],
                                            temDF1[temDF1$term == "Fine Root NPP","Ring_2"],
                                            temDF1[temDF1$term == "Coarse Root NPP","Ring_2"],
-                                           temDF1[temDF1$term == "Bole Root NPP","Ring_2"],
+                                           temDF1[temDF1$term == "Intermediate Root NPP","Ring_2"],
                                            temDF1[temDF1$term == "Other NPP","Ring_2"],
                                            temDF1[temDF1$term == "Understorey NPP","Ring_2"],
                                            temDF1[temDF1$term == "Leaf consumption","Ring_2"])
@@ -31,7 +31,7 @@ cue_calculation <- function(inDF) {
                                            temDF1[temDF1$term == "Stem NPP","Ring_3"],
                                            temDF1[temDF1$term == "Fine Root NPP","Ring_3"],
                                            temDF1[temDF1$term == "Coarse Root NPP","Ring_3"],
-                                           temDF1[temDF1$term == "Bole Root NPP","Ring_3"],
+                                           temDF1[temDF1$term == "Intermediate Root NPP","Ring_3"],
                                            temDF1[temDF1$term == "Other NPP","Ring_3"],
                                            temDF1[temDF1$term == "Understorey NPP","Ring_3"],
                                            temDF1[temDF1$term == "Leaf consumption","Ring_3"])
@@ -41,7 +41,7 @@ cue_calculation <- function(inDF) {
                                            temDF1[temDF1$term == "Stem NPP","Ring_6"],
                                            temDF1[temDF1$term == "Fine Root NPP","Ring_6"],
                                            temDF1[temDF1$term == "Coarse Root NPP","Ring_6"],
-                                           temDF1[temDF1$term == "Bole Root NPP","Ring_6"],
+                                           temDF1[temDF1$term == "Intermediate Root NPP","Ring_6"],
                                            temDF1[temDF1$term == "Other NPP","Ring_6"],
                                            temDF1[temDF1$term == "Understorey NPP","Ring_6"],
                                            temDF1[temDF1$term == "Leaf consumption","Ring_6"])
@@ -52,7 +52,7 @@ cue_calculation <- function(inDF) {
                                            temDF1[temDF1$term == "Stem NPP","Ring_1"],
                                            temDF1[temDF1$term == "Fine Root NPP","Ring_1"],
                                            temDF1[temDF1$term == "Coarse Root NPP","Ring_1"],
-                                           temDF1[temDF1$term == "Bole Root NPP","Ring_1"],
+                                           temDF1[temDF1$term == "Intermediate Root NPP","Ring_1"],
                                            temDF1[temDF1$term == "Other NPP","Ring_1"],
                                            temDF1[temDF1$term == "Understorey NPP","Ring_1"],
                                            temDF1[temDF1$term == "Leaf consumption","Ring_1"])
@@ -62,7 +62,7 @@ cue_calculation <- function(inDF) {
                                            temDF1[temDF1$term == "Stem NPP","Ring_4"],
                                            temDF1[temDF1$term == "Fine Root NPP","Ring_4"],
                                            temDF1[temDF1$term == "Coarse Root NPP","Ring_4"],
-                                           temDF1[temDF1$term == "Bole Root NPP","Ring_4"],
+                                           temDF1[temDF1$term == "Intermediate Root NPP","Ring_4"],
                                            temDF1[temDF1$term == "Other NPP","Ring_4"],
                                            temDF1[temDF1$term == "Understorey NPP","Ring_4"],
                                            temDF1[temDF1$term == "Leaf consumption","Ring_4"])
@@ -72,7 +72,7 @@ cue_calculation <- function(inDF) {
                                            temDF1[temDF1$term == "Stem NPP","Ring_5"],
                                            temDF1[temDF1$term == "Fine Root NPP","Ring_5"],
                                            temDF1[temDF1$term == "Coarse Root NPP","Ring_5"],
-                                           temDF1[temDF1$term == "Bole Root NPP","Ring_5"],
+                                           temDF1[temDF1$term == "Intermediate Root NPP","Ring_5"],
                                            temDF1[temDF1$term == "Other NPP","Ring_5"],
                                            temDF1[temDF1$term == "Understorey NPP","Ring_5"],
                                            temDF1[temDF1$term == "Leaf consumption","Ring_5"])

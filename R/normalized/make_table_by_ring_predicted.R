@@ -9,7 +9,7 @@ make_table_by_ring_predicted <- function() {
     ##############################################
     ### set up dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
-              "Coarse Root NPP", "Bole Root NPP", "Other NPP",
+              "Intermediate Root NPP", "Coarse Root NPP", "Other NPP",
               "Understorey NPP", "Understorey Litter",
               "Frass production", "Leaf consumption", "R hetero", 
               "Mycorrhizal production", "Flower production")
@@ -33,8 +33,8 @@ make_table_by_ring_predicted <- function() {
         # Coarse Root NPP
         npp[npp$term == "Coarse Root NPP", i+1] <- mean(coarseroot_production_flux_ann$predicted[coarseroot_production_flux_ann$Ring ==i])
         
-        # Bole Root NPP
-        npp[npp$term == "Bole Root NPP", i+1] <- mean(bole_root_production_flux_ann$predicted[bole_root_production_flux_ann$Ring ==i])
+        # Intermediate Root NPP
+        npp[npp$term == "Intermediate Root NPP", i+1] <- mean(intermediate_root_production_flux_ann$predicted[intermediate_root_production_flux_ann$Ring ==i])
         
         
         # Other NPP (i.e. twigs, barks and seeds)
@@ -98,7 +98,7 @@ make_table_by_ring_predicted <- function() {
                                                         npp[npp$term == "Stem NPP", i+1] + 
                                                         npp[npp$term == "Fine Root NPP", i+1] +
                                                         npp[npp$term == "Coarse Root NPP", i+1] +
-                                                        npp[npp$term == "Bole Root NPP", i+1] +
+                                                        npp[npp$term == "Intermediate Root NPP", i+1] +
                                                         #npp[npp$term == "Understorey NPP", i+1] + 
                                                         npp[npp$term == "Other NPP", i+1] +
                                                         npp[npp$term == "Leaf consumption", i+1])
@@ -129,7 +129,7 @@ make_table_by_ring_predicted <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Bole Root", "Litter", "Coarse woody debris", 
+              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", "Coarse woody debris", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
     colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
@@ -150,8 +150,8 @@ make_table_by_ring_predicted <- function() {
         # Coarse Root
         pool[pool$term == "Coarse Root", i+1] <- mean(coarseroot_c_pool_ann$predicted[coarseroot_c_pool_ann$Ring == i], na.rm=T)
         
-        # Bole Root
-        pool[pool$term == "Bole Root", i+1] <- mean(bole_root_c_pool_ann$predicted[bole_root_c_pool_ann$Ring == i], na.rm=T)
+        # Intermediate Root
+        pool[pool$term == "Intermediate Root", i+1] <- mean(intermediate_root_c_pool_ann$predicted[intermediate_root_c_pool_ann$Ring == i], na.rm=T)
         
         
         # Understorey above-ground
@@ -185,7 +185,7 @@ make_table_by_ring_predicted <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Bole Root", "Litter", 
+              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     delta_pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
     colnames(delta_pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
@@ -206,8 +206,8 @@ make_table_by_ring_predicted <- function() {
         # Coarse Root
         delta_pool[delta_pool$term == "Coarse Root", i+1] <- mean(delta_coarseroot_c_pool_ann$predicted[delta_coarseroot_c_pool_ann$Ring == i], na.rm=T)
         
-        # Bole Root
-        delta_pool[delta_pool$term == "Bole Root", i+1] <- mean(delta_bole_root_c_pool_ann$predicted[delta_bole_root_c_pool_ann$Ring == i], na.rm=T)
+        # Intermediate Root
+        delta_pool[delta_pool$term == "Intermediate Root", i+1] <- mean(delta_intermediate_root_c_pool_ann$predicted[delta_intermediate_root_c_pool_ann$Ring == i], na.rm=T)
         
         
         # Understorey above-ground

@@ -1,12 +1,12 @@
 
-make_root_respiration_flux_2 <- function(froot, croot){
+make_root_respiration_flux_2 <- function(froot, iroot){
   #### Estimate root respiration based on temperature-dependent function
   #### temperature data downloaded in soil respiration module
   #### temperature function derived from EucFACE
   #### based on NamJin's EucFACE data
 
   ### convert from g C to c DM
-  croot$c_frac <- c_fraction_croot
+  iroot$c_frac <- c_fraction_croot
   
   froot$c_frac[froot$Ring==1] <- 0.426
   froot$c_frac[froot$Ring==2] <- 0.413
@@ -15,10 +15,10 @@ make_root_respiration_flux_2 <- function(froot, croot){
   froot$c_frac[froot$Ring==5] <- 0.42
   froot$c_frac[froot$Ring==6] <- 0.401
   
-  croot$biomass <- croot$coarse_root_pool/croot$c_frac
-  froot$biomass <- froot$fineroot_pool/croot$c_frac
+  iroot$biomass <- iroot$intermediate_root_pool/iroot$c_frac
+  froot$biomass <- froot$fineroot_pool/iroot$c_frac
   
-  crDF <- summaryBy(biomass~Ring, data=croot, FUN=mean, keep.names=T)
+  irDF <- summaryBy(biomass~Ring, data=iroot, FUN=mean, keep.names=T)
   frDF <- summaryBy(biomass~Ring, data=froot, FUN=mean, keep.names=T)
   
   ### download soil temperature
@@ -56,19 +56,19 @@ make_root_respiration_flux_2 <- function(froot, croot){
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {
       tempDF[tempDF$Ring == i, "fr_biomass"] <- frDF[frDF$Ring == i, "biomass"]
-      tempDF[tempDF$Ring == i, "cr_biomass"] <- crDF[crDF$Ring == i, "biomass"] 
+      tempDF[tempDF$Ring == i, "ir_biomass"] <- irDF[irDF$Ring == i, "biomass"] 
   }
   
   ### Calculate R root
   tempDF$a.fr <- 1.1378
   tempDF$b.fr <- 0.0479
   
-  tempDF$a.cr <- 0.9764
-  tempDF$b.cr <- 0.0461
+  tempDF$a.ir <- 0.9764
+  tempDF$b.ir <- 0.0461
   
   tempDF$Rfroot <- tempDF$a.fr * exp(tempDF$b.fr * tempDF$T5_avg) * tempDF$fr_biomass 
-  tempDF$Rcroot <- tempDF$a.cr * exp(tempDF$b.cr * tempDF$T5_avg) * tempDF$cr_biomass 
-  tempDF$Rroot <- tempDF$Rfroot + tempDF$Rcroot
+  tempDF$Riroot <- tempDF$a.ir * exp(tempDF$b.ir * tempDF$T5_avg) * tempDF$ir_biomass 
+  tempDF$Rroot <- tempDF$Rfroot + tempDF$Riroot
   
   ### convert from nmol CO2 g-1 s-1 to mg C m-2 15min-1
   tempDF$Rroot_mg_m2 <- tempDF$Rroot*60*15*1e-9*12.01*1000

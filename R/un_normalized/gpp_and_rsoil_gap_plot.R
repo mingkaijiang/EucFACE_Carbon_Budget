@@ -14,8 +14,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF1[temDF1$term == "Leaf NPP","aCO2"],
                      temDF1[temDF1$term == "Stem NPP","aCO2"],
                      temDF1[temDF1$term == "Fine Root NPP","aCO2"],
+                     temDF1[temDF1$term == "Intermediate Root NPP","aCO2"],
                      temDF1[temDF1$term == "Coarse Root NPP","aCO2"],
-                     temDF1[temDF1$term == "Bole Root NPP","aCO2"],
                      temDF1[temDF1$term == "Other NPP","aCO2"],
                      temDF1[temDF1$term == "Understorey NPP","aCO2"],
                      temDF1[temDF1$term == "Leaf consumption","aCO2"],
@@ -31,8 +31,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF1[temDF1$term == "Leaf NPP","eCO2"],
                      temDF1[temDF1$term == "Stem NPP","eCO2"],
                      temDF1[temDF1$term == "Fine Root NPP","eCO2"],
+                     temDF1[temDF1$term == "Intermediate Root NPP","eCO2"],
                      temDF1[temDF1$term == "Coarse Root NPP","eCO2"],
-                     temDF1[temDF1$term == "Bole Root NPP","eCO2"],
                      temDF1[temDF1$term == "Other NPP","eCO2"],
                      temDF1[temDF1$term == "Understorey NPP","eCO2"],
                      temDF1[temDF1$term == "Leaf consumption","eCO2"],
@@ -44,7 +44,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF2[temDF2$term == "VOC", "eCO2"])
     plotDF1$cat <- plotDF2$cat <- c(rep("MAESPA", 2), rep("NPP+Ra", 13))
     plotDF1$term <- plotDF2$term <- c("GPP overstorey", "GPP understorey",
-                                      "Leaf NPP","Stem NPP","Fine Root NPP","Coarse Root NPP","Bole Root NPP", "Other NPP",
+                                      "Leaf NPP","Stem NPP","Fine Root NPP","Intermediate Root NPP","Coarse Root NPP", "Other NPP",
                                       "Understorey NPP","Leaf consumption","Ra leaf","Ra stem","Ra root",
                                       "Ra understorey","Rgrowth","VOC")
     
@@ -68,8 +68,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF1[errDF1$cat=="NPP+Ra", "R2"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_2"],
                                               temDF1[temDF1$term == "Stem NPP","Ring_2"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_2"],
+                                              temDF1[temDF1$term == "Intermediate Root NPP","Ring_2"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_2"],
-                                              temDF1[temDF1$term == "Bole Root NPP","Ring_2"],
                                               temDF1[temDF1$term == "Other NPP","Ring_2"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_2"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_2"],
@@ -84,8 +84,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF1[errDF1$cat=="NPP+Ra", "R3"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_3"],
                                               temDF1[temDF1$term == "Stem NPP","Ring_3"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_3"],
+                                              temDF1[temDF1$term == "Intermediate Root NPP","Ring_3"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_3"],
-                                              temDF1[temDF1$term == "Bole Root NPP","Ring_3"],
                                               temDF1[temDF1$term == "Other NPP","Ring_3"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_3"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_3"],
@@ -100,8 +100,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF1[errDF1$cat=="NPP+Ra", "R6"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_6"],
                                               temDF1[temDF1$term == "Stem NPP","Ring_6"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_6"],
+                                              temDF1[temDF1$term == "Intermediate Root NPP","Ring_6"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_6"],
-                                              temDF1[temDF1$term == "Bole Root NPP","Ring_6"],
                                               temDF1[temDF1$term == "Other NPP","Ring_6"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_6"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_6"],
@@ -117,8 +117,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF2[errDF2$cat=="NPP+Ra", "R1"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_1"],
                                               temDF1[temDF1$term == "Stem NPP","Ring_1"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_1"],
+                                              temDF1[temDF1$term == "Intermediate Root NPP","Ring_1"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_1"],
-                                              temDF1[temDF1$term == "Bole Root NPP","Ring_1"],
                                               temDF1[temDF1$term == "Other NPP","Ring_1"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_1"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_1"],
@@ -133,8 +133,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF2[errDF2$cat=="NPP+Ra", "R4"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_4"],
                                               temDF1[temDF1$term == "Stem NPP","Ring_4"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_4"],
+                                              temDF1[temDF1$term == "Intermediate Root NPP","Ring_4"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_4"],
-                                              temDF1[temDF1$term == "Bole Root NPP","Ring_4"],
                                               temDF1[temDF1$term == "Other NPP","Ring_4"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_4"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_4"],
@@ -149,8 +149,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     errDF2[errDF2$cat=="NPP+Ra", "R5"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_5"],
                                               temDF1[temDF1$term == "Stem NPP","Ring_5"],
                                               temDF1[temDF1$term == "Fine Root NPP","Ring_5"],
+                                              temDF1[temDF1$term == "Intermediate Root NPP","Ring_5"],
                                               temDF1[temDF1$term == "Coarse Root NPP","Ring_5"],
-                                              temDF1[temDF1$term == "Bole Root NPP","Ring_5"],
                                               temDF1[temDF1$term == "Other NPP","Ring_5"],
                                               temDF1[temDF1$term == "Understorey NPP","Ring_5"],
                                               temDF1[temDF1$term == "Leaf consumption","Ring_5"],
@@ -200,8 +200,8 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ### Prepare variable labels
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
                    expression(NPP[ol]), expression(NPP[stem]),
-                   expression(NPP[froot]), expression(NPP[croot]),
-                   expression(NPP[broot]),
+                   expression(NPP[froot]), expression(NPP[iroot]),
+                   expression(NPP[croot]),
                    expression(NPP[other]), expression(NPP[ua]),
                    expression(NPP[hb]), 
                    expression(R[ol]),
@@ -274,7 +274,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ## aCO2
     plotDF1 <- rbind(temDF1[temDF1$term == "Leaf NPP","aCO2"],
                      temDF1[temDF1$term == "Fine Root NPP","aCO2"],
-                     temDF1[temDF1$term == "Coarse Root NPP","aCO2"],
+                     temDF1[temDF1$term == "Intermediate Root NPP","aCO2"],
                      temDF1[temDF1$term == "Other NPP","aCO2"],
                      temDF1[temDF1$term == "Understorey NPP","aCO2"],
                      temDF1[temDF1$term == "Frass production","aCO2"],
@@ -283,7 +283,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     plotDF2 <- rbind(temDF1[temDF1$term == "Leaf NPP","eCO2"],
                      temDF1[temDF1$term == "Fine Root NPP","eCO2"],
-                     temDF1[temDF1$term == "Coarse Root NPP","eCO2"],
+                     temDF1[temDF1$term == "Intermediate Root NPP","eCO2"],
                      temDF1[temDF1$term == "Other NPP","eCO2"],
                      temDF1[temDF1$term == "Understorey NPP","eCO2"],
                      temDF1[temDF1$term == "Frass production","eCO2"],
@@ -291,7 +291,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
                      temDF2[temDF2$term == "Rsoil","eCO2"])
     
     plotDF1$cat <- plotDF2$cat <- c(rep("Litter+Rroot", 7), rep("Rsoil", 1))
-    plotDF1$term <- plotDF2$term <- c("Leaf NPP","Fine Root NPP","Coarse Root NPP","Other NPP",
+    plotDF1$term <- plotDF2$term <- c("Leaf NPP","Fine Root NPP","Intermediate Root NPP","Other NPP",
                                       "Understorey NPP","Frass production","Ra root",
                                       "Rsoil")
     
@@ -315,7 +315,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ## aCO2
     errDF1[errDF1$cat=="Litter+Rroot", "R2"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_2"],
                                                     temDF1[temDF1$term == "Fine Root NPP","Ring_2"],
-                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_2"],
+                                                    temDF1[temDF1$term == "Intermediate Root NPP","Ring_2"],
                                                     temDF1[temDF1$term == "Other NPP","Ring_2"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_2"],
                                                     temDF1[temDF1$term == "Frass production","Ring_2"],
@@ -323,7 +323,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     errDF1[errDF1$cat=="Litter+Rroot", "R3"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_3"],
                                                     temDF1[temDF1$term == "Fine Root NPP","Ring_3"],
-                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_3"],
+                                                    temDF1[temDF1$term == "Intermediate Root NPP","Ring_3"],
                                                     temDF1[temDF1$term == "Other NPP","Ring_3"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_3"],
                                                     temDF1[temDF1$term == "Frass production","Ring_3"],
@@ -331,7 +331,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     errDF1[errDF1$cat=="Litter+Rroot", "R6"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_6"],
                                                     temDF1[temDF1$term == "Fine Root NPP","Ring_6"],
-                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_6"],
+                                                    temDF1[temDF1$term == "Intermediate Root NPP","Ring_6"],
                                                     temDF1[temDF1$term == "Other NPP","Ring_6"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_6"],
                                                     temDF1[temDF1$term == "Frass production","Ring_6"],
@@ -340,7 +340,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     ## eCO2
     errDF2[errDF2$cat=="Litter+Rroot", "R1"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_1"],
                                                     temDF1[temDF1$term == "Fine Root NPP","Ring_1"],
-                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_1"],
+                                                    temDF1[temDF1$term == "Intermediate Root NPP","Ring_1"],
                                                     temDF1[temDF1$term == "Other NPP","Ring_1"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_1"],
                                                     temDF1[temDF1$term == "Frass production","Ring_1"],
@@ -348,7 +348,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     errDF2[errDF2$cat=="Litter+Rroot", "R4"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_4"],
                                                     temDF1[temDF1$term == "Fine Root NPP","Ring_4"],
-                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_4"],
+                                                    temDF1[temDF1$term == "Intermediate Root NPP","Ring_4"],
                                                     temDF1[temDF1$term == "Other NPP","Ring_4"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_4"],
                                                     temDF1[temDF1$term == "Frass production","Ring_4"],
@@ -356,7 +356,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     errDF2[errDF2$cat=="Litter+Rroot", "R5"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_5"],
                                                     temDF1[temDF1$term == "Fine Root NPP","Ring_5"],
-                                                    temDF1[temDF1$term == "Coarse Root NPP","Ring_5"],
+                                                    temDF1[temDF1$term == "Intermediate Root NPP","Ring_5"],
                                                     temDF1[temDF1$term == "Other NPP","Ring_5"],
                                                     temDF1[temDF1$term == "Understorey NPP","Ring_5"],
                                                     temDF1[temDF1$term == "Frass production","Ring_5"],
@@ -389,7 +389,7 @@ gpp_and_rsoil_gap_plot <- function(inDF) {
     
     ### Prepare variable labels
     var.labs2 <- c(expression(NPP[ol]), expression(NPP[froot]),
-                   expression(NPP[croot]),expression(NPP[other]), 
+                   expression(NPP[iroot]),expression(NPP[other]), 
                    expression(NPP[ua]),expression(Frass), 
                    expression(R[root]),
                    expression(R[soil]))

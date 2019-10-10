@@ -13,13 +13,13 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                    "understorey_respiration","voc", "herbivory_respiration",
                    "doc", "soil_respiration", "growth_respiration",
                    "leaf_prod", "wood_prod", "fineroot_prod",
-                   "coarseroot_prod", "boleroot_prod", "other_prod", "understorey_prod", 
+                   "intermediate_root_prod", "coarse_root_prod", "other_prod", "understorey_prod", 
                    "frass_prod", "herb_consump",
                    "hetero_respiration", "over_leaf", "wood", "und_aboveground",
-                   "fineroot", "coarseroot", "boleroot", "litter", "microbe",
+                   "fineroot", "intermediate_root", "coarse_root", "litter", "microbe",
                    "soil", "mycorrhizae", "insects", 
                    "delta_leaf_c", "delta_wood_c", "delta_understorey_c",
-                   "delta_fineroot_c", "delta_coarseroot_c", "delta_boleroot_c",
+                   "delta_fineroot_c", "delta_intermediate_root_c", "delta_coarse_root_c",
                    "delta_litter_c","delta_microbial_c","delta_soil_c",
                    "delta_mycorrhizal_c", "delta_insect_c")
     
@@ -49,11 +49,11 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     ### Subset GPP, NPP, change in pools, and out fluxes
     plotDF1 <- subset(myDF, Variable %in% c("over_gpp", "understorey_gpp", "ch4",
                                             "leaf_prod", "other_prod", "wood_prod", "fineroot_prod",
-                                            "coarseroot_prod", "boleroot_prod", "understorey_prod", "herb_consump", 
+                                            "intermediate_root_prod", "coarse_root_prod", "understorey_prod", "herb_consump", 
                                             "over_leaf_respiration", "wood_respiration", "root_respiration",
                                             "understorey_respiration", "hetero_respiration","doc", "voc", "growth_respiration",
                                             "delta_leaf_c", "delta_wood_c", "delta_fineroot_c", 
-                                            "delta_coarseroot_c", "delta_boleroot_c", "delta_understorey_c", 
+                                            "delta_intermediate_root_c", "delta_coarse_root_c", "delta_understorey_c", 
                                             "delta_litter_c","delta_soil_c","delta_microbial_c",
                                             "delta_mycorrhizal_c", "delta_litter_c", "delta_insect_c"))
     
@@ -153,7 +153,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     confDF$conf_high[confDF$plot.cat2 == "F"] <- plotDF2$conf_high[plotDF2$Variable=="Change_in_pools"]
     
     ## update B NPP + Ra
-    tmp2 <- plotDF1[plotDF1$Variable%in%c("leaf_prod", "wood_prod", "fineroot_prod", "coarseroot_prod","boleroot_prod",
+    tmp2 <- plotDF1[plotDF1$Variable%in%c("leaf_prod", "wood_prod", "fineroot_prod", "intermediate_root_prod","coarse_root_prod",
                                           "other_prod", "understorey_prod", "herb_consump", "over_leaf_respiration",
                                           "wood_respiration", "root_respiration", "understorey_respiration",
                                           "voc", "growth_respiration"), ]
@@ -169,7 +169,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     ## update C change in pool + total outfluxes
     
     tmp2 <- plotDF1[plotDF1$Variable%in%c("delta_leaf_c","delta_wood_c","delta_understorey_c",
-                                          "delta_fineroot_c","delta_coarseroot_c","delta_boleroot_c","delta_litter_c",
+                                          "delta_fineroot_c","delta_intermediate_root_c","delta_coarse_root_c","delta_litter_c",
                                           "delta_microbial_c","delta_soil_c","delta_mycorrhizal_c",
                                           "delta_insect_c","over_leaf_respiration","wood_respiration",
                                           "root_respiration","understorey_respiration","voc",

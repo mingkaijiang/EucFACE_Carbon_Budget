@@ -115,7 +115,7 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
     ir_pool$c_frac[ir_pool$Ring==5] <- 0.42
     ir_pool$c_frac[ir_pool$Ring==6] <- 0.401
     
-    ir_pool$biomass <- ir_pool$coarse_root_pool/ir_pool$c_frac
+    ir_pool$biomass <- ir_pool$intermediate_root_pool/ir_pool$c_frac
     
     ir.ring <- summaryBy(biomass~Ring, data=ir_pool, FUN=mean, keep.names=T, na.rm=T)
     

@@ -9,7 +9,7 @@ make_EucFACE_table <- function() {
     ##############################################
     #### Define dataframe
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
-              "Coarse Root NPP", "Bole Root NPP", "Other NPP",
+              "Intermediate Root NPP", "Coarse Root NPP", "Other NPP",
               "Understorey NPP",
               "Frass production", "R hetero", "Leaf consumption",
               "Mycorrhizal production", "Flower production")
@@ -49,26 +49,26 @@ make_EucFACE_table <- function() {
     npp$data_notes[npp$term == "Fine Root NPP"] <- "Data on HIEv"
     npp$processing_notes[npp$term == "Fine Root NPP"] <- "No info on mortality and turnover"
     
+    ### Intermediate root NPP
+    cr_prod <- with(intermediate_root_production_flux,
+                      sum(intermediate_root_production_flux*ndays)/sum(ndays)) * conv
+    npp$value[npp$term == "Intermediate Root NPP"] <- cr_prod
+    npp$start_year[npp$term == "Intermediate Root NPP"] <- min(year(intermediate_root_production_flux$Start_date))
+    npp$end_year[npp$term == "Intermediate Root NPP"] <- max(year(intermediate_root_production_flux$End_date))
+    npp$timepoint[npp$term == "Intermediate Root NPP"] <- length(unique(intermediate_root_production_flux$Date))
+    npp$data_notes[npp$term == "Intermediate Root NPP"] <- ""
+    npp$processing_notes[npp$term == "Intermediate Root NPP"] <- ""
+    
+    
     ### Coarse root NPP
-    cr_prod <- with(coarseroot_production_flux,
-                      sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
-    npp$value[npp$term == "Coarse Root NPP"] <- cr_prod
-    npp$start_year[npp$term == "Coarse Root NPP"] <- min(year(coarseroot_production_flux$Start_date))
-    npp$end_year[npp$term == "Coarse Root NPP"] <- max(year(coarseroot_production_flux$End_date))
-    npp$timepoint[npp$term == "Coarse Root NPP"] <- length(unique(coarseroot_production_flux$Date))
+    br_prod <- with(coarse_root_production_flux,
+                    sum(coarse_root_production_flux*ndays)/sum(ndays)) * conv
+    npp$value[npp$term == "Coarse Root NPP"] <- br_prod
+    npp$start_year[npp$term == "Coarse Root NPP"] <- min(year(coarse_root_production_flux$Start_date))
+    npp$end_year[npp$term == "Coarse Root NPP"] <- max(year(coarse_root_production_flux$End_date))
+    npp$timepoint[npp$term == "Coarse Root NPP"] <- length(unique(coarse_root_production_flux$Date))
     npp$data_notes[npp$term == "Coarse Root NPP"] <- ""
     npp$processing_notes[npp$term == "Coarse Root NPP"] <- ""
-    
-    
-    ### Bole root NPP
-    br_prod <- with(bole_root_production_flux,
-                    sum(bole_root_production_flux*ndays)/sum(ndays)) * conv
-    npp$value[npp$term == "Bole Root NPP"] <- br_prod
-    npp$start_year[npp$term == "Bole Root NPP"] <- min(year(bole_root_production_flux$Start_date))
-    npp$end_year[npp$term == "Bole Root NPP"] <- max(year(bole_root_production_flux$End_date))
-    npp$timepoint[npp$term == "Bole Root NPP"] <- length(unique(bole_root_production_flux$Date))
-    npp$data_notes[npp$term == "Bole Root NPP"] <- ""
-    npp$processing_notes[npp$term == "Bole Root NPP"] <- ""
     
     ### twigs, barks and seeds NPP
     other_prod <- with(leaflitter_flux,sum((bark_flux+seed_flux+twig_flux)*ndays)/sum(ndays)) * conv
@@ -223,15 +223,15 @@ make_EucFACE_table <- function() {
     inout$start_year[inout$term == "Rgrowth"] <- min(npp$start_year[npp$term == "Leaf NPP"],
                                                      npp$start_year[npp$term == "Stem NPP"],
                                                      npp$start_year[npp$term == "Fine Root NPP"],
-                                                     npp$start_year[npp$term == "Coarse Root NPP"])
+                                                     npp$start_year[npp$term == "Intermediate Root NPP"])
     inout$end_year[inout$term == "Rgrowth"] <- max(npp$end_year[npp$term == "Leaf NPP"],
                                                    npp$end_year[npp$term == "Stem NPP"],
                                                    npp$end_year[npp$term == "Fine Root NPP"],
-                                                   npp$end_year[npp$term == "Coarse Root NPP"])
+                                                   npp$end_year[npp$term == "Intermediate Root NPP"])
     inout$timepoint[inout$term == "Rgrowth"] <- min(npp$timepoint[npp$term == "Leaf NPP"],
                                                     npp$timepoint[npp$term == "Stem NPP"],
                                                     npp$timepoint[npp$term == "Fine Root NPP"],
-                                                    npp$timepoint[npp$term == "Coarse Root NPP"])
+                                                    npp$timepoint[npp$term == "Intermediate Root NPP"])
     inout$data_notes[inout$term == "Rgrowth"] <- "No direct measurement"
     inout$processing_notes[inout$term == "Rgrowth"] <- "Calculated by multiplying NPP by 0.3"
     
@@ -265,7 +265,7 @@ make_EucFACE_table <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Coarse Root", "Bole Root",
+              "Fine Root", "Intermediate Root", "Coarse Root",
               "Litter", "Coarse woody debris", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     pool <- data.frame(term)
@@ -308,21 +308,21 @@ make_EucFACE_table <- function() {
     pool$data_notes[pool$term == "Fine Root"] <- "Data on HIEv"
     pool$processing_notes[pool$term == "Fine Root"] <- "Assume a constant C fraction"
     
+    ### Intermediate root
+    pool$value[pool$term == "Intermediate Root"] <- mean(intermediate_root_c_pool$intermediate_root_pool)
+    pool$start_year[pool$term == "Intermediate Root"] <- min(year(intermediate_root_c_pool$Date))
+    pool$end_year[pool$term == "Intermediate Root"] <- max(year(intermediate_root_c_pool$Date))
+    pool$timepoint[pool$term == "Intermediate Root"] <- length(unique(intermediate_root_c_pool$Date))
+    pool$data_notes[pool$term == "Intermediate Root"] <- ""
+    pool$processing_notes[pool$term == "Intermediate Root"] <- ""
+    
     ### Coarse root
-    pool$value[pool$term == "Coarse Root"] <- mean(coarseroot_c_pool$coarse_root_pool)
-    pool$start_year[pool$term == "Coarse Root"] <- min(year(coarseroot_c_pool$Date))
-    pool$end_year[pool$term == "Coarse Root"] <- max(year(coarseroot_c_pool$Date))
-    pool$timepoint[pool$term == "Coarse Root"] <- length(unique(coarseroot_c_pool$Date))
+    pool$value[pool$term == "Coarse Root"] <- mean(coarse_root_c_pool$coarse_root_pool)
+    pool$start_year[pool$term == "Coarse Root"] <- min(year(coarse_root_c_pool$Date))
+    pool$end_year[pool$term == "Coarse Root"] <- max(year(coarse_root_c_pool$Date))
+    pool$timepoint[pool$term == "Coarse Root"] <- length(unique(coarse_root_c_pool$Date))
     pool$data_notes[pool$term == "Coarse Root"] <- ""
     pool$processing_notes[pool$term == "Coarse Root"] <- ""
-    
-    ### Bole root
-    pool$value[pool$term == "Bole Root"] <- mean(bole_root_c_pool$bole_root_pool)
-    pool$start_year[pool$term == "Bole Root"] <- min(year(bole_root_c_pool$Date))
-    pool$end_year[pool$term == "Bole Root"] <- max(year(bole_root_c_pool$Date))
-    pool$timepoint[pool$term == "Bole Root"] <- length(unique(bole_root_c_pool$Date))
-    pool$data_notes[pool$term == "Bole Root"] <- ""
-    pool$processing_notes[pool$term == "Bole Root"] <- ""
     
     ### Soil C
     pool$value[pool$term == "Soil C"] <- mean(soil_c_pool$soil_carbon_pool)

@@ -7,7 +7,7 @@ make_coarse_root_production_flux <- function(cr_pool) {
     prod$Start_date <- prod$Date  # just to make this a date format! 
     for (i in 1:length(prod$Date)) {
         prod$Start_date[i] <- dates[which(dates == prod$Date[i]) - 1]
-        prod$prev_biom[i] <- cr_pool$bole_root_pool[cr_pool$Ring == prod$Ring[i] &
+        prod$prev_biom[i] <- cr_pool$coarse_root_pool[cr_pool$Ring == prod$Ring[i] &
                                             as.numeric(cr_pool$Date-prod$Start_date[i])==0]
     }
     
