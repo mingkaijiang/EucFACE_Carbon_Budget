@@ -43,8 +43,8 @@ make_whitaker_diagram_2 <- function() {
     faceDF$Lat[faceDF$Site=="AmazonFACE"] <- -2.596
     faceDF$Lon[faceDF$Site=="AmazonFACE"] <- -60.208
     
-    faceDF$Lat[faceDF$Site=="AmazonFACE"] <- 57.167
-    faceDF$Lon[faceDF$Site=="AmazonFACE"] <- 14.783
+    faceDF$Lat[faceDF$Site=="SwedFACE"] <- 57.167
+    faceDF$Lon[faceDF$Site=="SwedFACE"] <- 14.783
     
     faceDF$Lat[faceDF$Site=="FlakalidenWTC"] <- 64.07
     faceDF$Lon[faceDF$Site=="FlakalidenWTC"] <- 19.27
@@ -255,6 +255,18 @@ make_whitaker_diagram_2 <- function() {
     faceDF$soilN_sd[faceDF$Site=="FlakalidenWTC"] <- NA
     faceDF$soilP_sd[faceDF$Site=="FlakalidenWTC"] <- NA
     faceDF$NPP_sd[faceDF$Site=="FlakalidenWTC"] <- NA
+    
+    ### plot global soil N and P spatial maps, with face points projected onto it
+    source("R/global_comparison/read_global_soil_data.R")
+    faceDF <- read_global_soil_data(faceDF=faceDF)
+    #ab_1 <- data.frame(faceDF$TN1, faceDF$TN1 / 20)
+    #colnames(ab_1) <- c("ab_n", "ab_p")
+    
+    #ab_2 <- data.frame(faceDF$TN1, faceDF$TN1 / 100)
+    #colnames(ab_2) <- c("ab_n", "ab_p")
+    
+    #ab_3 <- data.frame(faceDF$TN1, faceDF$TN1 / 10)
+    #colnames(ab_3) <- c("ab_n", "ab_p")
 
     ### prepare data frames to plot
     glob.climDF$MAT_pos <- NA
@@ -296,6 +308,8 @@ make_whitaker_diagram_2 <- function() {
     ### create plotting settings
     col.list <- c(viridis(7), "red", brewer.pal(9,"Paired"))
     
+    
+    #### plotting scripts
     p1 <- ggplot() +
         geom_point(plotDF1, mapping=aes(MAT, MAP, 
                                        fill=factor(Biome),
@@ -357,15 +371,15 @@ make_whitaker_diagram_2 <- function() {
         geom_abline(intercept = coefficients(fit.cue)[[1]], slope = coefficients(fit.cue)[[2]],
                     lty=2)+
         annotate(geom="text", x=270, y=1400, 
-                 label=paste0("NPP = ", round(coefficients(fit.cue)[[2]], 2), "A + ", 
+                 label=paste0("NPP = ", round(coefficients(fit.cue)[[2]], 2), "Age + ", 
                               round(coefficients(fit.cue)[[1]],2)),
-                  color="black")+
+                  color="black", size=2.2)+
         #annotate(geom="text", x=270, y=1300, 
         #         label=expression(r^2, "= 0.037"),
         #         color="black")+
         annotate(geom="text", x=410, y=1200, 
                  label=paste0("p = ", pvalue),
-                 color="black")+
+                 color="black", size=2.2)+
         ylab(expression("NPP (g" * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
         theme_linedraw() +
@@ -389,12 +403,44 @@ make_whitaker_diagram_2 <- function() {
     
     #plot(p2)
     
+    
+    p3 <- ggplot() +
+        geom_point(data=faceDF, aes(TN1, TP1,fill=as.factor(Biome),
+                                    shape=as.factor(Biome)), size=2)+
+        #geom_line(data=ab_1, aes(ab_n, ab_p), lty=2)+
+        #geom_line(data=ab_2, aes(ab_n, ab_p), lty=3)+
+        #geom_line(data=ab_3, aes(ab_n, ab_p), lty=4)+
+        scale_fill_manual(name="Sites", 
+                          values=col.list) +
+        scale_shape_manual(values=c(24, rep(22, 9)),
+                           labels="") +
+        theme_linedraw() +
+        ylab("Soil P (%)") +
+        xlab("Soil N (%)")+
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=8), 
+              axis.text.x = element_text(size=8),
+              axis.text.y=element_text(size=8),
+              axis.title.y=element_text(size=8),
+              legend.text=element_text(size=8),
+              legend.title=element_text(size=8),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(0.0005, 0.0018),
+                           breaks = c(0.0006, 0.001, 0.0014, 0.0018))
+    
+    
+    
+    
     plot.with.inset <-
         ggdraw() +
         draw_plot(p1) +
-        draw_plot(p2, x = 0.12, y = .68, width = .4, height = .3)
+        draw_plot(p2, x = 0.12, y = .72, width = .3, height = .25)+
+        draw_plot(p3, x = 0.12, y = .47, width = .3, height = .25)
     
-
+    
+    
     ggsave(filename = "output/ED_Figure_2.pdf", 
            plot = plot.with.inset,
            width = 17, 
@@ -402,44 +448,6 @@ make_whitaker_diagram_2 <- function() {
            units = "cm",
            dpi = 300)
     
-    
-    
-    ### alternative
-    #require(ks)
-
-    ## subsetting dataframe
-    #DF <- data.frame(myDF[myDF$BIOME %in%c(1,2,3,4,5,6,12), "temp_annual_mean"],
-    #                 myDF[myDF$BIOME %in%c(1,2,3,4,5,6,12), "prec_annual_sum"])
-    #
-    #l <- nrow(DF)
-    #
-    #if(l <= 5000) {
-    #    H <- Hpi(x=DF)      # optimal bandwidth estimation
-    #    est<- kde(x=DF, H=H, compute.cont=TRUE)     # kernel density estimation
-    #} else {
-    #    DF.sub <- DF[sample(nrow(DF), 5000),]
-    #    # kernel density estimation
-    #    H <- Hpi(x=DF.sub)      # optimal bandwidth estimation
-    #    est<- kde(x=DF.sub, H=H, compute.cont=TRUE)     # kernel density estimation
-    #}
-    #
-    ## set contour probabilities for drawing contour levels
-    #cl<-contourLevels(est, prob=c(0.5, 0.25, 0.1), approx=TRUE)
-    #
-    #### plot
-    #pdf("output/ED_Figure_7_alternative.pdf", width=16, height=10)
-    #
-    #plot(est, cont=seq(1,100,by=1), display="filled.contour2", add=FALSE, 
-    #     ylab="Precipitation", xlab="Temperature", 
-    #     ylim=c(0,4000), xlim=c(-30,40),las=1,
-    #     cex.axis=2.0, cex.main = 3.5, cex.lab = 3) 
-    #
-    #plot(est,abs.cont=cl[1],  labels=c(0.5), labcex=0.75, add=TRUE, lwd=0.75, col="grey30")
-    #plot(est,abs.cont=cl[2], labels=c(0.75),labcex=0.75, add=TRUE, lwd=0.5, col="grey60")
-    #plot(est,abs.cont=cl[3], labels=c(0.9),labcex=0.75, add=TRUE, lwd=0.5, col="grey60")
-    #points(eucDF$temp_annual_mean, eucDF$prec_annual_sum, add=TRUE, pch=17, size=6)    
-    #
-    #dev.off()
  
     
-}
+ }

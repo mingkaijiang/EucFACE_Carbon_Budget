@@ -16,6 +16,7 @@ output/*.pdf
 output/*.csv
 DA_output/*.pdf
 DA_output/*.csv
+*.nc
 
 model_output/CABL/*.csv
 model_output/CLM4/*.csv
