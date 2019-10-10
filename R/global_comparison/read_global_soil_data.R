@@ -7,20 +7,20 @@ read_global_soil_data <- function(faceDF) {
     
     #### read in data
     inName1 <- "data/Dai/TN1.nc"
-    inName2 <- "data/Dai/PBR1.nc"
+    inName2 <- "data/Dai/BD1.nc"
     
     ### use raster brick to get all the data
     tn <- brick(inName1, varname = "TN")
-    tp <- brick(inName2, varname = "PBR")
+    tp <- brick(inName2, varname = "BD")
     
     ### subset the first layer
     tn1 <- subset(tn, 1) * 0.01
-    tp1 <- subset(tp, 1) * 0.01 * 0.0001
+    tp1 <- subset(tp, 1) * 0.01 
     
     #np1 <- tn1 / tp1
 
     ### prepare FACE color list
-    col.list.face <- c("red", brewer.pal(9,"Paired"))
+    #col.list.face <- c("red", brewer.pal(9,"Paired"))
     
     ###
     #pdf("output/global_soil_NP.pdf")
@@ -62,7 +62,7 @@ read_global_soil_data <- function(faceDF) {
                         df=TRUE) 
     
     faceDF$TN1 <- tn1_mean$X4.5
-    faceDF$TP1 <- tp1_mean$X4.5
+    faceDF$BD1 <- tp1_mean$X4.5
     
     return(faceDF)
     

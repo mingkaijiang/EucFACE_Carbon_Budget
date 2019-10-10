@@ -12,7 +12,7 @@ make_whitaker_diagram_2 <- function() {
     ################################### Prepare MAT and MAP, FACE sites
     ### prepare storage DF
     faceDF <- data.frame(c("EucFACE", "DukeFACE", "ORNLFACE", "AspenFACE", "PopFACE",
-                           "WebFACE", "AmazonFACE", "BioForFACE", "SwedFACE",
+                           "WebFACE", "AmazonFACE", "BiForFACE", "SwedFACE",
                            "FlakalidenWTC"), 
                           NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(faceDF) <- c("Site", "Biome", "Lat", "Lon", "MAT", "MAP", "Age", "soilN", "soilP", "NPP", 
@@ -37,8 +37,8 @@ make_whitaker_diagram_2 <- function() {
     faceDF$Lat[faceDF$Site=="WebFACE"] <- 47.33
     faceDF$Lon[faceDF$Site=="WebFACE"] <- 7.36
     
-    faceDF$Lat[faceDF$Site=="BioForFACE"] <- 52.801
-    faceDF$Lon[faceDF$Site=="BioForFACE"] <- -2.301
+    faceDF$Lat[faceDF$Site=="BiForFACE"] <- 52.801
+    faceDF$Lon[faceDF$Site=="BiForFACE"] <- -2.301
     
     faceDF$Lat[faceDF$Site=="AmazonFACE"] <- -2.596
     faceDF$Lon[faceDF$Site=="AmazonFACE"] <- -60.208
@@ -130,7 +130,7 @@ make_whitaker_diagram_2 <- function() {
     faceDF$MAT[faceDF$Site=="DukeFACE"] <- 14.8
     faceDF$MAP[faceDF$Site=="DukeFACE"] <- 1081
     faceDF$Age[faceDF$Site=="DukeFACE"] <- 13
-    faceDF$soilN[faceDF$Site=="DukeFACE"] <- NA
+    faceDF$soilN[faceDF$Site=="DukeFACE"] <- 0.079
     faceDF$soilP[faceDF$Site=="DukeFACE"] <- NA
     faceDF$NPP[faceDF$Site=="DukeFACE"] <- dkDF$fc_npp.mean
     
@@ -144,7 +144,7 @@ make_whitaker_diagram_2 <- function() {
     faceDF$MAT[faceDF$Site=="ORNLFACE"] <- 14.8
     faceDF$MAP[faceDF$Site=="ORNLFACE"] <- 1221
     faceDF$Age[faceDF$Site=="ORNLFACE"] <- 10
-    faceDF$soilN[faceDF$Site=="ORNLFACE"] <- NA
+    faceDF$soilN[faceDF$Site=="ORNLFACE"] <- 0.112
     faceDF$soilP[faceDF$Site=="ORNLFACE"] <- NA
     faceDF$NPP[faceDF$Site=="ORNLFACE"] <- orDF$fc_npp.mean[orDF$co2=="AMB"]
     
@@ -172,7 +172,7 @@ make_whitaker_diagram_2 <- function() {
     faceDF$MAT[faceDF$Site=="PopFACE"] <- 14
     faceDF$MAP[faceDF$Site=="PopFACE"] <- 800
     faceDF$Age[faceDF$Site=="PopFACE"] <- 3
-    faceDF$soilN[faceDF$Site=="PopFACE"] <- 0.0012 # unit is percent
+    faceDF$soilN[faceDF$Site=="PopFACE"] <- 0.11 
     faceDF$soilP[faceDF$Site=="PopFACE"] <- NA
     faceDF$NPP[faceDF$Site=="PopFACE"] <- pop.npp.m
     
@@ -187,7 +187,7 @@ make_whitaker_diagram_2 <- function() {
     faceDF$MAT[faceDF$Site=="WebFACE"] <- 11
     faceDF$MAP[faceDF$Site=="WebFACE"] <- 900
     faceDF$Age[faceDF$Site=="WebFACE"] <- 110
-    faceDF$soilN[faceDF$Site=="WebFACE"] <- NA
+    faceDF$soilN[faceDF$Site=="WebFACE"] <- 0.28
     faceDF$soilP[faceDF$Site=="WebFACE"] <- NA
     faceDF$NPP[faceDF$Site=="WebFACE"] <- NA
     
@@ -197,19 +197,19 @@ make_whitaker_diagram_2 <- function() {
     faceDF$soilP_sd[faceDF$Site=="WebFACE"] <- NA
     faceDF$NPP_sd[faceDF$Site=="WebFACE"] <- NA
     
-    ### assign values - BioForFACE
-    faceDF$MAT[faceDF$Site=="BioForFACE"] <- 9
-    faceDF$MAP[faceDF$Site=="BioForFACE"] <- 690
-    faceDF$Age[faceDF$Site=="BioForFACE"] <- 150
-    faceDF$soilN[faceDF$Site=="BioForFACE"] <- NA
-    faceDF$soilP[faceDF$Site=="BioForFACE"] <- NA
-    faceDF$NPP[faceDF$Site=="BioForFACE"] <- NA
+    ### assign values - BiForFACE
+    faceDF$MAT[faceDF$Site=="BiForFACE"] <- 9
+    faceDF$MAP[faceDF$Site=="BiForFACE"] <- 690
+    faceDF$Age[faceDF$Site=="BiForFACE"] <- 150
+    faceDF$soilN[faceDF$Site=="BiForFACE"] <- NA
+    faceDF$soilP[faceDF$Site=="BiForFACE"] <- NA
+    faceDF$NPP[faceDF$Site=="BiForFACE"] <- NA
     
-    faceDF$MAT_sd[faceDF$Site=="BioForFACE"] <- NA
-    faceDF$MAP_sd[faceDF$Site=="BioForFACE"] <- NA
-    faceDF$soilN_sd[faceDF$Site=="BioForFACE"] <- NA
-    faceDF$soilP_sd[faceDF$Site=="BioForFACE"] <- NA
-    faceDF$NPP_sd[faceDF$Site=="BioForFACE"] <- NA
+    faceDF$MAT_sd[faceDF$Site=="BiForFACE"] <- NA
+    faceDF$MAP_sd[faceDF$Site=="BiForFACE"] <- NA
+    faceDF$soilN_sd[faceDF$Site=="BiForFACE"] <- NA
+    faceDF$soilP_sd[faceDF$Site=="BiForFACE"] <- NA
+    faceDF$NPP_sd[faceDF$Site=="BiForFACE"] <- NA
     
     
     ### assign values - AmazonFACE
@@ -259,14 +259,24 @@ make_whitaker_diagram_2 <- function() {
     ### plot global soil N and P spatial maps, with face points projected onto it
     source("R/global_comparison/read_global_soil_data.R")
     faceDF <- read_global_soil_data(faceDF=faceDF)
-    #ab_1 <- data.frame(faceDF$TN1, faceDF$TN1 / 20)
-    #colnames(ab_1) <- c("ab_n", "ab_p")
     
-    #ab_2 <- data.frame(faceDF$TN1, faceDF$TN1 / 100)
-    #colnames(ab_2) <- c("ab_n", "ab_p")
+    ### calcualte soil N as g N m-2 for top 50 cm soil, based on bulk density
+    faceDF$soilN <- faceDF$TN1 / 100 * faceDF$BD1 * 1000000 * 0.5
     
-    #ab_3 <- data.frame(faceDF$TN1, faceDF$TN1 / 10)
-    #colnames(ab_3) <- c("ab_n", "ab_p")
+    ### get soil labile P (g m-2) from Yang et al. 2014
+    faceDF <- read_Yang_soil_P_data(faceDF)
+    
+    ### ignore AmazonFACE and SwedFACE
+    faceDF$soilN[faceDF$Site%in%c("AmazonFACE", "SwedFACE")] <- NA
+    faceDF$labP[faceDF$Site%in%c("AmazonFACE", "SwedFACE")] <- NA
+    
+    ### make NP lines
+    ab_1 <- data.frame(faceDF$soilN, faceDF$soilN / 20)
+    colnames(ab_1) <- c("ab_n", "ab_p")
+    
+    ab_2 <- data.frame(faceDF$soilN, faceDF$soilN / 100)
+    colnames(ab_2) <- c("ab_n", "ab_p")
+    
 
     ### prepare data frames to plot
     glob.climDF$MAT_pos <- NA
@@ -300,7 +310,7 @@ make_whitaker_diagram_2 <- function() {
                  "PopFACE",
                  "WebFACE",
                  "AmazonFACE",
-                 "BioForFACE",
+                 "BiForFACE",
                  "SwedFACE",
                  "FlakalidenWTC")      
     
@@ -380,7 +390,7 @@ make_whitaker_diagram_2 <- function() {
         annotate(geom="text", x=410, y=1200, 
                  label=paste0("p = ", pvalue),
                  color="black", size=2.2)+
-        ylab(expression("NPP (g" * m^-2 * " " * yr^-1 *" )")) +
+        ylab(expression("NPP (g C " * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
         theme_linedraw() +
         xlim(0, 500)+
@@ -404,19 +414,51 @@ make_whitaker_diagram_2 <- function() {
     #plot(p2)
     
     
+    #p3 <- ggplot() +
+    #    geom_point(data=faceDF, aes(TN1, TP1,fill=as.factor(Biome),
+    #                                shape=as.factor(Biome)), size=2)+
+    #    #geom_line(data=ab_1, aes(ab_n, ab_p), lty=2)+
+    #    #geom_line(data=ab_2, aes(ab_n, ab_p), lty=3)+
+    #    #geom_line(data=ab_3, aes(ab_n, ab_p), lty=4)+
+    #    scale_fill_manual(name="Sites", 
+    #                      values=col.list) +
+    #    scale_shape_manual(values=c(24, rep(22, 9)),
+    #                       labels="") +
+    #    theme_linedraw() +
+    #    ylab("Soil P (%)") +
+    #    xlab("Soil N (%)")+
+    #    theme(panel.grid.minor=element_blank(),
+    #          axis.title.x = element_text(size=8), 
+    #          axis.text.x = element_text(size=8),
+    #          axis.text.y=element_text(size=8),
+    #          axis.title.y=element_text(size=8),
+    #          legend.text=element_text(size=8),
+    #          legend.title=element_text(size=8),
+    #          panel.grid.major=element_blank(),
+    #          legend.position="none",
+    #          legend.text.align=0)+
+    #    scale_y_continuous(limits=c(0.0005, 0.0018),
+    #                       breaks = c(0.0006, 0.001, 0.0014, 0.0018))
+    
+    
     p3 <- ggplot() +
-        geom_point(data=faceDF, aes(TN1, TP1,fill=as.factor(Biome),
+        geom_line(data=ab_1, aes(ab_n, ab_p), lty=2)+
+        geom_line(data=ab_2, aes(ab_n, ab_p), lty=3)+
+        geom_point(data=faceDF, aes(soilN, labP, fill=as.factor(Biome),
                                     shape=as.factor(Biome)), size=2)+
-        #geom_line(data=ab_1, aes(ab_n, ab_p), lty=2)+
-        #geom_line(data=ab_2, aes(ab_n, ab_p), lty=3)+
-        #geom_line(data=ab_3, aes(ab_n, ab_p), lty=4)+
         scale_fill_manual(name="Sites", 
                           values=col.list) +
         scale_shape_manual(values=c(24, rep(22, 9)),
                            labels="") +
+        annotate(geom="text", x=1200, y=80, 
+                 label="20:1",
+                 color="black", size=2.8)+
+        annotate(geom="text", x=2000, y=35, 
+                 label="100:1",
+                 color="black", size=2.8)+
         theme_linedraw() +
-        ylab("Soil P (%)") +
-        xlab("Soil N (%)")+
+        ylab(expression("Labile P (g " * m^-2 * ")")) +
+        xlab(expression("Soil N (g " * m^-2 * ")")) +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=8), 
               axis.text.x = element_text(size=8),
@@ -426,13 +468,11 @@ make_whitaker_diagram_2 <- function() {
               legend.title=element_text(size=8),
               panel.grid.major=element_blank(),
               legend.position="none",
-              legend.text.align=0)+
-        scale_y_continuous(limits=c(0.0005, 0.0018),
-                           breaks = c(0.0006, 0.001, 0.0014, 0.0018))
+              legend.text.align=0)
     
+    #plot(p3)
     
-    
-    
+
     plot.with.inset <-
         ggdraw() +
         draw_plot(p1) +
