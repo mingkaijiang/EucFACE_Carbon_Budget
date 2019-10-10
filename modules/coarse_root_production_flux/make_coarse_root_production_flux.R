@@ -1,29 +1,32 @@
-make_coarse_root_production_flux <- function(inDF) {
-    
+make_coarse_root_production_flux <- function(cr_pool) {
 
-    ### obtain global coarseroot turnover rate from 
-    ### Zhang and Wang, 2015. The decomposition of fine and coarse roots, global patterns and their controlling factors
-    ### Scientific Reports, 5: 09940.
-    gDF <- read.csv("data/Zhang_Wang_2015_Global_Coarseroot.csv")
+    dates <- unique(cr_pool$Date)
+    dates <- dates[order(dates)]
     
-    subDF <- subset(gDF, Size%in%c("coarse root", "coarse root 2-5 mm"))
-    subDF <- subset(subDF, Life.form == "Evergreen broadleaf")
+    prod <- subset(cr_pool, Date != dates[1])
+    prod$Start_date <- prod$Date  # just to make this a date format! 
+    for (i in 1:length(prod$Date)) {
+        prod$Start_date[i] <- dates[which(dates == prod$Date[i]) - 1]
+        prod$prev_biom[i] <- cr_pool$bole_root_pool[cr_pool$Ring == prod$Ring[i] &
+                                            as.numeric(cr_pool$Date-prod$Start_date[i])==0]
+    }
     
-    tau.croot <- mean(subDF$K.value_yr.1_)
+    # Length of period
+    prod$length <- as.numeric(prod$Date - prod$Start_date)
     
-    ### assign tau to coarseroot DF
-    inDF$tau <- tau.croot
+    # C increment in mg C d-1
+    prod$cr_production_flux <- (prod$coarse_root_pool - prod$prev_biom) * 1000/prod$length
     
-    inDF$coarse_root_production_flux <- with(inDF, coarse_root_pool * tau) / 365 * 1000
+    # format dataframe to return
+    cr.out <- prod[,c("Start_date", "Date", "Date", "Ring", "cr_production_flux")]
     
-    inDF$Start_date <- inDF$Date - 365 + 1
+    names(cr.out) <- c("Start_date", "End_date", "Date", "Ring", "coarse_root_production_flux")
     
-    inDF$length <- 365
+    cr.out$ndays <- as.numeric(cr.out$End_date - cr.out$Start_date) + 1
     
-    ### prepare output
-    outDF <- inDF[,c("Start_date", "Date", "Date", "Ring", "coarse_root_production_flux", "length")]
-    colnames(outDF) <- c("Start_date", "End_date", "Date", "Ring", "coarse_root_production_flux", "ndays")
+    # Only use data period 2012-2016
+    cr.out <- cr.out[cr.out$Date<="2016-12-31",]
     
-    return(outDF)
+    return(cr.out)
     
 }

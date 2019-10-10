@@ -1,4 +1,4 @@
-make_coarse_root_pool_4 <- function(bkDF) {
+make_intermediate_root_pool_4 <- function(bkDF) {
     
     ### estimate ring-specific bulk density
     bk <- summaryBy(bulk_density_kg_m3~ring, FUN=mean, data=bkDF, keep.names=T)
@@ -36,26 +36,22 @@ make_coarse_root_pool_4 <- function(bkDF) {
     frbDF$fc2 <- frbDF$FRB_10.30cm * coefficients(fit2)[[2]] + coefficients(fit2)[[1]]
 
     ### get coarseroot biomass
-    frbDF$CRB_0.10cm <- frbDF$FRB_0.10cm / frbDF$fc1
-    frbDF$CRB_10.30cm <- frbDF$FRB_10.30cm / frbDF$fc2
+    frbDF$IRB_0.10cm <- frbDF$FRB_0.10cm / frbDF$fc1
+    frbDF$IRB_10.30cm <- frbDF$FRB_10.30cm / frbDF$fc2
     
     ### calculate c cotent, based on fineroot content
-    frbDF$coarseroot_pool_0_10cm <- frbDF$CRB_0.10cm * frbDF$C0_0.10cm / 100
-    frbDF$coarseroot_pool_10_30cm <- frbDF$CRB_10.30cm * frbDF$C0_10.30cm / 100
+    frbDF$intermediate_root_pool_0_10cm <- frbDF$IRB_0.10cm * frbDF$C0_0.10cm / 100
+    frbDF$intermediate_root_pool_10_30cm <- frbDF$IRB_10.30cm * frbDF$C0_10.30cm / 100
     
     #frbDF$coarseroot_pool_0_10cm <- frbDF$CRB_0.10cm * c_fraction_croot
     #frbDF$coarseroot_pool_10_30cm <- frbDF$CRB_10.30cm * c_fraction_croot
     
-    frbDF$coarse_root_pool <- frbDF$coarseroot_pool_0_10cm + frbDF$coarseroot_pool_10_30cm
+    frbDF$intermediate_root_pool <- frbDF$intermediate_root_pool_0_10cm + frbDF$intermediate_root_pool_10_30cm
     
     ### clean
-    outDF <- frbDF[,c("Date", "Ring", "coarse_root_pool", "coarseroot_pool_0_10cm", "coarseroot_pool_10_30cm")]
+    outDF <- frbDF[,c("Date", "Ring", "intermediate_root_pool", "intermediate_root_pool_0_10cm", "intermediate_root_pool_10_30cm")]
 
     
-    #test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
-    #test$trt[test$Ring%in%c(2,3,6)] <- "amb"
-    #test$trt[test$Ring%in%c(1,4,5)] <- "ele"
-    #summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
 
     
     ### return

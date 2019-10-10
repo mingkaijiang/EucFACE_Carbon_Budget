@@ -1,4 +1,4 @@
-make_crootc_treatment_abs_effect_statistics <- function(inDF,
+make_crootc_treatment_abs_effect_statistics <- function(inDF, 
                                                         var.col, 
                                                         return.outcome) {
     

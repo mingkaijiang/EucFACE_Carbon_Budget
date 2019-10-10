@@ -1,6 +1,8 @@
-make_delta_boleroot_pool_function <- function(inDF,var.col) {
+make_delta_intermediate_root_pool_treatment_abs_effect <- function(inDF,var.col) {
     
     ### extract start and end date
+    inDF$Date <- as.Date(as.character(inDF$Datef))
+    
     s.date <- min(inDF$Date)
     e.date <- max(inDF$Date)
     
@@ -32,7 +34,7 @@ make_delta_boleroot_pool_function <- function(inDF,var.col) {
     #- format dataframe to return
     out <- delta[,c("Start_date", "Date", "Date", "Ring", "diff_g_yr")]
     
-    names(out) <- c("Start_date", "End_date", "Date", "Ring", "delta")
+    names(out) <- c("Start_date", "End_date", "Date", "Ring", "predicted")
     
     return(out)
 }

@@ -7,20 +7,32 @@ make_delta_coarseroot_pool_function <- function(inDF,var.col) {
     ### Change column name of value variable
     colnames(inDF)[var.col] <- "Value"
     
-    inDF$Date <- as.character(inDF$Date)
-    eDF <- subset(inDF, Date == "2014-09-22")
-    lDF <- subset(inDF, Date == "2015-09-23")
+    ### date list
+    d.list <- unique(inDF$Date)
+    d.list <- d.list[order(d.list)]
     
-    eDF$late <- lDF$Value
-    eDF$ndays <- as.numeric(as.Date("2015-09-23") - as.Date("2014-09-22")) + 1
-    eDF$diff_g_yr <- (eDF$late - eDF$Value ) / eDF$ndays * 365
-    
-    # format dataframe to return
-    out <- eDF[,c("Date", "Date", "Ring", "diff_g_yr")]
-    names(out) <- c("Start_date", "Date", "Ring", "delta")
-    out$End_date <- as.Date("2015-09-23")
+    ### create delta df
+    delta <- subset(inDF, Date != d.list[1])
+    delta$Start_date <- delta$Date  
 
-    out <- out[,c("Start_date", "End_date", "Date", "Ring", "delta")]
+    
+    #### calculate differences
+    for (i in 1:length(delta$Date)) {
+        delta$Start_date[i] <- d.list[which(d.list == delta$Date[i]) - 1]
+        delta$prev_biom[i] <- inDF$Value[inDF$Ring == delta$Ring[i] &
+                                                     as.numeric(inDF$Date-delta$Start_date[i])==0]
+    }
+    
+    ### Length of period
+    delta$length <- as.numeric(delta$Date - delta$Start_date)
+    
+    ### annualize the difference
+    delta$diff_g_yr <- (delta$Value - delta$prev_biom) / delta$length * 365
+    
+    #- format dataframe to return
+    out <- delta[,c("Start_date", "Date", "Date", "Ring", "diff_g_yr")]
+    
+    names(out) <- c("Start_date", "End_date", "Date", "Ring", "delta")
     
     return(out)
 }

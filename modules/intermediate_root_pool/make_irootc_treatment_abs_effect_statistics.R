@@ -1,4 +1,4 @@
-make_brootc_treatment_abs_effect_statistics <- function(inDF, 
+make_irootc_treatment_abs_effect_statistics <- function(inDF,
                                                         var.col, 
                                                         return.outcome) {
     

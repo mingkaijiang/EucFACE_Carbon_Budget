@@ -128,10 +128,13 @@ soil_respiration_flux <- make_soil_respiration_flux()
 
 
 ### compare isoprene contribution against monoterpene in total VOC
-compare_voc_fluxes()
+#compare_voc_fluxes()
 
-### result based on model without soil moisture
-voc_emission_flux <- make_voc_emission_flux2()
+### result based on Bruno's parameters, for isoprene, monoterpenes, and sesquiterpenes
+voc_emission_flux <- make_voc_emission_flux()
+
+### result based on David's parameters, for only isoprene
+#voc_emission_flux <- make_voc_emission_flux2()
 
 ### leaf C pool
 ### read in c_fraction defined in constant
@@ -147,7 +150,7 @@ fineroot_c_pool <- make_fineroot_pool_2()
 ### fineroot c production flux
 fineroot_production_flux <- make_fineroot_production_flux_2()
 
-### Coarseroot pool (2 - 3 mm)
+### Intermediate pool (2 - 3 mm)
 ### Note:
 ### both Juan and Johanna's data gives similar result,
 ### in terms of the Froot/Croot fraction, 
@@ -157,15 +160,15 @@ fineroot_production_flux <- make_fineroot_production_flux_2()
 ### We have a pretty good estimate of the Froot/Croot fraction in top soil, 
 ### in that the variability is relatively low. 
 ### The variability of coarseroot biomass in 10 - 30 cm soil is large. 
-#coarseroot_c_pool_old <- make_coarse_root_pool(froot=fineroot_c_pool)
+#intermediate_root_c_pool_old <- make_intermediate_root_pool(froot=fineroot_c_pool)
 
-### estimate coarseroot pool based on a relationship 
+### estimate intermediate root pool based on a relationship 
 ### between f/c ~ fineroot biomass, at two depths
-coarseroot_c_pool <- make_coarse_root_pool_4(bkDF=soil_bulk_density_variable)
+intermediate_root_c_pool <- make_intermediate_root_pool_4(bkDF=soil_bulk_density_variable)
 
-### coarseroot c production
-coarseroot_production_flux <- make_coarse_root_production_flux(inDF=coarseroot_c_pool)
-#coarseroot_production_flux <- make_coarse_root_production_flux_2(inDF=coarseroot_c_pool)
+### intermediate root c production
+intermediate_root_production_flux <- make_intermediate_root_production_flux(inDF=intermediate_root_c_pool)
+#intermediate_root_production_flux <- make_intermediate_root_production_flux_2(inDF=intermediate_root_c_pool)
 
 
 ### frass c production flux

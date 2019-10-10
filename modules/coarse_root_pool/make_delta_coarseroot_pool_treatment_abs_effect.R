@@ -6,7 +6,7 @@ make_delta_coarseroot_pool_treatment_abs_effect <- function(inDF,var.col) {
     s.date <- min(inDF$Date)
     e.date <- max(inDF$Date)
     
-    ### Change column name of value variable
+    ### Change column name of Value variable
     colnames(inDF)[var.col] <- "Value"
     
     ### date list
