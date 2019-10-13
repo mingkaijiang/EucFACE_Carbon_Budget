@@ -552,7 +552,7 @@ initialize_obs_ele_dataframe <- function() {
     
     ### turnover rate for leaf litter pool
     poolDF2$tau.ag.lit.mean <- 365 * c(0.0056, 0.0079, 0.0083, mean(c(0.0056, 0.0079, 0.0083)))
-    poolDF2$tau.ag.lit.sd <- 365 * rep(sd(c(0.0056, 0.0079, 0.0083)), 4)
+    poolDF2$tau.ag.lit.sd <- rep(sd(365 * c(0.0056, 0.0079, 0.0083)), 4)
     
     
     ### set outDF

@@ -13,7 +13,7 @@ params.aCO2.R2 <- c(init.parameters$alloc.leaf[init.parameters$Ring=="2"],
                     2.0,          # tau.micr
                     0.15,         # tau.soil
                     150.0,        # C.ag.lit
-                    150.0,         # C.bg.lit
+                    150.0,        # C.bg.lit
                     0.3,          # frac.ag
                     0.3,          # frac.bg
                     0.3)          # frac.micr

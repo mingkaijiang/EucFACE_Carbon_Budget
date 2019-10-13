@@ -613,7 +613,7 @@ source("definitions/initialize_aCO2_parameters.R")
 source("definitions/initialize_eCO2_parameters.R")
 
 ### Assign chain length for MCMC parameter fitting
-chainLength <- 200000
+chainLength <- 10000 #200000
 
 ### step C2: fitting
 ## Ring 2
