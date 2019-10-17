@@ -1,4 +1,4 @@
-make_leaflitter_pool <- function(c_frac){
+make_leaflitter_pool_2 <- function(c_frac){
     
     download_leaflitter()
     
@@ -64,43 +64,25 @@ make_leaflitter_pool <- function(c_frac){
     ### Only use data period 2012-2016
     litter_a <- litter_a[litter_a$Date<="2016-12-31",]
     
+    ### calculate an annual leaf litterfall rate
+    litter_a$leaf_flux_a <- litter_a$leaf_flux / litter_a$ndays * 365 / 1000
+    
     ### Litter decomposition rate
     decomp <- make_leaflitter_decomposition_rate_2()
     
-    ### get date time series
-    d.list <- unique(litter_a$Date)
-    
-    ### Calculate mass remained, non-cumulative
-    for (i in 1:length(d.list)-1) {
-        for (j in 1:6) {
-            ndays <- as.numeric(d.list[i+1] - d.list[i])
-            p.r <- exp(decomp$coef[decomp$Ring==j] * ndays + decomp$int[decomp$Ring==j])/100
-
-            litter_a$mass_remain[litter_a$Date==d.list[i] & litter_a$Ring==j] <- litter_a$leaf_flux[litter_a$Date==d.list[i] & litter_a$Ring==j] * p.r
-        }
+    ### assign decomposition rate
+    for (i in 1:6) {
+        litter_a$k[litter_a$Ring==i] <- decomp$k[decomp$Ring==i]
     }
     
+    litter_a$k <- litter_a$k * 365
     
-    
-    ### Cumulate mass remained
-    for (j in 1:6) {
-        litter_a$cum_mass_remain[litter_a$Date==d.list[1] & litter_a$Ring==j] <- litter_a$leaf_flux[litter_a$Date==d.list[1] & litter_a$Ring==j]
-    }
-    
-    for (i in 2:length(d.list)) {
-        for (j in 1:6) {
-            ndays <- as.numeric(d.list[i] - d.list[i-1])
-            p.r <- exp(decomp$coef[decomp$Ring==j] * ndays + decomp$int[decomp$Ring==j])/100
-            add.mass <- litter_a$cum_mass_remain[litter_a$Date==d.list[i-1] & litter_a$Ring==j] * p.r
-            
-            litter_a$cum_mass_remain[litter_a$Date==d.list[i] & litter_a$Ring==j] <- add.mass + litter_a$leaf_flux[litter_a$Date==d.list[i] & litter_a$Ring==j]
-        }
-    }
+    ### calculate pool size, assuming steady state
+    litter_a$leaflitter_pool <- with(litter_a, leaf_flux_a / k)
     
     ### prepare outDF
-    out <- litter_a[,c("Date", "Ring", "Start_date", "End_date", "ndays", "cum_mass_remain")]
+    out <- litter_a[,c("Date", "Ring", "Start_date", "End_date", "ndays", "leaflitter_pool")]
     colnames(out) <- c("Date", "Ring", "Start_date", "End_date", "ndays", "leaflitter_pool")
-    out$leaflitter_pool <- out$leaflitter_pool/1000
     out <- out[out$Date>="2013-01-01",]
 
     return(out)

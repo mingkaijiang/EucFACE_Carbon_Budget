@@ -195,7 +195,7 @@ dic_leaching_flux <- make_dic_leaching_flux(depth="deep")
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
 ### Leaf litter pool
-leaflitter_pool <- make_leaflitter_pool(c_fraction)
+leaflitter_pool <- make_leaflitter_pool_2(c_fraction)
 
 ### Insect pool
 ### method 1 is based on litter basket data
