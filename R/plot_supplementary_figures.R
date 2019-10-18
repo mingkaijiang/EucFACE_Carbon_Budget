@@ -323,23 +323,23 @@ frDF <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=mea
 frDF.se <- summaryBy(fineroot_pool+fineroot_0_10_cm+fineroot_10_30_cm~Ring, FUN=se, data=fineroot_c_pool,
                   keep.names=T)
 
-crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarseroot_c_pool, keep.names=T)
-crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarseroot_c_pool, keep.names=T)
+irDF <- summaryBy(intermediate_root_pool~Ring, FUN=mean, data=intermediate_root_c_pool, keep.names=T)
+irDF.se <- summaryBy(intermediate_root_pool~Ring, FUN=se, data=intermediate_root_c_pool, keep.names=T)
 
-brDF <- summaryBy(bole_root_pool~Ring, FUN=mean, data=bole_root_c_pool, keep.names=T)
-brDF.se <- summaryBy(bole_root_pool~Ring, FUN=se, data=bole_root_c_pool, keep.names=T)
+crDF <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=coarse_root_c_pool, keep.names=T)
+crDF.se <- summaryBy(coarse_root_pool~Ring, FUN=se, data=coarse_root_c_pool, keep.names=T)
 
 plotDF <- data.frame(rep(1:6, 3), NA, NA, NA)
 colnames(plotDF) <- c("Ring", "Value", "Tissue", "Sd")
-plotDF$Component <- rep(c("fr", "cr", "br"), each=6)
+plotDF$Component <- rep(c("fr", "ir", "cr"), each=6)
 
 plotDF$Value[plotDF$Component=="fr"] <- frDF$fineroot_pool
+plotDF$Value[plotDF$Component=="ir"] <- irDF$intermediate_root_pool
 plotDF$Value[plotDF$Component=="cr"] <- crDF$coarse_root_pool
-plotDF$Value[plotDF$Component=="br"] <- brDF$bole_root_pool
 
 plotDF$Se[plotDF$Component=="fr"] <- frDF.se$fineroot_pool
+plotDF$Se[plotDF$Component=="ir"] <- irDF.se$intermediate_root_pool
 plotDF$Se[plotDF$Component=="cr"] <- crDF.se$coarse_root_pool
-plotDF$Se[plotDF$Component=="br"] <- brDF.se$bole_root_pool
 
 
 p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
@@ -355,9 +355,9 @@ p <- ggplot(plotDF, aes(x=as.character(Ring), y=Value, fill=Component))+
           legend.title=element_text(size=14),
           panel.grid.major=element_blank(),
           legend.position="right")+
-    scale_fill_manual(limit=c("fr", "cr", "br"),
+    scale_fill_manual(limit=c("fr", "ir", "cr"),
                       values=c("orange", "green", "brown"),
-                      labels=c(expression(C[froot]), expression(C[croot]), expression(C[broot])))
+                      labels=c(expression(C[froot]), expression(C[iroot]), expression(C[croot])))
 
 #plot(p)
 
@@ -659,13 +659,13 @@ lit.prod.se <- summaryBy(leaf_flux~Ring+Treatment, data=lit.prod.tr, FUN=se, kee
 lit.prod$se <- lit.prod.se$leaf_flux
 
 ### Decomposition rate
-decp.rt <- make_leaflitter_decomposition_rate()
+decp.rt <- make_leaflitter_decomposition_rate_2()
 decp.rt[decp.rt$Ring== 2|decp.rt$Ring==3|decp.rt$Ring==6,"Treatment"] <- "aCO2"
 decp.rt[decp.rt$Ring== 1|decp.rt$Ring==4|decp.rt$Ring==5,"Treatment"] <- "eCO2"
 
-decp.avg <- summaryBy(coef~Treatment, data=decp.rt, FUN=mean, keep.names=T)
-decp.se <- summaryBy(coef~Treatment, data=decp.rt, FUN=se, keep.names=T)
-decp.avg$se <- decp.se$coef
+decp.avg <- summaryBy(k~Treatment, data=decp.rt, FUN=mean, keep.names=T)
+decp.se <- summaryBy(k~Treatment, data=decp.rt, FUN=se, keep.names=T)
+decp.avg$se <- decp.se$k
 
 ### Litter, CWD and insect
 lit.tr <- make_treatment_effect_df(inDF=leaflitter_pool, v=6, cond=1)
@@ -679,8 +679,8 @@ lit.se <- summaryBy(leaflitter_pool~Ring+Treatment, data=lit.pool, FUN=se, keep.
 lit.avg$se <- lit.se$leaflitter_pool
 
 ### Plot decomposition rate
-p1 <- ggplot(decp.rt, aes(x=as.character(Ring), y=coef, fill=factor(Treatment)))+
-    geom_point(data=decp.rt, mapping=aes(x=as.character(Ring), y=coef,fill=factor(Treatment)), 
+p1 <- ggplot(decp.rt, aes(x=as.character(Ring), y=k, fill=factor(Treatment)))+
+    geom_point(data=decp.rt, mapping=aes(x=as.character(Ring), y=k,fill=factor(Treatment)), 
                size=4, shape=21)+
     labs(x="Plot", y=expression(paste(k[leaf], " (", d^-1, ")")))+
     theme_linedraw() +

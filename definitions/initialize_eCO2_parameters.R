@@ -78,8 +78,8 @@ params.eCO2.lower.R4 <- c(0.3,          # alloc leaf
                           0.01,         # tau.soil
                           0.0,          # C.ag.lit
                           0.0,          # C.bg.lit
-                          0.3,          # frac.ag
-                          0.3,          # frac.bg
+                          0.2,          # frac.ag
+                          0.2,          # frac.bg
                           0.3)          # frac.micr
 
 

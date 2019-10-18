@@ -10,7 +10,7 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
     myDF <- myDF[complete.cases(myDF$diff_mean),]
     
     ### Drop mycorrhizal production - inferred flux
-    myDF <- subset(myDF, term != c("mycorrhizal_prod"))
+    myDF <- subset(myDF, term != c("Mycorrhizal production"))
     
     myDF$term <- c("over_gpp", "understorey_gpp", "ch4",
                    "over_leaf_respiration", "wood_respiration", "root_respiration",

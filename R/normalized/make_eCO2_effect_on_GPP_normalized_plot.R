@@ -198,8 +198,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     
     ### Simplify the plot by eleminating fluxes that has CO2 effect < 1 g m-2 yr-1
     plotDF2 <- subset(plotDF, abs(effect_size) >= 5)
-    subDF <- subset(plotDF, Variable == "Change_in_pools")
-    plotDF2 <- rbind(subDF, plotDF2)
+    #subDF <- subset(plotDF, Variable == "Change_in_pools")
+    #plotDF2 <- rbind(subDF, plotDF2)
     
     ### Order plot DF
     plotDF2 <- plotDF2[order(plotDF2$plot.cat2),]
@@ -226,7 +226,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     E.col.list <- brewer.pal(6,"YlOrRd")[2:6]
     
     ### Change in pools
-    F.col.list <- brewer.pal(5,"Blues")[2:5]
+    F.col.list <- brewer.pal(6,"Blues")[2:6]
     
     
     ### Combine all color list
@@ -248,7 +248,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                    "delta_wood_c"=F.col.list[1],        
                    "delta_understorey_c"=F.col.list[2],
                    "delta_fineroot_c"=F.col.list[3],    
-                   "delta_soil_c"=F.col.list[4])  
+                   "delta_soil_c"=F.col.list[4],
+                   "delta_litter_c"=F.col.list[5])  
         
     
     # y label
@@ -271,7 +272,8 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_fineroot_c"=expression(Delta*C[froot]),    # 22
                 "delta_understorey_c"=expression(Delta*C[ua]),
-                "delta_soil_c"=expression(Delta*C[soil]))
+                "delta_soil_c"=expression(Delta*C[soil]),
+                "delta_litter_c"=expression(Delta*C[lit]))
     
     #plotDF2[plotDF2$Variable=="fineroot_prod", "var.order"] <- 10
     #plotDF2[plotDF2$Variable=="other_prod", "var.order"] <- 9

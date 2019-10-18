@@ -12,11 +12,15 @@ read_in_EucFACE_output <- function() {
     
     ### read in MCMC output
     inDF <-read.csv("DA_output/parameter_summary_table.csv")
-    inDF$tau.ag.lit[1] <- 365 * mean(c(0.0059, 0.0035, 0.0072))
-    inDF$tau.ag.lit[2] <- 365 * mean(c(0.0056, 0.0079, 0.0083))
     
-    inDF$tau.ag.lit.sd[1] <- 365 * sd(c(0.0059, 0.0035, 0.0072))
-    inDF$tau.ag.lit.sd[2] <- 365 * sd(c(0.0056, 0.0079, 0.0083))
+    ### fixed coefficient for leaflitter
+    decomp <- make_leaflitter_decomposition_rate_2()
+    
+    inDF$tau.ag.lit[1] <- 365 * mean(decomp$k[decomp$Ring%in%c(2,3,6)])
+    inDF$tau.ag.lit[2] <- 365 * mean(decomp$k[decomp$Ring%in%c(1,4,5)])
+    
+    inDF$tau.ag.lit.sd[1] <- 365 * sd(decomp$k[decomp$Ring%in%c(2,3,6)])
+    inDF$tau.ag.lit.sd[2] <- 365 * sd(decomp$k[decomp$Ring%in%c(1,4,5)])
     
     ### assign values
     outDF$value[outDF$CO2=="aCO2"&outDF$variable=="ALEAF"] <- round(inDF$alloc.leaf[1], 3)

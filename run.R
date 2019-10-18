@@ -613,7 +613,7 @@ source("definitions/initialize_aCO2_parameters.R")
 source("definitions/initialize_eCO2_parameters.R")
 
 ### Assign chain length for MCMC parameter fitting
-chainLength <- 10000 #200000
+chainLength <- 200000
 
 ### step C2: fitting
 ## Ring 2
@@ -747,8 +747,7 @@ plot_parameter_trace_within_parameter_space(params= params.eCO2.R1,
 
 
 # ring 4
-step.size.eCO2 <- 0.0003 
-
+step.size.eCO2 <- 0.00028 
 pChain_eCO2_2 <- MCMC_model_fitting(params = params.eCO2.R4, 
                                     params.lower = params.eCO2.lower.R4,
                                     params.upper = params.eCO2.upper.R4,

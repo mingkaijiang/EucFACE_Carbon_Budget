@@ -524,8 +524,11 @@ initialize_obs_amb_dataframe <- function() {
     
     
     ### turnover rate for leaf litter pool
-    poolDF2$tau.ag.lit.mean <- 365 * c(0.0059, 0.0035, 0.0072, mean(c(0.0059, 0.0035, 0.0072)))
-    poolDF2$tau.ag.lit.sd <- rep(sd(365 * c(0.0059, 0.0035, 0.0072)), 4)
+    decomp <- make_leaflitter_decomposition_rate_2()
+    
+    
+    poolDF2$tau.ag.lit.mean <- 365 * c(decomp$k[decomp$Ring%in%c(2,3,6)], mean(decomp$k[decomp$Ring%in%c(2,3,6)]))
+    poolDF2$tau.ag.lit.sd <- rep(sd(365 * decomp$k[decomp$Ring%in%c(2,3,6)]), 4)
     
     ### set outDF
     out <- data.frame(gppDF2, nppDF2, deltaDF2, poolDF2)
