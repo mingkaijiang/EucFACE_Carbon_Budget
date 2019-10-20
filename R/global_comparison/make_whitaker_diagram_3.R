@@ -1,4 +1,4 @@
-make_whitaker_diagram_2 <- function() {
+make_whitaker_diagram_3 <- function() {
     
     ################################### Prepare MAT and MAP, globally forests
     ### read in global biome and climate data at CRU grids
@@ -52,27 +52,65 @@ make_whitaker_diagram_2 <- function() {
     
     
     ### cuedata
-    deluciaDF <- read.csv("data/DeLucia2007.csv")
-
-    collatiDF <- read.csv("data/Collati2019.csv")
+    forcDF <- read.csv("data/ForC_selected_data.csv")
     
-    MichaletzDF <- read.csv("data/Michaletz2014.csv")
+    ### selected ANPP, with understorey
+    forcDF1 <- subset(forcDF, variable.name=="ANPP_2_C")
+    tmpDF1 <- subset(forcDF, variable.name=="ANPP_2_OM")
+    tmpDF1$mean <- tmpDF1$mean * 0.5
+    forcDF1 <- rbind(forcDF1, tmpDF1)
     
-    sub1 <- data.frame(deluciaDF$NPP, deluciaDF$Age)
-    colnames(sub1)<- c("NPP", "Age")
-    sub2 <- data.frame(collatiDF$NPP, collatiDF$Age)
-    colnames(sub2)<- c("NPP", "Age")
+    ### select ANPP, with understorey
+    forcDF2 <- subset(forcDF, variable.name=="ANPP_1_C")
+    tmpDF2 <- subset(forcDF, variable.name=="ANPP_1_OM")
+    tmpDF2$mean <- tmpDF2$mean * 0.5
+    forcDF2 <- rbind(forcDF2, tmpDF2)
     
-    sub3 <- MichaletzDF[MichaletzDF$Source!="Luo (1996); Ni et al. (2001)",]
-    sub3 <- data.frame(sub3$NPPTotal_gm2y, sub3$Age_yr)
-    colnames(sub3)<- c("NPP", "Age")
-    sub3$NPP <- sub3$NPP / 2
+    ### selected NPP, with understorey
+    forcDF3 <- subset(forcDF, variable.name=="NPP_2_C")
+    tmpDF3 <- subset(forcDF, variable.name=="NPP_2_OM")
+    tmpDF3$mean <- tmpDF3$mean * 0.5
+    forcDF3 <- rbind(forcDF3, tmpDF3)
     
-    cueDF <- rbind(sub1, sub2, sub3)
-    cueDF$NPP <- as.numeric(cueDF$NPP)
-    cueDF$Age <- as.numeric(as.character(cueDF$Age))
+    ### select NPP, with understorey
+    forcDF4 <- subset(forcDF, variable.name=="NPP_1_C")
+    tmpDF4 <- subset(forcDF, variable.name=="NPP_1_OM")
+    tmpDF4$mean <- tmpDF4$mean * 0.5
+    forcDF4 <- rbind(forcDF4, tmpDF4)
     
-    fit.cue <- lm(NPP ~ Age, data=cueDF)
+    ### fit linear relationship between NPP and age
+    forcDF1$stand.age <- as.numeric(as.character(forcDF1$stand.age))
+    forcDF2$stand.age <- as.numeric(as.character(forcDF2$stand.age))
+    forcDF3$stand.age <- as.numeric(as.character(forcDF3$stand.age))
+    forcDF4$stand.age <- as.numeric(as.character(forcDF4$stand.age))
+    
+    forcDF1 <- forcDF1[forcDF1$stand.age < 500, ]
+    forcDF2 <- forcDF1[forcDF2$stand.age < 500, ]
+    forcDF3 <- forcDF1[forcDF3$stand.age < 500, ]
+    forcDF4 <- forcDF1[forcDF4$stand.age < 500, ]
+    
+    forcDF1$mean <- forcDF1$mean * 100
+    forcDF2$mean <- forcDF2$mean * 100
+    forcDF3$mean <- forcDF3$mean * 100
+    forcDF4$mean <- forcDF4$mean * 100
+    
+    fit.npp1 <- lm(mean ~ stand.age, data=forcDF1)
+    fit.npp2 <- lm(mean ~ stand.age, data=forcDF2)
+    fit.npp3 <- lm(mean ~ stand.age, data=forcDF3)
+    fit.npp4 <- lm(mean ~ stand.age, data=forcDF4)
+    
+    ### useful information
+    r2value1 <- round(summary(fit.npp1)$r.squared,3)
+    pvalue1 <- round(summary(fit.npp1)$coefficients[,4][2], 3)
+    
+    r2value2 <- round(summary(fit.npp3)$r.squared,3)
+    pvalue2 <- round(summary(fit.npp3)$coefficients[,4][2], 3)
+    
+    r2value3 <- round(summary(fit.npp3)$r.squared,3)
+    pvalue3 <- round(summary(fit.npp3)$coefficients[,4][2], 3)
+    
+    r2value4 <- round(summary(fit.npp4)$r.squared,3)
+    pvalue4 <- round(summary(fit.npp4)$coefficients[,4][2], 3)
     
     
     ### prepare input files - EucFACE
@@ -314,32 +352,80 @@ make_whitaker_diagram_2 <- function() {
                  #"AmazonFACE",
                  "BiForFACE",
                  #"SwedFACE",
-                 "FlakalidenWTC")      
+                 "FlakalidenWTC")    
+    
+    forests2 <- c("EucFACE",
+                 "DukeFACE",
+                 "ORNLFACE",
+                 "AspenFACE",
+                 "PopFACE",
+                 "WebFACE",
+                 #"AmazonFACE",
+                 "BiForFACE",
+                 #"SwedFACE",
+                 "FlakalidenWTC")  
     
     
     ### create plotting settings
     col.list <- c(viridis(7), "red", brewer.pal(7,"Paired"))
+    col.list2 <- c("red", brewer.pal(7,"Paired"))
     
     
     #### plotting scripts
+    #p1 <- ggplot() +
+    #    geom_point(plotDF1, mapping=aes(MAT, MAP, 
+    #                                   fill=factor(Biome),
+    #                                   color=factor(Biome),
+    #                                   shape=factor(Biome), 
+    #                                   size = factor(Biome)))+
+    #    xlab(expression("MAT (" * degree * "C)")) + 
+    #    ylab("MAP (mm)") +
+    #    scale_fill_manual(name="", 
+    #                       values=col.list,
+    #                       labels=forests) +
+    #    scale_color_manual(name="", 
+    #                      values=col.list,
+    #                      labels=forests) +
+    #    scale_shape_manual(values=c(rep(21, 7), 24, rep(22, 7)),
+    #                       labels=forests) +
+    #    scale_size_manual(values=c(rep(1, 7), rep(4, 8)),
+    #                      labels=forests)+
+    #    theme_linedraw() +
+    #    theme(panel.grid.minor=element_blank(),
+    #          axis.title.x = element_text(size=12), 
+    #          axis.text.x = element_text(size=12),
+    #          axis.text.y=element_text(size=12),
+    #          axis.title.y=element_text(size=12),
+    #          legend.text=element_text(size=6),
+    #          legend.title=element_text(size=12),
+    #          panel.grid.major=element_blank(),
+    #          legend.position="bottom",
+    #          legend.text.align=0)+
+    #    guides(size = "none",
+    #           shape = "none",
+    #           color = "none",
+    #           fill = guide_legend(ncol=5, override.aes = 
+    #                                    list(size = 4, shape=c(rep(21, 7), 24, rep(22, 7)), 
+    #                                         colour=col.list)))
+    
+    
     p1 <- ggplot() +
-        geom_point(plotDF1, mapping=aes(MAT, MAP, 
-                                       fill=factor(Biome),
+        geom_hex(plotDF1, mapping=aes(x=MAT, y=MAP), bins = 50) +
+        scale_fill_continuous(type = "viridis") +
+        geom_point(faceDF, mapping=aes(x=MAT, y=MAP, 
                                        color=factor(Biome),
                                        shape=factor(Biome), 
-                                       size = factor(Biome)))+
+                                       size = factor(Biome)),
+                   inherit.aes = FALSE)+
         xlab(expression("MAT (" * degree * "C)")) + 
         ylab("MAP (mm)") +
-        scale_fill_manual(name="", 
-                           values=col.list,
-                           labels=forests) +
         scale_color_manual(name="", 
-                          values=col.list,
-                          labels=forests) +
-        scale_shape_manual(values=c(rep(21, 7), 24, rep(22, 7)),
-                           labels=forests) +
-        scale_size_manual(values=c(rep(1, 7), rep(4, 8)),
-                          labels=forests)+
+                           values=col.list2,
+                           labels=forests2) +
+        scale_shape_manual(values=c(17, rep(15, 7)),
+                           labels=forests2) +
+        scale_size_manual(values=c(rep(4, 8)),
+                          labels=forests2)+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_text(size=12), 
@@ -353,44 +439,29 @@ make_whitaker_diagram_2 <- function() {
               legend.text.align=0)+
         guides(size = "none",
                shape = "none",
-               color = "none",
-               fill = guide_legend(ncol=5, override.aes = 
-                                        list(size = 4, shape=c(rep(21, 7), 24, rep(22, 7)), 
-                                             colour=col.list)))
+               #fill = viridis,
+               color = guide_legend(ncol=5, override.aes = 
+                                        list(size = 4, shape=c(17, rep(15, 7)), 
+                                             colour=col.list2)))
     
-    #plot(p1)
+    
+    plot(p1)
     
     ### prepare NPP vs. age
     col.list <- c("red", brewer.pal(7,"Paired"))
-        
-    fit <- lm(NPP ~ Age, data=faceDF)
-    
-    ### prepare NPP vs. age using West 2019 data
-    #fit2 <- data.frame(c(10:200), 10, NA)
-    #colnames(fit2) <- c("Age", "Temp", "NPP")
-    #fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
-    #fit2$NPP <- 156 * (fit2$Age^-0.226) * (fit2$Temp^1.003)
-    
-    r2value <- round(summary(fit.cue)$r.squared,3)
-    pvalue <- round(summary(fit.cue)$coefficients[,4][2], 3)
     
     p2 <- ggplot() +
-        geom_point(data=cueDF, aes(Age, NPP), col="grey", size=1)+
+        geom_point(data=forcDF3, aes(stand.age, mean), col="grey", size=1)+
         geom_point(data=faceDF, aes(Age, NPP, fill=as.factor(Biome),
                                        shape=as.factor(Biome)), size=2)+
-        #geom_abline(intercept = coefficients(fit)[[1]], slope = coefficients(fit)[[2]],
-        #            lty=1)+
-        geom_abline(intercept = coefficients(fit.cue)[[1]], slope = coefficients(fit.cue)[[2]],
+        geom_abline(intercept = coefficients(fit.npp3)[[1]], slope = coefficients(fit.npp3)[[2]],
                     lty=2)+
-        annotate(geom="text", x=270, y=1400, 
-                 label=paste0("NPP = ", round(coefficients(fit.cue)[[2]], 2), "Age + ", 
-                              round(coefficients(fit.cue)[[1]],2)),
+        annotate(geom="text", x=270, y=1900, 
+                 label=paste0("NPP = ", round(coefficients(fit.npp3)[[2]], 2), "Age + ", 
+                              round(coefficients(fit.npp3)[[1]],2)),
                   color="black", size=2.2)+
-        #annotate(geom="text", x=270, y=1300, 
-        #         label=expression(r^2, "= 0.037"),
-        #         color="black")+
-        annotate(geom="text", x=410, y=1200, 
-                 label=paste0("p = ", pvalue),
+        annotate(geom="text", x=410, y=1600, 
+                 label=paste0("p = ", pvalue3),
                  color="black", size=2.2)+
         ylab(expression("NPP (g C " * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
@@ -410,8 +481,43 @@ make_whitaker_diagram_2 <- function() {
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
-        scale_y_continuous(limits=c(0, 1500),
-                           breaks = c(0,500,1000,1500))
+        scale_y_continuous(limits=c(0, 2000),
+                           breaks = c(0,500,1000,1500, 2000))
+    
+    
+    p4 <- ggplot() +
+        geom_point(data=forcDF4, aes(stand.age, mean), col="grey", size=1)+
+        geom_point(data=faceDF, aes(Age, NPP, fill=as.factor(Biome),
+                                    shape=as.factor(Biome)), size=2)+
+        geom_abline(intercept = coefficients(fit.npp4)[[1]], slope = coefficients(fit.npp4)[[2]],
+                    lty=2)+
+        annotate(geom="text", x=270, y=1900, 
+                 label=paste0("NPP = ", round(coefficients(fit.npp4)[[2]], 2), "Age + ", 
+                              round(coefficients(fit.npp4)[[1]],2)),
+                 color="black", size=2.2)+
+        annotate(geom="text", x=410, y=1600, 
+                 label=paste0("p = ", pvalue4),
+                 color="black", size=2.2)+
+        ylab(expression("NPP (g C " * m^-2 * " " * yr^-1 *" )")) +
+        xlab("Age (yr)")+
+        theme_linedraw() +
+        xlim(0, 500)+
+        scale_fill_manual(name="Sites", 
+                          values=col.list) +
+        scale_shape_manual(values=c(24, rep(22, 7)),
+                           labels="") +
+        theme(panel.grid.minor=element_blank(),
+              axis.title.x = element_text(size=8), 
+              axis.text.x = element_text(size=8),
+              axis.text.y=element_text(size=8),
+              axis.title.y=element_text(size=8),
+              legend.text=element_text(size=8),
+              legend.title=element_text(size=8),
+              panel.grid.major=element_blank(),
+              legend.position="none",
+              legend.text.align=0)+
+        scale_y_continuous(limits=c(0, 2000),
+                           breaks = c(0,500,1000,1500, 2000))
     
     #plot(p2)
     
@@ -463,6 +569,22 @@ make_whitaker_diagram_2 <- function() {
            units = "cm",
            dpi = 300)
     
+    
+    
+    
+    plot.with.inset2 <-
+        ggdraw() +
+        draw_plot(p1) +
+        draw_plot(p4, x = 0.12, y = .72, width = .3, height = .25)+
+        draw_plot(p3, x = 0.12, y = .47, width = .3, height = .25)
+    
+    
+    ggsave(filename = "output/ED_Figure_2_no_understorey.pdf", 
+           plot = plot.with.inset2,
+           width = 17, 
+           height = 12,
+           units = "cm",
+           dpi = 300)
  
     
  }
