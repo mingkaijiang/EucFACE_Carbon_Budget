@@ -814,8 +814,8 @@ predict_final_output(pChain = pChain.eCO2,
 ### compute a output table to summarize parameters and their uncertainties
 make_parameter_summary_table()
 
-pChain.aCO2 <- read.csv("DA_output/posterior_parameters_aCO2_uniform_2e+05.csv")
-pChain.eCO2 <- read.csv("DA_output/posterior_parameters_eCO2_uniform_5e+05.csv")
+#pChain.aCO2 <- read.csv("DA_output/posterior_parameters_aCO2_uniform_2e+05.csv")
+#pChain.eCO2 <- read.csv("DA_output/posterior_parameters_eCO2_uniform_5e+05.csv")
 
 
 ########################################################################################
@@ -880,8 +880,8 @@ source("R/plot_supplementary_figures.R")
 
 
 ### Make a Whitaker diagram to show EucFACE in the context of global temperature and precipitation
-source("R/global_comparison/make_whitaker_diagram_2.R")
-make_whitaker_diagram_2()
+source("R/global_comparison/make_whitaker_diagram_3.R")
+make_whitaker_diagram_3()
 
 
 

@@ -190,10 +190,10 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     
     ### Simplify the plot by eleminating fluxes that has CO2 effect < 1 g m-2 yr-1
     plotDF2 <- subset(plotDF, abs(effect_size) >= 5)
-    subDF1 <- subset(plotDF, Variable == "Change_in_pools")
+    #subDF1 <- subset(plotDF, Variable == "Change_in_pools")
     subDF2 <- subset(plotDF, Variable == "Ra")
     
-    plotDF2 <- rbind(subDF1, subDF2, plotDF2)
+    plotDF2 <- rbind(subDF2, plotDF2)
     
     ### Order plot DF
     plotDF2 <- plotDF2[order(plotDF2$plot.cat2),]
@@ -220,7 +220,7 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
     E.col.list <- brewer.pal(6,"YlOrRd")[2:6]
     
     ### Change in pools
-    F.col.list <- brewer.pal(5,"Blues")[2:5]
+    F.col.list <- brewer.pal(6,"Blues")[2:6]
     
     v.list <- viridis(25)
 
@@ -243,7 +243,8 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                    "delta_fineroot_c"=F.col.list[1],  
                    "delta_wood_c"=F.col.list[2],        
                    "delta_understorey_c"=F.col.list[3],
-                   "delta_soil_c"=F.col.list[4]) 
+                   "delta_soil_c"=F.col.list[4],
+                   "delta_litter_c"=F.col.list[5]) 
     
     
     # y label
@@ -265,7 +266,8 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
                 "delta_fineroot_c"=expression(Delta*C[froot]),
                 "delta_wood_c"=expression(Delta*C[stem]),         # 21
                 "delta_soil_c"=expression(Delta*C[soil]),
-                "delta_understorey_c"=expression(Delta*C[ua]))
+                "delta_understorey_c"=expression(Delta*C[ua]),
+                "delta_litter_c"=expression(Delta*C[lit]))
     
     ### split the groups and make separate plots
     plotDF.sub1 <- subset(plotDF2, plot.cat2%in%c("A", "B", "C"))
@@ -308,9 +310,9 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
-                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        scale_y_continuous(limits=c(-400, 510), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 500),
+                           labels=c(-400, -200, 0, 100, 200, 400, 500))+
         guides(fill=guide_legend(ncol=3),legend.justification = c(0, 1))+
         annotate(geom="text", x=0.6, y=500, label="a", size=7)
     
@@ -342,9 +344,9 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
-                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        scale_y_continuous(limits=c(-400, 510), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 500),
+                           labels=c(-400, -200, 0, 100, 200, 400, 500))+
         guides(fill=guide_legend(ncol=2))+
         annotate(geom="text", x=0.5, y=500, label="b", size=7)
     
@@ -374,9 +376,9 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
-                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        scale_y_continuous(limits=c(-400, 510), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 500),
+                           labels=c(-400, -200, 0, 100, 200, 400, 500))+
         guides(fill=guide_legend(ncol=2, nrow=3))+
         annotate(geom="text",x=0.5, y=500, label="c", size=7)
     
@@ -406,9 +408,9 @@ make_eCO2_effect_on_GPP_plot <- function(inDF) {
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
-        scale_y_continuous(limits=c(-400, 500), 
-                           breaks=c(-400, -200, 0, 100, 200, 400, 600),
-                           labels=c(-400, -200, 0, 100, 200, 400, 600))+
+        scale_y_continuous(limits=c(-400, 510), 
+                           breaks=c(-400, -200, 0, 100, 200, 400, 500),
+                           labels=c(-400, -200, 0, 100, 200, 400, 500))+
         guides(fill=guide_legend(ncol=2))+
         annotate(geom="text", x=0.5, y=500, label="d", size=7)
     

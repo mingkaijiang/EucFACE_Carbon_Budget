@@ -1158,30 +1158,10 @@ plot(p1)
 dev.off()
 
 ###################---------------------######################
-### NPP for fineroot, coarseroot, boleroot
+### NPP for fineroot, coarseroot, intermediateroot
 
-### Boleroot
-broot.prod <- bole_root_production_flux
-broot.prod$Yr <- year(broot.prod$Date)
-y.list <- unique(broot.prod$Yr)
-broot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
-colnames(broot.ann) <- c("Ring", "Yr", "value")
-for (i in 1:6) {
-    for (j in y.list) {
-        broot.ann$value[broot.ann$Ring==i&broot.ann$Yr==j] <- with(broot.prod[broot.prod$Yr==j&broot.prod$Ring==i, ],
-                                                                   sum(bole_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
-    }
-}
-broot.ann$Trt[broot.ann$Ring%in%c(2,3,6)] <- "aCO2"
-broot.ann$Trt[broot.ann$Ring%in%c(1,4,5)] <- "eCO2"
-broot.avg <- summaryBy(value~Trt, FUN=mean, data=broot.ann, keep.names=T, na.rm=T)
-broot.se <- summaryBy(value~Trt, FUN=se, data=broot.ann, keep.names=T, na.rm=T)
-broot.avg$se <- broot.se$value
-broot.avg$component <- "boleroot"
-
-
-### Coarseroot
-croot.prod <- coarseroot_production_flux
+### coarse root
+croot.prod <- coarse_root_production_flux
 croot.prod$Yr <- year(croot.prod$Date)
 y.list <- unique(croot.prod$Yr)
 croot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
@@ -1189,7 +1169,7 @@ colnames(croot.ann) <- c("Ring", "Yr", "value")
 for (i in 1:6) {
     for (j in y.list) {
         croot.ann$value[croot.ann$Ring==i&croot.ann$Yr==j] <- with(croot.prod[croot.prod$Yr==j&croot.prod$Ring==i, ],
-                                                                 sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+                                                                   sum(coarse_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
     }
 }
 croot.ann$Trt[croot.ann$Ring%in%c(2,3,6)] <- "aCO2"
@@ -1197,7 +1177,27 @@ croot.ann$Trt[croot.ann$Ring%in%c(1,4,5)] <- "eCO2"
 croot.avg <- summaryBy(value~Trt, FUN=mean, data=croot.ann, keep.names=T, na.rm=T)
 croot.se <- summaryBy(value~Trt, FUN=se, data=croot.ann, keep.names=T, na.rm=T)
 croot.avg$se <- croot.se$value
-croot.avg$component <- "coarseroot"
+croot.avg$component <- "coarse"
+
+
+### intermediate root
+iroot.prod <- intermediate_root_production_flux
+iroot.prod$Yr <- year(iroot.prod$Date)
+y.list <- unique(iroot.prod$Yr)
+iroot.ann <- data.frame(rep(c(1:6), length(y.list)), rep(y.list, each=6), NA)
+colnames(iroot.ann) <- c("Ring", "Yr", "value")
+for (i in 1:6) {
+    for (j in y.list) {
+        iroot.ann$value[iroot.ann$Ring==i&iroot.ann$Yr==j] <- with(iroot.prod[iroot.prod$Yr==j&iroot.prod$Ring==i, ],
+                                                                 sum(intermediate_root_production_flux*ndays, na.rm=T)/sum(ndays, na.rm=T))*365/1000 
+    }
+}
+iroot.ann$Trt[iroot.ann$Ring%in%c(2,3,6)] <- "aCO2"
+iroot.ann$Trt[iroot.ann$Ring%in%c(1,4,5)] <- "eCO2"
+iroot.avg <- summaryBy(value~Trt, FUN=mean, data=iroot.ann, keep.names=T, na.rm=T)
+iroot.se <- summaryBy(value~Trt, FUN=se, data=iroot.ann, keep.names=T, na.rm=T)
+iroot.avg$se <- iroot.se$value
+iroot.avg$component <- "intermediate"
 
 ### fineroot
 froot.prod <- fineroot_production_flux
@@ -1216,9 +1216,9 @@ froot.ann$Trt[froot.ann$Ring%in%c(1,4,5)] <- "eCO2"
 froot.avg <- summaryBy(value~Trt, FUN=mean, data=froot.ann, keep.names=T, na.rm=T)
 froot.se <- summaryBy(value~Trt, FUN=se, data=froot.ann, keep.names=T, na.rm=T)
 froot.avg$se <- froot.se$value
-froot.avg$component <- "fineroot"
+froot.avg$component <- "fine"
 
-root.plot <- rbind(broot.avg, croot.avg, froot.avg)
+root.plot <- rbind(croot.avg, iroot.avg, froot.avg)
 root.plot$pos <- with(root.plot, value + se)
 root.plot$neg <- with(root.plot, value - se)
 

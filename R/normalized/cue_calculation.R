@@ -9,11 +9,73 @@ cue_calculation <- function(inDF) {
     
     ### create data frames to store ring data for aCO2 and eCO2
     ## aCO2
-    errDF1 <- data.frame(c("NPP", "GPP", "CUE"), NA, NA, NA)
+    errDF1 <- data.frame(c("NPP", "GPP", "CUE", "ANPP"), NA, NA, NA)
     colnames(errDF1) <- c("cat", "R2", "R3", "R6")
     ## eCO2
-    errDF2 <- data.frame(c("NPP", "GPP", "CUE"), NA, NA, NA)
+    errDF2 <- data.frame(c("NPP", "GPP", "CUE", "ANPP"), NA, NA, NA)
     colnames(errDF2) <- c("cat", "R1", "R4", "R5")
+    
+    ### calculate sum of ANPP for each ring
+    ## aCO2
+    errDF1[errDF1$cat=="ANPP", "R2"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_2"],
+                                           temDF1[temDF1$term == "Stem NPP","Ring_2"],
+                                           #temDF1[temDF1$term == "Fine Root NPP","Ring_2"],
+                                           #temDF1[temDF1$term == "Coarse Root NPP","Ring_2"],
+                                           #temDF1[temDF1$term == "Intermediate Root NPP","Ring_2"],
+                                           temDF1[temDF1$term == "Other NPP","Ring_2"],
+                                           temDF1[temDF1$term == "Understorey NPP","Ring_2"],
+                                           temDF1[temDF1$term == "Leaf consumption","Ring_2"])
+    
+    
+    errDF1[errDF1$cat=="ANPP", "R3"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_3"],
+                                           temDF1[temDF1$term == "Stem NPP","Ring_3"],
+                                           #temDF1[temDF1$term == "Fine Root NPP","Ring_3"],
+                                           #temDF1[temDF1$term == "Coarse Root NPP","Ring_3"],
+                                           #temDF1[temDF1$term == "Intermediate Root NPP","Ring_3"],
+                                           temDF1[temDF1$term == "Other NPP","Ring_3"],
+                                           temDF1[temDF1$term == "Understorey NPP","Ring_3"],
+                                           temDF1[temDF1$term == "Leaf consumption","Ring_3"])
+    
+    
+    errDF1[errDF1$cat=="ANPP", "R6"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_6"],
+                                           temDF1[temDF1$term == "Stem NPP","Ring_6"],
+                                           #temDF1[temDF1$term == "Fine Root NPP","Ring_6"],
+                                           #temDF1[temDF1$term == "Coarse Root NPP","Ring_6"],
+                                           #temDF1[temDF1$term == "Intermediate Root NPP","Ring_6"],
+                                           temDF1[temDF1$term == "Other NPP","Ring_6"],
+                                           temDF1[temDF1$term == "Understorey NPP","Ring_6"],
+                                           temDF1[temDF1$term == "Leaf consumption","Ring_6"])
+    
+    
+    ## eCO2
+    errDF2[errDF2$cat=="ANPP", "R1"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_1"],
+                                           temDF1[temDF1$term == "Stem NPP","Ring_1"],
+                                           #temDF1[temDF1$term == "Fine Root NPP","Ring_1"],
+                                           #temDF1[temDF1$term == "Coarse Root NPP","Ring_1"],
+                                           #temDF1[temDF1$term == "Intermediate Root NPP","Ring_1"],
+                                           temDF1[temDF1$term == "Other NPP","Ring_1"],
+                                           temDF1[temDF1$term == "Understorey NPP","Ring_1"],
+                                           temDF1[temDF1$term == "Leaf consumption","Ring_1"])
+    
+    
+    errDF2[errDF2$cat=="ANPP", "R4"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_4"],
+                                           temDF1[temDF1$term == "Stem NPP","Ring_4"],
+                                           #temDF1[temDF1$term == "Fine Root NPP","Ring_4"],
+                                           #temDF1[temDF1$term == "Coarse Root NPP","Ring_4"],
+                                           #temDF1[temDF1$term == "Intermediate Root NPP","Ring_4"],
+                                           temDF1[temDF1$term == "Other NPP","Ring_4"],
+                                           temDF1[temDF1$term == "Understorey NPP","Ring_4"],
+                                           temDF1[temDF1$term == "Leaf consumption","Ring_4"])
+    
+    
+    errDF2[errDF2$cat=="ANPP", "R5"] <- sum(temDF1[temDF1$term == "Leaf NPP","Ring_5"],
+                                           temDF1[temDF1$term == "Stem NPP","Ring_5"],
+                                           #temDF1[temDF1$term == "Fine Root NPP","Ring_5"],
+                                           #temDF1[temDF1$term == "Coarse Root NPP","Ring_5"],
+                                           #temDF1[temDF1$term == "Intermediate Root NPP","Ring_5"],
+                                           temDF1[temDF1$term == "Other NPP","Ring_5"],
+                                           temDF1[temDF1$term == "Understorey NPP","Ring_5"],
+                                           temDF1[temDF1$term == "Leaf consumption","Ring_5"])
 
     ### calculate sum of NPP for each ring
     ## aCO2
