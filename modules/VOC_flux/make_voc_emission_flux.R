@@ -1,6 +1,5 @@
 
 make_voc_emission_flux <- function(){
-    
 
     # read in data
     myDF <- read.csv("data/VOC_emissions.csv")
