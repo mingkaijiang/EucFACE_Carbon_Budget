@@ -1854,7 +1854,25 @@ dev.off()
 ###################---------------------######################
 ### VOC
 
-o.voc.tr <- read.csv("data/VOC_emissions.csv")
+#- read in the data ug isoprene m-2 yr-1
+isoDF <- read.csv("data/annual_isoprene_emission_without_soil_moisture.csv")
+
+# covert unit into g C m-2 yr-1
+isoDF$Flux_g_C_m2_yr <- 0.000001 * isoDF$isoprene * (1/68) * 5 * 12 
+
+isoDF$Date <- as.Date(paste0(isoDF$year, "-01-01"), format = "%Y-%m-%d")
+
+isoDF$FluxName <- "Isoprene"
+subDF <- isoDF[,c("year", "Ring", "FluxName", "Flux_g_C_m2_yr", "Date")]
+colnames(subDF) <- c("Year", "Ring", "FluxName", "Flux_g_C_m2_yr", "Date")
+
+# read in data
+monoDF <- read.csv("data/VOC_emissions.csv")
+
+monoDF$Date <- as.Date(paste0(monoDF$Year, "-01-01"), format = "%Y-%m-%d")
+
+o.voc.tr <- rbind(subDF, monoDF)
+
 o.voc.tr$Trt[o.voc.tr$Ring%in%c(2,3,6)] <- "aCO2"
 o.voc.tr$Trt[o.voc.tr$Ring%in%c(1,4,5)] <- "eCO2"
 
