@@ -26,3 +26,5 @@ model_output/LPJW/*.csv
 model_output/LPJX/*.csv
 model_output/OCNX/*.csv
 model_output/SDVM/*.csv
+
+*.Rmd
