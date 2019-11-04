@@ -127,15 +127,11 @@ soil_respiration_flux <- make_soil_respiration_flux()
 #prepare_VOC_met_data(laiDF=lai_variable)
 
 
-### compare isoprene contribution against monoterpene in total VOC
-#compare_voc_fluxes()
 
-### result based on Bruno's parameters, for monoterpenes, and sesquiterpenes
-#voc_emission_flux <- make_voc_emission_flux()
+### isoprene (David) and monoterpenes (Bruna)
+voc_emission_flux <- make_voc_emission_flux()
 
-### result based on David's parameters for isoprene
-### and results based on Bruna's parameters for monoterpene and sesquiterpenes
-voc_emission_flux <- make_voc_emission_flux2()
+
 
 ### leaf C pool
 ### read in c_fraction defined in constant
