@@ -4,19 +4,18 @@
 
 
 
-## Instructions for contributors
+## General instruction to access the repo
 
-1. Place your HIEv token in a file called 'tokenfile.txt', and place it in the directory for this project.
+1. Place your HIEv token in a file called 'tokenfile.txt', and place it in the directory for this project. Note that only internal user from HIE who has access to HIEv has a token file. 
 2. Code for a pool or flux is organized in a 'module', as a subdirectory in the 'modules' directory. See below on naming the module.
-3. Each of those folders will have a function definition in it, which will be named make_<<module>>.R, for example 'make_leaf_pool.R'. 
-4. You can write as many functions as you like for each module, as separate files or defined in one file (all are `source`d by `R/prepare.R`).
-5. If you are downloading data from the HIEv, do that in a separate function, e.g. `download_leaf_pool_data`, and call it by the main function in the module.
-6. The `make_` function may take inputs (see `run.R` for examples), and will produce one output (and one only), a dataframe (see details below).
-7. In each module subfolder, it is **not allowed** to place scripts other than ones that define functions. Write functions only (no exceptions).
-8. In each of the module subfolders, place other stuff you might need there, like CSV files with information that is not on HIEv (not data, but maybe settings or whatever).
-9. Constants / hardwired parameters that you think will be used more than once should be placed in `definitions/constants.R`
-10. **Do not** load packages inside any code in the modules, instead add needed packages to the `R/prepare.R` script. `library` or `require` statements are not allowed.
-11. The file `run.R` will compute each module in order needed (since some depend on others before it), and produce lots of dataframes.
+3. Each of those folders will have a function definition in it, which will be named make_<<module>>.R, for example 'make_leaf_pool.R'. Many folders also contain a separate script to download the data, and some additional scripts to process the data and generate statistics. 
+4. Data downloaded from HIEv are stored in the folder "download". 
+5. Data not available from HIEv are either stored in folder "temp_files" or "data". Some cleaning is needed to merge the two folders. 
+6. The `run.R` script is the master script, where the entire repo is processed. 
+8. Constants / hardwired parameters are placed in `definitions/constants.R`.
+9. All packages and essential pre-setting work are pre-loaded in 'R/prepare.R".
+10. The folder 'R" synthesized all the individual scripts and compute the budget related variables and statistics. 
+11. The 'DA_scripts' folder contains necessary codes to construct the data assimilation framework. 
 
 
 ## Downloading data
@@ -48,25 +47,8 @@ Examples:
 - sla_variable
 - lai_variable
 
+### Output
 
-
-## Module output specs
-
-Each module function should produce a dataframe with the following **mandatory** columns:
-
-For **pool** modules:
-- Date (YYYY-MM-DD) (Date or character, **not** POSIXct)
-For **flux** modules: 
-- Start_date (YYYY-MM-DD) (Date or character, **not** POSIXct)
-- End_date (YYYY-MM-DD) (Date or character, **not** POSIXct)
-
-For **both**: 
-- Ring (1 - 6) (numeric)
-- <<module>> (e.g. leaf_pool). Units: mgC m^-2^ day^-1^ for fluxes, gC m^-2^ for pools
-
-And the following **optional** columns:
-
-- Method (1, 2, ..., n) (numeric)
-- *any others?*
+All output are stored in folder 'output'. The data assimilation results are stored in 'DA_output'.
 
 
