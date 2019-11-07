@@ -263,8 +263,11 @@ coarse_root_c_pool <- make_coarse_root_pool(c_fraction_croot, fr_pool=fineroot_c
 coarse_root_production_flux <- make_coarse_root_production_flux(coarse_root_c_pool) 
 
 ### Root respiration flux
-root_respiration_flux <- make_root_respiration_flux_2(froot=fineroot_c_pool, 
-                                                      iroot=intermediate_root_c_pool)
+root_respiration_flux <- make_root_respiration_flux_3(froot=fineroot_c_pool, 
+                                                      iroot=intermediate_root_c_pool,
+                                                      croot=coarse_root_c_pool,
+                                                      rstem=wood_respiration_flux,
+                                                      stem=wood_c_pool)
 
 
 ### Rh C flux

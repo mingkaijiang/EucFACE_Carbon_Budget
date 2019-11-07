@@ -81,8 +81,13 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
     data$ba2 <- data$ba 
     data$biomass <- exp(0.787 * log(data$ba2) + 1.218) 
     
+    ### Estimate sapwood and heartwood C fraction
+    sap.c <- make_sapwood_c_n_fraction()
+    data$c_frac[data$Ring %in% c(2, 3, 6)] <- sap.c$aCO2[sap.c$variable=="C"]
+    data$c_frac[data$Ring %in% c(1, 4, 5)] <- sap.c$eCO2[sap.c$variable=="C"]
+    
     # convert from g matter m-2 to g C m-2
-    data$total_root_c_pool <- data$biomass * c_frac * water_frac * 1000000
+    data$total_root_c_pool <- data$biomass * data$c_frac * water_frac * 1000000
     
     
     # sum across rings and dates
@@ -128,7 +133,10 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
             
     }
     
-    data.m$coarseroot_c_pool <- data.m$coarseroot_biomass * c_frac
+    data.m$c_frac[data.m$Ring %in% c(2, 3, 6)] <- sap.c$aCO2[sap.c$variable=="C"]
+    data.m$c_frac[data.m$Ring %in% c(1, 4, 5)] <- sap.c$eCO2[sap.c$variable=="C"]
+    
+    data.m$coarseroot_c_pool <- data.m$coarseroot_biomass * data.m$c_frac
 
     # output
     out <- data.m[,c("Date","Ring","coarseroot_c_pool")]
