@@ -454,15 +454,15 @@ make_whitaker_diagram_3 <- function() {
         geom_point(data=forcDF3, aes(stand.age, mean), col="grey", size=1)+
         geom_point(data=faceDF, aes(Age, NPP, fill=as.factor(Biome),
                                        shape=as.factor(Biome)), size=2)+
-        geom_abline(intercept = coefficients(fit.npp3)[[1]], slope = coefficients(fit.npp3)[[2]],
-                    lty=2)+
-        annotate(geom="text", x=270, y=1900, 
-                 label=paste0("NPP = ", round(coefficients(fit.npp3)[[2]], 2), "Age + ", 
-                              round(coefficients(fit.npp3)[[1]],2)),
-                  color="black", size=2.2)+
-        annotate(geom="text", x=410, y=1600, 
-                 label=paste0("p = ", pvalue3),
-                 color="black", size=2.2)+
+        #geom_abline(intercept = coefficients(fit.npp3)[[1]], slope = coefficients(fit.npp3)[[2]],
+        #            lty=2)+
+        #annotate(geom="text", x=270, y=1900, 
+        #         label=paste0("NPP = ", round(coefficients(fit.npp3)[[2]], 2), "Age + ", 
+        #                      round(coefficients(fit.npp3)[[1]],2)),
+        #          color="black", size=2.2)+
+        #annotate(geom="text", x=410, y=1600, 
+        #         label=paste0("p = ", pvalue3),
+        #         color="black", size=2.2)+
         ylab(expression("NPP (g C " * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
         theme_linedraw() +
@@ -489,15 +489,15 @@ make_whitaker_diagram_3 <- function() {
         geom_point(data=forcDF4, aes(stand.age, mean), col="grey", size=1)+
         geom_point(data=faceDF, aes(Age, NPP, fill=as.factor(Biome),
                                     shape=as.factor(Biome)), size=2)+
-        geom_abline(intercept = coefficients(fit.npp4)[[1]], slope = coefficients(fit.npp4)[[2]],
-                    lty=2)+
-        annotate(geom="text", x=270, y=1900, 
-                 label=paste0("NPP = ", round(coefficients(fit.npp4)[[2]], 2), "Age + ", 
-                              round(coefficients(fit.npp4)[[1]],2)),
-                 color="black", size=2.2)+
-        annotate(geom="text", x=410, y=1600, 
-                 label=paste0("p = ", pvalue4),
-                 color="black", size=2.2)+
+        #geom_abline(intercept = coefficients(fit.npp4)[[1]], slope = coefficients(fit.npp4)[[2]],
+        #            lty=2)+
+        #annotate(geom="text", x=270, y=1900, 
+        #         label=paste0("NPP = ", round(coefficients(fit.npp4)[[2]], 2), "Age + ", 
+        #                      round(coefficients(fit.npp4)[[1]],2)),
+        #         color="black", size=2.2)+
+        #annotate(geom="text", x=410, y=1600, 
+        #         label=paste0("p = ", pvalue4),
+        #         color="black", size=2.2)+
         ylab(expression("NPP (g C " * m^-2 * " " * yr^-1 *" )")) +
         xlab("Age (yr)")+
         theme_linedraw() +
@@ -549,7 +549,9 @@ make_whitaker_diagram_3 <- function() {
               legend.title=element_text(size=8),
               panel.grid.major=element_blank(),
               legend.position="none",
-              legend.text.align=0)
+              legend.text.align=0)+
+        ylim(0, 100)+
+        xlim(0, 2500)
     
     #plot(p3)
     
