@@ -10,7 +10,7 @@ prefit_MCMC_model_fitting <- function(params,
     burn_in <- chainLength * 0.1 
     
     ### prepare output df
-    pChain <- matrix(0, nrow=chainLength, ncol = no.var+4+11)
+    pChain <- matrix(0, nrow=chainLength, ncol = no.var+4+12)
     
     ### prepare model aic and bic comparison DF
     k1 <- 2 # k = 2 for the usual AIC
@@ -143,7 +143,7 @@ prefit_MCMC_model_fitting <- function(params,
                        "alloc.myco", 
                        "GPP", "NPP", "CUE",
                        "NPP.leaf", "NPP.wood", "NPP.root", "NPP.myco", 
-                       "delta.Cleaf", "delta.Croot", "delta.Cmyco", 
+                       "delta.Cleaf", "delta.Croot", "delta.Cmyco", "delta.Cwood",
                        "logli", "Prior","aic", "bic")
     
     

@@ -13,6 +13,8 @@ EucFACE_C_budget_model <- function(params,
   tau.root <- params[5]
   tau.myco <- params[6]
   
+  tau.wood <- obs$NPP.other.mean / obs$C.wood.mean
+  
   tau.ag.lit <- obs$tau.ag.lit.mean
   
   tau.bg.lit <- params[7]
@@ -54,7 +56,9 @@ EucFACE_C_budget_model <- function(params,
   delta.C.root <- NPP.root - tau.root * C.root
   delta.C.myco <- NPP.myco - tau.myco * C.myco
   
-  delta.C.ag.lit <- tau.leaf * C.leaf - tau.ag.lit * C.ag.lit
+  delta.C.wood <- NPP.wood - tau.wood * C.wood
+  
+  delta.C.ag.lit <- tau.leaf * C.leaf + tau.wood * C.wood - tau.ag.lit * C.ag.lit
   
   ### this is unconstrained
   delta.C.bg.lit <- tau.myco + C.myco + tau.root * C.root - tau.bg.lit * C.bg.lit
@@ -77,12 +81,14 @@ EucFACE_C_budget_model <- function(params,
   outDF <- data.frame(obs$GPP.mean, NPP.tot, CUE,
                       NPP.leaf, NPP.wood, NPP.root, NPP.myco,
                       delta.C.leaf, delta.C.root, delta.C.myco, 
+                      delta.C.wood,
                       delta.C.ag.lit, delta.C.bg.lit, 
                       delta.C.micr, delta.C.soil, Rhet)
   
   colnames(outDF) <- c("GPP", "NPP", "CUE",
                        "NPP.leaf", "NPP.wood", "NPP.root", "NPP.myco",
                        "delta.Cleaf", "delta.Croot", "delta.Cmyco", 
+                       "delta.Cwood",
                        "delta.Cag", "delta.Cbg",
                        "delta.Cmicr", "delta.Csoil", "Rhet")
   

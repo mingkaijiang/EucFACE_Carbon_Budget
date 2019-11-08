@@ -12,6 +12,7 @@ prefit_log_likelihood <- function(obs, pred) {
     logLi <- logLi - 0.5*(abs((pred$delta.Cleaf - obs$delta.C.leaf.mean))/obs$delta.C.leaf.sd)^2 - log(obs$delta.C.leaf.sd) - log(2*pi)^0.5
     logLi <- logLi - 0.5*(abs((pred$delta.Croot - obs$delta.C.root.mean))/obs$delta.C.root.sd)^2 - log(obs$delta.C.root.sd) - log(2*pi)^0.5
     logLi <- logLi - 0.5*(abs((pred$delta.Cmyco - obs$delta.C.myco.mean))/obs$delta.C.myco.sd)^2 - log(obs$delta.C.myco.sd) - log(2*pi)^0.5
+    logLi <- logLi - 0.5*(abs((pred$delta.Cwood - obs$delta.C.wood.mean))/obs$delta.C.wood.sd)^2 - log(obs$delta.C.wood.sd) - log(2*pi)^0.5
     
     
     sumlogLi <- sum(logLi)

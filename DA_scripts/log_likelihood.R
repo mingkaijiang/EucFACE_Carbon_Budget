@@ -14,6 +14,7 @@ log_likelihood <- function(obs, pred) {
     logLi <- logLi - 0.5*(abs((pred$delta.Cmyco - obs$delta.C.myco.mean))/obs$delta.C.myco.sd)^2 - log(obs$delta.C.myco.sd) - log(2*pi)^0.5
     logLi <- logLi - 0.5*(abs((pred$delta.Cmicr - obs$delta.C.micr.mean))/obs$delta.C.micr.sd)^2 - log(obs$delta.C.micr.sd) - log(2*pi)^0.5
     logLi <- logLi - 0.5*(abs((pred$delta.Csoil - obs$delta.C.soil.mean))/obs$delta.C.soil.sd)^2 - log(obs$delta.C.soil.sd) - log(2*pi)^0.5
+    logLi <- logLi - 0.5*(abs((pred$delta.Cwood - obs$delta.C.wood.mean))/obs$delta.C.wood.sd)^2 - log(obs$delta.C.wood.sd) - log(2*pi)^0.5
     
     ### delta litter pool should be none
     logLi <- logLi - 0.5*(abs((pred$delta.Cag - 0.0))/50.0)^2 - log(50.0) - log(2*pi)^0.5

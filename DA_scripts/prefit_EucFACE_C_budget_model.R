@@ -13,6 +13,8 @@ prefit_EucFACE_C_budget_model <- function(params,
   tau.root <- params[5]
   tau.myco <- params[6]
   
+  tau.wood <- obs$NPP.other.mean / obs$C.wood.mean
+  
   ### get total NPP
   NPP.tot <- obs$GPP.mean - obs$Ra.mean
   
@@ -38,16 +40,16 @@ prefit_EucFACE_C_budget_model <- function(params,
   delta.C.leaf <- NPP.leaf - tau.leaf * C.leaf
   delta.C.root <- NPP.root - tau.root * C.root
   delta.C.myco <- NPP.myco - tau.myco * C.myco
-  
+  delta.C.wood <- NPP.wood - tau.wood * C.wood
   
   ### prepare output
   outDF <- data.frame(alloc.myco, obs$GPP.mean, NPP.tot, CUE,
                       NPP.leaf, NPP.wood, NPP.root, NPP.myco,
-                      delta.C.leaf, delta.C.root, delta.C.myco)
+                      delta.C.leaf, delta.C.root, delta.C.myco, delta.C.wood)
   
   colnames(outDF) <- c("alloc.myco", "GPP", "NPP", "CUE",
                        "NPP.leaf", "NPP.wood", "NPP.root", "NPP.myco",
-                       "delta.Cleaf", "delta.Croot", "delta.Cmyco")
+                       "delta.Cleaf", "delta.Croot", "delta.Cmyco", "delta.Cwood")
   
   return(outDF)
   

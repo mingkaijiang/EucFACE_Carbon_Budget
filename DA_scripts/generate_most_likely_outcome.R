@@ -51,6 +51,8 @@ generate_most_likely_outcome <- function(inDF, obs) {
     outDF$delta.Cmicr[outDF$Cat=="Observed"] <- obs$delta.C.micr.mean
     outDF$delta.Csoil[outDF$Cat=="Observed"] <- obs$delta.C.soil.mean
     
+    outDF$delta.Cwood[outDF$Cat=="Observed"] <- obs$delta.C.wood.mean
+    
     outDF$Rhet[outDF$Cat=="Observed"] <- obs$Rhet.mean
     
     outDF$alloc.myco[outDF$Cat=="Observed"] <- NA

@@ -179,9 +179,9 @@ initialize_obs_ele_dataframe <- function() {
     ##################################### read csv npp
     nppDF1 <- read.csv("output/npp.csv")
     
-    nppDF2 <- as.data.frame(matrix(ncol=6, nrow = 4))
-    colnames(nppDF2) <- c("NPP.leaf.mean", "NPP.wood.mean", "NPP.root.mean",
-                          "NPP.leaf.sd", "NPP.wood.sd", "NPP.froot.sd")
+    nppDF2 <- as.data.frame(matrix(ncol=8, nrow = 4))
+    colnames(nppDF2) <- c("NPP.leaf.mean", "NPP.wood.mean", "NPP.root.mean", "NPP.other.mean",
+                          "NPP.leaf.sd", "NPP.wood.sd", "NPP.froot.sd", "NPP.other.sd")
     
     ### Ring 1, means
     nppDF2[1,"NPP.leaf.mean"] <- sum(nppDF1$Ring_1[nppDF1$term%in%c("Leaf NPP", 
@@ -193,6 +193,8 @@ initialize_obs_ele_dataframe <- function() {
     
     nppDF2[1,"NPP.root.mean"] <- sum(nppDF1$Ring_1[nppDF1$term%in%c("Fine Root NPP",
                                                                     "Intermediate Root NPP")])
+    
+    nppDF2[1,"NPP.other.mean"] <- sum(nppDF1$Ring_1[nppDF1$term%in%c("Other NPP")])
     
     
     ### Ring 4, means
@@ -206,6 +208,8 @@ initialize_obs_ele_dataframe <- function() {
     nppDF2[2,"NPP.root.mean"] <- sum(nppDF1$Ring_4[nppDF1$term%in%c("Fine Root NPP",
                                                                     "Intermediate Root NPP")])
     
+    nppDF2[2,"NPP.other.mean"] <- sum(nppDF1$Ring_4[nppDF1$term%in%c("Other NPP")])
+    
     
     ### Ring 5, means
     nppDF2[3,"NPP.leaf.mean"] <- sum(nppDF1$Ring_5[nppDF1$term%in%c("Leaf NPP", 
@@ -218,6 +222,8 @@ initialize_obs_ele_dataframe <- function() {
     nppDF2[3,"NPP.root.mean"] <- sum(nppDF1$Ring_5[nppDF1$term%in%c("Fine Root NPP",
                                                                     "Intermediate Root NPP")])
     
+    nppDF2[3,"NPP.other.mean"] <- sum(nppDF1$Ring_5[nppDF1$term%in%c("Other NPP")])
+    
     
     ### eCO2, means
     nppDF2[4,"NPP.leaf.mean"] <- sum(nppDF1$eCO2[nppDF1$term%in%c("Leaf NPP", 
@@ -229,6 +235,8 @@ initialize_obs_ele_dataframe <- function() {
     
     nppDF2[4,"NPP.root.mean"] <- sum(nppDF1$eCO2[nppDF1$term%in%c("Fine Root NPP",
                                                                     "Intermediate Root NPP")])
+    
+    nppDF2[4,"NPP.other.mean"] <- sum(nppDF1$eCO2[nppDF1$term%in%c("Other NPP")])
     
     
     
@@ -243,6 +251,8 @@ initialize_obs_ele_dataframe <- function() {
     nppDF2[1,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
                                                                     "Intermediate Root NPP")])
     
+    nppDF2[1,"NPP.other.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Other NPP")])
+    
     
     ### Ring 4, sd
     nppDF2[2,"NPP.leaf.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Leaf NPP", 
@@ -254,6 +264,8 @@ initialize_obs_ele_dataframe <- function() {
     
     nppDF2[2,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
                                                                    "Intermediate Root NPP")])
+    
+    nppDF2[2,"NPP.other.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Other NPP")])
     
     
     ### Ring 5, sd
@@ -267,6 +279,8 @@ initialize_obs_ele_dataframe <- function() {
     nppDF2[3,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
                                                                    "Intermediate Root NPP")])
     
+    nppDF2[3,"NPP.other.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Other NPP")])
+    
     
     ### eCO2, sd
     nppDF2[4,"NPP.leaf.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Leaf NPP", 
@@ -279,6 +293,7 @@ initialize_obs_ele_dataframe <- function() {
     nppDF2[4,"NPP.root.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Fine Root NPP",
                                                                    "Intermediate Root NPP")])
     
+    nppDF2[4,"NPP.other.sd"] <- sum(nppDF1$eCO2_sd[nppDF1$term%in%c("Other NPP")])
     
     
     
