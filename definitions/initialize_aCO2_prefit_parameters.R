@@ -4,7 +4,7 @@
 
 ### R2
 prefit.params.aCO2.R2 <- c(0.55,          # alloc leaf
-                           0.15,          # alloc wood 
+                           0.2, #0.15,          # alloc wood 
                            0.15,          # alloc root
                            1.1,           # tau leaf
                            1.4,           # tau root

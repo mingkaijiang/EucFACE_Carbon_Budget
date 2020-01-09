@@ -3,9 +3,9 @@
 ### parameter space
 
 ### R1
-prefit.params.eCO2.R1 <- c(0.45,          # alloc leaf
-                           0.2,           # alloc wood 
-                           0.19,
+prefit.params.eCO2.R1 <- c(0.5,#0.45,          # alloc leaf
+                           0.22,#0.2,           # alloc wood 
+                           0.22,#0.19,
                            1.25,          # tau leaf
                            0.6,           # tau root
                            38.0)
@@ -27,8 +27,8 @@ prefit.params.eCO2.upper.R1 <- c(0.6,          # alloc leaf
 
 
 ### R4
-prefit.params.eCO2.R4 <- c(0.5,          # alloc leaf
-                           0.2,          # alloc wood 
+prefit.params.eCO2.R4 <- c(0.55, #0.5,          # alloc leaf
+                           0.25, #0.2,          # alloc wood 
                            0.2,
                            1.1,          # tau leaf
                            0.6,          # tau root
@@ -51,12 +51,12 @@ prefit.params.eCO2.upper.R4 <- c(0.6,          # alloc leaf
 
 
 ### R5
-prefit.params.eCO2.R5 <- c(0.35,          # alloc leaf
-                           0.15,          # alloc wood 
-                           0.15,
+prefit.params.eCO2.R5 <- c(0.5,#0.35,          # alloc leaf
+                           0.22,#0.15,          # alloc wood 
+                           0.22, #0.15,
                            1.1,          # tau leaf
                            0.6,          # tau root
-                           80.0)
+                           45)#80.0)
 
 prefit.params.eCO2.lower.R5 <- c(0.3,          # alloc leaf
                                  0.1,          # alloc wood
