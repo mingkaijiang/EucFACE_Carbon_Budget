@@ -1,4 +1,4 @@
-make_wood_respiration_flux_5 <- function() {
+make_wood_respiration_flux <- function() {
     ### "main" module function for wood respiration. 
     ### Needs temperature, and wood surface
 
@@ -7,7 +7,7 @@ make_wood_respiration_flux_5 <- function() {
     
     ### calculate stem surface area
     sfcDF <- make_stem_surface_area(ring_area)
-    
+
     ######## Download below canopy Tair data
     metDF <- download_tair_below_canopy()
     
@@ -32,6 +32,8 @@ make_wood_respiration_flux_5 <- function() {
     ### Add stem area data
     for (i in 1:6) {
         hDF$SA[hDF$Ring==i] <- sfcDF$wood_surface_area[sfcDF$Ring==i]
+        #hDF$SA[hDF$Ring==i] <- sfcDF$wood_sfc_area_new2[sfcDF$Ring==i]
+        
     }
     
     ### Add DOY and Year information
@@ -72,6 +74,18 @@ make_wood_respiration_flux_5 <- function() {
     dDF$ndays <- 1
     
     out <- dDF[,c("Date", "Start_date", "End_date", "Ring", "wood_respiration", "ndays")]
+    
+    
+ 
+    ### check annual rate
+    annDF <- summaryBy(wood_respiration+ndays~Ring, FUN=sum, data=out, keep.names=T)
+    annDF$ann <- with(annDF, wood_respiration / ndays * 365 / 1000)
+    
+    annDF1 <- annDF
+    
+    annDF1$Trt <- c("eC", "aC", "aC", "eC", "eC", "aC")
+    
+    trtDF <- summaryBy(ann~Trt, data=annDF1, FUN=mean, keep.names=T)
     
     
     return(out)

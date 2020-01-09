@@ -214,7 +214,7 @@ wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
 ### Wood respiration flux
 ### based on 9 month of data, with temperature function fitted to each treatment only
-wood_respiration_flux <- make_wood_respiration_flux_5()
+wood_respiration_flux <- make_wood_respiration_flux()
 
 ### understorey SLA
 understorey_sla_variable <- make_understorey_sla_variable()
@@ -368,6 +368,8 @@ overstorey_leaf_respiration_flux_ann <- make_overstorey_ra_leaf_treatment_abs_ef
 wood_respiration_flux_ann <- make_ra_wood_treatment_abs_effect_statistics(inDF=wood_respiration_flux, 
                                                                           var.col=5,
                                                                           return.outcome="predicted")
+
+#test <- summaryBy(predicted+Value~Trt, data=wood_respiration_flux_ann, FUN=mean, keep.names=T)
 
 ### Root respiration
 root_respiration_flux_ann <- make_ra_root_treatment_abs_effect_statistics(inDF=root_respiration_flux, 
