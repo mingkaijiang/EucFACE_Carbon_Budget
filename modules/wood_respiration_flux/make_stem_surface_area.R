@@ -29,17 +29,14 @@ make_stem_surface_area <- function(ring_area){
     ### remove trees, R1 = 1, R2 = 3, R3 = 1, R4 = 1, R5 = 6, R6 = 5
     ### R1 tree to remove: diameter = 15.2
     myDF1 <- myDF1[order(myDF1$dbh_m),]
-    myDF1 <- myDF1[!myDF1$dbh_m==0.155,]
+    myDF1$dbh_m <- round(myDF1$dbh_m, 4)
+    myDF1 <- myDF1[!myDF1$dbh_m%in%c(0.1550),]
     
     ### R2 tree to remove: diameter = 12.66, 14.74, 14.56
     myDF2 <- myDF2[order(myDF2$dbh_m),]
-    myDF2 <- myDF2[!myDF2$dbh_m%in%c(0.122, 0.141, 0.153),]
+    myDF2$dbh_m <- round(myDF2$dbh_m, 4)
+    myDF2 <- myDF2[!myDF2$dbh_m%in%c(0.122, 0.141, 0.1437),]
     
-    ### R3 tree to remove: smallest tree
-    myDF3 <- myDF3[-c(1),]
-    
-    ### R4 tree to remove: smallest tree
-    myDF4 <- myDF4[-c(1),]
     
     ### R5 tree to remove: diameter = 16.02, 15.72, 18.83, 15.1, 14.94, 18.33
     myDF5$dbh_m <- round(myDF5$dbh_m, 4)
@@ -55,10 +52,10 @@ make_stem_surface_area <- function(ring_area){
   
     ### average by ring area
     outDF <- summaryBy(total.woodarea_m2 ~ Ring, FUN=sum, data=myDF, keep.names=TRUE) %>%
-        mutate(total.woodarea_m2 = total.woodarea_m2 / ring_area,
+        mutate(wood_surface_area = total.woodarea_m2 / ring_area,
                Date = "2015-05-26",
                Ring = as.numeric(Ring)) %>%
-        dplyr::select(Date, Ring, total.woodarea_m2)
+        dplyr::select(Date, Ring, wood_surface_area)
     
     
     names(outDF)[3] <- "wood_surface_area"

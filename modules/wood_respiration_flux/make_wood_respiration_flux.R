@@ -78,14 +78,14 @@ make_wood_respiration_flux <- function() {
     
  
     ### check annual rate
-    annDF <- summaryBy(wood_respiration+ndays~Ring, FUN=sum, data=out, keep.names=T)
-    annDF$ann <- with(annDF, wood_respiration / ndays * 365 / 1000)
-    
-    annDF1 <- annDF
-    
-    annDF1$Trt <- c("eC", "aC", "aC", "eC", "eC", "aC")
-    
-    trtDF <- summaryBy(ann~Trt, data=annDF1, FUN=mean, keep.names=T)
+    #annDF <- summaryBy(wood_respiration+ndays~Ring, FUN=sum, data=out, keep.names=T)
+    #annDF$ann <- with(annDF, wood_respiration / ndays * 365 / 1000)
+    #
+    #annDF1 <- annDF
+    #
+    #annDF1$Trt <- c("eC", "aC", "aC", "eC", "eC", "aC")
+    #
+    #trtDF <- summaryBy(ann~Trt, data=annDF1, FUN=mean, keep.names=T)
     
     
     return(out)
