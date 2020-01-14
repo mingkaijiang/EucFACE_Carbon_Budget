@@ -35,7 +35,7 @@ make_stem_surface_area <- function(ring_area){
     ### R2 tree to remove: diameter = 12.66, 14.74, 14.56
     myDF2 <- myDF2[order(myDF2$dbh_m),]
     myDF2$dbh_m <- round(myDF2$dbh_m, 4)
-    myDF2 <- myDF2[!myDF2$dbh_m%in%c(0.122, 0.141, 0.1437),]
+    myDF2 <- myDF2[!myDF2$dbh_m%in%c(0.1320, 0.1530),]
     
     
     ### R5 tree to remove: diameter = 16.02, 15.72, 18.83, 15.1, 14.94, 18.33
@@ -45,7 +45,7 @@ make_stem_surface_area <- function(ring_area){
     ### R6 tree to remove: diameter = 16.85, 45.53, 16.36, 17.73, 15.89
     myDF6 <- myDF6[order(myDF6$dbh_m),]
     myDF6$dbh_m <- round(myDF6$dbh_m, 4)
-    myDF6 <- myDF6[!myDF6$dbh_m%in%c(0.1547, 0.1423, 0.1757, 0.1379, 0.3990),]
+    myDF6 <- myDF6[!myDF6$dbh_m%in%c(0.1547, 0.1423, 0.1757, 0.1379, 0.6817),]
     
     ### combine
     myDF <- rbind(myDF1, myDF2, myDF3, myDF4, myDF5, myDF6)

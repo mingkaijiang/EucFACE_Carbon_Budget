@@ -57,7 +57,7 @@ prefit.params.aCO2.upper.R3 <- c(0.6,          # alloc leaf
 
 ### R6
 prefit.params.aCO2.R6 <- c(0.55,          # alloc leaf
-                           0.2,           # alloc wood 
+                           0.25,           # alloc wood 
                            0.15,          # alloc root
                            1.1,           # tau leaf
                            1.4,           # tau root
