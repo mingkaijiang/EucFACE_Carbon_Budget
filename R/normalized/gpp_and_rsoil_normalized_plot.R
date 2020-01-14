@@ -196,7 +196,6 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
     errDF1$neg <- errDF1$aCO2-errDF1$aCO2_sd
     errDF2$neg <- errDF2$eCO2-errDF2$eCO2_sd
     
-    
     ### Prepare variable labels
     var.labs1 <- c(expression(GPP[o]), expression(GPP[u]),
                   expression(NPP[ol]), expression(NPP[stem]),

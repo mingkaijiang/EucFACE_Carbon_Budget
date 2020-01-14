@@ -434,5 +434,16 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
     dev.off()
     
     
+    write.csv(plotDF.sub1, "output/Figure_2a1.csv", row.names=F)
+    write.csv(plotDF.sub2, "output/Figure_2b1.csv", row.names=F)
+    write.csv(plotDF.sub3, "output/Figure_2c1.csv", row.names=F)
+    write.csv(plotDF.sub4, "output/Figure_2d1.csv", row.names=F)
+    
+    write.csv(confDF.sub1, "output/Figure_2a2.csv", row.names=F)
+    write.csv(confDF.sub2, "output/Figure_2b2.csv", row.names=F)
+    write.csv(confDF.sub3, "output/Figure_2c2.csv", row.names=F)
+    write.csv(confDF.sub4, "output/Figure_2d2.csv", row.names=F)
+    
+    
   #  
  }
