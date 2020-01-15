@@ -1,6 +1,6 @@
 make_overstorey_gpp_flux <- function() {
     ### read in MAESPA GPP output
-    inDF <- read.csv("data/maespa.year.ring.csv")
+    inDF <- read.csv("download/maespa.year.ring.csv")
     
     ### swap ring characters
     inDF$Ring <- gsub("R1","1", inDF$Ring)

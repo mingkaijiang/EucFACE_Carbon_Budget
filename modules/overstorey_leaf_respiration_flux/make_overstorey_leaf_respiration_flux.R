@@ -1,6 +1,6 @@
 make_overstorey_leaf_respiration_flux <- function() {
     ### read in MAESPA GPP output
-    inDF <- read.csv("data/overstorey_gpp_annual fluxes.csv")
+    inDF <- read.csv("download/overstorey_gpp_annual fluxes.csv")
     
     colnames(inDF) <- c("year", "Ring", "GPP", "Rfoliage", "Trans", "Soil")
     

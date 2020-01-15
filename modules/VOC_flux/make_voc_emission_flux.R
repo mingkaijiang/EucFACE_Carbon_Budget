@@ -2,7 +2,7 @@
 make_voc_emission_flux <- function(){
 
     # read in data
-    myDF <- read.csv("data/VOC_emissions.csv")
+    myDF <- read.csv("download/VOC_emissions.csv")
     
     myDF$Date <- as.Date(paste0(myDF$Year, "-01-01"), format = "%Y-%m-%d")
     

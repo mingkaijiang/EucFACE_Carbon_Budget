@@ -9,7 +9,7 @@ make_soil_respiration_flux <- function(){
     RE$Date <- as.Date(RE$Date)
     
     #- read in the DAMM parameter estimates from fitting done outside this repo
-    params_all_collars <- read.csv("modules/soil_respiration_flux/DAMM_parameters_all_collars.csv")
+    params_all_collars <- read.csv("download/DAMM_parameters_all_collars.csv")
     
     
     #-----

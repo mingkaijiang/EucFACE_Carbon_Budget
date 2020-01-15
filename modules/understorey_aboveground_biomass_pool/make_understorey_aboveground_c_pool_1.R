@@ -6,7 +6,7 @@ make_understorey_aboveground_c_pool_1 <- function(c_frac) {
                                "FACE_P0061_RA_PATHARE_UNDERSTORY_ABOVEGROUND_BIOMASS_L2_20150201_20160730.csv"))
     
     ### read in Matthias's harvest data 
-    inDF2 <- read.csv("temp_files/EucFACE_GrassStrip_Harvest_20170523.csv")
+    inDF2 <- read.csv("download/EucFACE_GrassStrip_Harvest_20170523.csv")
     
     ### process inDFs
     inDF1$Date <- paste0(as.character(inDF1$month), "-1")

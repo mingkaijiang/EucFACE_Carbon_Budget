@@ -14,7 +14,7 @@ make_wood_pool <- function(ring_area, c_frac_ht){
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
     f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
     f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
-    f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
+    f12 <- read.csv("download/EucFACE_dendrometers2011-12_RAW.csv")
     
     #### Read in additional files that I used when doing the data analysis
     classif <- read.csv("download/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)

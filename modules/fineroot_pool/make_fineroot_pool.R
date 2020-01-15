@@ -3,7 +3,7 @@ make_fineroot_pool <- function(){
 
   
   # read in the csv
-  frb1 <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")
+  frb1 <- read.csv("download/EucFACERootsRingDateDepth.csv")
   frb1$Date <- as.Date(frb1$Dateform, format="%d-%m-%Y")
   
   # fineroot C pool

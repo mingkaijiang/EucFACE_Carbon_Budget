@@ -9,7 +9,7 @@ make_understorey_respiration_flux <- function(c_pool,
     ### This dataset contains dark respiration rate for
     ### Microlaena, obtained from Cumberlandplains by
     ### Leishman et al. (2010). Journal of Ecology, 98, 28-42.
-    inDF <- read.csv("data/CPW_species_data.csv")
+    inDF <- read.csv("download/CPW_species_data.csv")
     
     out <- c()
     
@@ -67,7 +67,7 @@ make_understorey_respiration_flux <- function(c_pool,
     } else if (assumption == "maespa_partial") {
         ### use MAESPA simulated respiration rate
         
-        myDF <- read.csv("data/underS_species2.gpp.csv")
+        myDF <- read.csv("download/underS_species2.gpp.csv")
         myDF <- subset(myDF, Species == 2)
         myDF$Ring <- gsub("R","", myDF$Ring)
         myDF$Ring <- as.numeric(myDF$Ring)
