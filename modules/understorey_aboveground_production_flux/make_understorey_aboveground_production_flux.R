@@ -1,8 +1,6 @@
 make_understorey_aboveground_production_flux <- function(c_frac) {
     
-    ### currently only Varsha's harvest data on HIEv
-    download_understorey_aboveground_biomass_data()
-    
+  
     ### read in the data 
     inDF1 <- read.csv(file.path(getToPath(), 
                                "FACE_P0061_RA_PATHARE_UNDERSTORY_ABOVEGROUND_BIOMASS_L2_20150201_20160730.csv"))

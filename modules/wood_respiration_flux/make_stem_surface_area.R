@@ -1,8 +1,6 @@
 
 make_stem_surface_area <- function(ring_area){
   
-    download_wood_volume()
-    
     ### read in DF
     myDF <- read.csv("data/lidar_data_eucface_HIEv.csv")
     
@@ -25,8 +23,7 @@ make_stem_surface_area <- function(ring_area){
     myDF5 <- myDF5[order(myDF5$dbh_m),]
     myDF5 <- myDF5[-c(1:2),]
     
-    ### more dead trees, R1 = 24, R2 = 25, R3 = 26, R4 = 27, R5 = 27, R6 = 16
-    ### remove trees, R1 = 1, R2 = 3, R3 = 1, R4 = 1, R5 = 6, R6 = 5
+    ### more dead trees
     ### R1 tree to remove: diameter = 15.2
     myDF1 <- myDF1[order(myDF1$dbh_m),]
     myDF1$dbh_m <- round(myDF1$dbh_m, 4)

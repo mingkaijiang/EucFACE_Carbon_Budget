@@ -1,8 +1,5 @@
 make_understorey_sla_variable <- function() {
     
-    # now it is useless as Matthias's SLA data not on HIEv yet
-    download_understorey_aboveground_biomass_data()
-    
     # read in sla data mannually
     myDF <- read.csv("temp_files/EucFACE_GrassStrip_Harvest_20170523.csv")
     

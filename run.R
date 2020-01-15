@@ -192,7 +192,6 @@ wood_production_flux <- make_wood_production_flux(wood_c_pool)
 
 
 ### Wood respiration flux
-### based on 9 month of data, with temperature function fitted to each treatment only
 wood_respiration_flux <- make_wood_respiration_flux()
 
 ### understorey SLA
@@ -203,19 +202,17 @@ understorey_sla_variable <- make_understorey_sla_variable()
 ### reads in c_fraction from constant
 ### method 1 is based on harvest
 ### method 2 is based on stereo camera
-understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction_ua)
+#understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction_ua)
 understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction_ua)
 
 
 ### Understorey production flux
-### Method 2 is not used because understorey vegetation fluctuates a lot
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction_ua)
-#understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux_2(understorey_aboveground_c_pool)
 
 ### Understorey LAI
 ### method 1 based on harvesting data, live biomass only (hence the lowest LAI possible)
-understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
-                                                          understorey_sla_variable)
+#understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
+#                                                          understorey_sla_variable)
 
 ### Soil microbial C pool
 ### top 10 cm only - Cat's data
