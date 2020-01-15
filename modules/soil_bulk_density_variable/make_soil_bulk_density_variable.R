@@ -2,8 +2,7 @@ make_soil_bulk_density <- function() {
     # return ring-specific soil density data for top 3 depths
     
     # download the data
-    df <- read.csv(file.path(getToPath(), 
-                             "FACE_P0088_RA_BULKDENSITY_L1_20170914.csv"))
+    df <- read.csv("data/EucFACE_data/FACE_P0088_RA_BULKDENSITY_L1_20170914.csv")
     
     df <- df[,1:7]
     names(df)[7] <- "bulk_density"

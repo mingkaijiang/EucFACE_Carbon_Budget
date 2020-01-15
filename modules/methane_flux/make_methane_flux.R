@@ -7,20 +7,13 @@ make_methane_flux <- function() {
     #### Information on the data processing is available on HIEv
 
     ### read in the csv
-    myDF1 <- read.csv(file.path(getToPath(), 
-                               "FACE_P0027_RA_GHG-FLUXES_L3_20130101-20131231 V3.csv"))
-    myDF2 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0027_RA_GHG-FLUXES_L3_20140101-20141231.csv"))
-    myDF3 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0027_RA_GHG-FLUXES_L3_20150101-20151231.csv"))
-    myDF4 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0027_RA_GHG-FLUXES_L3_20160113.csv"))
-    myDF5 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0027_RA_GHG-FLUXES_L3_20160218.csv"))
-    myDF6 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0027_RA_GHG-FLUXES_L3_20160314.csv"))
-    myDF7 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0027_RA_GHG-FLUXES_L3_20160420.csv"))
+    myDF1 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20130101-20131231 V3.csv")
+    myDF2 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20140101-20141231.csv")
+    myDF3 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20150101-20151231.csv")
+    myDF4 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20160113.csv")
+    myDF5 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20160218.csv")
+    myDF6 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20160314.csv")
+    myDF7 <- read.csv("data/EucFACE_data/FACE_P0027_RA_GHG-FLUXES_L3_20160420.csv")
     
     ### combine all data
     myDF <- do.call("rbind", list(myDF1[,c("Date", "Ring", "Final_CH4_flux", "Collar")], 

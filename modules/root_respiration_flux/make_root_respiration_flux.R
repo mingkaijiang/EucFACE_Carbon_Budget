@@ -22,7 +22,7 @@ make_root_respiration_flux <- function(froot, iroot, croot, rstem, stem){
   
 
   ### read in tsoil
-  tempDF <- read.csv("download/EucFACE_Tsoil.csv")
+  tempDF <- read.csv("data/met_data/EucFACE_Tsoil.csv")
 
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {

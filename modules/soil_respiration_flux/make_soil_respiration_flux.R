@@ -3,13 +3,12 @@
 make_soil_respiration_flux <- function(){
     
     #- read in the data
-    RE <- as.data.frame(data.table::fread(file.path(getToPath(), 
-                                                    "FACE_P0031_RA_Rsoil-PROCESSED_20120902-20151030_L2_v1.csv")))
+    RE <- as.data.frame(data.table::fread("data/EucFACE_data/FACE_P0031_RA_Rsoil-PROCESSED_20120902-20151030_L2_v1.csv"))
     RE$DateTime <- as.POSIXct(RE$DateTime,format="%Y-%m-%d %T",tz="GMT")
     RE$Date <- as.Date(RE$Date)
     
     #- read in the DAMM parameter estimates from fitting done outside this repo
-    params_all_collars <- read.csv("download/DAMM_parameters_all_collars.csv")
+    params_all_collars <- read.csv("data/support_data/DAMM_parameters_all_collars.csv")
     
     
     #-----

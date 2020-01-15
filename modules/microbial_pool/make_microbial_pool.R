@@ -1,10 +1,7 @@
 make_microbial_pool <- function(bk_density){
     # return ring-specific, continuous microbial C pool
-
-
     
-    df <- read.csv(file.path(getToPath(), 
-                             "FACE_P0014_RA_MicrobialBiomassCNP_L1_20120613-20151130.csv"))
+    df <- read.csv("data/EucFACE_data/FACE_P0014_RA_MicrobialBiomassCNP_L1_20120613-20151130.csv")
 
     # average across rings and depths, unit: mg/kg
     df.m <- summaryBy(Cmic~ring+date,

@@ -7,7 +7,7 @@ make_soil_carbon_pool <- function(bk_density, return){
   
     #------
     #- read in the soil C content data
-    files <- list.files(path=getToPath(),pattern="BasicSoilProperties",full.names=T)
+    files <- list.files(path="data/EucFACE_data/",pattern="BasicSoilProperties",full.names=T)
     dat1 <- list()
     for (i in 1:length(files)){
         dat1[[i]] <- read.csv(files[i])

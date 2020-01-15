@@ -2,8 +2,7 @@ make_understorey_aboveground_c_pool_2 <- function(c_frac) {
     
 
     ### read in the data 
-    inDF <- read.csv(file.path(getToPath(), 
-                               "FACE_TLAPSE_MASSALL_L2_RA_20150202-20170308.csv"))
+    inDF <- read.csv("data/EucFACE_data/FACE_TLAPSE_MASSALL_L2_RA_20150202-20170308.csv")
     
     ### convert from kg to g
     inDF$Total_g_m2 <- inDF$AGBpred * 1000
