@@ -7,7 +7,7 @@ read_Yang_soil_P_data <- function(faceDF) {
     require(spatstat)
     
     #### read in data
-    inName1 <- "data/Dai/pforms_den.nc"
+    inName1 <- "data/support_data/Dai/pforms_den.nc"
     
     nc <- nc_open(inName1)
     

@@ -4,9 +4,9 @@ read_in_lpjw <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("download/model_output/LPJW/D1LPJWEUCAMBAVG.csv", skip=2)
+    inDF1 <- read.csv("data/model_output/LPJW/D1LPJWEUCAMBAVG.csv", skip=2)
     
-    inDF2 <- read.csv("download/model_output/LPJW/D1LPJWEUCELEAVG.csv", skip=2)
+    inDF2 <- read.csv("data/model_output/LPJW/D1LPJWEUCELEAVG.csv", skip=2)
     
     inDF1[inDF1=="-9999"] <- 0
     inDF2[inDF2=="-9999"] <- 0

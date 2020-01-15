@@ -4,9 +4,9 @@ read_in_sdvm <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("download/model_output/SDVM/D1SDVMEUCAMBAVG.csv")
+    inDF1 <- read.csv("data/model_output/SDVM/D1SDVMEUCAMBAVG.csv")
     
-    inDF2 <- read.csv("download/model_output/SDVM/D1SDVMEUCELEAVG.csv")
+    inDF2 <- read.csv("data/model_output/SDVM/D1SDVMEUCELEAVG.csv")
     
     inDF1[inDF1=="-9999"] <- 0
     inDF2[inDF2=="-9999"] <- 0

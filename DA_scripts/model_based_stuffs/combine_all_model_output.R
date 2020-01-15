@@ -97,7 +97,7 @@ combine_all_model_output <- function() {
     #                                                               "tau_SOIL"), ]
     
     ### color blind friendly
-    library(RColorBrewer)
+    #library(RColorBrewer)
     #display.brewer.all(colorblindFriendly = TRUE)
     f <- function(pal) brewer.pal(brewer.pal.info[pal, "maxcolors"], pal)
     cols <- f("Set2")

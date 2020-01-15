@@ -6,8 +6,8 @@ read_global_soil_data <- function(faceDF) {
     require(raster)
     
     #### read in data
-    inName1 <- "data/Dai/TN1.nc"
-    inName2 <- "data/Dai/BD1.nc"
+    inName1 <- "data/support_data/Dai/TN1.nc"
+    inName2 <- "data/support_data/Dai/BD1.nc"
     
     ### use raster brick to get all the data
     tn <- brick(inName1, varname = "TN")

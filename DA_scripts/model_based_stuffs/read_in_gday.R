@@ -4,9 +4,9 @@ read_in_gday <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("download/model_output/GDAY/D1GDAYEUCAMBAVG.csv", skip=3)
+    inDF1 <- read.csv("data/model_output/GDAY/D1GDAYEUCAMBAVG.csv", skip=3)
     
-    inDF2 <- read.csv("download/model_output/GDAY/D1GDAYEUCELEAVG.csv", skip=3)
+    inDF2 <- read.csv("data/model_output/GDAY/D1GDAYEUCELEAVG.csv", skip=3)
     
     
     inDF1[inDF1<=-999] <- 0

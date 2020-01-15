@@ -4,9 +4,9 @@ read_in_clm4 <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("download/model_output/CLM4/D1CLM4EUCAMBAVG.csv")
+    inDF1 <- read.csv("data/model_output/CLM4/D1CLM4EUCAMBAVG.csv")
     
-    inDF2 <- read.csv("download/model_output/CLM4/D1CLM4EUCELEAVG.csv")
+    inDF2 <- read.csv("data/model_output/CLM4/D1CLM4EUCELEAVG.csv")
     
     inDF1[inDF1<=-999] <- 0
     inDF2[inDF2<=-999] <- 0

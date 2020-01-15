@@ -2,7 +2,7 @@ make_whitaker_diagram <- function() {
     
     ################################### Prepare MAT and MAP, globally forests
     ### read in global biome and climate data at CRU grids
-    myDF <- read.csv("data/biome_temp_prec_full_1991_2012.csv")
+    myDF <- read.csv("data/support_data/biome_temp_prec_full_1991_2012.csv")
     
     ### create a subset DF
     myDF <- subset(myDF, BIOME <= 14 & BIOME > 0)
@@ -52,7 +52,7 @@ make_whitaker_diagram <- function() {
     
     
     ### cuedata
-    forcDF <- read.csv("data/ForC_selected_data.csv")
+    forcDF <- read.csv("data/support_data/ForC_selected_data.csv")
     
     ### selected ANPP, with understorey
     forcDF1 <- subset(forcDF, variable.name=="ANPP_2_C")
@@ -115,8 +115,8 @@ make_whitaker_diagram <- function() {
     
     ### prepare input files - EucFACE
     ### Read input - climate
-    DF1 <- read.csv("download/met_air_flux_data_daily.csv")
-    DF2 <- read.csv("download/rainfall_data_daily.csv")
+    DF1 <- read.csv("data/met_data/met_air_flux_data_daily.csv")
+    DF2 <- read.csv("data/met_data/rainfall_data_daily.csv")
     names(DF1)[1] <- names(DF2)[1] <- "Date"
     myDF <- merge(DF1, DF2, by.x="Date", all=T)
     colnames(myDF) <- c("Date", "Tair", "RH", "PAR", "Pressure", "Wind", "Rain")
@@ -133,16 +133,16 @@ make_whitaker_diagram <- function() {
                                          "Leaf consumption"), 2:4]) 
     
     ### prepare input files - DukeFACE NPP
-    DF1 <- read.csv("data/ess_dive_f15e8d846622729_20190628T143153130/DUKE_a.csv")
+    DF1 <- read.csv("data/support_data/other_FACE/DUKE_a.csv")
     dkDF <- summaryBy(fc_npp~treatment_fertilisation, data=DF1, FUN=c(mean,sd), keep.names=T)
     
     ### prepare input files - ORNLFACE NPP
-    DF1 <- read.csv("data/ess_dive_f15e8d846622729_20190628T143153130/ORNL_a.csv")
+    DF1 <- read.csv("data/support_data/other_FACE/ORNL_a.csv")
     orDF <- summaryBy(fc_npp~co2, data=DF1, FUN=c(mean,sd), keep.names=T)
     
     
     ### prepare input files - ORNLFACE NPP
-    DF1 <- read.csv("data/ess_dive_f15e8d846622729_20190628T143153130/RHIN_a.csv")
+    DF1 <- read.csv("data/support_data/other_FACE/RHIN_a.csv")
     asDF <- summaryBy(fc_npp~co2, data=DF1, FUN=c(mean,sd), keep.names=T)
     
     ### prepare input files - PopFACE NPP
@@ -371,44 +371,6 @@ make_whitaker_diagram <- function() {
     col.list2 <- c("red", brewer.pal(7,"Paired"))
     
     
-    #### plotting scripts
-    #p1 <- ggplot() +
-    #    geom_point(plotDF1, mapping=aes(MAT, MAP, 
-    #                                   fill=factor(Biome),
-    #                                   color=factor(Biome),
-    #                                   shape=factor(Biome), 
-    #                                   size = factor(Biome)))+
-    #    xlab(expression("MAT (" * degree * "C)")) + 
-    #    ylab("MAP (mm)") +
-    #    scale_fill_manual(name="", 
-    #                       values=col.list,
-    #                       labels=forests) +
-    #    scale_color_manual(name="", 
-    #                      values=col.list,
-    #                      labels=forests) +
-    #    scale_shape_manual(values=c(rep(21, 7), 24, rep(22, 7)),
-    #                       labels=forests) +
-    #    scale_size_manual(values=c(rep(1, 7), rep(4, 8)),
-    #                      labels=forests)+
-    #    theme_linedraw() +
-    #    theme(panel.grid.minor=element_blank(),
-    #          axis.title.x = element_text(size=12), 
-    #          axis.text.x = element_text(size=12),
-    #          axis.text.y=element_text(size=12),
-    #          axis.title.y=element_text(size=12),
-    #          legend.text=element_text(size=6),
-    #          legend.title=element_text(size=12),
-    #          panel.grid.major=element_blank(),
-    #          legend.position="bottom",
-    #          legend.text.align=0)+
-    #    guides(size = "none",
-    #           shape = "none",
-    #           color = "none",
-    #           fill = guide_legend(ncol=5, override.aes = 
-    #                                    list(size = 4, shape=c(rep(21, 7), 24, rep(22, 7)), 
-    #                                         colour=col.list)))
-    
-    
     p1 <- ggplot() +
         geom_hex(plotDF1, mapping=aes(x=MAT, y=MAP), bins = 50) +
         scale_fill_continuous(type = "viridis") +
@@ -581,12 +543,12 @@ make_whitaker_diagram <- function() {
         draw_plot(p3, x = 0.12, y = .47, width = .3, height = .25)
     
     
-    ggsave(filename = "output/ED_Figure_2_no_understorey.pdf", 
-           plot = plot.with.inset2,
-           width = 17, 
-           height = 12,
-           units = "cm",
-           dpi = 300)
+    #ggsave(filename = "output/ED_Figure_2_no_understorey.pdf", 
+    #       plot = plot.with.inset2,
+    #       width = 17, 
+    #       height = 12,
+    #       units = "cm",
+    #       dpi = 300)
  
     
  }

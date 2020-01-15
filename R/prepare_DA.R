@@ -12,7 +12,10 @@ pacman::p_load(doBy,
                reshape2,
                lme4,
                mcmc,
-               mvtnorm)  
+               mvtnorm,
+               RColorBrewer,
+               raster,
+               ncdf4)  
 
 #### Sourcing all R files in the modules subdirectory
 source_basic_scripts <- dir("DA_scripts", pattern="[.]R$", recursive = TRUE, full.names = TRUE)
