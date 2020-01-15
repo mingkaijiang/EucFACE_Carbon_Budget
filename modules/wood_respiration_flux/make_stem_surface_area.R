@@ -2,7 +2,7 @@
 make_stem_surface_area <- function(ring_area){
   
     ### read in DF
-    myDF <- read.csv("download/lidar_data_eucface_HIEv.csv")
+    myDF <- read.csv("data/EucFACE_data/lidar_data_eucface_HIEv.csv")
     
     ### trees to discard due to death or duplicated registration in lidar image
     myDF1 <- myDF[myDF$Ring==1&!myDF$tree%in%c(16, 5, 15, 17, 27), ]

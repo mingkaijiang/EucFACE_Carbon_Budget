@@ -1,7 +1,7 @@
 make_understorey_GPP_flux <- function() {
     
     ### all understorey gpp calculated
-    myDF <- read.csv("download/underS_species2.gpp_2.csv")
+    myDF <- read.csv("data/MAESPA_output/underS_species2.gpp_2.csv")
     myDF <- subset(myDF, Species == 2)
     myDF$Ring <- gsub("R","", myDF$Ring)
     myDF$Ring <- as.numeric(myDF$Ring)

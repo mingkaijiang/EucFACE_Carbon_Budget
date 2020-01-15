@@ -10,14 +10,14 @@ make_wood_pool <- function(ring_area, c_frac_ht){
     
     
     #### read in 2012-15 data sets
-    f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
-    f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
-    f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
-    f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
-    f12 <- read.csv("download/EucFACE_dendrometers2011-12_RAW.csv")
+    f13 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv")
+    f14 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv")
+    f15 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv")
+    f16 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv")
+    f12 <- read.csv("data/EucFACE_data/EucFACE_dendrometers2011-12_RAW.csv")
     
     #### Read in additional files that I used when doing the data analysis
-    classif <- read.csv("download/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)
+    classif <- read.csv("data/EucFACE_data/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)
     classif$Active.FALSE.means.dead.[classif$Tree == 608] <- FALSE  # This tree dead
     classif$Active.FALSE.means.dead.[classif$Tree == 125] <- FALSE  # This tree dead
     classif$Active.FALSE.means.dead.[classif$Tree == 206] <- FALSE  # This tree dead

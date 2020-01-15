@@ -15,7 +15,7 @@ make_understorey_lai_variable <- function(abg_biomass, abg_sla) {
     out <- data.frame(abg_biomass$Date, abg_biomass$Ring, abg_biomass$lai)
     names(out) <- c("Date", "Ring", "LAI")
     
-    write.csv(out, "R_other/understorey_lai.csv", row.names=F)
+    write.csv(out, "output/understorey_lai.csv", row.names=F)
 
     return(out)
 }

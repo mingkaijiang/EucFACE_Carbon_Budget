@@ -2,7 +2,7 @@ make_sapwood_c_n_fraction <- function() {
     
     
     ### read df
-    myDF <- read.csv("download/FACE_P0079_RA_SAPWOOD_N_RAW_2015-11_v1.csv")
+    myDF <- read.csv("data/EucFACE_data/FACE_P0079_RA_SAPWOOD_N_RAW_2015-11_v1.csv")
     
     ### outdf
     outDF <- data.frame(c("C","N"), NA, NA)

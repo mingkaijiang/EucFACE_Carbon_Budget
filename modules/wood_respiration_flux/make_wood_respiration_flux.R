@@ -6,7 +6,7 @@ make_wood_respiration_flux <- function() {
     sfcDF <- make_stem_surface_area(ring_area)
 
     ######## Download below canopy Tair data
-    hDF <- read.csv("download/EucFACE_Tair_below_canopy.csv")
+    hDF <- read.csv("data/met_data/EucFACE_Tair_below_canopy.csv")
     
     ### Add stem area data
     for (i in 1:6) {
