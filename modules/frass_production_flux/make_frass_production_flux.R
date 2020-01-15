@@ -9,13 +9,11 @@ make_frass_production_flux <- function() {
     
 
     #- read in the data - frassfall data (in unit of g/0.1979 m2)
-    inDF1 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0017_RA_FRASSFALL_L2_20120914-20150209.csv"))
+    inDF1 <- read.csv("data/EucFACE_data/FACE_P0017_RA_FRASSFALL_L2_20120914-20150209.csv")
     inDF1$DATE <- as.Date(inDF1$DATE)
     
     #- read in the data - frass chemistry data (for C, in unit of %)
-    inDF2 <- read.csv(file.path(getToPath(), 
-                                "FACE_P0017_RA_FRASSCHEMISTRY_L2_20121112-20141016.csv"))
+    inDF2 <- read.csv("data/EucFACE_data/FACE_P0017_RA_FRASSCHEMISTRY_L2_20121112-20141016.csv")
     inDF2$DATE <- as.Date(inDF2$DATE)
     
     #- average across rings and dates - frassfall data

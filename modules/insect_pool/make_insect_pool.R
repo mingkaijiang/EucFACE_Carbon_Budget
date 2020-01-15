@@ -2,10 +2,10 @@ make_insect_pool <- function(c_frac){
 
     
     #### read in data
-    f16 <- read.csv(file.path(getToPath(), "FACE_P0017_RA_Litter_20160101-20161212-L1-V2.csv"))
-    f15 <- read.csv(file.path(getToPath(), "FACE_P0017_RA_Litter_20150101-20151217-L1-V2.csv"))
-    f14 <- read.csv(file.path(getToPath(), "FACE_P0017_RA_Litter_20140101-20141216-L1-V2.csv"))
-    f13 <- read.csv(file.path(getToPath(), "FACE_P0017_RA_Litter_20121001-20131231-L1-V2.csv"))
+    f16 <- read.csv("data/EucFACE_data/FACE_P0017_RA_Litter_20160101-20161212-L1-V2.csv")
+    f15 <- read.csv("data/EucFACE_data/FACE_P0017_RA_Litter_20150101-20151217-L1-V2.csv")
+    f14 <- read.csv("data/EucFACE_data/FACE_P0017_RA_Litter_20140101-20141216-L1-V2.csv")
+    f13 <- read.csv("data/EucFACE_data/FACE_P0017_RA_Litter_20121001-20131231-L1-V2.csv")
     
     #### set up col names
     colnames(f13) <- c("Ring", "Date", "Trap", "Twig", "Bark", "Seed", "Leaf", "Other", "Insect", "Comments", "days.past")

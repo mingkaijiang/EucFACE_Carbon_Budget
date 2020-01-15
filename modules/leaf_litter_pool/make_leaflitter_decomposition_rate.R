@@ -10,8 +10,7 @@ make_leaflitter_decomposition_rate <- function() {
     ### read in data
     ### InitialMass.g -- Initial dry mass of litter, in grams, when bag constructed 
     ### RemainingMass.g -- Final dry mass of litter, in grams, when bag harvested
-    myDF <- read.csv(file.path(getToPath(), 
-                               "FACE_P0030_RA_LITTER_L2_20130517-20150517.csv"))
+    myDF <- read.csv("data/EucFACE_data/FACE_P0030_RA_LITTER_L2_20130517-20150517.csv")
     
     ### include only mesh bag of 2 mm
     myDF <- subset(myDF, Mesh == "2mm")

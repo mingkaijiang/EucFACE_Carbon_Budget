@@ -1,6 +1,6 @@
 
-#### Create download folder
-if(!dir.exists("download"))dir.create("download")
+#### Create data folder
+if(!dir.exists("data"))dir.create("data")
 
 #### Create output folder
 if(!dir.exists("output")) {
@@ -14,7 +14,9 @@ if(!require(HIEv)){
 
 #### Set token
 setToken(tokenfile="tokenfile.txt", quiet=TRUE)
-setToPath("download")
+
+### Set data path
+setToPath("data")
 
 #### Install packages
 if(!require(pacman))install.packages("pacman")

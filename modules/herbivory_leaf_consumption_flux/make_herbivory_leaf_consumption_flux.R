@@ -3,8 +3,7 @@ make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     
     
     # read in the consumption relationship data
-    inDF1 <- read.csv(file.path(getToPath(), 
-                                "GHS36_AG-THESIS_CA_FRASS-LEAFAREA_L2_20110101-20151231.csv"))
+    inDF1 <- read.csv("data/EucFACE_data/GHS36_AG-THESIS_CA_FRASS-LEAFAREA_L2_20110101-20151231.csv")
 
     # update column names
     colnames(inDF1) <- c("leaf_area_consumed_cm2", "weight_of_frass_g", "insect_species", "tree_species", "temperature", "co2")

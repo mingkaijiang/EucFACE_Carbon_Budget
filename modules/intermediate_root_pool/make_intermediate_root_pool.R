@@ -5,7 +5,7 @@ make_intermediate_root_pool <- function(bkDF) {
     
     ### use Johanna's data to estimate the relative contribution
     ### of fineroot (< 2mm) coarseroot (2-3 mm) to total root
-    myDF <- read.csv("download/EucFACE_P0091_roots_SEP2017.csv")
+    myDF <- read.csv("data/EucFACE_data/EucFACE_P0091_roots_SEP2017.csv")
     myDF$depth <- as.character(myDF$depth)
     myDF <- myDF[myDF$depth%in%c("0-10 cm", "10-30 cm"),]
 
@@ -29,7 +29,7 @@ make_intermediate_root_pool <- function(bkDF) {
     fit2 <- lm(f_c_1~f_biomass, data=myDF[myDF$depth=="10-30 cm",])
 
     ### get the fineroot biomass data
-    frbDF <- read.csv("download/EucFACERootsRingDateDepth.csv")
+    frbDF <- read.csv("data/EucFACE_data/EucFACERootsRingDateDepth.csv")
     frbDF$Date <- as.Date(frbDF$Dateform, format="%d-%m-%Y")
     
     frbDF$fc1 <- frbDF$FRB_0.10cm * coefficients(fit1)[[2]] + coefficients(fit1)[[1]]
@@ -48,9 +48,6 @@ make_intermediate_root_pool <- function(bkDF) {
     ### clean
     outDF <- frbDF[,c("Date", "Ring", "intermediate_root_pool", "intermediate_root_pool_0_10cm", "intermediate_root_pool_10_30cm")]
 
-    
-
-    
     ### return
     return(outDF)
 

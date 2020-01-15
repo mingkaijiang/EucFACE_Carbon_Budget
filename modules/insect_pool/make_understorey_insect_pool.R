@@ -2,10 +2,10 @@ make_understorey_insect_pool <- function(c_frac){
     
 
     ### pitfall to collect ground-dwelling arthopods
-    myDF1 <- read.csv("download/FACE_P0051_RA_ARTHROPODS-2_L1_20131101-20150114.csv")
+    myDF1 <- read.csv("data/EucFACE_data/FACE_P0051_RA_ARTHROPODS-2_L1_20131101-20150114.csv")
     
     ## suction sampling to collect understorey arthropods
-    myDF2 <- read.csv("download/FACE_P0051_RA_ARTHROPODS-3_L1_20131101-20150114.csv")
+    myDF2 <- read.csv("data/EucFACE_data/FACE_P0051_RA_ARTHROPODS-3_L1_20131101-20150114.csv")
 
     myDF1 <- myDF1[,c("RUN", "RING", "PLOT", "GROUP", "ABUNDANCE", "WEIGHT.MG.")]
     myDF2 <- myDF2[,c("Run", "Ring", "Plot", "Group", "Abundance", "Weight.mg.")]

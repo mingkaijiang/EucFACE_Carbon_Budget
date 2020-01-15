@@ -7,8 +7,7 @@ make_doc_leaching_flux <- function(depth){
     ### Assumes all DOC reaching this depth are all lost from the system
 
     #- read in the data 
-    inDF <- read.csv(file.path(getToPath(), 
-                                "FACE_RA_P0023_SOILLYSIMETERNUTRIENTS_L3_20120710-20140402.csv"))
+    inDF <- read.csv("data/EucFACE_data/FACE_RA_P0023_SOILLYSIMETERNUTRIENTS_L3_20120710-20140402.csv")
     
     inDF$date <- as.Date(inDF$date)
 
