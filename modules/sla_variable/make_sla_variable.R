@@ -2,8 +2,6 @@
 make_sla_variable <- function() {
     
     ### Generate ring-specific SLA data per date
-    download_lma_data()
-    
     inDF1 <- read.csv(file.path(getToPath(), "FACE_P0020_RA_LMA_L2_20130213-20131115.csv"), stringsAsFactors=F)
     inDF2 <- read.csv(file.path(getToPath(), "FACE_P0020_RA_LMA_20140130-20141016_L2.csv"), stringsAsFactors=F)
     inDF3 <- read.csv(file.path(getToPath(), "FACE_P0020_RA_LMA_20150129-20150416_L2.csv"), stringsAsFactors=F)

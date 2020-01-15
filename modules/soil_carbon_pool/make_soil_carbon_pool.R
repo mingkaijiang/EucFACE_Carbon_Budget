@@ -4,9 +4,7 @@ make_soil_carbon_pool <- function(bk_density, return){
     ### return: return soil c for which depth
     ###         options are shallow and all_depths
     
-    #- download the data
-    download_soil_carbon_data()
-    
+  
     #------
     #- read in the soil C content data
     files <- list.files(path=getToPath(),pattern="BasicSoilProperties",full.names=T)
@@ -31,9 +29,7 @@ make_soil_carbon_pool <- function(bk_density, return){
     # Take out Nov and Dec values because no C conc data is available
     C_dat$month <- month(C_dat$Date)
     C_dat <- subset(C_dat, month == "9")
-    #C_dat <- C_dat[complete.cases(C_dat$totCper),]
-    #C_dat <- subset(C_dat, month != "12")
-    #C_dat <- subset(C_dat, month != "3")
+
 
     #------
     #- need to merge with bulk density data to estimate total soil C. 
@@ -51,10 +47,6 @@ make_soil_carbon_pool <- function(bk_density, return){
     #- get averages for the deeper depths
     dat.m.deep <- summaryBy(totCgm2~Ring+Plot+Depth,data=dat,FUN=mean,keep.names=T,na.rm=T)
     
-    #- set up an empty dataframe with all potential levels of Date, Plot, Ring, and Depth in "dat"
-    #dat.empty <- expand.grid(Depth=levels(dat$Depth),Plot=levels(as.factor(dat$Plot)),
-    #                         Ring=levels(as.factor(dat$Ring)),Date=levels(as.factor(dat$Date)))
-    #dat <- merge(dat,dat.empty,by=c("Depth","Plot","Ring","Date"),all.y=T)
     
     #- loop over the data, if deeper data are missing, gapfill with the average for that plot
     naflag <- NA
@@ -126,7 +118,6 @@ make_soil_carbon_pool <- function(bk_density, return){
     }
     
     # Only use data period 2012-2016    
-    #dat.s.m <- dat.s.m[dat.s.m$Date>"2012-06-17",]
     dat.s.m <- dat.s.m[dat.s.m$Date<="2016-12-31",]
     return(dat.s.m)
     #------

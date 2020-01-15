@@ -111,9 +111,6 @@ soil_bulk_density_variable <- make_soil_bulk_density()
 soil_c_pool <- make_soil_carbon_pool(bk_density=soil_bulk_density_variable,
                                      return="shallow")
 
-## return all depth and date
-soil_c_pool_all_depth <- make_soil_carbon_pool_all_depths(bk_density=soil_bulk_density_variable,
-                                                          return="all_depths")
 
 ### soil respiration flux
 soil_respiration_flux <- make_soil_respiration_flux()
