@@ -659,7 +659,7 @@ lit.prod.se <- summaryBy(leaf_flux~Ring+Treatment, data=lit.prod.tr, FUN=se, kee
 lit.prod$se <- lit.prod.se$leaf_flux
 
 ### Decomposition rate
-decp.rt <- make_leaflitter_decomposition_rate_2()
+decp.rt <- make_leaflitter_decomposition_rate()
 decp.rt[decp.rt$Ring== 2|decp.rt$Ring==3|decp.rt$Ring==6,"Treatment"] <- "aCO2"
 decp.rt[decp.rt$Ring== 1|decp.rt$Ring==4|decp.rt$Ring==5,"Treatment"] <- "eCO2"
 
@@ -1854,7 +1854,7 @@ dev.off()
 ###################---------------------######################
 ### VOC
 # read in data
-isoDF <- read.csv("data/VOC_emissions.csv")
+isoDF <- read.csv("data/support_data/VOC_emissions.csv")
 
 isoDF$Date <- as.Date(paste0(isoDF$Year, "-01-01"), format = "%Y-%m-%d")
 

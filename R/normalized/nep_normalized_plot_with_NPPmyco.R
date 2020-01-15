@@ -160,7 +160,7 @@ nep_normalized_plot_with_NPPmyco <- function(inDF) {
     out$aCO2_sd <- rowSds(as.matrix(subset(out, select=c(R2, R3, R6)), na.rm=T))
     out$eCO2_sd <- rowSds(as.matrix(subset(out, select=c(R1, R4, R5)), na.rm=T))
     
-    write.csv(out, "R_other/NEP_normalized_method_comparison_with_NPPmyco.csv", row.names=F)
+    write.csv(out, "output/NEP_normalized_method_comparison_with_NPPmyco.csv", row.names=F)
     
     
     ### prepare plotDF
@@ -185,7 +185,7 @@ nep_normalized_plot_with_NPPmyco <- function(inDF) {
     plotDF$pos <- plotDF$NEP + plotDF$NEP_conf
     plotDF$neg <- plotDF$NEP - plotDF$NEP_conf
     
-    write.csv(plotDF, "Output/nep_normalized_summary_with_NPPmyco.csv", row.names=F)
+    write.csv(plotDF, "output/nep_normalized_summary_with_NPPmyco.csv", row.names=F)
     
     ### compute overall NEP
     oDF <- data.frame(c("aCO2", "eCO2"), NA, NA, NA, NA)
