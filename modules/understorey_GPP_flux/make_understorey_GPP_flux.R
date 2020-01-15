@@ -1,4 +1,4 @@
-make_understorey_GPP_flux3 <- function() {
+make_understorey_GPP_flux <- function() {
     
     ### all understorey gpp calculated
     myDF <- read.csv("data/underS_species2.gpp_2.csv")

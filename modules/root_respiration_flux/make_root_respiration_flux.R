@@ -1,9 +1,8 @@
 
-make_root_respiration_flux_2 <- function(froot, iroot){
+make_root_respiration_flux <- function(froot, iroot, croot, rstem, stem){
   #### Estimate root respiration based on temperature-dependent function
   #### temperature data downloaded in soil respiration module
   #### temperature function derived from EucFACE
-  #### based on NamJin's EucFACE data
 
   ### convert from g C to c DM
   iroot$c_frac <- c_fraction_croot
@@ -21,37 +20,9 @@ make_root_respiration_flux_2 <- function(froot, iroot){
   irDF <- summaryBy(biomass~Ring, data=iroot, FUN=mean, keep.names=T)
   frDF <- summaryBy(biomass~Ring, data=froot, FUN=mean, keep.names=T)
   
-  ### download soil temperature
-  tempDF <- download_soil_temperature()
-  
-  ### read in temperature data
-  tempDF$DateTime <- as.POSIXct(tempDF$DateTime,format="%Y-%m-%d %T",tz="GMT")
-  tempDF$Date <- as.Date(tempDF$Date)
-  
-  ### only include period matches with Rsoil
-  tempDF <- subset(tempDF, Date >= "2013-01-01")
-  tempDF <- subset(tempDF, Date <= "2016-12-31")
-  
-  ### Get ring information
-  tempDF$Ring <- sub("FACE_R", "", tempDF$Source)
-  tempDF$Ring <- sub("_B1.*", "", tempDF$Ring)
-  tempDF$Ring <- as.numeric(tempDF$Ring)  
-  tempDF <- tempDF[order(tempDF$Date),]
-  
-  ### calculate mean soil temperature
-  tempDF$T5_avg <- rowMeans(tempDF[,c("T20cm_1_Avg", "T20cm_2_Avg")], na.rm=T)
 
-  ### extract useful columns
-  tempDF2 <- tempDF[,c("DateTime", "Date", "Ring", "T5_avg")]
-  
-  ### remove unreasonable data points
-  tempDF2$T5_avg[tempDF2$T5_avg <= 0] <- NA
-  
-  ### replace NA with row before
-  tempDF2$T5_avg <- na.locf(tempDF2$T5_avg)
-
-  ### 
-  tempDF <- tempDF2
+  ### read in tsoil
+  tempDF <- read.csv("download/EucFACE_Tsoil.csv")
 
   ### assign fr_biomass onto dataframe
   for (i in 1:6) {
@@ -83,6 +54,17 @@ make_root_respiration_flux_2 <- function(froot, iroot){
   tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date) + 1
   tempDF.out <- tempDF.out[,c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")]
   
-
-  return(tempDF.out)
+  ### add coarse root respiration
+  croot_resp <- calculate_coarse_root_respiration(stem=stem, croot=croot, rstem=rstem)
+  
+  croot_resp <- subset(croot_resp, Date >= "2013-01-01")
+  
+  tempDF <- merge(tempDF.out, croot_resp, by=c("Ring", "Date"))
+  tempDF$total_root_respiration <- tempDF$coarse_root_respiration + tempDF$root_respiration_flux
+  
+  
+  out <- tempDF[,c("Start_date","End_date","Date","Ring","total_root_respiration","ndays")]
+  colnames(out) <- c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")
+  
+  return(out)
 }

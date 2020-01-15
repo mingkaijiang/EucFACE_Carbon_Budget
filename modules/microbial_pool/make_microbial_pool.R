@@ -1,9 +1,7 @@
-#- Make the microbial C pool
 make_microbial_pool <- function(bk_density){
     # return ring-specific, continuous microbial C pool
 
-    # download the data
-    download_microbial_data()
+
     
     df <- read.csv(file.path(getToPath(), 
                              "FACE_P0014_RA_MicrobialBiomassCNP_L1_20120613-20151130.csv"))

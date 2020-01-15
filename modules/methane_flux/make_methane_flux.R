@@ -5,10 +5,7 @@ make_methane_flux <- function() {
     
     #### final flux data is the yearly aggregated data
     #### Information on the data processing is available on HIEv
-  
-    ### download the data
-    download_methane_data()
-    
+
     ### read in the csv
     myDF1 <- read.csv(file.path(getToPath(), 
                                "FACE_P0027_RA_GHG-FLUXES_L3_20130101-20131231 V3.csv"))

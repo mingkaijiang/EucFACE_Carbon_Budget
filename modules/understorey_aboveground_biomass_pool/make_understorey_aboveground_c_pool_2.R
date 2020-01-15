@@ -1,8 +1,6 @@
 make_understorey_aboveground_c_pool_2 <- function(c_frac) {
     
-    ### download data
-    download_understorey_aboveground_biomass_data()
-    
+
     ### read in the data 
     inDF <- read.csv(file.path(getToPath(), 
                                "FACE_TLAPSE_MASSALL_L2_RA_20150202-20170308.csv"))

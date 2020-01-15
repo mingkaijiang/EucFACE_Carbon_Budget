@@ -239,11 +239,11 @@ coarse_root_c_pool <- make_coarse_root_pool(c_fraction_croot, fr_pool=fineroot_c
 coarse_root_production_flux <- make_coarse_root_production_flux(coarse_root_c_pool) 
 
 ### Root respiration flux
-root_respiration_flux <- make_root_respiration_flux_3(froot=fineroot_c_pool, 
-                                                      iroot=intermediate_root_c_pool,
-                                                      croot=coarse_root_c_pool,
-                                                      rstem=wood_respiration_flux,
-                                                      stem=wood_c_pool)
+root_respiration_flux <- make_root_respiration_flux(froot=fineroot_c_pool, 
+                                                    iroot=intermediate_root_c_pool,
+                                                    croot=coarse_root_c_pool,
+                                                    rstem=wood_respiration_flux,
+                                                    stem=wood_c_pool)
 
 
 ### Rh C flux
@@ -254,7 +254,7 @@ heterotrophic_respiration_flux <- make_heterotrophic_respiration_flux(soil_respi
 overstorey_leaf_respiration_flux <- make_overstorey_leaf_respiration_flux()
 
 ### Understorey GPP
-understorey_gpp_flux <- make_understorey_GPP_flux3()
+understorey_gpp_flux <- make_understorey_GPP_flux()
 
 ### Understorey respiration
 ### assumes either a fixed or a function of temperature
@@ -268,19 +268,17 @@ understorey_respiration_flux <- make_understorey_respiration_flux(c_pool=underst
 ### Delta pools
 delta_soil_c_pool <- make_delta_soil_pool_function(inDF=soil_c_pool, var.col=3)
 
-#delta_leaf_c_pool_old <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
-#delta_leaf_c_pool <- make_delta_pool_function(inDF=leaf_c_pool, var.col=3)
-delta_leaf_c_pool <- make_delta_leaf_pool_function_2(inDF=leaf_c_pool, var.col=3)
+delta_leaf_c_pool <- make_delta_leaf_pool_function(inDF=leaf_c_pool, var.col=3)
 
 delta_wood_c_pool <- make_delta_wood_pool_function(inDF=wood_c_pool, var.col=3)
 
-delta_fineroot_c_pool <- make_delta_fineroot_pool_function_3(inDF=fineroot_c_pool, var.col=3)
+delta_fineroot_c_pool <- make_delta_fineroot_pool_function(inDF=fineroot_c_pool, var.col=3)
 
 delta_intermediate_root_c_pool <- make_delta_intermediate_root_pool_function(inDF=intermediate_root_c_pool, var.col=3)
 
 delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarse_root_c_pool, var.col=3)
 
-delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
+#delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
 
 delta_understorey_aboveground_c_pool_2 <- make_delta_ua_pool_function_4(inDF=understorey_aboveground_c_pool_2, var.col=3)
 

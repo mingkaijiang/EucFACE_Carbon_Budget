@@ -6,9 +6,7 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
     ### Relationship: ln(root biomass) = 0.787 * ln(stand basal area) + 1.218
     ### Root biomass in t/ha, basal area in m2/ha.
     
-    #- download the data from HIEv
-    download_diameter_data()
-    
+   
     #- read in 2012-15 data sets
     f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
@@ -36,10 +34,7 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
     classif$Active.FALSE.means.dead.[classif$Tree == 615] <- FALSE  # This tree dead
     classif$Active.FALSE.means.dead.[classif$Tree == 616] <- FALSE  # This tree dead
     classif$Active.FALSE.means.dead.[classif$Tree == 617] <- FALSE  # This tree dead
-    #classif$Active.FALSE.means.dead.[classif$Tree == 101] <- FALSE  # This tree dead in 2018
-    #classif$Active.FALSE.means.dead.[classif$Tree == 219] <- FALSE  # This tree dead in 2018
-    #classif$Active.FALSE.means.dead.[classif$Tree == 220] <- FALSE  # This tree dead in 2018
-    #classif$Active.FALSE.means.dead.[classif$Tree == 621] <- FALSE  # This tree dead in 2018
+
     
     # Merge the files
     all <- merge(classif,f12,by=c("Tree","Ring","CO2.trt"))
@@ -82,9 +77,6 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
     data$biomass <- exp(0.787 * log(data$ba2) + 1.218) 
     
     ### Estimate sapwood and heartwood C fraction
-    #sap.c <- make_sapwood_c_n_fraction()
-    #data$c_frac[data$Ring %in% c(2, 3, 6)] <- sap.c$aCO2[sap.c$variable=="C"]
-    #data$c_frac[data$Ring %in% c(1, 4, 5)] <- sap.c$eCO2[sap.c$variable=="C"]
     data$c_frac <- c_frac
     
     # convert from g matter m-2 to g C m-2
@@ -134,8 +126,6 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
             
     }
     
-    #data.m$c_frac[data.m$Ring %in% c(2, 3, 6)] <- sap.c$aCO2[sap.c$variable=="C"]
-    #data.m$c_frac[data.m$Ring %in% c(1, 4, 5)] <- sap.c$eCO2[sap.c$variable=="C"]
     data.m$c_frac <- c_frac
     
     data.m$coarseroot_c_pool <- data.m$coarseroot_biomass * data.m$c_frac
