@@ -1,5 +1,5 @@
 # Make the fineroot c production flux
-make_fineroot_production_flux_2 <- function(){
+make_fineroot_production_flux <- function(){
     
     # read in the csv
     frb1 <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")

@@ -2,9 +2,6 @@
 
 make_soil_respiration_flux <- function(){
     
-    #- download the data
-    download_soil_respiration()
-    
     #- read in the data
     RE <- as.data.frame(data.table::fread(file.path(getToPath(), 
                                                     "FACE_P0031_RA_Rsoil-PROCESSED_20120902-20151030_L2_v1.csv")))

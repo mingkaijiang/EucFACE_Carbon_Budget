@@ -1,5 +1,5 @@
 # Make the fine root C pool
-make_fineroot_pool_2 <- function(){
+make_fineroot_pool <- function(){
 
   
   # read in the csv

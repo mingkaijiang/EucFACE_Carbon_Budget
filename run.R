@@ -122,7 +122,7 @@ soil_respiration_flux <- make_soil_respiration_flux()
 
 
 
-### isoprene (David) and monoterpenes (Bruna)
+### isoprene and monoterpenes 
 voc_emission_flux <- make_voc_emission_flux()
 
 
@@ -136,30 +136,18 @@ leaf_c_pool <- make_leaf_pool(lai_variable, sla_variable, c_fraction,
 
 
 ### Fine root pool (< 2 mm)
-fineroot_c_pool <- make_fineroot_pool_2()
+fineroot_c_pool <- make_fineroot_pool()
 
 ### fineroot c production flux
-fineroot_production_flux <- make_fineroot_production_flux_2()
+fineroot_production_flux <- make_fineroot_production_flux()
 
 ### Intermediate pool (2 - 3 mm)
-### Note:
-### both Juan and Johanna's data gives similar result,
-### in terms of the Froot/Croot fraction, 
-### despite they have slightly different definitions of croot.
-### This in turn means we have higher Rroot (~ 600 g C m-2 yr-1), 
-### about more than half in aCO2 rings, and about half in eCO2 rings. 
-### We have a pretty good estimate of the Froot/Croot fraction in top soil, 
-### in that the variability is relatively low. 
-### The variability of coarseroot biomass in 10 - 30 cm soil is large. 
-#intermediate_root_c_pool_old <- make_intermediate_root_pool(froot=fineroot_c_pool)
-
 ### estimate intermediate root pool based on a relationship 
 ### between f/c ~ fineroot biomass, at two depths
-intermediate_root_c_pool <- make_intermediate_root_pool_4(bkDF=soil_bulk_density_variable)
+intermediate_root_c_pool <- make_intermediate_root_pool(bkDF=soil_bulk_density_variable)
 
 ### intermediate root c production
 intermediate_root_production_flux <- make_intermediate_root_production_flux(inDF=intermediate_root_c_pool)
-#intermediate_root_production_flux <- make_intermediate_root_production_flux_2(inDF=intermediate_root_c_pool)
 
 
 ### frass c production flux

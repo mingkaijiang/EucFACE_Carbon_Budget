@@ -1,58 +1,56 @@
-make_intermediate_root_pool <- function(froot) {
+make_intermediate_root_pool <- function(bkDF) {
     
-    ### Read in Juan's coarseroot biomass estimates
-    myDF <- read.csv("data/CRBFACE.csv")
-    colnames(myDF) <- c("Ring", "Date", "Depth", "n", "CRB", "sd", "se", "ci")
+    ### estimate ring-specific bulk density
+    bk <- summaryBy(bulk_density_kg_m3~ring, FUN=mean, data=bkDF, keep.names=T)
     
-    ### subset only top 10 cm, because data below it is very variable (also including more woody roots)
-    myDF <- subset(myDF, Depth == 0)
-    
-    
-    ### if se is within 75 % of mean, replace data points with treatment means
-    myDF$CRB2 <- ifelse(myDF$CRB * 0.75 < myDF$se, NA, myDF$CRB)
-    myDF$CRB2[myDF$Ring==5 & myDF$Date=="14-Feb"] <- mean(myDF$CRB2[myDF$Date=="14-Feb"&myDF$Ring%in%c(1,4,5)], na.rm=T)
-    myDF$CRB2[myDF$Ring==1 & myDF$Date=="14-Jun"] <- myDF$CRB[myDF$Date=="14-Jun"&myDF$Ring==1]
-    myDF$CRB2[myDF$Ring==2 & myDF$Date=="14-Jun"] <- mean(myDF$CRB2[myDF$Date=="14-Jun"&myDF$Ring%in%c(2,3,6)], na.rm=T)
-    myDF$CRB2[myDF$Ring==2 & myDF$Date=="14-Dec"] <- mean(myDF$CRB2[myDF$Date=="14-Dec"&myDF$Ring%in%c(2,3,6)], na.rm=T)
-    
-    myDF$CRB2[myDF$Ring==3 & myDF$Date=="14-Sep"] <- mean(myDF$CRB2[myDF$Date=="14-Sep"&myDF$Ring%in%c(2,3,6)], na.rm=T)
+    ### use Johanna's data to estimate the relative contribution
+    ### of fineroot (< 2mm) coarseroot (2-3 mm) to total root
+    myDF <- read.csv("data/EucFACE_P0091_roots_SEP2017.csv")
+    myDF$depth <- as.character(myDF$depth)
+    myDF <- myDF[myDF$depth%in%c("0-10 cm", "10-30 cm"),]
 
-    ### get the date right
-    frb1 <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")
-    frb1$Date <- as.Date(frb1$Dateform, format="%d-%m-%Y")
-    dates <- unique(frb1$Date)
-    dates <- dates[-7]
-    myDF$Date2 <- rep(dates, each=6)
+    ### calculate fractional coefficient
+    myDF$f_c_1 <- myDF$root.smal.2.mm.mg.g / myDF$root.2t3.mm.mg.g
     
-    # assign C concentrations
-    myDF$c_frac <- c_fraction_croot
+    ### assign soil bulk density
+    for (i in 1:6) {
+        myDF$bk[myDF$ring==i] <- bk$bulk_density_kg_m3[bk$ring==i]
+    }
+
+    ### calculate sum biomass and convernt unit from g g-1 to mg m-2
+    myDF$f_biomass[myDF$depth=="0-10 cm"] <- (myDF$root.smal.2.mm.mg.g[myDF$depth=="0-10 cm"]) * 
+        myDF$bk[myDF$depth=="0-10 cm"] * 1000 * 0.1 / 1000
     
-    myDF$coarseroot_pool_0_10cm <- myDF$CRB2 * myDF$c_frac
+    myDF$f_biomass[myDF$depth=="10-30 cm"] <- (myDF$root.smal.2.mm.mg.g[myDF$depth=="10-30 cm"]) * 
+        myDF$bk[myDF$depth=="10-30 cm"] * 1000 * 0.2 / 1000
     
-    ### assign fineroot to the DF
-    froot <- froot[froot$Date%in%dates,]
-    myDF$froot_0_10 <- froot$fineroot_0_10_cm
-    myDF$froot_10_30 <- froot$fineroot_10_30_cm
+    ### fit linear relationship for each depth
+    fit1 <- lm(f_c_1~f_biomass, data=myDF[myDF$depth=="0-10 cm",])
+    fit2 <- lm(f_c_1~f_biomass, data=myDF[myDF$depth=="10-30 cm",])
+
+    ### get the fineroot biomass data
+    frbDF <- read.csv("temp_files/EucFACERootsRingDateDepth.csv")
+    frbDF$Date <- as.Date(frbDF$Dateform, format="%d-%m-%Y")
     
-    ### calculate fineroot to total root fraction in top 10 cm
-    myDF$f_c_frac <- myDF$froot_0_10 / myDF$coarseroot_pool_0_10cm
+    frbDF$fc1 <- frbDF$FRB_0.10cm * coefficients(fit1)[[2]] + coefficients(fit1)[[1]]
+    frbDF$fc2 <- frbDF$FRB_10.30cm * coefficients(fit2)[[2]] + coefficients(fit2)[[1]]
+
+    ### get coarseroot biomass
+    frbDF$IRB_0.10cm <- frbDF$FRB_0.10cm / frbDF$fc1
+    frbDF$IRB_10.30cm <- frbDF$FRB_10.30cm / frbDF$fc2
     
-    ### estimate coarseroot pool in 10 - 30 cm
-    myDF$coarseroot_pool_10_30cm <- myDF$froot_10_30 / myDF$f_c_frac
+    ### calculate c cotent, based on fineroot content
+    frbDF$intermediate_root_pool_0_10cm <- frbDF$IRB_0.10cm * frbDF$C0_0.10cm / 100
+    frbDF$intermediate_root_pool_10_30cm <- frbDF$IRB_10.30cm * frbDF$C0_10.30cm / 100
+    
+    frbDF$intermediate_root_pool <- frbDF$intermediate_root_pool_0_10cm + frbDF$intermediate_root_pool_10_30cm
     
     ### clean
-    outDF <- myDF[,c("Date2", "Ring", "coarseroot_pool_0_10cm", "coarseroot_pool_10_30cm")]
-    outDF$coarse_root_pool <- outDF$coarseroot_pool_0_10cm + outDF$coarseroot_pool_10_30cm
-    
-    colnames(outDF) <- c("Date", "Ring", "intermediate_root_pool_0_10cm", "intermediate_root_pool_10_30cm", "intermediate_root_pool")
-    outDF <- outDF[,c("Date", "Ring", "intermediate_root_pool", "intermediate_root_pool_0_10cm", "intermediate_root_pool_10_30cm")]
-    
-    
-    #test <- summaryBy(coarse_root_pool~Ring, FUN=mean, data=outDF, keep.names=T)
-    #test$trt[test$Ring%in%c(2,3,6)] <- "amb"
-    #test$trt[test$Ring%in%c(1,4,5)] <- "ele"
-    #summaryBy(coarse_root_pool~trt, FUN=mean, data=test, keep.names=T)
+    outDF <- frbDF[,c("Date", "Ring", "intermediate_root_pool", "intermediate_root_pool_0_10cm", "intermediate_root_pool_10_30cm")]
 
+    
+
+    
     ### return
     return(outDF)
 

@@ -7,9 +7,7 @@ make_frass_production_flux <- function() {
     # Currently only time points that have both frassfall and frass C data are included.
     # returns: frass production per day (mg/d), averaged across start and date dates
     
-    #- download the data. 
-    download_frass_data()
-    
+
     #- read in the data - frassfall data (in unit of g/0.1979 m2)
     inDF1 <- read.csv(file.path(getToPath(), 
                                 "FACE_P0017_RA_FRASSFALL_L2_20120914-20150209.csv"))
