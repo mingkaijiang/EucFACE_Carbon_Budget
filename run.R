@@ -62,31 +62,6 @@ options(warn=-1)
 ###                Step 2: Prepare met data                             ###
 ###                          OPTIONAL                                   ###
 ###########################################################################
-### Soil moisture data
-#pdf("output/soil_moisture_plots.pdf", width=10, height=4)
-#prepare_soil_moisture_data(plot.image = T, monthly=T)
-#dev.off()
-
-### Top canopy Pressure (hPa)
-#pairDF <- prepare_surface_pressure_data(plot.image=F, timestep="Monthly")
-#
-#### Top canopy Rainfall (mm)
-#rainDF <- prepare_rainfall_data(plot.image=F, timestep="Monthly")
-#
-#### Tair (K), RH and PAR (umol m-2 s-1) top of canopy
-#tair_rh_parDF <- prepare_tair_rh_par_data(timestep="Monthly")
-#
-#### Wind speed top of canopy (m/s)
-#windDF <- prepare_wind_data(plot.image=F,timestep="Monthly")
-#
-#### tair, RH, PAR and pressure 
-#tair_rh_par_presDF <- prepare_met_air_data(timestep="Monthly")
-#
-#### Combine met data together, also make combined met data plot
-#metDF <- combine_met_data()
-
-### Calculate mean annual temperature and precipitation
-#met_ann <- calculate_annual_mean_met_data(timestep="Daily")
 
 
 ###########################################################################
