@@ -33,10 +33,7 @@
 ###########################################################################
 ###########################################################################
 #### Notes:
-#### 1. functions that take a long time to run:
-####    make_leafc_treatment_abs_effect_statistics()
-####    DA fitting functions (if long chain is used)
-#### 2. to plot figures, we need to go into functions itself for many plotting scripts
+#### 1. to plot figures, we need to go into functions itself for many plotting scripts
 ####
 ###########################################################################
 ###########################################################################
