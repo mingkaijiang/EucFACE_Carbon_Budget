@@ -1,8 +1,6 @@
 # Make leaf mass consumption by herbivory flux
 make_herbivory_leaf_consumption_flux <- function(sla,frass_flux) {
     
-    # download frass vs. leaf consumption experimental data
-    download_frass_consumption_data()
     
     # read in the consumption relationship data
     inDF1 <- read.csv(file.path(getToPath(), 

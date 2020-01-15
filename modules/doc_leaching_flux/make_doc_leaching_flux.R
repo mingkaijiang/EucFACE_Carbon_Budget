@@ -1,4 +1,3 @@
-#- Make the doc leaching flux
 make_doc_leaching_flux <- function(depth){
     
     ### Information to know: 
@@ -6,12 +5,7 @@ make_doc_leaching_flux <- function(depth){
     ### immediately above the impermeable layer (~ 35 - 75 cm)
     ### shallow depth refer to 0 - 15 cm
     ### Assumes all DOC reaching this depth are all lost from the system
-    ### May add a modeling component later, because the data were collected when soils were wet!
-    ### Needs a drainage number to plug in!!!!
-    
-    #- download the data. 
-    download_doc_data()
-    
+
     #- read in the data 
     inDF <- read.csv(file.path(getToPath(), 
                                 "FACE_RA_P0023_SOILLYSIMETERNUTRIENTS_L3_20120710-20140402.csv"))

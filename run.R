@@ -161,12 +161,9 @@ herbivory_leaf_consumption_flux <- make_herbivory_leaf_consumption_flux(sla=sla_
 
 ### DOC leaching flux
 ### Can return shallow, deep and all_depths result
-### This data also contains total dissolved carbon, and dissolved inorganic carbon
-### For now, return only deep option
 ### Also assumes leaching = 20 ml m-2 d-1
 doc_leaching_flux <- make_doc_leaching_flux(depth="deep")
 
-dic_leaching_flux <- make_dic_leaching_flux(depth="deep")
 
 ### Litter fluxes
 ### This dataframe includes all of twig, bark, seed, leaf.
@@ -174,7 +171,7 @@ dic_leaching_flux <- make_dic_leaching_flux(depth="deep")
 leaflitter_flux <- make_leaflitter_flux(c_fraction)
 
 ### Leaf litter pool
-leaflitter_pool <- make_leaflitter_pool_2(c_fraction)
+leaflitter_pool <- make_leaflitter_pool(c_fraction)
 
 ### Insect pool
 ### method 1 is based on litter basket data
