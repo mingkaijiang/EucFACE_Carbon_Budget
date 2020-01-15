@@ -296,8 +296,13 @@ make_whitaker_diagram <- function() {
     faceDF$NPP_sd[faceDF$Site=="FlakalidenWTC"] <- NA
     
     ### plot global soil N and P spatial maps, with face points projected onto it
-    source("R/global_comparison/read_global_soil_data.R")
-    faceDF <- read_global_soil_data(faceDF=faceDF)
+    #source("R/global_comparison/read_global_soil_data.R")
+    #faceDF <- read_global_soil_data(faceDF=faceDF)
+    #write.csv(faceDF, "data/support_data/Dai/faceDF.csv", row.names=F)
+    
+    ### the Dai dataset is too big to publish,
+    ### we will just manually insert the numbers here
+    faceDF <- read.csv("data/support_data/Dai/faceDF.csv")
     
     ### calcualte soil N as g N m-2 for top 50 cm soil, based on bulk density
     faceDF$soilN <- faceDF$TN1 / 100 * faceDF$BD1 * 1000000 * 0.5
