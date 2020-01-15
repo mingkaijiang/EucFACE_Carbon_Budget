@@ -578,16 +578,6 @@ generate_most_likely_outcome(inDF=pChain_aCO2_1,
                              obs=obsDF[1,])
 
 
-plot_parameter_trace_within_parameter_space(params= params.aCO2.R2, 
-                                            params.lower = params.aCO2.lower.R2,
-                                            params.upper = params.aCO2.upper.R2,
-                                            inDF = pChain_aCO2_1,
-                                            dist.type=dist.type,
-                                            step.size=step.size.aCO2,
-                                            chainLength=chainLength,
-                                            Trt = "aCO2_1")
-
-
 # Ring 3
 step.size.aCO2 <- 0.0035 
 set.seed(15)
@@ -603,15 +593,6 @@ pChain_aCO2_2 <- MCMC_model_fitting(params = params.aCO2.R3,
 generate_most_likely_outcome(inDF=pChain_aCO2_2,
                              obs=obsDF[2,])
 
-
-plot_parameter_trace_within_parameter_space(params= params.aCO2.R3, 
-                                            params.lower = params.aCO2.lower.R3,
-                                            params.upper = params.aCO2.upper.R3,
-                                            inDF = pChain_aCO2_2,
-                                            dist.type=dist.type,
-                                            step.size=step.size.aCO2,
-                                            chainLength=chainLength,
-                                            Trt = "aCO2_2")
 
 # Ring 6
 step.size.aCO2 <- 0.003 
@@ -630,22 +611,10 @@ generate_most_likely_outcome(inDF=pChain_aCO2_3,
                              obs=obsDF[3,])
 
 
-plot_parameter_trace_within_parameter_space(params= params.aCO2.R6, 
-                                            params.lower = params.aCO2.lower.R6,
-                                            params.upper = params.aCO2.upper.R6,
-                                            inDF = pChain_aCO2_3,
-                                            dist.type=dist.type,
-                                            step.size=step.size.aCO2,
-                                            chainLength=chainLength,
-                                            Trt = "aCO2_3")
-
 
 ### step C3: 
 ### combine the results, and make some plots
 pChain.aCO2 <- rbind(pChain_aCO2_1, pChain_aCO2_2, pChain_aCO2_3)
-
-plot_posterior(inDF = pChain.aCO2, Trt = "aCO2", dist.type = dist.type,
-               chainLength = chainLength)
 
 ### step C4: 
 ### predict final output, at mean aCO2
@@ -685,16 +654,6 @@ pChain_eCO2_1 <- MCMC_model_fitting(params = params.eCO2.R1,
 generate_most_likely_outcome(inDF=pChain_eCO2_1,
                              obs=eco2DF[1,])
 
-plot_parameter_trace_within_parameter_space(params= params.eCO2.R1, 
-                                            params.lower = params.eCO2.lower.R1,
-                                            params.upper = params.eCO2.upper.R1,
-                                            inDF = pChain_eCO2_1,
-                                            dist.type=dist.type,
-                                            step.size=step.size.eCO2,
-                                            chainLength=chainLength,
-                                            Trt = "eCO2_1")
-
-
 # ring 4
 step.size.eCO2 <- 0.00028 
 set.seed(15)
@@ -710,15 +669,6 @@ pChain_eCO2_2 <- MCMC_model_fitting(params = params.eCO2.R4,
 generate_most_likely_outcome(inDF=pChain_eCO2_2,
                              obs=eco2DF[2,])
 
-
-plot_parameter_trace_within_parameter_space(params= params.eCO2.R4, 
-                                            params.lower = params.eCO2.lower.R4,
-                                            params.upper = params.eCO2.upper.R4,
-                                            inDF = pChain_eCO2_1,
-                                            dist.type=dist.type,
-                                            step.size=step.size.eCO2,
-                                            chainLength=chainLength,
-                                            Trt = "eCO2_2")
 
 
 # ring 5
@@ -736,22 +686,11 @@ pChain_eCO2_3 <- MCMC_model_fitting(params = params.eCO2.R5,
 generate_most_likely_outcome(inDF=pChain_eCO2_3,
                              obs=eco2DF[3,])
 
-plot_parameter_trace_within_parameter_space(params= params.eCO2.R5, 
-                                            params.lower = params.eCO2.lower.R5,
-                                            params.upper = params.eCO2.upper.R5,
-                                            inDF = pChain_eCO2_1,
-                                            dist.type=dist.type,
-                                            step.size=step.size.eCO2,
-                                            chainLength=chainLength,
-                                            Trt = "eCO2_3")
-
 
 ### step D4: 
 ### combine the results, and make some plots
 pChain.eCO2 <- rbind(pChain_eCO2_1, pChain_eCO2_2, pChain_eCO2_3)
 
-plot_posterior(inDF = pChain.eCO2, Trt = "eCO2", dist.type = dist.type,
-               chainLength = chainLength)
 
 ### step D5: 
 ### predict final output, at mean eCO2 values
@@ -774,10 +713,6 @@ make_parameter_summary_table()
 #### F: generate model-data comparison on allocation and turnover coefficients
 ####    Need to go into function to plot
 combine_all_model_output()
-
-#### G: model-data comparison based on traceability framework
-####    Need to go into function to plot
-#compare_data_model_traceability()
 
 
 ###########################################################################

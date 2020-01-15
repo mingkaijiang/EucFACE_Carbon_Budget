@@ -35,14 +35,8 @@ combine_all_model_output <- function() {
     
     outDF[mapply(is.infinite, outDF)] <- NA
 
-    ### summary of problems:
-    ### 1. we need to group coarseroot and stem together,
-    ###    but actually we can't, because for models that don't differ croot and froot, froot biomass is huge, 
-    ###    so a fraction of that must be croot.
-    ### 2. we haven't add delta into the calculations.
-    ### 3. LPJW has a very large allocation fraction to other, which includes NTC and reproductive organs! Do we just ignore it?
-    ### 4. Csoil and Cwood are large in all model output, and therefore tau soil and tau wood is problematic. 
-    ### 5. The simulated GPP is overstorey only (in theory). 
+    ### Note:
+    ### 1. LPJW has a very large allocation fraction to other, which includes NTC and reproductive organs
     
     ### calculate multi-model mean
     subDF1 <- subset(outDF, CO2=="aCO2")
