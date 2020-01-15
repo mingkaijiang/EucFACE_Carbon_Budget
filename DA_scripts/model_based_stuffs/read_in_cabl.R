@@ -4,10 +4,10 @@ read_in_cabl <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("model_output/CABL/D1CABLEUCAMBAVG.csv",
+    inDF1 <- read.csv("download/model_output/CABL/D1CABLEUCAMBAVG.csv",
                       skip = 7, header=T)
     
-    inDF2 <- read.csv("model_output/CABL/D1CABLEUCELEAVG.csv",
+    inDF2 <- read.csv("download/model_output/CABL/D1CABLEUCELEAVG.csv",
                       skip = 7, header=T)
     
     inDF1[inDF1<=-900] <- 0

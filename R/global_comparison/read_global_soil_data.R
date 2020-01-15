@@ -17,31 +17,6 @@ read_global_soil_data <- function(faceDF) {
     tn1 <- subset(tn, 1) * 0.01
     tp1 <- subset(tp, 1) * 0.01 
     
-    #np1 <- tn1 / tp1
-
-    ### prepare FACE color list
-    #col.list.face <- c("red", brewer.pal(9,"Paired"))
-    
-    ###
-    #pdf("output/global_soil_NP.pdf")
-    #par(mfrow=c(3,1))
-    #
-    #plot(tn1, xlim=c(-180, 180), ylim=c(-90, 90))
-    #points(faceDF$Lon, faceDF$Lat, 
-    #       type="p", pch = c(17, rep(15, 9)),
-    #       col=col.list.face)
-    #
-    #plot(tp1, xlim=c(-180, 180), ylim=c(-90, 90))
-    #points(faceDF$Lon, faceDF$Lat, 
-    #       type="p", pch = c(17, rep(15, 9)),
-    #       col=col.list.face)
-    #
-    #plot(np1, xlim=c(-180, 180), ylim=c(-90, 90))
-    #points(faceDF$Lon, faceDF$Lat, 
-    #       type="p", pch = c(17, rep(15, 9)),
-    #       col=col.list.face)
-    #
-    #dev.off()
     
     ### extract face grids
     tn1@crs 

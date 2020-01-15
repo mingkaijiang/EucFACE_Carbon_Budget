@@ -4,9 +4,9 @@ read_in_lpjx <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("model_output/LPJX/D1LPJXEUCAMBAVG.csv", skip=2)
+    inDF1 <- read.csv("download/model_output/LPJX/D1LPJXEUCAMBAVG.csv", skip=2)
     
-    inDF2 <- read.csv("model_output/LPJX/D1LPJXEUCELEAVG.csv", skip=2)
+    inDF2 <- read.csv("download/model_output/LPJX/D1LPJXEUCELEAVG.csv", skip=2)
     
     inDF1[inDF1=="-9999"] <- 0
     inDF2[inDF2=="-9999"] <- 0

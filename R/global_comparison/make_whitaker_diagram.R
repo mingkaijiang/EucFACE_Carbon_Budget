@@ -115,8 +115,8 @@ make_whitaker_diagram <- function() {
     
     ### prepare input files - EucFACE
     ### Read input - climate
-    DF1 <- read.csv("R_other/met_air_flux_data_daily.csv")
-    DF2 <- read.csv("R_other/rainfall_data_daily.csv")
+    DF1 <- read.csv("download/met_air_flux_data_daily.csv")
+    DF2 <- read.csv("download/rainfall_data_daily.csv")
     names(DF1)[1] <- names(DF2)[1] <- "Date"
     myDF <- merge(DF1, DF2, by.x="Date", all=T)
     colnames(myDF) <- c("Date", "Tair", "RH", "PAR", "Pressure", "Wind", "Rain")

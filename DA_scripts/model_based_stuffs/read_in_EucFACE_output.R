@@ -14,7 +14,7 @@ read_in_EucFACE_output <- function() {
     inDF <-read.csv("DA_output/parameter_summary_table.csv")
     
     ### fixed coefficient for leaflitter
-    decomp <- make_leaflitter_decomposition_rate_2()
+    decomp <- make_leaflitter_decomposition_rate()
     
     inDF$tau.ag.lit[1] <- 365 * mean(decomp$k[decomp$Ring%in%c(2,3,6)])
     inDF$tau.ag.lit[2] <- 365 * mean(decomp$k[decomp$Ring%in%c(1,4,5)])

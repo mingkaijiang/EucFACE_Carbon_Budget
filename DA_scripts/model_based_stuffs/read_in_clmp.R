@@ -4,9 +4,9 @@ read_in_clmp <- function() {
     ##Read in output data and prepare data format
     ##################################################
     ## read cn amb obs
-    inDF1 <- read.csv("model_output/CLMP/D1CLMPEUCAMBAVG.csv")
+    inDF1 <- read.csv("download/model_output/CLMP/D1CLMPEUCAMBAVG.csv")
     
-    inDF2 <- read.csv("model_output/CLMP/D1CLMPEUCELEAVG.csv")
+    inDF2 <- read.csv("download/model_output/CLMP/D1CLMPEUCELEAVG.csv")
     
     
     inDF1[inDF1<=-999] <- 0
