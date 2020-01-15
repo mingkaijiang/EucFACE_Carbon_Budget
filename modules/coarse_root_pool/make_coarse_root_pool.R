@@ -14,7 +14,7 @@ make_coarse_root_pool <- function(c_frac, fr_pool, ir_pool) {
     f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
 
     # this file is not on HIEv yet!
-    f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
+    f12 <- read.csv("download/EucFACE_dendrometers2011-12_RAW.csv")
     
     ########################
     # Read in additional files that I used when doing the data analysis

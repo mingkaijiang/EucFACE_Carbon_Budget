@@ -107,7 +107,7 @@ make_understorey_respiration_flux <- function(c_pool,
     } else if (assumption == "maespa_all") {
         ### use MAESPA simulated respiration rate
         
-        myDF <- read.csv("data/underS_species2.gpp_2.csv")
+        myDF <- read.csv("download/underS_species2.gpp_2.csv")
         myDF <- subset(myDF, Species == 2)
         myDF$Ring <- gsub("R","", myDF$Ring)
         myDF$Ring <- as.numeric(myDF$Ring)
