@@ -18,13 +18,25 @@ DA_output/*.pdf
 DA_output/*.csv
 *.nc
 
-model_output/CABL/*.csv
-model_output/CLM4/*.csv
-model_output/CLMP/*.csv
-model_output/GDAY/*.csv
-model_output/LPJW/*.csv
-model_output/LPJX/*.csv
-model_output/OCNX/*.csv
-model_output/SDVM/*.csv
+data/model_output/CABL/*.csv
+data/model_output/CLM4/*.csv
+data/model_output/CLMP/*.csv
+data/model_output/GDAY/*.csv
+data/model_output/LPJW/*.csv
+data/model_output/LPJX/*.csv
+data/model_output/OCNX/*.csv
+data/model_output/SDVM/*.csv
+
+data/*.csv
+data/*.dat
+data/*.nc
+data/EucFACE_data/*.csv
+data/EucFACE_data/*.dat
+data/MAESPA_output/*.csv
+data/met_data/*.csv
+data/support_data/*.csv
+data/support_data/other_FACE/*.csv
+data/support_data/Dai/*.nc
+
 
 *.Rmd
