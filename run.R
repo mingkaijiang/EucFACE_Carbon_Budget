@@ -732,10 +732,6 @@ inDF <- tables_by_ring_predicted
 source("R/normalized/gpp_and_rsoil_normalized_plot.R")
 gpp_and_rsoil_normalized_plot(inDF=tables_by_ring_predicted)
 
-###    Need to go into function to plot
-source("R/normalized/gpp_and_rsoil_normalized_plot_with_NPPmyco.R")
-gpp_and_rsoil_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
-
 
 ### NEP gaps   
 source("R/normalized/nep_normalized_plot.R")
@@ -752,9 +748,6 @@ cueDF <- cue_calculation(inDF=tables_by_ring_predicted)
 source("R/normalized/make_eCO2_effect_on_GPP_normalized_plot.R")
 make_eCO2_effect_on_GPP_normalized_plot(inDF=tables_by_ring_predicted)
 
-source("R/normalized/make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco.R")
-make_eCO2_effect_on_GPP_normalized_plot_with_NPPmyco(inDF=tables_by_ring_predicted)
-
 
 ### all eCO2 effect on a single vertical plot
 ###    Need to go into function to plot
@@ -767,8 +760,8 @@ source("R/plot_supplementary_figures.R")
 
 
 ### Make a Whitaker diagram to show EucFACE in the context of global temperature and precipitation
-source("R/global_comparison/make_whitaker_diagram_3.R")
-make_whitaker_diagram_3()
+source("R/global_comparison/make_whitaker_diagram.R")
+make_whitaker_diagram()
 
 
 

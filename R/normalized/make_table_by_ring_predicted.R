@@ -11,7 +11,8 @@ make_table_by_ring_predicted <- function() {
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
               "Intermediate Root NPP", "Coarse Root NPP", "Other NPP",
               "Understorey NPP", "Understorey Litter",
-              "Frass production", "Leaf consumption", "R hetero")
+              "Frass production", "Leaf consumption", "R hetero",
+              "Mycorrhizal production")
     npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
                        "diff", "percent_diff", 
