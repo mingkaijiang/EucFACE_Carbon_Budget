@@ -11,11 +11,10 @@ make_table_by_ring_predicted <- function() {
     term <- c("Leaf NPP", "Stem NPP", "Fine Root NPP", 
               "Intermediate Root NPP", "Coarse Root NPP", "Other NPP",
               "Understorey NPP", "Understorey Litter",
-              "Frass production", "Leaf consumption", "R hetero", 
-              "Mycorrhizal production", "Flower production")
-    npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
+              "Frass production", "Leaf consumption", "R hetero")
+    npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
-                       "diff", "percent_diff", "aCO2_conf", "eCO2_conf",
+                       "diff", "percent_diff", 
                        "aCO2_sd", "eCO2_sd")
     Ring <- c(1:6)
 
@@ -57,9 +56,6 @@ make_table_by_ring_predicted <- function() {
         # R heterotrophic respiration
         npp[npp$term == "R hetero", i+1] <- mean(heterotrophic_respiration_flux_ann$predicted[heterotrophic_respiration_flux_ann$Ring == i])
 
-        # Mycorrhizal production
-        #npp[npp$term == "Mycorrhizal production", i+1] <- mean(mycorrhizal_c_production_flux_ann$predicted[mycorrhizal_c_production_flux_ann$Ring == i])
-        
     }
 
     
@@ -71,9 +67,9 @@ make_table_by_ring_predicted <- function() {
     term <- c("GPP overstorey", "GPP understorey", "CH4 efflux",
               "Ra leaf", "Ra stem", "Ra root", "Ra understorey", "VOC",
               "Rherbivore", "DOC loss", "Rsoil", "Rgrowth")
-    inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
+    inout <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(inout) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2",
-                         "diff", "percent_diff", "aCO2_conf", "eCO2_conf",
+                         "diff", "percent_diff", 
                          "aCO2_sd", "eCO2_sd")
     
     for (i in Ring) {
@@ -129,11 +125,11 @@ make_table_by_ring_predicted <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", "Coarse woody debris", 
+              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
-    pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
+    pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
-                        "diff", "percent_diff", "aCO2_conf", "eCO2_conf",
+                        "diff", "percent_diff",
                        "aCO2_sd", "eCO2_sd")
 
     for (i in Ring) {
@@ -163,9 +159,6 @@ make_table_by_ring_predicted <- function() {
         # Microbial biomass
         pool[pool$term == "Microbial biomass", i+1]  <- mean(microbial_c_pool_ann$predicted[microbial_c_pool_ann$Ring == i], na.rm=T)
         
-        # Coarse Woody Debris
-        #pool[pool$term == "Coarse woody debris", i+1]  <- mean(standing_dead_c_pool$wood_pool[standing_dead_c_pool$Ring == i], na.rm=T)
-        
         # Mycorrhizae
         pool[pool$term == "Mycorrhizae", i+1]  <- mean(mycorrhizal_c_pool_ann$predicted[mycorrhizal_c_pool_ann$Ring == i], na.rm=T)
         
@@ -187,9 +180,9 @@ make_table_by_ring_predicted <- function() {
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
               "Fine Root", "Intermediate Root", "Coarse Root", "Litter", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
-    delta_pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,NA,NA)
+    delta_pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(delta_pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
-                        "diff", "percent_diff", "aCO2_conf", "eCO2_conf",
+                        "diff", "percent_diff", 
                         "aCO2_sd", "eCO2_sd")
     
     for (i in Ring) {

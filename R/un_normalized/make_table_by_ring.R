@@ -11,8 +11,7 @@ make_table_by_ring <- function() {
               "Intermediate Root NPP", "Coarse Root NPP",
               "Other NPP",
               "Understorey NPP",
-              "Frass production", "Leaf consumption", "R hetero", 
-              "Mycorrhizal production", "Flower production")
+              "Frass production", "Leaf consumption", "R hetero")
     npp <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(npp) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 
                        "diff", "percent_diff", "aCO2_sd", "eCO2_sd")
@@ -134,7 +133,7 @@ make_table_by_ring <- function() {
     ##############################################    
     ### Define terms and dataframe
     term <- c("Overstorey leaf", "Overstorey wood", "Understorey above-ground",
-              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", "Coarse woody debris", 
+              "Fine Root", "Intermediate Root", "Coarse Root", "Litter", 
               "Microbial biomass", "Soil C", "Mycorrhizae", "Insects")
     pool <- data.frame(term, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA)
     colnames(pool) <- c("term", paste("Ring", c(1:6), sep="_"), "aCO2", "eCO2", 

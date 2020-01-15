@@ -1,7 +1,5 @@
-make_understorey_aboveground_c_pool <- function(c_frac) {
+make_understorey_aboveground_c_pool_1 <- function(c_frac) {
     
-    ### currently only Varsha's harvest data on HIEv
-    download_understorey_aboveground_biomass_data()
     
     ### read in the data 
     inDF1 <- read.csv(file.path(getToPath(), 

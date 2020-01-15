@@ -200,19 +200,15 @@ understorey_sla_variable <- make_understorey_sla_variable()
 
 ### Understorey aboveground C pool
 ### reads in c_fraction from constant
-### method 1 is based on harvest
-### method 2 is based on stereo camera
-#understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool(c_fraction_ua)
+### method 1 based on harvesting
+### method 2 based on stereo camera
+understorey_aboveground_c_pool <- make_understorey_aboveground_c_pool_1(c_fraction_ua)
 understorey_aboveground_c_pool_2 <- make_understorey_aboveground_c_pool_2(c_fraction_ua)
 
 
 ### Understorey production flux
 understorey_aboveground_production_flux <- make_understorey_aboveground_production_flux(c_fraction_ua)
 
-### Understorey LAI
-### method 1 based on harvesting data, live biomass only (hence the lowest LAI possible)
-#understorey_lai_variable <- make_understorey_lai_variable(understorey_aboveground_c_pool, 
-#                                                          understorey_sla_variable)
 
 ### Soil microbial C pool
 ### top 10 cm only - Cat's data
@@ -278,9 +274,7 @@ delta_intermediate_root_c_pool <- make_delta_intermediate_root_pool_function(inD
 
 delta_coarse_root_c_pool <- make_delta_coarseroot_pool_function(inDF=coarse_root_c_pool, var.col=3)
 
-#delta_understorey_aboveground_c_pool <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool, var.col=5)
-
-delta_understorey_aboveground_c_pool_2 <- make_delta_ua_pool_function_4(inDF=understorey_aboveground_c_pool_2, var.col=3)
+delta_understorey_aboveground_c_pool_2 <- make_delta_ua_pool_function(inDF=understorey_aboveground_c_pool_2, var.col=3)
 
 delta_microbial_c_pool <- make_delta_microbial_pool_function(inDF=microbial_c_pool, var.col=3)
 
@@ -299,25 +293,10 @@ delta_understorey_insect_pool <- make_delta_insect_pool_function(inDF=understore
 ###                  commented out at the moment                        ###
 ###########################################################################
 
-### Generate overall summary table (ignoring rings and time)
-source("R/un_normalized/make_table.R")
-overall_tables <- make_EucFACE_table()
-
 ### Generate ring-specific table (ignoring time variable)
 source("R/un_normalized/make_table_by_ring.R")
 tables_by_ring <- make_table_by_ring()
 
-###### ----------Check for C gaps-------------- ######
-### Plot a combined gpp and rsoil gap plot
-### To plot, you need to go into the function
-#source("R/un_normalized/gpp_and_rsoil_gap_plot.R")
-#gpp_and_rsoil_gap_plot(inDF=tables_by_ring)
-#
-#source("R/un_normalized/nep_gap_plot.R")
-#nep_gap_plot(inDF=tables_by_ring)
-#
-#source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
-#make_eCO2_effect_on_GPP_plot(inDF=tables_by_ring)
 
 ###########################################################################
 ###    Step 5: Normalize response with LAI as a covariate               ###
@@ -343,7 +322,6 @@ wood_respiration_flux_ann <- make_ra_wood_treatment_abs_effect_statistics(inDF=w
                                                                           var.col=5,
                                                                           return.outcome="predicted")
 
-#test <- summaryBy(predicted+Value~Trt, data=wood_respiration_flux_ann, FUN=mean, keep.names=T)
 
 ### Root respiration
 root_respiration_flux_ann <- make_ra_root_treatment_abs_effect_statistics(inDF=root_respiration_flux, 
@@ -477,10 +455,6 @@ intermediate_root_c_pool_ann <- make_irootc_treatment_abs_effect_statistics(inDF
                                                                       return.outcome="predicted")
 
 ### Understorey aboveground C pool
-understorey_aboveground_c_pool_ann <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool, 
-                                                                               var.col=5,
-                                                                               return.outcome="predicted")
-
 understorey_aboveground_c_pool_2_ann <- make_uac_treatment_abs_effect_statistics(inDF=understorey_aboveground_c_pool_2, 
                                                                                  var.col=3,
                                                                                  return.outcome="predicted")
@@ -512,9 +486,6 @@ understorey_insect_pool_ann <- make_insc_treatment_abs_effect_statistics(inDF=un
 
 ### Delta pools
 delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect(inDF=soil_c_pool_ann, var.col=7)
-#delta_soil_c_pool_ann <- make_delta_soil_pool_treatment_abs_effect_2(inDF=delta_soil_c_pool, 
-#                                                                     return.outcome="predicted")
-
 
 delta_leaf_c_pool_ann <- make_delta_leaf_pool_treatment_abs_effect(inDF=leaf_c_pool_ann, var.col=8)
 
@@ -526,9 +497,7 @@ delta_coarseroot_c_pool_ann <- make_delta_coarseroot_pool_treatment_abs_effect(i
 
 delta_intermediate_root_c_pool_ann <- make_delta_intermediate_root_pool_treatment_abs_effect(inDF=intermediate_root_c_pool_ann, var.col=10)
 
-delta_understorey_aboveground_c_pool_ann <- make_delta_ua_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_ann, var.col=10)
-
-delta_understorey_aboveground_c_pool_2_ann <- make_delta_ua_pool_treatment_abs_effect_4(inDF=understorey_aboveground_c_pool_2_ann, var.col=8)
+delta_understorey_aboveground_c_pool_2_ann <- make_delta_ua_pool_treatment_abs_effect(inDF=understorey_aboveground_c_pool_2_ann, var.col=8)
 
 delta_microbial_c_pool_ann <- make_delta_microbial_pool_treatment_abs_effect(inDF=microbial_c_pool_ann, var.col=7)
 

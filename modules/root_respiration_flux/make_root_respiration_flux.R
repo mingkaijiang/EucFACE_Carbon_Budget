@@ -37,6 +37,7 @@ make_root_respiration_flux <- function(froot, iroot, croot, rstem, stem){
   tempDF$a.ir <- 0.9764
   tempDF$b.ir <- 0.0461
   
+  
   tempDF$Rfroot <- tempDF$a.fr * exp(tempDF$b.fr * tempDF$T5_avg) * tempDF$fr_biomass 
   tempDF$Riroot <- tempDF$a.ir * exp(tempDF$b.ir * tempDF$T5_avg) * tempDF$ir_biomass 
   tempDF$Rroot <- tempDF$Rfroot + tempDF$Riroot
@@ -48,7 +49,8 @@ make_root_respiration_flux <- function(froot, iroot, croot, rstem, stem){
   tempDF.out <- summaryBy(Rroot_mg_m2~Date+Ring,data=tempDF,FUN=sum,keep.names=T)
   
   names(tempDF.out) <- c("Start_date","Ring","root_respiration_flux")
-  tempDF.out$End_date <- tempDF.out$Start_date
+  tempDF.out$Start_date <- as.Date(as.character(tempDF.out$Start_date))
+  tempDF.out$End_date <- as.Date(as.character(tempDF.out$Start_date))
   tempDF.out$Ring <- as.numeric(tempDF.out$Ring)
   tempDF.out$Date <- tempDF.out$Start_date
   tempDF.out$ndays <- as.numeric(tempDF.out$End_date - tempDF.out$Start_date) + 1
@@ -61,7 +63,6 @@ make_root_respiration_flux <- function(froot, iroot, croot, rstem, stem){
   
   tempDF <- merge(tempDF.out, croot_resp, by=c("Ring", "Date"))
   tempDF$total_root_respiration <- tempDF$coarse_root_respiration + tempDF$root_respiration_flux
-  
   
   out <- tempDF[,c("Start_date","End_date","Date","Ring","total_root_respiration","ndays")]
   colnames(out) <- c("Start_date","End_date","Date","Ring","root_respiration_flux","ndays")

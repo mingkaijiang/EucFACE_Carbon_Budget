@@ -1,32 +1,36 @@
 make_delta_ua_pool_function <- function(inDF,var.col) {
     
+    ### extract start and end date
+    s.date <- min(inDF$Date)
+    e.date <- max(inDF$Date)
+    
     ### Change column name of value variable
     colnames(inDF)[var.col] <- "Value"
     
-    myDF <- inDF
+    ### date list
+    d.list <- unique(inDF$Date)
+    d.list <- d.list[order(d.list)]
     
     ### create delta df
-    delta <- data.frame(rep(c(1:6), each=1), NA, NA, NA)
-    colnames(delta) <- c("Ring","Start_date", "End_date", "delta")
+    delta <- subset(inDF, Date != d.list[1])
+    delta$Start_date <- delta$Date  
+
     
-    s.date <- "2015-02-01"
-    e.date <- "2016-02-01"
-    
-    delta$Start_date <- as.Date(s.date)
-    delta$End_date <- as.Date(e.date)
-    
-    ### assign values
-    
-    ### per ring
-    for (j in 1:6) {
-        ### unnormalized
-        v1 <- myDF$Value[myDF$Date == e.date & myDF$Ring == j] - myDF$Value[myDF$Date == s.date & myDF$Ring == j]
-        delta$delta[delta$Ring == j] <- v1
+    #### calculate differences
+    for (i in 1:length(delta$Date)) {
+        delta$Start_date[i] <- d.list[which(d.list == delta$Date[i]) - 1]
+        delta$prev_biom[i] <- inDF$Value[inDF$Ring == delta$Ring[i] &
+                                                     as.numeric(inDF$Date-delta$Start_date[i])==0]
     }
     
+    ### Length of period
+    delta$length <- as.numeric(delta$Date - delta$Start_date)
+    
+    ### annualize the difference
+    delta$diff_g_yr <- (delta$Value - delta$prev_biom) / delta$length * 365
     
     #- format dataframe to return
-    out <- delta[,c("Start_date", "End_date", "End_date", "Ring", "delta")]
+    out <- delta[,c("Start_date", "Date", "Date", "Ring", "diff_g_yr")]
     
     names(out) <- c("Start_date", "End_date", "Date", "Ring", "delta")
     
