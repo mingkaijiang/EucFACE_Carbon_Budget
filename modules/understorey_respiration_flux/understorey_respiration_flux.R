@@ -67,47 +67,11 @@ make_understorey_respiration_flux <- function(c_pool,
     } else if (assumption == "maespa_partial") {
         ### use MAESPA simulated respiration rate
         
-        myDF <- read.csv("data/MAESPA_output/underS_species2.gpp.csv")
-        myDF <- subset(myDF, Species == 2)
-        myDF$Ring <- gsub("R","", myDF$Ring)
-        myDF$Ring <- as.numeric(myDF$Ring)
-        
-        for (i in c(2015:2016)) {
-            for (j in c(1:6)) {
-                gpp$respiration[gpp$year==i&gpp$Ring==j] <- myDF$Ra.sum[myDF$year==i&myDF$Ring==j]
-            }
-        }
-        
-        cue1 <- with(gpp[gpp$Ring==1,], mean(respiration/GPP, na.rm=T))
-        cue2 <- with(gpp[gpp$Ring==2,], mean(respiration/GPP, na.rm=T))
-        cue3 <- with(gpp[gpp$Ring==3,], mean(respiration/GPP, na.rm=T))
-        cue4 <- with(gpp[gpp$Ring==4,], mean(respiration/GPP, na.rm=T))
-        cue5 <- with(gpp[gpp$Ring==5,], mean(respiration/GPP, na.rm=T))
-        cue6 <- with(gpp[gpp$Ring==6,], mean(respiration/GPP, na.rm=T))
-        
-        for (i in c(2013:2014)) {
-             gpp$respiration[gpp$year==i&gpp$Ring==1] <- gpp$GPP[gpp$year==i&gpp$Ring==1] * cue1
-             gpp$respiration[gpp$year==i&gpp$Ring==2] <- gpp$GPP[gpp$year==i&gpp$Ring==2] * cue1 
-             gpp$respiration[gpp$year==i&gpp$Ring==3] <- gpp$GPP[gpp$year==i&gpp$Ring==3] * cue1 
-             gpp$respiration[gpp$year==i&gpp$Ring==4] <- gpp$GPP[gpp$year==i&gpp$Ring==4] * cue1 
-             gpp$respiration[gpp$year==i&gpp$Ring==5] <- gpp$GPP[gpp$year==i&gpp$Ring==5] * cue1 
-             gpp$respiration[gpp$year==i&gpp$Ring==6] <- gpp$GPP[gpp$year==i&gpp$Ring==6] * cue1 
-             
-        }
-        
-        gpp$Start_date <- paste0(gpp$year, "-01-01")
-        gpp$End_date <- paste0(gpp$year, "-12-31")
-        gpp$Date <- gpp$End_date
-        gpp$respiration_mg_m2_d <- gpp$respiration / 365 * 1000
-        
-        out <- gpp[,c("Start_date", "End_date", "Date", "Ring", "respiration_mg_m2_d")]
-        colnames(out) <- c("Start_date", "End_date", "Date", "Ring", "respiration")
-        out$ndays <- as.numeric(as.Date(out$End_date) - as.Date(out$Start_date)) + 1
         
     } else if (assumption == "maespa_all") {
         ### use MAESPA simulated respiration rate
         
-        myDF <- read.csv("data/MAESPA_output/underS_species2.gpp_2.csv")
+        myDF <- read.csv("data/MAESPA_output/understorey.gpp.csv")
         myDF <- subset(myDF, Species == 2)
         myDF$Ring <- gsub("R","", myDF$Ring)
         myDF$Ring <- as.numeric(myDF$Ring)
