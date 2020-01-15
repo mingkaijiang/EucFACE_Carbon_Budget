@@ -20,20 +20,21 @@
 #### Code structure:
 #### There are in total 8 chunk steps:
 #### Step 1: Prepare the basics, including R package, constants, sourcing code scripts;
-#### Step 2: (Optional) Prepare met data for simulations;
+#### Step 2: (Optional) Prepare met data for model-based simulations;
 #### Step 3: Calculate C budget fluxes, pools, and variables;
 #### Step 4: Make summary tables and figures,
 ####         based on un-normalized results;
 #### Step 5: Normalize all responses to pretreatment LAI;
 #### Step 6: Make summary table, based on normalized results;
 #### Step 7: Perform data assimilation to estimate uncertainties,
-####         and NPPmyco;
+####         and NPPmyco flux;
 #### Step 8: Return to C budget and generate figures.
 ####
 ###########################################################################
 ###########################################################################
 #### Notes:
-#### 1. to plot figures, we need to go into functions itself for many plotting scripts
+#### 1. To plot figures, we need to go into the functions, because of the plotting package I used. 
+#### 2. Data assimilation takes a long time to run (~ 4 - 6 hours). 
 ####
 ###########################################################################
 ###########################################################################
