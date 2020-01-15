@@ -8,15 +8,12 @@ allom_agb <- function(diamcm) {
 #- Make the live wood C pool
 make_wood_pool <- function(ring_area, c_frac_ht){
     
-    #### download the data from HIEv
-    download_diameter_data()
     
     #### read in 2012-15 data sets
     f13 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv"))
     f14 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv"))
     f15 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv"))
     f16 <- read.csv(file.path(getToPath(), "FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv"))
-    # this file is not on HIEv yet!
     f12 <- read.csv("temp_files/EucFACE_dendrometers2011-12_RAW.csv")
     
     #### Read in additional files that I used when doing the data analysis
@@ -48,8 +45,7 @@ make_wood_pool <- function(ring_area, c_frac_ht){
     #### remove dead trees
     all$Active.FALSE.means.dead.[is.na(all$Active.FALSE.means.dead.)] <- "TRUE"
     all <- subset(all, Active.FALSE.means.dead.== TRUE)
-    #all <- all[complete.cases(all),]
-    
+
     #### remove "CORR" columns and dead column
     uncorr <- all[,-grep("CORR",names(all))]
     uncorr <- uncorr[,-grep("Coor",names(uncorr))]
@@ -77,16 +73,6 @@ make_wood_pool <- function(ring_area, c_frac_ht){
                as.Date("2016-12-21"))
     data <- long[long$Date %in% dates,]
     
-    #dates <- data.frame(c(2012:2016), NA)
-    #colnames(dates) <- c("yr", "date")
-    #long$yr <- year(long$Date)
-    #for (i in 2012:2016) {
-    #    test <- long[long$Ring==1 & long$yr == i, ]
-    #    r.n <- which.max(test$biom)
-    #    dates$date[dates$yr==i] <- test[r.n, "Date"]
-    #}
-    #
-    #data <- long[long$Date %in% dates$date,]
     
     ### Update unit, gram
     data$biom_g <- data$biom * 1000
@@ -112,11 +98,9 @@ make_wood_pool <- function(ring_area, c_frac_ht){
     sap.c <- make_sapwood_c_n_fraction()
     data.m$sap_c_frac[data.m$Ring %in% c(2, 3, 6)] <- sap.c$aCO2[sap.c$variable=="C"]
     data.m$sap_c_frac[data.m$Ring %in% c(1, 4, 5)] <- sap.c$eCO2[sap.c$variable=="C"]
-    #data.m$sap_c_frac <- 0.46
-        
+
         
     #### convert from kg DM m-2 to g C m-2
-    #data.m$heart_pool <- data.m$heart_pool * c_frac_ht * 1000
     data.m$heart_pool <- data.m$heart_pool * data.m$sap_c_frac * 1000
     data.m$sap_pool <- data.m$sap_pool * data.m$sap_c_frac * 1000
     data.m$wood_pool <- data.m$sap_pool + data.m$heart_pool

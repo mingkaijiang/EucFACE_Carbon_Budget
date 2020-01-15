@@ -1,9 +1,6 @@
 make_understorey_insect_pool <- function(c_frac){
     
-    ### only use suction data and litterfall data
-    
-    download_insect_data()  
-    
+
     ### pitfall to collect ground-dwelling arthopods
     myDF1 <- read.csv("download/FACE_P0051_RA_ARTHROPODS-2_L1_20131101-20150114.csv")
     

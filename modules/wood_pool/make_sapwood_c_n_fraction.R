@@ -1,6 +1,5 @@
 make_sapwood_c_n_fraction <- function() {
-    ### Download the data
-    downloadHIEv(hiev=searchHIEv("FACE_P0079_RA_SAPWOOD_N_RAW_2015-11_v1"))
+    
     
     ### read df
     myDF <- read.csv("download/FACE_P0079_RA_SAPWOOD_N_RAW_2015-11_v1.csv")

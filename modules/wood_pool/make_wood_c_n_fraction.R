@@ -1,7 +1,5 @@
 make_wood_c_n_fraction <- function() {
-    ### Download the data
-    downloadHIEv(hiev=searchHIEv("FACE_P0079_RA_Wood_N_conc_RAW_V1"))
-    
+
     ### read df
     myDF <- read.csv("download/FACE_P0079_RA_Wood_N_conc_RAW_V1.csv")
     
