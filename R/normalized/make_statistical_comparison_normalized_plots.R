@@ -139,10 +139,10 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
     
     
     ### add conditional color to data frames
-    plotDF1$col.con <- ifelse(plotDF1$effect_size_t<0, "#DF6747", "#37AFA9")
-    plotDF2$col.con <- ifelse(plotDF2$effect_size_t<0, "#DF6747", "#37AFA9")
-    plotDF3$col.con <- ifelse(plotDF3$effect_size_t<0, "#DF6747", "#37AFA9")
-    plotDF4$col.con <- ifelse(plotDF4$effect_size_t<0, "#DF6747", "#37AFA9")
+    plotDF1$col.con <- ifelse(plotDF1$effect_size_t<0, "red2", "blue3")
+    plotDF2$col.con <- ifelse(plotDF2$effect_size_t<0, "red2", "blue3")
+    plotDF3$col.con <- ifelse(plotDF3$effect_size_t<0, "red2", "blue3")
+    plotDF4$col.con <- ifelse(plotDF4$effect_size_t<0, "red2", "blue3")
     
     #### Plotting
     p8 <- ggplot(plotDF4)+ 
@@ -156,10 +156,10 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_blank(), 
               axis.text.x = element_blank(),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.text.y=element_text(size=12, family="Helvetica"),
+              axis.title.y=element_text(size=14, family="Helvetica"),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=14, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none")+
         geom_vline(xintercept = 0.0)+
@@ -168,7 +168,8 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         geom_vline(xintercept = 50, linetype="dashed", color="grey")+
         #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
-        scale_y_discrete(labels=y.lab4)
+        scale_y_discrete(labels=y.lab4)+
+      annotate(geom="text", x=-80, y=3, label="a", size=7, family="Helvetica", fontface = 2)
     
     
     p5 <- ggplot(plotDF1)+ 
@@ -188,10 +189,10 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_blank(), 
               axis.text.x = element_blank(),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.text.y=element_text(size=12, family="Helvetica"),
+              axis.title.y=element_text(size=14, family="Helvetica"),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=14, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none")+
         geom_vline(xintercept = 0.0)+
@@ -200,7 +201,8 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         geom_vline(xintercept = 50, linetype="dashed", color="grey")+
         #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
-        scale_y_discrete(labels=y.lab1)
+        scale_y_discrete(labels=y.lab1)+
+      annotate(geom="text", x=-80, y=11, label="b", size=7, family="Helvetica", fontface = 2)
     
     p6 <- ggplot(plotDF3)+ 
         geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
@@ -213,10 +215,10 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         theme(panel.grid.minor=element_blank(),
               axis.title.x = element_blank(), 
               axis.text.x = element_blank(),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.text.y=element_text(size=12, family="Helvetica"),
+              axis.title.y=element_text(size=14, family="Helvetica"),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=14, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none")+
         geom_vline(xintercept = 0.0)+
@@ -225,7 +227,8 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         geom_vline(xintercept = 50, linetype="dashed", color="grey")+
         #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
-        scale_y_discrete(labels=y.lab3)
+        scale_y_discrete(labels=y.lab3)+
+      annotate(geom="text", x=-80, y=8, label="c", size=7, family="Helvetica", fontface = 2)
     
     p7 <- ggplot(plotDF2)+ 
         geom_segment(aes(y=reorder(Variable, effect_size_t), x=conf_low_t, 
@@ -239,12 +242,12 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         labs(x=expression(paste(CO[2], " effect (g C ", m^-2, " ", yr^-1, ")")), y="")+
         theme_linedraw()+
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=12),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=14),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.title.x = element_text(size=14, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
+              axis.text.y=element_text(size=12, family="Helvetica"),
+              axis.title.y=element_text(size=14, family="Helvetica"),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=14, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="bottom")+
         geom_vline(xintercept = 0.0)+
@@ -254,15 +257,16 @@ make_statistical_comparison_normalized_plots <- function(inDF) {
         #geom_vline(xintercept = 55, linetype="dashed", color="grey")+
         #geom_rect(aes(xmin=-50, xmax=-40, ymin=0, ymax=18), fill="white")+
         scale_x_continuous(limits=c(min(xticks.brk), max(xticks.brk)), breaks=xticks.brk, labels=xticks)+
-        scale_y_discrete(labels=y.lab2)
+        scale_y_discrete(labels=y.lab2)+
+      annotate(geom="text", x=-80, y=10, label="d", size=7, family="Helvetica", fontface = 2)
     
     
-    pdf("output/ED_Figure_5.pdf", width=8, height=12)
+    jpeg("output/ED_Figure_5.jpg", width=183, height=230, unit="mm", res = 300)
     require(cowplot)    
     plot_grid(p8, p5, 
               p6, p7, 
-              labels="auto", ncol=1, align="v", axis = "l",
-              rel_heights=c(0.3,1,1,1))
+              labels="", ncol=1, align="v", axis = "l", 
+              rel_heights=c(0.3,1,0.9,1.05)) 
     dev.off()
     
 }

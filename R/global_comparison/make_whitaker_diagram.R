@@ -412,8 +412,6 @@ make_whitaker_diagram <- function() {
                                              colour=col.list2)))
     
     
-    plot(p1)
-    
     ### prepare NPP vs. age
     col.list <- c("red", brewer.pal(7,"Paired"))
     
@@ -531,21 +529,21 @@ make_whitaker_diagram <- function() {
     
     
     
-    ggsave(filename = "output/ED_Figure_2.pdf", 
+    ggsave(filename = "output/ED_Figure_2.jpg", 
            plot = plot.with.inset,
-           width = 17, 
-           height = 12,
-           units = "cm",
+           width = 183, 
+           height = 125,
+           units = "mm",
            dpi = 300)
     
     
     
     
-    plot.with.inset2 <-
-        ggdraw() +
-        draw_plot(p1) +
-        draw_plot(p4, x = 0.12, y = .72, width = .3, height = .25)+
-        draw_plot(p3, x = 0.12, y = .47, width = .3, height = .25)
+    #plot.with.inset2 <-
+    #    ggdraw() +
+    #    draw_plot(p1) +
+    #    draw_plot(p4, x = 0.12, y = .72, width = .3, height = .25)+
+    #    draw_plot(p3, x = 0.12, y = .47, width = .3, height = .25)
     
     
     #ggsave(filename = "output/ED_Figure_2_no_understorey.pdf", 

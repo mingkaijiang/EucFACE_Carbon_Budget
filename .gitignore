@@ -38,6 +38,6 @@ data/support_data/*.csv
 data/support_data/other_FACE/*.csv
 data/support_data/Dai/*.nc
 data/support_data/Dai/*.csv
-
+output/*.jpg
 
 *.Rmd

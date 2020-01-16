@@ -311,12 +311,12 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=20),
-              axis.text.y=element_text(size=14),
-              axis.title.y=element_text(size=20),
-              legend.text=element_text(size=18),
-              legend.title=element_text(size=16),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
+              axis.text.y=element_text(size=12, family="Helvetica"),
+              axis.title.y=element_text(size=12, family="Helvetica"),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
@@ -324,7 +324,7 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                            breaks=c(-200, -100, 0, 100, 200, 400, 600),
                            labels=c(-200, -100, 0, 100, 200, 400, 600))+
         guides(fill=guide_legend(ncol=3),legend.justification = c(0, 1))+
-        annotate(geom="text", x=0.6, y=500, label="a", size=7)
+        annotate(geom="text", x=0.6, y=500, label="a", size=7, family="Helvetica", fontface = 2)
     
 
     p2 <- ggplot(plotDF.sub2,
@@ -345,20 +345,20 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=20),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=18),
-              legend.title=element_text(size=16),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
         scale_y_continuous(limits=c(-205, 500), 
                            breaks=c(-200, -100, 0, 100, 200, 400, 600),
                            labels=c(-200, -100, 0, 100, 200, 400, 600))+
-        guides(fill=guide_legend(ncol=2))+
-        annotate(geom="text", x=0.5, y=500, label="b", size=7)
+        guides(fill=guide_legend(ncol=1))+
+        annotate(geom="text", x=0.6, y=500, label="b", size=7, family="Helvetica", fontface = 2)
     
     
     p3 <- ggplot(plotDF.sub3,
@@ -377,20 +377,20 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=20),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=18),
-              legend.title=element_text(size=16),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
         scale_y_continuous(limits=c(-205, 500), 
                            breaks=c(-200, -100, 0, 100, 200, 400, 600),
                            labels=c(-200, -100, 0, 100, 200, 400, 600))+
-        guides(fill=guide_legend(ncol=2, nrow=3))+
-        annotate(geom="text",x=0.5, y=500, label="c", size=7)
+        guides(fill=guide_legend(ncol=1))+
+        annotate(geom="text",x=0.6, y=500, label="c", size=7, family="Helvetica", fontface = 2)
     
     
     p4 <- ggplot(plotDF.sub4,
@@ -409,40 +409,55 @@ make_eCO2_effect_on_GPP_normalized_plot <- function(inDF) {
                           labels=y.lab2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=20),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=18),
-              legend.title=element_text(size=16),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0)+
         scale_y_continuous(limits=c(-205, 500), 
                            breaks=c(-200, -100, 0, 100, 200, 400, 600),
                            labels=c(-200, -100, 0, 100, 200, 400, 600))+
-        guides(fill=guide_legend(ncol=2))+
-        annotate(geom="text", x=0.5, y=500, label="d", size=7)
+        guides(fill=guide_legend(ncol=1))+
+        annotate(geom="text", x=0.6, y=500, label="d", size=7, family="Helvetica", fontface = 2)
 
     require(grid)
     require(cowplot)
     
     ### Plotting
-    pdf("Output/Figure_2.pdf", width=16, height=6)
+    pdf("Output/Figure_2.pdf", width=7.2, height=4.3)
     plot_grid(p1, p2, p3, p4, labels="", ncol=4, align="h", axis="l",
               rel_widths=c(1.3, 0.5, 0.5, 0.5))
     dev.off()
     
     
-    write.csv(plotDF.sub1, "output/Figure_2a1.csv", row.names=F)
-    write.csv(plotDF.sub2, "output/Figure_2b1.csv", row.names=F)
-    write.csv(plotDF.sub3, "output/Figure_2c1.csv", row.names=F)
-    write.csv(plotDF.sub4, "output/Figure_2d1.csv", row.names=F)
+    #plot.panel <-
+    #  ggdraw() +
+    #  draw_plot(p1, x = 0.0, y = 0.0, width = .45, height = 1.) +
+    #  draw_plot(p2, x = 0.5, y = 0.0, width = .15, height = 1.) +
+    #  draw_plot(p3, x = 0.7, y = 0.0, width = .15, height = 1.) +
+    #  draw_plot(p4, x = 0.9, y = 0.0, width = .15, height = 1.) 
+    #  
+    #
+    #ggsave(filename = "output/Figure_2.pdf", 
+    #       plot = plot.panel,
+    #       width = 183, 
+    #       height = 110,
+    #       units = "mm",
+    #       dpi = 300)
     
-    write.csv(confDF.sub1, "output/Figure_2a2.csv", row.names=F)
-    write.csv(confDF.sub2, "output/Figure_2b2.csv", row.names=F)
-    write.csv(confDF.sub3, "output/Figure_2c2.csv", row.names=F)
-    write.csv(confDF.sub4, "output/Figure_2d2.csv", row.names=F)
+    #write.csv(plotDF.sub1, "output/Figure_2a1.csv", row.names=F)
+    #write.csv(plotDF.sub2, "output/Figure_2b1.csv", row.names=F)
+    #write.csv(plotDF.sub3, "output/Figure_2c1.csv", row.names=F)
+    #write.csv(plotDF.sub4, "output/Figure_2d1.csv", row.names=F)
+    #
+    #write.csv(confDF.sub1, "output/Figure_2a2.csv", row.names=F)
+    #write.csv(confDF.sub2, "output/Figure_2b2.csv", row.names=F)
+    #write.csv(confDF.sub3, "output/Figure_2c2.csv", row.names=F)
+    #write.csv(confDF.sub4, "output/Figure_2d2.csv", row.names=F)
     
     
   #  

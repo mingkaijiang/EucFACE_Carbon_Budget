@@ -112,12 +112,12 @@ combine_all_model_output <- function() {
         xlab("") + ylab("Allocation coefficients")+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=14),
-              axis.text.y=element_text(size=14),
-              axis.title.y=element_text(size=16),
-              legend.text=element_text(size=14),
-              legend.title=element_text(size=16),
+              axis.title.x = element_text(size=16, family="Helvetica"), 
+              axis.text.x = element_text(size=14, family="Helvetica"),
+              axis.text.y=element_text(size=14, family="Helvetica"),
+              axis.title.y=element_text(size=16, family="Helvetica"),
+              legend.text=element_text(size=14, family="Helvetica"),
+              legend.title=element_text(size=16, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none")+
         scale_x_discrete("",  
@@ -135,8 +135,9 @@ combine_all_model_output <- function() {
         scale_fill_manual(values=c("CABL"=cols[1], "CLM4"=cols[2],"CLMP"=cols[3],
                                    "GDAY"=cols[4], "LPJX"=cols[5],"OCNX"=cols[6],
                                    "SDVM"=cols[7], "Data"=cols[8]))+
-        scale_shape_manual(values=c(21,23))+
-        guides(fill = guide_legend(override.aes = list(shape=21)))
+        scale_shape_manual(values=c(21,23),labels=c(expression(aCO[2]), expression(eCO[2])), name="Treatment")+
+        guides(fill = guide_legend(override.aes = list(shape=21)))+
+        annotate(geom="text", x=0.55, y=0.8, label="a", size=7, family="Helvetica", fontface = 2)
 
     
     p2 <- ggplot(plotDF2,
@@ -148,12 +149,12 @@ combine_all_model_output <- function() {
         xlab("") + ylab(expression("Turnover rates ( " * yr^-1 * " )"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=14),
-              axis.text.y=element_text(size=14),
-              axis.title.y=element_text(size=16), 
-              legend.text=element_text(size=14),
-              legend.title=element_text(size=16),
+              axis.title.x = element_text(size=16, family="Helvetica"), 
+              axis.text.x = element_text(size=14, family="Helvetica"),
+              axis.text.y=element_text(size=14, family="Helvetica"),
+              axis.title.y=element_text(size=16, family="Helvetica"), 
+              legend.text=element_text(size=14, family="Helvetica"),
+              legend.title=element_text(size=16, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none")+
         scale_x_discrete("",  
@@ -171,7 +172,8 @@ combine_all_model_output <- function() {
         scale_fill_manual(values=c("CABL"=cols[1], "CLM4"=cols[2],"CLMP"=cols[3],
                                    "GDAY"=cols[4], "LPJX"=cols[5],"OCNX"=cols[6],
                                    "SDVM"=cols[7], "Data"=cols[8]))+
-        scale_shape_manual(values=c(21,23))
+        scale_shape_manual(values=c(21,23),labels=c(expression(aCO[2]), expression(eCO[2])), name="Treatment")+
+        annotate(geom="text", x=0.55, y=4, label="b", size=7, family="Helvetica", fontface = 2)
 
 
     p3 <- ggplot(plotDF3,
@@ -183,12 +185,12 @@ combine_all_model_output <- function() {
         xlab("") + ylab(expression("Turnover rates ( " * yr^-1 * " )"))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=14),
-              axis.text.y=element_text(size=14),
+              axis.title.x = element_text(size=16, family="Helvetica"), 
+              axis.text.x = element_text(size=14, family="Helvetica"),
+              axis.text.y=element_text(size=14, family="Helvetica"),
               axis.title.y=element_blank(), 
-              legend.text=element_text(size=14),
-              legend.title=element_text(size=16),
+              legend.text=element_text(size=14, family="Helvetica"),
+              legend.title=element_text(size=16, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none",
               plot.title = element_text(hjust = 0.5),
@@ -202,7 +204,8 @@ combine_all_model_output <- function() {
         scale_fill_manual(values=c("CABL"=cols[1], "CLM4"=cols[2],"CLMP"=cols[3],
                                    "GDAY"=cols[4], "LPJX"=cols[5],"OCNX"=cols[6],
                                    "SDVM"=cols[7], "Data"=cols[8]))+
-        scale_shape_manual(values=c(21,23))
+        scale_shape_manual(values=c(21,23),labels=c(expression(aCO[2]), expression(eCO[2])), name="Treatment")+
+        annotate(geom="text", x=0.6, y=0.22, label="c", size=7, family="Helvetica", fontface = 2)
     
 
     ### combined plots + shared legend
@@ -211,13 +214,13 @@ combine_all_model_output <- function() {
                                            legend.box.just = 'left'))
     
     combined_plots <- plot_grid(p2, p3, rel_widths=c(0.8, 0.3),
-                                labels=c("B","C"), ncol=2, align="v", axis = "l")
+                                labels="", ncol=2, align="v", axis = "l")
     
     
     ### output
-    pdf("output/ED_Figure_7.pdf", width=8, height=10)
+    jpeg("output/ED_Figure_7.jpg", width=183, height=200, unit="mm", res = 300)
     plot_grid(p1, combined_plots, legend_shared, 
-              labels=c("A","",""),
+              labels="",
               ncol=1, rel_heights=c(1,1,0.3))
     dev.off()    
     

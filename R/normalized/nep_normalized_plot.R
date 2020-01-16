@@ -219,12 +219,12 @@ nep_normalized_plot <- function(inDF) {
         xlab("") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=16), 
-              axis.text.x = element_text(size=18),
-              axis.text.y=element_text(size=16),
-              axis.title.y=element_text(size=18),
-              legend.text=element_text(size=12),
-              legend.title=element_text(size=14),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
+              axis.text.y=element_text(size=12, family="Helvetica"),
+              axis.title.y=element_text(size=12, family="Helvetica"),
+              legend.text=element_text(size=12, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="bottom",
               legend.text.align=0,
@@ -257,15 +257,23 @@ nep_normalized_plot <- function(inDF) {
     plot.with.inset <-
         ggdraw() +
         draw_plot(p1) +
-        draw_plot(p2, x = 0.58, y = .68, width = .4, height = .3)
+        draw_plot(p2, x = 0.52, y = .71, width = .45, height = .27)
     
+    
+    #ggsave(filename = "output/Figure_3.pdf", 
+    #       plot = plot.with.inset,
+    #       width = 16, 
+    #       height = 16,
+    #       units = "cm",
+    #       dpi = 300)
     
     ggsave(filename = "output/Figure_3.pdf", 
            plot = plot.with.inset,
-           width = 16, 
-           height = 16,
-           units = "cm",
+           width = 89, 
+           height = 110,
+           units = "mm",
            dpi = 300)
+    
     
     
 }

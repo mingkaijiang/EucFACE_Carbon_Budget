@@ -219,12 +219,12 @@ nep_normalized_plot_with_NPPmyco <- function(inDF) {
         xlab("") + ylab(expression(paste("NEP (g C ", m^-2, " ", yr^-1, ")")))+
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=10),
-              axis.text.x = element_text(size=8),
-              axis.text.y=element_text(size=8),
+              axis.title.x = element_text(size=8, family="Helvetica"),
+              axis.text.x = element_text(size=6, family="Helvetica"),
+              axis.text.y=element_text(size=8, family="Helvetica"),
               axis.title.y=element_blank(), 
-              legend.text=element_text(size=8),
-              legend.title=element_text(size=10),
+              legend.text=element_text(size=8, family="Helvetica"),
+              legend.title=element_blank(),
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0,

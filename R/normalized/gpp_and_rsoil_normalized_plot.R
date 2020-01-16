@@ -231,17 +231,18 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
                           labels=var.labs1) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=16),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=16),
-              legend.text=element_text(size=16),
-              legend.title=element_text(size=18),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
+              axis.text.y=element_text(size=10, family="Helvetica"),
+              axis.title.y=element_text(size=12, family="Helvetica"),
+              legend.text=element_text(size=10, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
         ylim(0, 2.5)+
-        annotate(geom="text", x=0.6, y=2.4, label="(a)", size=7)
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.6, y=2.45, label="a", size=7, family="Helvetica", fontface = 2)
         
     
     ### make the bar plot
@@ -260,17 +261,18 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
                           labels=var.labs1) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=16),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=16),
-              legend.title=element_text(size=18),
+              legend.text=element_text(size=10, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)+
         ylim(0, 2.5)+
-        annotate(geom="text", x=0.6, y=2.4, label="(b)", size=7)
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.6, y=2.45, label="b", size=7, family="Helvetica", fontface = 2)
     
     
     
@@ -428,17 +430,18 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
                           labels=var.labs2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=16),
-              axis.text.y=element_text(size=12),
-              axis.title.y=element_text(size=16),
-              legend.text=element_text(size=16),
-              legend.title=element_text(size=18),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
+              axis.text.y=element_text(size=10, family="Helvetica"),
+              axis.title.y=element_text(size=12, family="Helvetica"),
+              legend.text=element_text(size=10, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="none",
               legend.text.align=0)+
         ylim(0, 1.4)+
-        annotate(geom="text", x=0.6, y=1.3, label="(c)", size=7)
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.6, y=1.3, label="c", size=7, family="Helvetica", fontface = 2)
     
     
     ### make the bar plot
@@ -458,25 +461,26 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
                           labels=var.labs2) +
         theme_linedraw() +
         theme(panel.grid.minor=element_blank(),
-              axis.title.x = element_text(size=14), 
-              axis.text.x = element_text(size=16),
+              axis.title.x = element_text(size=12, family="Helvetica"), 
+              axis.text.x = element_text(size=12, family="Helvetica"),
               axis.text.y=element_blank(),
               axis.title.y=element_blank(),
-              legend.text=element_text(size=16),
-              legend.title=element_text(size=18),
+              legend.text=element_text(size=10, family="Helvetica"),
+              legend.title=element_text(size=12, family="Helvetica"),
               panel.grid.major=element_blank(),
               legend.position="right",
               legend.text.align=0)+
         ylim(0, 1.4)+
-        annotate(geom="text", x=0.6, y=1.3, label="(d)", size=7)
+        guides(fill=guide_legend(ncol=2))+
+        annotate(geom="text", x=0.6, y=1.3, label="d", size=7, family="Helvetica", fontface = 2)
     
 
     require(grid)
     require(cowplot)
     
-    pdf("output/ED_Figure_3.pdf", width=12,height=10)
+    jpeg("output/ED_Figure_3.jpg", width=183, height=170, unit="mm", res = 300)
     plot_grid(p1, p2, p3, p4, labels="", ncol=2, align="v", axis="l",
-                  rel_widths=c(1,1.2))
+                  rel_widths=c(1,1.7))
     dev.off()
 
 }
