@@ -1,62 +1,74 @@
 
 make_stem_surface_area <- function(ring_area){
   
-    ### read in DF
-    myDF <- read.csv("data/EucFACE_data/lidar_data_eucface_HIEv.csv")
-    
-    ### trees to discard due to death or duplicated registration in lidar image
-    myDF1 <- myDF[myDF$Ring==1&!myDF$tree%in%c(16, 5, 15, 17, 27), ]
-    myDF2 <- myDF[myDF$Ring==2&!myDF$tree%in%c(12, 23, 1, 2, 7, 24, 25), ]
-    myDF3 <- myDF[myDF$Ring==3&!myDF$tree%in%c(2, 6, 8, 18, 1, 23), ]
-    myDF4 <- myDF[myDF$Ring==4&!myDF$tree%in%c(18, 2, 6, 8, 23, 5, 14, 25), ]
-    myDF5 <- myDF[myDF$Ring==5&!myDF$tree%in%c(10, 23, 26, 37, 40, 21, 30), ]
-    myDF6 <- myDF[myDF$Ring==6&!myDF$tree%in%c(8), ]
-    
-    ### we still have 4 more trees in R3, 7 more trees in R4 and 2 more trees in R5
-    ### removing the smallest trees, as those are not in census data
-    myDF3 <- myDF3[order(myDF3$dbh_m),]
-    myDF3 <- myDF3[-c(1:3),]
-    
-    myDF4 <- myDF4[order(myDF4$dbh_m),]
-    myDF4 <- myDF4[-c(1:7),]
-    
-    myDF5 <- myDF5[order(myDF5$dbh_m),]
-    myDF5 <- myDF5[-c(1:2),]
-    
-    ### more dead trees
-    ### R1 tree to remove: diameter = 15.2
-    myDF1 <- myDF1[order(myDF1$dbh_m),]
-    myDF1$dbh_m <- round(myDF1$dbh_m, 4)
-    myDF1 <- myDF1[!myDF1$dbh_m%in%c(0.1550),]
-    
-    ### R2 tree to remove: diameter = 12.66, 14.74, 14.56
-    myDF2 <- myDF2[order(myDF2$dbh_m),]
-    myDF2$dbh_m <- round(myDF2$dbh_m, 4)
-    myDF2 <- myDF2[!myDF2$dbh_m%in%c(0.1320, 0.1530),]
-    
-    
-    ### R5 tree to remove: diameter = 16.02, 15.72, 18.83, 15.1, 14.94, 18.33
-    myDF5$dbh_m <- round(myDF5$dbh_m, 4)
-    myDF5 <- myDF5[!myDF5$dbh_m%in%c(0.1563, 0.1340, 0.1580, 0.1590, 0.1873, 0.1983),]
-    
-    ### R6 tree to remove: diameter = 16.85, 45.53, 16.36, 17.73, 15.89
-    myDF6 <- myDF6[order(myDF6$dbh_m),]
-    myDF6$dbh_m <- round(myDF6$dbh_m, 4)
-    myDF6 <- myDF6[!myDF6$dbh_m%in%c(0.1547, 0.1423, 0.1757, 0.1379, 0.6817),]
-    
-    ### combine
-    myDF <- rbind(myDF1, myDF2, myDF3, myDF4, myDF5, myDF6)
   
-    ### average by ring area
-    outDF <- summaryBy(total.woodarea_m2 ~ Ring, FUN=sum, data=myDF, keep.names=TRUE) %>%
-        mutate(wood_surface_area = total.woodarea_m2 / ring_area,
-               Date = "2015-05-26",
-               Ring = as.numeric(Ring)) %>%
-        dplyr::select(Date, Ring, wood_surface_area)
-    
-    
-    names(outDF)[3] <- "wood_surface_area"
-    
+  #### read in 2012-15 data sets
+  f13 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2012-13_RAW-V1.csv")
+  f14 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2013-14_RAW_V1.csv")
+  f15 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2015_RAW_V1.csv")
+  f16 <- read.csv("data/EucFACE_data/FACE_P0025_RA_TREEMEAS_2016_RAW_V1.csv")
+  f12 <- read.csv("data/EucFACE_data/EucFACE_dendrometers2011-12_RAW.csv")
+  
+  #### Read in additional files that I used when doing the data analysis
+  classif <- read.csv("data/EucFACE_data/FACE_AUX_RA_TREE-DESCRIPTIONS_R_20130201.csv",stringsAsFactors = FALSE)
+  
+  
+  #### Merge the files
+  all <- merge(classif,f12,by=c("Tree","Ring","CO2.trt"))
+  all <- merge(all,f13,by=c("Tree","Ring","CO2.trt")) 
+  all <- merge(all,f14,by=c("Tree","Ring","CO2.trt"))  
+  all <- merge(all,f15,by=c("Tree","Ring","CO2.trt"))
+  all <- merge(all,f16,by=c("Tree","Ring","CO2.trt"))
+  
+  #### remove "CORR" columns and dead column
+  uncorr <- all[,-grep("CORR",names(all))]
+  uncorr <- uncorr[,-grep("Coor",names(uncorr))]
+  uncorr <- uncorr[,names(uncorr) != "Active.FALSE.means.dead."]
+  
+  #### make a long-form version of dataframe
+  long <- reshape(uncorr,idvar="Tree",varying=list(7:58),direction="long")
+  dates <- names(uncorr)[7:58]
+  long$Date <- c(rep(Sys.Date(),length(long$time)))  #wasn't sure how else to make this column date type
+  for (i in (1:length(long$time))) {
+    long$Date[i] <- as.Date(dates[long$time[i]],format="X%d.%m.%Y")
+  }
+  long <- renameCol(long,c("X17.02.2011"),c("diam"))
+  
+  long$diam <- as.numeric(long$diam)
+  
+  
+  #### The bark removal affects the diameters mid-year. 
+  #### Hence, just calculate biomass once per year 
+  #### Specify dates here - may update this to March in future
+  dates <- c(as.Date("2015-12-14"))
+  data <- long[long$Date %in% dates,]
+  data <- as.data.frame(data)
+  
 
-    return(outDF)
+  #### read in lidar data
+  myDF <- read.csv("data/EucFACE_data/lidar_data_eucface_HIEv.csv")
+
+  ### look at plot level summary
+  outDF <- summaryBy(diam~Ring, data=data, FUN=sum, keep.names=T, na.rm=T)
+  outDF2 <- summaryBy(dbh_m+stemarea_m2+total.woodarea_m2~Ring, data=myDF, FUN=sum, keep.names=T, na.rm=T)
+  outDF2$dbh_cm <- outDF2$dbh_m * 100
+  
+  outDF$diam2 <- outDF2$dbh_m * 100
+  outDF$sfc2 <- outDF2$total.woodarea_m2
+  
+  colnames(outDF) <- c("Ring", "census_diam", "lidar_diam", "lidar_stem_surface_area")
+  
+  ### get stem surface area ~ diameter relationship based on Lidar
+  lm <- lm(total.woodarea_m2~dbh_cm, data=outDF2)
+  
+  outDF$wood_surface_area <- outDF$census_diam * coef(lm)[[2]] + coef(lm)[[1]]
+    
+  ### normalized to per ground area
+  outDF2 <- summaryBy(wood_surface_area ~ Ring, FUN=sum, data=outDF, keep.names=TRUE) %>%
+    mutate(wood_surface_area = wood_surface_area / ring_area,
+           Date = "2015-05-26",
+           Ring = as.numeric(Ring)) %>%
+    dplyr::select(Date, Ring, wood_surface_area)
+
+  return(outDF2)
 }
