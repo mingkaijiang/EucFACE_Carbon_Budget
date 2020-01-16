@@ -220,10 +220,10 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
                 aes(cat, aCO2)) +   
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        geom_segment(data=errDF1, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="black")+
         geom_point(data=errDF1, mapping=aes(x=cat, y=aCO2), 
                    size=4, shape=21, fill="white")+
+        geom_segment(data=errDF1, aes(x=cat, xend=cat, y=neg, yend=pos), 
+                     colour="black")+
         xlab("") + ylab(expression(paste("GPP (kg C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("GPP", expression(paste("NPP+", R[a]))))+
         scale_fill_manual(name="GPP", 
@@ -250,10 +250,10 @@ gpp_and_rsoil_normalized_plot <- function(inDF) {
                  aes(cat, eCO2)) +   
         geom_bar(stat = "identity", aes(fill=term),
                  position="stack") +
-        geom_segment(data=errDF2, aes(x=cat, xend=cat, y=neg, yend=pos), 
-                     colour="black")+
         geom_point(data=errDF2, mapping=aes(x=cat, y=eCO2), 
                    size=4, shape=21, fill="white")+
+        geom_segment(data=errDF2, aes(x=cat, xend=cat, y=neg, yend=pos), 
+                     colour="black")+
         xlab("") + ylab(expression(paste("GPP (kg C ", m^-2, " ", yr^-1, ")"))) +
         scale_x_discrete(labels=c("GPP", expression(paste("NPP+", R[a]))))+
         scale_fill_manual(name="GPP", 

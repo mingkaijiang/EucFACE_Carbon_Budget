@@ -739,6 +739,11 @@ source("R/global_comparison/make_whitaker_diagram.R")
 make_whitaker_diagram()
 
 
+### plot the unnormalized eCO2 effect 
+source("R/un_normalized/make_eCO2_effect_on_GPP_plot.R")
+inDF <- tables_by_ring
+make_eCO2_effect_on_GPP_plot(inDF = tables_by_ring)
+
 
 
 ###########################################################################
