@@ -566,7 +566,7 @@ initialize_obs_ele_dataframe <- function() {
     poolDF2[4,"C.soil.sd"] <- sum(poolDF1$eCO2_sd[poolDF1$term=="Soil C"])
     
     ### turnover rate for leaf litter pool
-    decomp <- make_leaflitter_decomposition_rate_2()
+    decomp <- make_leaflitter_decomposition_rate()
     
     
     poolDF2$tau.ag.lit.mean <- 365 * c(decomp$k[decomp$Ring%in%c(1,4,5)], mean(decomp$k[decomp$Ring%in%c(1,4,5)]))
