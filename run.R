@@ -586,6 +586,9 @@ generate_most_likely_outcome(inDF=pChain_aCO2_3,
 ### combine the results, and make some plots
 pChain.aCO2 <- rbind(pChain_aCO2_1, pChain_aCO2_2, pChain_aCO2_3)
 
+save_posterior(inDF = pChain.aCO2, Trt = "aCO2", dist.type = dist.type,
+               chainLength = chainLength)
+
 ### step C4: 
 ### predict final output, at mean aCO2
 ### print out the final predicted results 
@@ -661,6 +664,8 @@ generate_most_likely_outcome(inDF=pChain_eCO2_3,
 ### combine the results, and make some plots
 pChain.eCO2 <- rbind(pChain_eCO2_1, pChain_eCO2_2, pChain_eCO2_3)
 
+save_posterior(inDF = pChain.eCO2, Trt = "eCO2", dist.type = dist.type,
+               chainLength = chainLength)
 
 ### step D5: 
 ### predict final output, at mean eCO2 values
