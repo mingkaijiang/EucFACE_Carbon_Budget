@@ -730,6 +730,11 @@ source("R/normalized/make_statistical_comparison_normalized_plots.R")
 make_statistical_comparison_normalized_plots(inDF=tables_by_ring_predicted)
 
 
+### Make aCO2 and eCO2 comparison on delta C pools
+source("R/normalized/make_delta_C_pool_plot.R")
+make_delta_C_pool_plot(inDF=tables_by_ring_predicted)
+
+
 ### all supplementary figures
 source("R/plot_supplementary_figures.R")
 

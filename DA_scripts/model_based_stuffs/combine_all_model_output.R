@@ -218,7 +218,7 @@ combine_all_model_output <- function() {
     
     
     ### output
-    jpeg("output/ED_Figure_7.jpg", width=183, height=200, unit="mm", res = 300)
+    jpeg("output/ED_Figure_8.jpg", width=183, height=200, unit="mm", res = 300)
     plot_grid(p1, combined_plots, legend_shared, 
               labels="",
               ncol=1, rel_heights=c(1,1,0.3))
